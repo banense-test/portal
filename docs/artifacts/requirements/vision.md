@@ -39,54 +39,7 @@ For Cuba Corp employees and HR administrators who need a single internal source 
 
 The Employee Portal is an internal web application for Cuba Corp. It runs on the internal Windows Server estate as a .NET 10 application with a Razor Pages frontend and a PostgreSQL database. It authenticates through the existing Keycloak OIDC client and reads employee directory data from Active Directory over LDAP on demand. The portal stores only the AD user identifier and the portal-managed worker category; all other employee attributes are projected from AD at read time.
 
-### In Scope
-
-- Employee clock in/out with current-month history view.
-- HR view of all clockings with monthly CSV export.
-- HR correction/insertion of clockings with full audit trail.
-- HR publishing, editing, and unpublishing of news with manual featured banner.
-- Employee browsing and filtering of news.
-- Employee directory search with AD-sourced fields plus portal-managed worker category.
-- HR assignment and clearing of worker categories.
-- OIDC authentication via existing Keycloak.
-- LDAP read from AD for directory data.
-- Clocking retry for network outages up to 5 minutes via localStorage.
-
-### Not in Scope
-
-- Native mobile app (responsive web only).
-- Push notifications.
-- Payroll system integration.
-- Vacation or sick-leave management.
-- Biometric clocking.
-- Any Keycloak deployment, provisioning, or design work.
-- Writing back to Active Directory or editing AD-sourced employee fields in the portal.
-- Local copy of employee data, sync job, reconciliation screen, or conflict resolution.
-- News archive screen.
-- Hard delete of news items.
-- Offline mode beyond clocking retry (no PWA, service worker, installable app, or client cache of directory/news).
-- Permission model beyond two levels (no role matrix, permission administration screen, or per-category access rules).
-- Automatic news featuring.
-- Data migration from historical Excel sheets.
-- Self-service clocking correction for employees.
-
-## Features
-
-| ID | Feature | Source | Success Criteria | Volatility |
-|---|---|---|---|---|
-| F-001 | Worker category management (assign/clear) | FR-001, FR-002, NFR-005 | Category stored and audited; blank allowed | Low |
-| F-002 | Employee clocking (in/out) | FR-003, NFR-007 | Client timestamp accepted; idempotency prevents duplicates; 5-minute retry | Low |
-| F-003 | Personal clocking history | FR-004 | Current month visible to employee | Low |
-| F-004 | HR clocking oversight and export | FR-005, FR-006 | All clockings viewable; monthly CSV with defined columns | Low |
-| F-005 | HR clocking correction/insertion | FR-007, NFR-004, CON-020 | Audited corrections; original record preserved | Low |
-| F-006 | HR news publishing | FR-008, NFR-004, CON-019 | Manual featured flag; at most one featured item | Medium |
-| F-007 | HR news editing | FR-009, NFR-004 | Edits audited; featured flag can change | Medium |
-| F-008 | HR news unpublishing | FR-010, NFR-004 | Hidden but not deleted; featured item un-featured | Medium |
-| F-009 | Employee news browsing/filtering | FR-011 | Newest-first; category filter; featured banner | Low |
-| F-010 | Corporate directory search | FR-012, NFR-006, CON-010, CON-012 | AD-sourced fields read-only; category filters directory | Low |
-| F-011 | OIDC authentication via Keycloak | NFR-006, CON-004, CON-005 | Two authorization levels from AD group claims | Low |
-
-## System Boundary Overview
+### System Boundary
 
 ```plantuml
 @startuml Portal_System_Boundary
@@ -144,6 +97,53 @@ end note
 
 @enduml
 ```
+
+### In Scope
+
+- Employee clock in/out with current-month history view.
+- HR view of all clockings with monthly CSV export.
+- HR correction/insertion of clockings with full audit trail.
+- HR publishing, editing, and unpublishing of news with manual featured banner.
+- Employee browsing and filtering of news.
+- Employee directory search with AD-sourced fields plus portal-managed worker category.
+- HR assignment and clearing of worker categories.
+- OIDC authentication via existing Keycloak.
+- LDAP read from AD for directory data.
+- Clocking retry for network outages up to 5 minutes via localStorage.
+
+### Not in Scope
+
+- Native mobile app (responsive web only).
+- Push notifications.
+- Payroll system integration.
+- Vacation or sick-leave management.
+- Biometric clocking.
+- Any Keycloak deployment, provisioning, or design work.
+- Writing back to Active Directory or editing AD-sourced employee fields in the portal.
+- Local copy of employee data, sync job, reconciliation screen, or conflict resolution.
+- News archive screen.
+- Hard delete of news items.
+- Offline mode beyond clocking retry (no PWA, service worker, installable app, or client cache of directory/news).
+- Permission model beyond two levels (no role matrix, permission administration screen, or per-category access rules).
+- Automatic news featuring.
+- Data migration from historical Excel sheets.
+- Self-service clocking correction for employees.
+
+## Features
+
+| ID | Feature | Source | Success Criteria | Volatility |
+|---|---|---|---|---|
+| F-001 | Worker category management (assign/clear) | FR-001, FR-002, NFR-005 | Category stored and audited; blank allowed | Low |
+| F-002 | Employee clocking (in/out) | FR-003, NFR-007 | Client timestamp accepted; idempotency prevents duplicates; 5-minute retry | Low |
+| F-003 | Personal clocking history | FR-004 | Current month visible to employee | Low |
+| F-004 | HR clocking oversight and export | FR-005, FR-006 | All clockings viewable; monthly CSV with defined columns | Low |
+| F-005 | HR clocking correction/insertion | FR-007, NFR-004, CON-020 | Audited corrections; original record preserved | Low |
+| F-006 | HR news publishing | FR-008, NFR-004, CON-019 | Manual featured flag; at most one featured item | Medium |
+| F-007 | HR news editing | FR-009, NFR-004 | Edits audited; featured flag can change | Medium |
+| F-008 | HR news unpublishing | FR-010, NFR-004 | Hidden but not deleted; featured item un-featured | Medium |
+| F-009 | Employee news browsing/filtering | FR-011 | Newest-first; category filter; featured banner | Low |
+| F-010 | Corporate directory search | FR-012, NFR-006, CON-010, CON-012 | AD-sourced fields read-only; category filters directory | Low |
+| F-011 | OIDC authentication via Keycloak | NFR-006, CON-004, CON-005 | Two authorization levels from AD group claims | Low |
 
 ## Assumptions and Dependencies
 
