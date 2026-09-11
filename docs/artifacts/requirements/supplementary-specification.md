@@ -86,7 +86,7 @@ The following mechanisms are included from every dependent use case via `<<inclu
 ### User Interfaces
 
 | ID | Interface | Source | Detail |
-|---|---|---|---|
+|---|---|---|
 | INT-001 | Main page / clocking page | FR-003, NFR-007 | Shows Clock In/Out button; includes localStorage retry script. |
 | INT-002 | Personal clocking history page | FR-004 | Current-month history view. |
 | INT-003 | HR all-clockings view | FR-005, FR-007 | List all clockings; launch correction/insertion. |
@@ -98,14 +98,14 @@ The following mechanisms are included from every dependent use case via `<<inclu
 ### External System Interfaces
 
 | ID | Interface | Source | Detail |
-|---|---|---|---|
+|---|---|---|
 | INT-008 | Keycloak OIDC | CON-004, CON-005, NFR-006 | Authentication and AD group claims; read-only from portal perspective. |
 | INT-009 | Active Directory LDAP | CON-006, CON-010, CON-012 | Read employee attributes on demand; no write-back. |
 
 ## Applicable Standards
 
 | ID | Standard / Practice | Source | Detail |
-|---|---|---|---|
+|---|---|---|
 | STD-001 | Europe/Madrid timezone handling | CON-021 | Clockings stored in UTC; displayed and exported in Europe/Madrid local time. |
 | STD-002 | CSV column order | FR-006 | EmployeeId, FullName, WorkerCategory, Date, ClockIn, ClockOut, HoursWorked, Corrected. |
 | STD-003 | Closed worker category list | CON-017 | Full-time, Part-time, Contractor, Intern. |
