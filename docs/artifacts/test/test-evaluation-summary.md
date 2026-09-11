@@ -215,7 +215,6 @@ The Inception test mission is **met**. The project is ready to proceed to Elabor
 - Performance acceptance thresholds require quantification in Elaboration (noted in Supplementary Specification as an Elaboration task).
 - AD attribute fill-rate prototype must be completed before directory implementation proceeds (R001).
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | Test Evaluation Summary | Vision | Refines | UC-001..UC-012 |
@@ -224,3 +223,4 @@ The Inception test mission is **met**. The project is ready to proceed to Elabor
 | Test Evaluation Summary | R001, R003, R005, R007, R008 | DependsOn | SAD PoC Plan |
 | Test Evaluation Summary | BG-001, BG-002, BG-003 | Refines | AC-001, AC-002, AC-004 |
 | Inception test mission | UC-001..UC-012 | Tests | AC-001..AC-005 |
+| SCM evidence (CI build success, no open issues) | `main` branch | DependsOn | GitHub Actions run `34609595628` |
