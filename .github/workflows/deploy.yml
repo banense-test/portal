@@ -1,116 +1,41 @@
-# Portal deployment pipeline
-#
-# Deployment to the internal Windows Server estate is Transition work.
-# In Inception and Elaboration this workflow is manual-only and its deploy
-# step is a placeholder. It becomes operational in Transition.
-#
-# The solution file is regenerated from the src/ + tests/ tree before each
-# build so merged subsystems can never be silently omitted from the artifact.
-#
-# ```plantuml
-# @startuml Portal_Deploy_Component
-# !theme plain
-# left to right direction
-# package "GitHub Actions Runner" {
-#   [Checkout] as Checkout
-#   [Setup .NET 10 SDK] as SetupDotNet
-#   [Sync Solution\nfrom src/ + tests/] as SyncSln
-#   [Restore Dependencies] as Restore
-#   [Build All Projects] as Build
-#   [Run Tests] as Test
-#   [Publish Web Artifact] as Publish
-#   [Upload Artifact] as Upload
-# }
-# package "Transition Deploy Target" {
-#   [Internal Windows Server] as WinServer
-# }
-# Checkout --> SetupDotNet
-# SetupDotNet --> SyncSln
-# SyncSln --> Restore
-# Restore --> Build
-# Build --> Test
-# Test --> Publish
-# Publish --> Upload
-# Upload ..> WinServer : placeholder until Transition
-# note right of Upload
-#   Artifact is produced on every manual run.
-#   Actual deployment to the internal Windows Server
-#   is implemented in Transition per CON-007 / CON-013.
-# end note
-# @enduml
-# ```
-
-name: Portal Deploy
+# Skeleton CI/CD workflow for Portal deployment
+# To be refined in Elaboration/Transition once the Windows Server target is confirmed.
+name: portal-deploy
 
 on:
+  push:
+    branches: [ main ]
   workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Target environment'
-        required: true
-        default: 'staging'
-        type: choice
-        options:
-          - staging
-          - production
 
 jobs:
-  build-and-test:
-    name: Build and Test
-    runs-on: ubuntu-latest
+  build:
+    runs-on: windows-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup .NET 10 SDK
+      - uses: actions/checkout@v4
+      - name: Setup .NET 10
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+      - name: Build
+        run: dotnet build --configuration Release
+      - name: Test
+        run: dotnet test --configuration Release --no-build
+      - name: Publish artifact
+        run: dotnet publish --configuration Release --output ./publish
+      # TODO: upload publish folder to internal artifact store
 
-      - name: Sync solution from src/ + tests/
-        shell: bash
-        run: |
-          set -e
-          rm -f Portal.sln Portal.slnx
-          dotnet new sln -n Portal --format sln
-          find src tests -name '*.csproj' -print0 | sort -z | while IFS= read -r -d '' proj; do
-            dotnet sln Portal.sln add "$proj"
-          done
-          dotnet sln Portal.sln list
-
-      - name: Restore dependencies
-        run: dotnet restore Portal.sln
-
-      - name: Build solution
-        run: dotnet build Portal.sln --no-restore --configuration Release
-
-      - name: Run tests
-        run: dotnet test Portal.sln --no-build --configuration Release --verbosity normal
-
-      - name: Publish web artifact
-        run: dotnet publish src/Portal.Web/Portal.Web.csproj --no-build --configuration Release --output ./publish
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: portal-app
-          path: ./publish
-
-  deploy:
-    name: Deploy to Internal Windows Server
-    needs: build-and-test
+  deploy-staging:
+    needs: build
     runs-on: windows-latest
-    environment: ${{ github.event.inputs.environment || 'staging' }}
+    environment: staging
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: portal-app
-          path: ./publish
-      - name: Deploy to internal Windows Server (placeholder)
-        # Placeholder: actual deployment steps are defined in Transition.
-        # The Infrastructure team operates the internal Windows Server estate
-        # per CON-007 and CON-013.
-        run: |
-          Write-Host "Deploy to internal Windows Server - implemented in Transition"
-          Write-Host "Target environment: ${{ github.event.inputs.environment || 'staging' }}"
+      - name: Deploy to Staging
+        run: echo 'TODO: invoke infra/deploy.ps1 against Staging server'
+
+  deploy-production:
+    needs: deploy-staging
+    runs-on: windows-latest
+    environment: production
+    steps:
+      - name: Deploy to Production
+        run: echo 'TODO: invoke infra/deploy.ps1 against Production server'
