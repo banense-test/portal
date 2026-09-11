@@ -143,8 +143,9 @@ end note
 Regression testing is mandatory per iteration once Construction begins. Because no code exists in Inception, the regression baseline is empty. The first Construction iteration will establish the initial regression suite around the architecturally significant use cases (UC-003, UC-007, UC-008, UC-012). Each subsequent iteration must re-run the prior suite plus tests for the new increment.
 
 ## Defects and Incidents
+### Planned Defect Lifecycle
 
-### Defect Lifecycle
+The defect lifecycle below is **adopted for use from Construction Iteration 1 onward**. No executable artifacts exist in Inception; therefore no defects have been observed or tracked yet. The lifecycle is shown now so that Construction test activities can reference it without redefining it.
 
 ```plantuml
 @startuml Defect_Lifecycle
@@ -162,15 +163,26 @@ InProgress --> Deferred : Fix postponed by CCB
 Deferred --> Open : Re-activated by CCB
 
 note right of New
-  All defects live in SCM issue tracker
-  and are referenced in Test Evaluation Summary
+  All defects live in SCM issue tracker.
+  Future Test Evaluation Summaries will cite
+  real issue numbers, not fabricated counts.
 end note
 @enduml
 ```
 
+### SCM Evidence Available in Inception
+
+Because no code has been delivered for the Portal yet, the authoritative quality signals at this stage are the repository's continuous-integration state and issue tracker, not a defect count. The table below records the actual observations retrieved from SCM.
+
+| Evidence | Observation | Source |
+|---|---|---|
+| CI build status on `main` | Success | GitHub Actions run `34609595628`, completed 2026-09-11 14:21:43Z |
+| Open issues / change requests | None | `scm_list_issues` returned no open issues |
+| Open pull requests | Not reported by available tooling | To be checked manually before Construction starts |
+
 ### Current Defect Status
 
-No executable artifacts exist in Inception Iteration 1; therefore no defects or incidents have been observed. The defect lifecycle above is adopted for use from Construction Iteration 1 onward. Future Test Evaluation Summaries will reference real SCM issue tracker data per the Execution Integrity Controls.
+No defects or incidents have been observed in Inception. The zero counts below reflect the absence of executable artifacts, not an exercised defect-tracking process.
 
 | Metric | Value |
 |---|---|
@@ -178,7 +190,6 @@ No executable artifacts exist in Inception Iteration 1; therefore no defects or 
 | Defects open | 0 |
 | Defects closed | 0 |
 | Incidents | 0 |
-
 ## Conclusions
 
 ### Mission Verdict
