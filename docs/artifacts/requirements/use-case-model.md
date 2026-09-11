@@ -132,7 +132,6 @@ UC010 ..> AUDIT : <<include>>
 | UC-012 | Search Corporate Directory | Employee | FR-012, CON-010 | Must | Low | Detailed (architecturally significant) |
 
 ## Use-Case Specifications
-
 ### UC-003 Clock In / Clock Out
 
 **Source:** FR-003, NFR-007
@@ -380,7 +379,7 @@ stop
 4. System presents the edit form pre-filled with current values, including the current featured flag state.
 5. HR Administrator modifies fields and submits.
 6. System validates inputs.
-7. If the featured flag is set on this item, system clears the featured flag from any other currently featured item so that this item becomes the sole featured item.
+7. If the featured flag is set on this item, system clears the featured flag from any other currently featured item so that this item becomes the sole featured item. Per CON-019, featuring one item always un-features the previous one; there is no conditional "if no other featured" path.
 8. If the featured flag is cleared on the currently featured item, the banner disappears and no other item is automatically promoted.
 9. System records the edit with author and timestamp.
 10. System confirms the edit.
