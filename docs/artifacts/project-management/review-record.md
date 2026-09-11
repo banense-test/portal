@@ -280,7 +280,6 @@ note bottom of SAD : Software Architecture Document#F5
 @enduml
 ```
 ## Resolutions and Actions
-
 ### Closed ManagementReviewer Findings
 
 | ID | Artifact | Severity | Resolution | Evidence |
@@ -313,16 +312,33 @@ note bottom of SAD : Software Architecture Document#F5
 | Software Architecture Document#F4 | SAD | Minor | PoC Plan clarifies validations are Elaboration spikes, not standalone optional artifact. | SAD §Proof-of-Concept Plan. |
 | Test Evaluation Summary#F2 | Test Evaluation Summary | Major | Added SCM Evidence section and contextualized zero-defect table. | Test Evaluation Summary §SCM Evidence. |
 
-### Open Actions (Pre-Conditions for Elaboration Entry)
+### Closed Reviewer Findings (Iteration 3)
+
+| ID | Artifact | Severity | Resolution | Evidence |
+|---|---|---|---|---|
+| Development Case#F1 | Development Case | Minor | Optional Trigger Evaluation activity diagram now uses yes/no branch labels matching outcomes. | Development Case §Optional Artifact Triggers. |
+| Development Case#F2 | Development Case | Minor | CONTRIBUTING.md and lint/format gaps tracked as explicit Elaboration Iteration 1 Environment Gates (E1-G1..E1-G6) with owners and Risk List references. | Development Case §Guidelines and Procedures; §Traceability. |
+| Supplementary Specification#F1 | Supplementary Specification | Minor | REQ-P003 now clarifies 10-second target applies from start of directory search interaction; page load governed by REQ-P001; Elaboration decomposition note added. | Supplementary Specification §Performance. |
+| Supplementary Specification#F3 | Supplementary Specification | Minor | REQ-SU003 explicitly cites Infrastructure team's written confirmation and verified restore test from CON-016; framed as externally owned dependency. | Supplementary Specification §Supportability. |
+| Test Evaluation Summary#F1 | Test Evaluation Summary | Minor | Mission verdict no longer self-assessed; final confirmation explicitly pending Reviewer/ReviewCoordinator at LCO final closure. | Test Evaluation Summary §Conclusions. |
+
+### Open Actions (Pre-Conditions for LCO Final Closure)
 
 | Action ID | Finding | Owner | Target Artifact | Severity | Status | Deadline |
 |---|---|---|---|---|---|---|
-| A-020 | Development Case#F1 | Process Engineer | Development Case | Minor | Verified addressed; tool-close before Elaboration | Before Elaboration Iteration 1 |
-| A-021 | Development Case#F2 | Process Engineer | Development Case | Minor | Verified addressed; tool-close before Elaboration | Before Elaboration Iteration 1 |
-| A-022 | Supplementary Specification#F1 | RequirementsSpecifier | Supplementary Specification | Minor | Verified addressed; tool-close before Elaboration | Before Elaboration Iteration 1 |
-| A-023 | Supplementary Specification#F3 | RequirementsSpecifier | Supplementary Specification | Minor | Verified addressed; tool-close before Elaboration | Before Elaboration Iteration 1 |
-| A-024 | Test Evaluation Summary#F1 | Test Manager / Reviewer | Test Evaluation Summary / Review Record | Minor | Review observation; tool-close before Elaboration | Before Elaboration Iteration 1 |
+| A-025 | Use-Case Model#F5 | SystemAnalyst | Use-Case Model | Minor | Open | Before LCO final closure |
+| A-026 | Use-Case Model#F6 | SystemAnalyst | Use-Case Model | Minor | Open | Before LCO final closure |
+| A-027 | Software Architecture Document#F5 | SoftwareArchitect | Software Architecture Document | Minor | Open | Before LCO final closure |
 
+### New Findings Rationale (Iteration 3)
+
+During the Iteration 3 technical review, three new Minor document-control inconsistencies were detected:
+
+1. **Use-Case Model#F5 / A-025:** The Use-Case Model's Document Control table still lists "Iteration 2" although the artifact content reflects Iteration 3 updates. This is a formal metadata defect that could mislead Elaboration planning.
+2. **Use-Case Model#F6 / A-026:** The Use-Case Survey lists UC-009 as "Outlined" while the Use-Case Specifications section contains a fully detailed UC-009 specification. This inconsistency could cause redundant specification work in Elaboration.
+3. **Software Architecture Document#F5 / A-027:** The SAD's Document Control table still lists "Iteration 2" although the artifact content reflects Iteration 3 updates (e.g., Development Case gate references, current PoC Plan language).
+
+These findings are Minor and easily corrected, but per the stakeholder directive to close all findings including Minors before LCO, they remain open until the owning roles update the artifacts.
 ## Disposition
 
 ### LCO Milestone Verdict: CONDITIONAL GO
