@@ -4,7 +4,7 @@
 |---|---|
 | Project | Portal |
 | Phase | Inception |
-| Iteration | 1 |
+| Iteration | 2 |
 | Status | Draft |
 | Milestone Target | End-of-Inception review (LCO) |
 
@@ -59,10 +59,10 @@ The Use-Case View validates that the architecture can support the architecturall
 
 | Priority | Use Case | Architectural Significance | Risk Addressed |
 |---|---|---|---|
-| 1 | UC-003 Clock In / Clock Out | Client timestamp, idempotency, localStorage retry | R005 localStorage edge cases; NFR-007; AC-005 |
+| 1 | UC-003 Clock In / Clock Out | Client timestamp, idempotency, localStorage retry | [DERIVED — from NFR-007, AC-005] R005 localStorage edge cases; NFR-007; AC-005 |
 | 2 | UC-012 Search Corporate Directory | AD LDAP read-on-demand projection; worker category join | R001 AD attribute gaps; CON-010; CON-012 |
 | 3 | UC-007 Correct or Insert Clocking | Audit trail; immutable original records; correction entries | CON-020; NFR-004 |
-| 4 | UC-008 Publish News Item | At-most-one featured invariant; audit trail | R007 featured invariant; CON-019; NFR-004 |
+| 4 | UC-008 Publish News Item | At-most-one featured invariant; audit trail | [DERIVED — from CON-019, NFR-004] R007 featured invariant; CON-019; NFR-004 |
 
 The remaining use cases (UC-001, UC-002, UC-004..UC-006, UC-009..UC-011) are supported by the same subsystems and mechanisms but do not introduce new architectural concerns.
 
@@ -71,7 +71,7 @@ The remaining use cases (UC-001, UC-002, UC-004..UC-006, UC-009..UC-011) are sup
 The candidate logical architecture is a layered application following a simplified Clean Architecture / layered style. Subsystems are grouped by layer and by area of change, not by feature.
 
 ```plantuml
-@startuml Portal_Candidate_Component
+@startuml Portal_Candidate_Component_I2
 !theme plain
 left to right direction
 
@@ -81,10 +81,10 @@ package "Presentation Layer" as PL {
 }
 
 package "Application Layer" as AL {
-    component "Clocking Application Service\n<<application service>>" as ClockApp
-    component "News Application Service\n<<application service>>" as NewsApp
-    component "Directory Application Service\n<<application service>>" as DirApp
-    component "HR Application Service\n<<application service>>" as HRApp
+    component "Clocking Coordination Service\n<<application service>>" as ClockCoord
+    component "News Coordination Service\n<<application service>>" as NewsCoord
+    component "Directory Projection Coordination Service\n<<application service>>" as DirCoord
+    component "HR Reporting Coordination Service\n<<application service>>" as HRReportCoord
 }
 
 package "Domain Layer" as DL {
@@ -102,18 +102,18 @@ package "Infrastructure Layer" as IL {
     component "Time/Timezone Provider\n<<utility>>" as TimeProvider
 }
 
-Pages --> ClockApp : uses
-Pages --> NewsApp : uses
-Pages --> DirApp : uses
-Pages --> HRApp : uses
+Pages --> ClockCoord : uses
+Pages --> NewsCoord : uses
+Pages --> DirCoord : uses
+Pages --> HRReportCoord : uses
 ClockScript --> Pages : posts via
 
-ClockApp --> ClockDomain
-NewsApp --> NewsDomain
-DirApp --> DirDomain
-HRApp --> ClockDomain
-HRApp --> DirDomain
-HRApp --> NewsDomain
+ClockCoord --> ClockDomain
+NewsCoord --> NewsDomain
+DirCoord --> DirDomain
+HRReportCoord --> ClockDomain
+HRReportCoord --> DirDomain
+HRReportCoord --> NewsDomain : reads published flag
 
 ClockDomain --> AuditDomain
 NewsDomain --> AuditDomain
@@ -125,11 +125,11 @@ DirDomain --> Repos
 AuditDomain --> Repos
 DirDomain --> ADGateway
 Pages --> AuthHandler
-ClockApp --> TimeProvider
-NewsApp --> TimeProvider
-DirApp --> TimeProvider
-HRApp --> TimeProvider
-HRApp --> CsvGen
+ClockCoord --> TimeProvider
+NewsCoord --> TimeProvider
+DirCoord --> TimeProvider
+HRReportCoord --> TimeProvider
+HRReportCoord --> CsvGen
 
 note right of ClockScript
   localStorage retry queue;
@@ -147,6 +147,10 @@ note bottom of NewsDomain
   enforced in domain + DB unique constraint
 end note
 
+note bottom of AL
+  Application services named by coordination
+  responsibility, not by feature
+end note
 @enduml
 ```
 
@@ -156,10 +160,10 @@ end note
 |---|---|---|---|
 | Razor Pages | Presentation | Server-rendered UI pages; form posts; page-level scripts | UI rendering technology (Razor Pages per CON-002) |
 | Clocking Page Script | Presentation | Client-side retry queue, idempotency key, timestamp capture | Browser storage/ retry mechanism |
-| Clocking Application Service | Application | Orchestrate clock-in/out, history, correction/insertion | Clocking workflow coordination |
-| News Application Service | Application | Orchestrate publish, edit, unpublish, browse, feature | News workflow coordination |
-| Directory Application Service | Application | Orchestrate directory search and worker category projection | Directory read coordination |
-| HR Application Service | Application | Orchestrate HR-specific operations: all-clockings view, CSV export, corrections | HR reporting workflow coordination |
+| Clocking Coordination Service | Application | Orchestrate clock-in/out, history, correction/insertion | Clocking workflow coordination |
+| News Coordination Service | Application | Orchestrate publish, edit, unpublish, browse, feature | News workflow coordination |
+| Directory Projection Coordination Service | Application | Orchestrate directory search and worker category projection | Directory read coordination |
+| HR Reporting Coordination Service | Application | Orchestrate HR-specific reporting: all-clockings view, CSV export | HR reporting workflow coordination |
 | Clocking Domain | Domain | Clocking entity, idempotency rules, correction/insertion logic | Clocking business rules (CON-020, CON-021) |
 | News Domain | Domain | News entity, featured invariant, publish state machine | News business rules (CON-019, NFR-004) |
 | Directory Domain | Domain | Directory entry projection, worker category mapping | Directory projection rules |
@@ -183,7 +187,7 @@ The following mechanisms are identified at analysis level (capability + properti
 | Audit Logging | Record author/timestamp for news, category, and clocking changes | Immutable append-only entries | PostgreSQL audit table(s) | ADR-005 |
 | Clocking Resilience | Survive short network outage for clocking | localStorage queue, 5-minute retry, idempotency | Browser localStorage + idempotency key (NFR-007) | ADR-006 |
 | CSV Generation | Export monthly clocking report | Defined column order, Europe/Madrid local time | In-process CSV writer | ADR-007 |
-| Timezone Handling | Store UTC, display/export Europe/Madrid | Single timezone, no normalization | TimeZoneConverter / Noda Time TBD | ADR-008 |
+| Timezone Handling | Store UTC, display/export Europe/Madrid | Single timezone, no normalization | [PENDING — Elaboration decision] TimeZoneInfo recommended; Noda Time option | ADR-008 |
 
 ## Process View
 
@@ -277,6 +281,10 @@ The Data View is intentionally high-level in Inception. The Database Designer wi
 
 Active Directory attributes are not stored; they are projected at read time.
 
+### LDAP Query Performance Note
+
+Because CON-010 forbids copying employee data into the portal database, every directory request queries Active Directory over LDAP on demand and joins the result with the portal-managed worker category. Directory page performance therefore depends on AD latency and the size of the result set (200 employees). There is no caching layer. The architecture meets AC-003 (find a colleague in under 10 seconds) under the assumption that AD responds within the corporate network in a small fraction of that window; the R001 prototype in Elaboration will measure actual AD query latency and attribute fill rates. If AD latency threatens the target, the mitigation is an Infrastructure-level AD performance discussion, not a portal-side cache, because caching AD attributes is out of scope.
+
 ## Size and Performance
 
 ### Size
@@ -324,7 +332,7 @@ Performance testing conditions will be quantified in Elaboration.
 - **Decision:** Use ASP.NET Core OpenIdConnect 10.0.12 to register the portal as an OIDC client of the existing Keycloak instance. Role claims are read from the token and mapped to HR/Employee roles.
 - **Alternatives considered:** Windows Integrated Authentication (would bind us to AD directly and complicate browser/Keycloak separation); custom login form (violates CON-004).
 - **Trade-offs:** OIDC redirect adds a round-trip but delegates identity management to the existing corporate provider.
-- **Consequences:** Version pinned to 10.0.12 per version policy. STK-003 must confirm the HR AD group claim name and client credentials (R003).
+- **Consequences:** Version pinned to 10.0.12 per version policy. STK-003 must confirm the HR AD group claim name and client credentials ([DERIVED — from CON-004, CON-005, NFR-006] R003).
 
 ### ADR-003 Directory Projection Mechanism — Read-Only LDAP
 
@@ -355,35 +363,37 @@ Performance testing conditions will be quantified in Elaboration.
 - **Context:** Clocking must survive up to 5-minute network outages (NFR-007, AC-005). The server accepts the client-sent timestamp and rejects duplicates by idempotency key.
 - **Decision:** Implement a client-side retry queue in the clocking page script using localStorage. Each button press captures the client timestamp and generates an idempotency key. The script retries POST for up to 5 minutes, then stops and instructs the employee to report to HR.
 - **Alternatives considered:** Service Worker / PWA (explicitly excluded by scope statement); server-side queue (requires background process not declared).
-- **Trade-offs:** localStorage is simple but has edge cases in private browsing and storage quotas (R005).
+- **Trade-offs:** localStorage is simple but has edge cases in private browsing and storage quotas ([DERIVED — from NFR-007, AC-005] R005).
 - **Consequences:** Must test in Chrome/Edge normal and private modes; storage-quota handling required.
 
 ### ADR-007 CSV Export Mechanism — In-Process CSV Generation
 
 - **Context:** HR exports a monthly clocking report with exact columns and Europe/Madrid local time (FR-006).
-- **Decision:** Generate the CSV in-process in the HR application service using a streaming CSV writer.
+- **Decision:** Generate the CSV in-process in the HR Reporting Coordination service using a streaming CSV writer.
 - **Alternatives considered:** Background job + file storage (adds infrastructure); third-party reporting service (out of scope).
 - **Trade-offs:** In-process generation is simple for low-volume monthly exports; memory use is bounded by month + employee count.
 - **Consequences:** Export endpoint must set correct content-type and filename; timezone conversion applied before writing.
 
-### ADR-008 Timezone Handling Mechanism — Europe/Madrid Conversion
+### ADR-008 Timezone Handling Mechanism — Europe/Madrid Conversion [PENDING DECISION]
 
 - **Context:** All offices are in Europe/Madrid (CON-021). Clockings are stored UTC and displayed/exported in Europe/Madrid.
-- **Decision:** Use a dedicated time provider abstraction that converts between UTC and Europe/Madrid for display and export.
+- **Decision:** [PENDING — to be decided in Elaboration] A dedicated time provider abstraction will convert between UTC and Europe/Madrid for display and export. Current recommendation is built-in `TimeZoneInfo` (no extra dependency); Noda Time remains an alternative if timezone logic becomes more complex.
 - **Alternatives considered:** Noda Time (richer API, extra dependency); built-in TimeZoneInfo (sufficient for single-zone case).
 - **Trade-offs:** Built-in TimeZoneInfo is available in .NET 10 with no extra dependency; Noda Time may be chosen if timezone logic becomes more complex.
-- **Consequences:** Decision pending until Elaboration; current recommendation is TimeZoneInfo with clear abstraction boundary so the provider can be swapped.
+- **Consequences:** No product/version is recorded for this mechanism in Inception. The decision will be made and reconciled against the version policy in Elaboration.
 
 ## PoC Plan (Elaboration)
 
-The following technical risks are candidates for empirical validation in Elaboration. The Development Case currently does not trigger a standalone Architectural Proof-of-Concept in Inception; these risks will be re-evaluated at the start of Elaboration.
+The following technical risks are candidates for empirical validation in Elaboration. The Development Case currently does not trigger a standalone Architectural Proof-of-Concept artifact in Inception, so the plan remains in the SAD and will be re-evaluated at the start of Elaboration.
 
 | Risk | PoC Scope | Success Criteria | Owner |
 |---|---|---|---|
 | R001 AD LDAP attribute gaps | Directory prototype reads all six AD attributes for a sample from each office and reports fill rates | ≥90% fill rate for job title and extension, or documented gap + plan | Software Architect |
-| R003 Keycloak OIDC / AD group claims | Spike: portal authenticates via Keycloak and reads HR group claim | Token contains claim; role mapping works end-to-end | Software Architect |
-| R005 localStorage retry edge cases | Prototype clocking page script with retry queue; test normal + private browsing on Chrome/Edge | Retry succeeds after simulated outage; graceful handling of storage failure | Software Architect / Implementer |
-| R007 News featured invariant | Prototype news service ensuring at most one featured item via domain + DB constraint | Concurrent publish/edit operations never leave >1 featured item | Software Architect / Designer |
+| [DERIVED — from CON-004, CON-005, NFR-006] R003 Keycloak OIDC / AD group claims | Spike: portal authenticates via Keycloak and reads HR group claim | Token contains claim; role mapping works end-to-end | Software Architect |
+| [DERIVED — from NFR-007, AC-005] R005 localStorage retry edge cases | Prototype clocking page script with retry queue; test normal + private browsing on Chrome/Edge | Retry succeeds after simulated outage; graceful handling of storage failure | Software Architect / Implementer |
+| [DERIVED — from CON-019, NFR-004] R007 News featured invariant | Prototype news service ensuring at most one featured item via domain + DB constraint | Concurrent publish/edit operations never leave >1 featured item | Software Architect / Designer |
+
+[OMITTED: standalone Architectural Proof-of-Concept artifact — Development Case optional trigger not fired in Inception.]
 
 ## Traceability
 
@@ -403,8 +413,8 @@ The following technical risks are candidates for empirical validation in Elabora
 | ADR-005 | NFR-004, NFR-005, FR-007, CON-020 | Refines | UC-007, UC-008, UC-009, UC-010, UC-001, UC-002 |
 | ADR-006 | NFR-007, AC-005 | Refines | UC-003 |
 | ADR-007 | FR-006 | Refines | UC-006 |
-| ADR-008 | CON-021 | Refines | UC-003, UC-006, UC-007 |
+| ADR-008 | CON-021 | Refines | [PENDING — Elaboration product decision] |
 | R001 PoC | R001 | DependsOn | UC-012 |
-| R003 PoC | R003 | DependsOn | UC-001..UC-012 |
-| R005 PoC | R005 | DependsOn | UC-003 |
-| R007 PoC | R007 | DependsOn | UC-008, UC-009, UC-010 |
+| R003 PoC | [DERIVED] R003 | DependsOn | UC-001..UC-012 |
+| R005 PoC | [DERIVED] R005 | DependsOn | UC-003 |
+| R007 PoC | [DERIVED] R007 | DependsOn | UC-008, UC-009, UC-010 |
