@@ -112,7 +112,7 @@ Regression testing is mandatory per iteration once Construction begins. Because 
 ## Defects and Incidents
 ### Planned Defect Lifecycle
 
-The defect lifecycle below is **adopted for use from Construction Iteration 1 onward**. No executable artifacts exist in Inception; therefore no defects have been observed or tracked yet. The lifecycle is shown now so that Construction test activities can reference it without redefining it.
+The defect lifecycle below is **adopted for use from Construction Iteration 1 onward**. No executable artifacts from the Portal exist yet; therefore no product defects have been observed or tracked. The lifecycle is shown now so that Construction test activities can reference it without redefining it.
 
 ```plantuml
 @startuml Defect_Lifecycle
@@ -139,24 +139,30 @@ end note
 
 ### SCM Evidence Available in Inception
 
-Because no code has been delivered for the Portal yet, the authoritative quality signals at this stage are the repository's continuous-integration state and issue tracker, not a defect count. The table below records the actual observations retrieved from SCM.
+Because no Portal code has been delivered, the authoritative quality signals at this stage are the repository's continuous-integration state and issue tracker, not a product defect count. The table below records the actual observations retrieved from SCM.
 
 | Evidence | Observation | Source |
 |---|---|---|
-| CI build status on `main` | Success | GitHub Actions run `34609595628`, completed 2026-09-11 14:21:43Z |
+| CI build status on `main` (Iteration 2) | Success | GitHub Actions run `34609595628`, completed 2026-09-11 14:21:43Z |
+| CI build status on `main` (Iteration 3) | **Failure** | GitHub Actions run `34612406692`, completed 2026-09-11 14:49:30Z |
 | Open issues / change requests | None | `scm_list_issues` returned no open issues |
 | Open pull requests | Not reported by available tooling | To be checked manually before Construction starts |
 
+### CI Failure Analysis
+
+The latest `main` build (`34612406692`) failed because the CI workflow could not locate `Portal.sln` after creating a template solution file. This is a **solution-sync / environment incident**, not a product defect: no Portal application code has been merged yet. The failure is consistent with the project context note that "Main CI red due to solution-sync regression." Resolution is owned by the Configuration Manager / Implementer as part of Elaboration gate E1-G5 (`.github/workflows/ci.yml` builds the solution and runs tests green before Construction starts).
+
 ### Current Defect Status
 
-No defects or incidents have been observed in Inception. The zero counts below reflect the absence of executable artifacts, not an exercised defect-tracking process.
+No product defects or incidents have been observed in Inception. The zero counts below reflect the absence of executable Portal artifacts, not an exercised defect-tracking process.
 
 | Metric | Value |
 |---|---|
-| Defects reported | 0 |
-| Defects open | 0 |
-| Defects closed | 0 |
+| Product defects reported | 0 |
+| Product defects open | 0 |
+| Product defects closed | 0 |
 | Incidents | 0 |
+| CI environment incidents observed | 1 (solution-sync regression, run `34612406692`)
 ## Conclusions
 ### Mission Verdict
 
