@@ -62,6 +62,8 @@ The following mechanisms are included from every dependent use case via `<<inclu
 | REQ-P002 | Clocking response performance | NFR-002 | Clock in/out operation must respond in under 1 second. | Low |
 | REQ-P003 | Directory read performance | FR-012, AC-003 | Directory search results must support under-10-second lookup target. | Low |
 
+> **Elaboration note:** The RequirementsSpecifier will quantify exact measurement conditions, load assumptions, and percentile thresholds for REQ-P001..REQ-P003 in the next iteration.
+
 ## Supportability
 
 | ID | Requirement | Source | Detail | Volatility |
@@ -77,16 +79,30 @@ The following mechanisms are included from every dependent use case via `<<inclu
 | CON-001 | Backend technology | Work Order | .NET 10, REST API. |
 | CON-002 | Frontend technology | Work Order | Razor Pages; no SPA, no client-side router. Page-level JavaScript allowed for clocking retry. |
 | CON-003 | Database | Work Order | PostgreSQL. |
-| CON-007 | Hosting | Work Order | Internal Windows Server; no cloud. |
 | CON-009 | Browser support | Work Order | Current Chrome and Edge only. |
 | CON-015 | UI design authority | Work Order | `docs/inputs/employee-portal-design.html` is mandatory and authoritative. |
+
+### Implementation Constraints
+
+| ID | Constraint | Source | Detail |
+|---|---|---|---|
+| CON-001 | Backend stack | Work Order | .NET 10, REST API. |
+| CON-002 | Frontend stack | Work Order | Razor Pages; page-level JavaScript permitted only where required (clocking retry). |
+| CON-003 | Database | Work Order | PostgreSQL. |
+
+### Physical / Environmental Constraints
+
+| ID | Constraint | Source | Detail |
+|---|---|---|---|
+| CON-007 | Hosting | Work Order | Internal Windows Server; no cloud deployment. |
+| CON-008 | Network access | Work Order | No access from outside the corporate network. |
 
 ## Interfaces
 
 ### User Interfaces
 
 | ID | Interface | Source | Detail |
-|---|---|---|
+|---|---|---|---|
 | INT-001 | Main page / clocking page | FR-003, NFR-007 | Shows Clock In/Out button; includes localStorage retry script. |
 | INT-002 | Personal clocking history page | FR-004 | Current-month history view. |
 | INT-003 | HR all-clockings view | FR-005, FR-007 | List all clockings; launch correction/insertion. |
@@ -158,8 +174,23 @@ stop
 | REQ-S003 | NFR-004 | Refines | UC-008, UC-009, UC-010 |
 | REQ-S004 | NFR-005 | Refines | UC-001, UC-002 |
 | REQ-S005 | FR-007, CON-020 | Refines | UC-007 |
+| REQ-L001 | CON-001..CON-003, CON-007 | Refines | Vision |
+| REQ-U001 | CON-002, CON-009 | Refines | UC-003, UC-011, UC-012 |
+| REQ-U002 | CON-015 | Refines | UC-001..UC-012 |
+| REQ-U003 | AC-004 | Refines | UC-003 |
+| REQ-U004 | AC-003 | Refines | UC-012 |
+| REQ-R001 | NFR-003 | Refines | UC-001..UC-012 |
+| REQ-R002 | NFR-007 | Refines | UC-003 |
+| REQ-R003 | CON-020 | Refines | UC-007 |
+| REQ-R004 | FR-010 | Refines | UC-010 |
 | REQ-P001 | NFR-001 | Refines | UC-003, UC-011, UC-012 |
 | REQ-P002 | NFR-002 | Refines | UC-003 |
-| REQ-R002 | NFR-007 | Refines | UC-003 |
-| INT-008 | CON-004, CON-005 | Refines | UC-001..UC-012 |
+| REQ-P003 | FR-012, AC-003 | Refines | UC-012 |
+| REQ-SU001 | CON-001 | Refines | Vision |
+| REQ-SU002 | CON-013 | Refines | Vision |
+| REQ-SU003 | CON-016 | Refines | Vision |
+| INT-008 | CON-004, CON-005, NFR-006 | Refines | UC-001..UC-012 |
 | INT-009 | CON-006, CON-010 | Refines | UC-001, UC-002, UC-012 |
+| STD-001 | CON-021 | Refines | UC-003, UC-006, UC-007 |
+| STD-002 | FR-006 | Refines | UC-006 |
+| STD-003 | CON-017 | Refines | UC-001, UC-002, UC-006, UC-012 |
