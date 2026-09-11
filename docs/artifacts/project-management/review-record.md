@@ -44,7 +44,7 @@ Review criteria applied:
 ### Compliance Matrix
 
 ```plantuml
-@startuml Portal_Review_Compliance_Matrix
+@startuml Portal_Review_Compliance_Matrix_v2
 !theme plain
 skinparam classAttributeIconSize 0
 
@@ -59,7 +59,7 @@ class "Vision" as VISION {
   + Scope Clarity: PASS
   + Stakeholder Traceability: PASS
   + In/Out Scope Lists: PASS
-  + Derived Stakeholder Markers: MAJOR
+  + Derived Stakeholder Markers: CRITICAL
 }
 
 class "Use-Case Model" as UCM {
@@ -117,32 +117,32 @@ PLAN --> TES : evaluates
 ### Defect Distribution
 
 ```plantuml
-@startuml Portal_Defect_Distribution
+@startuml Portal_Defect_Distribution_v2
 !theme plain
 
 package "Findings by Severity" {
-  class "Critical: 0" as CRIT #Red
-  class "Major: 8" as MAJOR #Orange
+  class "Critical: 1" as CRIT #Red
+  class "Major: 7" as MAJOR #Orange
   class "Minor: 17" as MINOR #Yellow
   class "Suggestion: 0" as SUGG #LightGreen
 }
 
-package "Major Findings by Artifact" {
-  class "Development Case: 1" as DC
-  class "Vision: 1" as VISION
-  class "Use-Case Model: 1" as UCM
-  class "Supplementary Specification: 1" as SUPP
-  class "Risk List: 1" as RISK
-  class "Iteration Plan: 1" as PLAN
-  class "SAD: 1" as SAD
-  class "Test Eval Summary: 1" as TES
+package "Findings by Artifact" {
+  class "Vision: 1 Critical" as VISION #Red
+  class "Development Case: 1 Major" as DC #Orange
+  class "Use-Case Model: 1 Major" as UCM #Orange
+  class "Supplementary Specification: 1 Major" as SUPP #Orange
+  class "Risk List: 1 Major" as RISK #Orange
+  class "Iteration Plan: 1 Major" as PLAN #Orange
+  class "SAD: 1 Major" as SAD #Orange
+  class "Test Eval Summary: 1 Major" as TES #Orange
 }
 
 CRIT --> MAJOR
 MAJOR --> MINOR
 MINOR --> SUGG
-DC --> VISION
-VISION --> UCM
+VISION --> DC
+DC --> UCM
 UCM --> SUPP
 SUPP --> RISK
 RISK --> PLAN
@@ -166,7 +166,7 @@ SAD --> TES
 | ID | Severity | Finding | Recommendation | Verdict |
 |---|---|---|---|---|
 | F1 | Minor | System-boundary diagram does not stereotype external-system actors. | Add `<<system>>` / `<<external system>>` stereotypes to Keycloak and AD. | Approved |
-| F2 | Major | STK-001 capabilities are silently restated as stakeholder-given when they are derived from the HR role. | Add [DERIVED] marker/footnote to STK-001 description. | NeedsRework |
+| F2 | Critical | STK-001 (Laura Gómez) is described as performing specific HR capabilities without a [DERIVED] marker, silently promoting derived capabilities to declared scope. | Add [DERIVED — from FR-001..FR-012 / HR role, awaiting stakeholder confirmation] marker, or obtain stakeholder confirmation and remove the marker. | NeedsRework |
 | F3 | Minor | Traceability table aggregates UC-001..UC-012 and F-001..F-011 without specific FR/NFR citations. | Expand table to cite specific FR-NNN / NFR-NNN per feature. | Approved |
 
 #### Use-Case Model
@@ -224,8 +224,8 @@ No prior findings of this Reviewer lens existed; all findings above are new for 
 
 Required actions before LCO can be considered achieved:
 
-1. **Development Case#F3:** Clarify Data Model owner and iteration in Optional Triggers.
-2. **Vision#F2:** Add [DERIVED] marker to STK-001 description.
+1. **Vision#F2 (Critical):** Resolve the stakeholder-derived capability question for STK-001. Either add a [DERIVED] marker awaiting stakeholder confirmation or obtain confirmation that Laura Gómez personally performs all listed HR capabilities.
+2. **Development Case#F3:** Clarify Data Model owner and iteration in Optional Triggers.
 3. **Use-Case Model#F2:** Correct UC-009 featured invariant wording.
 4. **Supplementary Specification#F2:** Split authentication/authorization include table.
 5. **Risk List#F2:** Distinguish declared vs derived risks.
@@ -237,11 +237,13 @@ Minor findings should be addressed in the same rework pass but do not block LCO 
 
 ## Disposition
 
-**Overall LCO Disposition: Approved with Changes**
+**Overall LCO Disposition: Rejected — Pending Critical Resolution**
 
-The Inception artifact set is feasible and aligned with the declared scope. No Critical findings were identified. Eight Major findings require rework before the artifacts can be considered LCO-complete. All findings are actionable and localized; none indicate fundamental scope or architectural infeasibility.
+The Inception artifact set is structurally feasible and aligned with the declared scope, but one Critical finding (Vision#F2) blocks LCO completion. The Critical finding represents a scope-derivation ambiguity that only the stakeholder can resolve: whether Laura Gómez (STK-001) personally performs the listed HR capabilities or whether those capabilities are derived from the HR Administrator role.
 
-The project may proceed to Elaboration once the eight Major findings are resolved and re-reviewed by the Reviewer lens.
+Seven additional Major findings require rework. All findings are actionable and localized; none indicate fundamental architectural infeasibility.
+
+The project may NOT proceed to Elaboration until Vision#F2 is resolved and the Reviewer lens confirms closure. The seven Major findings should be resolved in the same rework pass.
 
 ## Traceability
 
