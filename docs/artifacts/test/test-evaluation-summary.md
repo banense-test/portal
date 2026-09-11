@@ -3,9 +3,11 @@
 |---|---|
 | Project | Portal |
 | Phase | Inception |
-| Iteration | 2 |
+| Iteration | 3 |
 | Status | Draft |
-| Milestone Target | End-of-Inception review (LCO re-review after findings closed) |
+| Milestone Target | End-of-Inception review (LCO final closure / Elaboration entry readiness) |
+
+> This iteration updates the Test Evaluation Summary to address Review Record finding **Test Evaluation Summary#F1**. The mission verdict is now framed as pending Reviewer/ReviewCoordinator confirmation rather than self-assessed by the Test Manager. No milestone, phase, or iteration is marked as completed.
 ## Test Scope
 ### Purpose
 
