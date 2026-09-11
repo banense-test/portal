@@ -1,13 +1,11 @@
 ## Document Control
-
 | Field | Value |
 |---|---|
 | Project | Portal |
 | Phase | Inception |
-| Iteration | 2 |
+| Iteration | 3 |
 | Status | Draft |
 | Milestone Target | End-of-Inception review (LCO re-review after findings closed) |
-
 ## Tailoring Overview
 
 This Development Case records the project-specific deltas over the IARI DC baseline for the **Portal** project. The baseline roster (25 active roles), the 16 CORE artifacts, the 6 OPTIONAL artifacts, and the canonical discipline intensity matrix remain authoritative. Only deviations, optional trigger decisions, and project-specific tool references are declared here.
