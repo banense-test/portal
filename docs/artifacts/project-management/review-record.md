@@ -340,107 +340,48 @@ During the Iteration 3 technical review, three new Minor document-control incons
 
 These findings are Minor and easily corrected, but per the stakeholder directive to close all findings including Minors before LCO, they remain open until the owning roles update the artifacts.
 ## Disposition
+### Overall LCO Disposition
 
-### LCO Milestone Verdict: CONDITIONAL GO
+**Approved with Changes — conditional on closing 3 new Minor findings.**
 
-The Lifecycle Objectives milestone is sanctioned for advancement to Elaboration, subject to the explicit conditions below.
+The Inception phase technical artifacts are feasible and acceptable to stakeholders, subject to the following:
 
-```plantuml
-@startuml LCO_Final_Disposition_Iter2
-!theme plain
-left to right direction
+- All 5 remaining Reviewer Minor findings from Iteration 2 are now formally tool-closed via `resolve_artifact_finding`.
+- No Critical or Major findings remain open from any lens.
+- Three new Minor document-control findings (Use-Case Model#F5, Use-Case Model#F6, Software Architecture Document#F5) were detected during the Iteration 3 review. They must be corrected and tool-closed before the LCO milestone can be declared final and Elaboration authorized.
 
-package "LCO Re-review Disposition — Inception Iteration 2" {
-  class "LCO Criterion" as CRIT {
-    + Criterion
-    + Status
-  }
-  class "Scope Agreement" as SCOPE #CCFFCC {
-    MET
-  }
-  class "Risk Identification" as RISK #CCFFCC {
-    MET
-  }
-  class "Plan Feasibility" as PLAN #CCFFCC {
-    MET
-  }
-  class "Architecture Viability" as ARCH #CCFFCC {
-    MET
-  }
-  class "Stakeholder Sanction" as SANCTION #CCFFCC {
-    GRANTED
-    conditional on tool-closing
-    5 Minor findings
-  }
-  class "Zero Open Findings" as FINDINGS #FFFFCC {
-    CONDITIONAL
-    5 Minor verified addressed;
-    tool closure pending
-  }
-}
+### Per-Artifact Verdicts
 
-CRIT --> SCOPE
-CRIT --> RISK
-CRIT --> PLAN
-CRIT --> ARCH
-CRIT --> SANCTION
-CRIT --> FINDINGS
+| Artifact | Verdict | Open Findings |
+|---|---|---|
+| Development Case | Approved | None |
+| Vision | Approved | None |
+| Use-Case Model | Approved with Changes | Use-Case Model#F5, #F6 |
+| Supplementary Specification | Approved | None |
+| Risk List | Approved | None |
+| Iteration Plan | Approved | None |
+| Software Architecture Document | Approved with Changes | Software Architecture Document#F5 |
+| Test Evaluation Summary | Approved | None |
+| Iteration Assessment | Approved | None (PM-owned; will be updated after review) |
 
-class "Verdict: CONDITIONAL GO" as VERDICT #FFE5CC {
-  LCO milestone sanctioned
-  subject to:
-  1. Tool-close 5 remaining Reviewer Minor findings
-  2. ReviewCoordinator confirm zero open findings
-  3. Then proceed to Elaboration Iter-1
-}
+### LCO Exit Criteria Assessment
 
-SCOPE --> VERDICT
-RISK --> VERDICT
-PLAN --> VERDICT
-ARCH --> VERDICT
-SANCTION --> VERDICT
-FINDINGS --> VERDICT
+| Criterion | Status | Evidence |
+|---|---|---|
+| Vision clarity | Pass | Problem statement, product position, scope, stakeholders, and business goals are clear and traceable. |
+| Initial risk identification | Pass | Risk List contains declared risks R001-R002 and derived risks R003-R008, R010-R015 with mitigation/ownership. |
+| Use-case survey level | Pass | 12 use cases trace to FR-001..FR-012; architecturally significant UCs detailed. |
+| Stakeholder agreement on scope and feasibility | Pass | Stakeholder conditional sanction granted in Iteration 2; scope markers and derivation transparency applied. |
+| Zero open Critical/Major findings | Pass | 0 Critical, 0 Major open across all lenses. |
+| Zero open Minor findings | **Not Yet Pass** | 3 Reviewer Minor findings remain open; per stakeholder directive, all findings including Minors must close before LCO. |
 
-note right of VERDICT
-  Stakeholder answer: "Yes" to
-  conditional LCO sanction subject
-  to formal closure of remaining
-  Minor findings before Elaboration.
-end note
-@enduml
-```
+### Next Steps
 
-### Stakeholder Input on Next Pass
-
-**Question asked:** "The LCO re-review is conditionally approved: 0 Critical and 0 Major findings remain, but 5 Reviewer Minor findings (Development Case#F1, Development Case#F2, Supplementary Specification#F1, Supplementary Specification#F3, Test Evaluation Summary#F1) are verified as addressed in artifact content and still need formal tool-closure before Elaboration begins. The project will iterate to complete this ledger closure. Anything to add for the next pass — a missed requirement, a correction, a priority?"
-
-**Stakeholder answer:** Nothing else new.
-
-**Disposition:** No additional requirements, corrections, or priorities were raised. The next iteration will focus solely on formal tool-closure of the 5 verified Minor findings and ReviewCoordinator confirmation of zero open findings.
-
-### Conditions for Elaboration Entry
-
-1. The Reviewer lens must formally tool-close the 5 remaining Minor findings:
-   - Development Case#F1
-   - Development Case#F2
-   - Supplementary Specification#F1
-   - Supplementary Specification#F3
-   - Test Evaluation Summary#F1
-2. The ReviewCoordinator must confirm zero open findings across all reviewer lenses before the project enters Elaboration.
-3. Upon zero-open-findings confirmation, the project proceeds to Elaboration Iteration 1 without requiring a further stakeholder question.
-
-### Rationale
-
-- **Scope agreement is achieved:** the Vision correctly attributes HR capabilities to the AD "HR" group role per the stakeholder's Iteration 1 clarification.
-- **Risk identification is complete:** the Risk List contains 8 risks with magnitude ratings, response strategies, owners, and derivation markers distinguishing declared from derived risks.
-- **Plan feasibility is demonstrated:** the Iteration Plan uses an unanchored Gantt, a token budget box with planned vs actual columns, and reports human gate queue time separately from agent work.
-- **Architecture viability is proportionate:** the Software Architecture Document sketches a single-server .NET 10 / Razor Pages / PostgreSQL solution integrated with existing Keycloak and Active Directory.
-- **Stakeholder sanction is granted:** the stakeholder answered "Yes" to conditional LCO sanction, accepting the project scope and objectives subject to the remaining Minor findings being tool-closed before Elaboration begins.
-
-### Forward Risk
-
-R008 (stakeholder availability for gates) has increased in observed magnitude because the LCO gate required rework and re-review. The Iteration Plan budgets queue time for future gates; if a stakeholder cannot respond within the 14-day ceiling, the process suspends.
-
+1. SystemAnalyst updates Use-Case Model Document Control to Iteration 3 and corrects UC-009 survey status to "Detailed".
+2. SoftwareArchitect updates SAD Document Control to Iteration 3.
+3. Reviewer verifies the corrections and tool-closes Use-Case Model#F5, #F6 and Software Architecture Document#F5.
+4. ReviewCoordinator confirms zero open findings and authorizes Elaboration entry.
+5. ProjectManager updates Iteration Assessment to reflect final closure.
 ## Traceability
 
 | Element | Traces From | Link Type | Traces To |
