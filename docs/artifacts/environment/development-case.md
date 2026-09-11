@@ -400,7 +400,6 @@ stop
 @enduml
 ```
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | Development Case | IARI DC Baseline | Refines | Portal project deltas |
@@ -413,5 +412,11 @@ stop
 | Test Plan not triggered | Acceptance criteria | Refines | Iteration Plan + Test Evaluation Summary |
 | Version policy | CON-001, CON-002, CON-003 | Derives | Software Architecture Document |
 | Measurement policy | IARI DC §8.1 | Refines | Iteration Plan, Iteration Assessment |
-| CONTRIBUTING.md gate | Development Case | DependsOn | Risk List (R010) |
-| CI/CD gate | Development Case | DependsOn | Risk List (R012) |
+| Gate E1-G1 | Development Case | DependsOn | Risk List (R010) |
+| Gate E1-G2 | Development Case | DependsOn | Risk List (R011) |
+| Gate E1-G3 | Development Case | DependsOn | Risk List (R012) |
+| Gate E1-G4 | Development Case | DependsOn | Risk List (R013) |
+| Gate E1-G5 | Development Case | DependsOn | Risk List (R014) |
+| Gate E1-G6 | Development Case | DependsOn | Risk List (R015) |
+| CI workflow verified | `.github/workflows/ci.yml` (SHA 631383c12d) | Refines | Gate E1-G5 |
+| CONTRIBUTING.md missing | Repository state | Refines | Gates E1-G1..E1-G4 |
