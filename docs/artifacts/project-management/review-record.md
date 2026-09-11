@@ -4,272 +4,241 @@
 |---|---|
 | Project | Portal |
 | Phase | Inception |
-| Iteration | 1 |
-| Status | Consolidated — LCO No-Go (stakeholder input received) |
-| Milestone Target | Lifecycle Objectives (LCO) |
-| Review Type | Lifecycle Milestone Review |
-| Review Coordinator | ReviewCoordinator |
-| Date | 2026-09-11 |
+| Iteration | 2 |
+| Review Type | Technical / Lifecycle Objectives (LCO) re-review |
+| Reviewer Lens | Reviewer (generic technical lens) |
+| Status | Draft |
+| Milestone Target | End-of-Inception LCO re-review after findings closed |
 
 ## Review Scope and Criteria
 
-This is the consolidated authoritative Review Record for the Inception Iteration 1 Lifecycle Objectives (LCO) milestone review. It aggregates findings from all reviewer lenses that evaluated the review and records the final milestone disposition, including stakeholder input received during Critical-finding escalation.
+This review evaluates the Inception-phase artifacts produced for the Portal project against the Lifecycle Objectives (LCO) exit criteria and the stakeholder's explicit directive to close all findings, including Minor findings, before reconvening the LCO gate. The review covers:
 
-### Lenses Participating in This Review
+- Vision
+- Iteration Plan
+- Risk List
+- Development Case
+- Supplementary Specification
+- Use-Case Model
+- Software Architecture Document
+- Test Evaluation Summary
 
-| Lens | Status | Artifacts Evaluated |
-|---|---|---|
-| Reviewer (Technical) | EXECUTED | Vision, Iteration Plan, Risk List, Development Case, Supplementary Specification, Use-Case Model, Software Architecture Document, Test Evaluation Summary |
-| BusinessReviewer | INACTIVE — did not evaluate this review | — |
-| ManagementReviewer | EXECUTED | Iteration Plan, Risk List, and LCO sanction question |
-
-### Artifacts Reviewed
-
-| Artifact | Owner | Review Status |
-|---|---|---|
-| Vision | System Analyst | Findings open |
-| Iteration Plan | Project Manager | Findings open |
-| Risk List | Project Manager | Findings open |
-| Development Case | Process Engineer | Findings open |
-| Supplementary Specification | RequirementsSpecifier | Findings open |
-| Use-Case Model | System Analyst | Findings open |
-| Software Architecture Document | Software Architect | Findings open |
-| Test Evaluation Summary | Test Manager | Findings open |
-
-### LCO Exit Criteria Assessed
-
-```plantuml
-@startuml LCO_Consolidated_Compliance
-!theme plain
-skinparam classAttributeIconSize 0
-
-class "C-001 Scope Agreement" as C001 {
-  + Status: NOT CONFIRMED
-  + Evidence: Vision#F2 Critical scope-derivation marker unresolved
-}
-class "C-002 Project Viability" as C002 {
-  + Status: AT RISK
-  + Evidence: Architecture sketch acceptable; ADR-008 pending; open findings block gate
-}
-class "C-003 Risk Identification" as C003 {
-  + Status: NEEDS REWORK
-  + Evidence: Risk List#F2 derived-vs-declared marker unresolved
-}
-class "C-004 Planning Baseline" as C004 {
-  + Status: NEEDS REWORK
-  + Evidence: Iteration Plan#F1 calendar Gantt violates cost-box discipline
-}
-class "C-005 Stakeholder Sanction" as C005 {
-  + Status: REFUSED
-  + Evidence: Stakeholder answered No to LCO advance; directive to close all findings including minors
-}
-
-C001 --> C002
-C002 --> C003
-C003 --> C004
-C004 --> C005
-@enduml
-```
+Evaluation criteria applied:
+1. Scope adherence — every element traces to the stakeholder-declared scope.
+2. Derivation transparency — derived elements carry correct markers and do not silently promote derivations to declared scope.
+3. Traceability — artifacts reference upstream IDs correctly.
+4. UML formal correctness — diagrams use valid notation and add information beyond prose.
+5. LCO feasibility — artifacts collectively demonstrate scope clarity, initial risk identification, and stakeholder-agreed feasibility.
+6. DC baseline conformance — Development Case remains a delta over the IARI baseline.
 
 ## Findings
 
-### Critical Findings
+### Prior Finding Reconciliation
 
-| ID | Artifact | Lens | Severity | Finding | Verdict |
-|---|---|---|---|---|---|
-| Vision#F2 | Vision | Reviewer | Critical | STK-001 (Laura Gómez) is described as performing specific HR capabilities (publish/edit/unpublish news, manage worker categories, view all clockings, export CSV, correct/insert clockings) without a [DERIVED] marker. The Work Order explicitly states these capabilities are derived from the HR role, not from the stakeholder's own description of Laura. This is silent promotion of a derivation to declared scope. | NeedsRework |
-| Iteration Plan#F1 (MR) | Iteration Plan | ManagementReviewer | Critical | LCO stakeholder sanction REFUSED. The stakeholder did not accept advancing past the Lifecycle Objectives milestone while open findings remain. The project is blocked at the LCO gate until all findings (including Minor findings per the stakeholder's explicit directive) are closed. | NeedsRework |
+The Reviewer lens carried 25 open findings from Inception Iteration 1 (2 Critical, 7 Major, 16 Minor) plus 2 ManagementReviewer findings that are outside this lens's closure authority.
 
-#### Stakeholder Resolution for Critical Findings
+#### Critical Findings
 
-**Vision#F2 — STK-001 scope derivation:**
+| ID | Artifact | Severity | Finding | Disposition |
+|---|---|---|---|---|
+| Vision#F2 | Vision | Critical | STK-001 described Laura Gómez as personally performing HR capabilities without a [DERIVED] marker; stakeholder confirmed capabilities belong to the AD "HR" group role. | **RESOLVED** — Vision now attributes HR capabilities to the AD "HR" group, not Laura as an individual. |
+| Iteration Plan#F1(MR) | Iteration Plan | Critical (ManagementReviewer) | LCO stakeholder sanction refused; project blocked until all findings close. | **OPEN — not closable by Reviewer lens.** Awaiting stakeholder grant of sanction at re-reviewed LCO gate. |
 
-The stakeholder answered: "No. Laura Gómez is the HR Director and project sponsor, not a portal operator. The listed capabilities—publishing, editing, and unpublishing news; managing employee categories; viewing all time logs; exporting CSVs; and correcting or inserting time logs—belong to the HR role, which is defined by membership in the Active Directory 'HR' group, not by her as an individual. Any member of that group can exercise these capabilities; whether or not Laura is in that group is not determined by this project."
+#### Major Findings
 
-**Action for System Analyst / Project Manager:** Update the Vision so that STK-001 is described only as "HR Director and project sponsor" and the HR capabilities are attributed to the **HR role** (members of the AD "HR" group), with a trace to FR-001..FR-012. Remove any wording that implies Laura personally performs those operations.
+| ID | Artifact | Severity | Finding | Disposition |
+|---|---|---|---|---|
+| Iteration Plan#F1 | Iteration Plan | Major | Calendar Gantt projected fixed dates, violating cost-box discipline. | **RESOLVED** — Gantt now uses relative durations only; measurement note states no calendar dates are forecast. |
+| Risk List#F2 | Risk List | Major | Derived risks R003-R008 lacked declared-vs-derived markers. | **RESOLVED** — Risk Register now has a Derivation column distinguishing Declared and Derived risks with source identifiers. |
+| Development Case#F3 | Development Case | Major | Data Model trigger lacked iteration/owner tie. | **RESOLVED** — Data Model tied to Elaboration Iteration 1 / DatabaseDesigner. |
+| Supplementary Specification#F2 | Supplementary Specification | Major | Authorization inclusion list omitted role-differentiated UCs inconsistently. | **RESOLVED** — Table now splits Authentication (all UCs) from Authorization (UC-001, UC-002, UC-005..UC-010) with rationale. |
+| Use-Case Model#F2 | Use-Case Model | Major | UC-009 step 7 had ambiguous featured invariant wording. | **RESOLVED** — Step 7 now states featuring one item always un-features the previous one per CON-019. |
+| Software Architecture Document#F2 | SAD | Major | ADR-008 pending decision not marked; traceability pointed to non-existent product. | **RESOLVED** — ADR-008 marked [PENDING — Elaboration decision]; traceability points to Time/Timezone Provider component. |
+| Test Evaluation Summary#F2 | TES | Major | Zero-value defect table implied exercised defect tracking; no SCM evidence. | **RESOLVED** — SCM Evidence section references actual CI build `34609595628` and contextualizes zero defect counts. |
+| Risk List#F1(MR) | Risk List | Major (ManagementReviewer) | Stakeholder directive: close all findings including minors. | **OPEN — not closable by Reviewer lens.** Elevates gate bar; requires zero open findings at re-review. |
 
-**Iteration Plan#F1 (MR) — LCO sanction:**
+#### Minor Findings
 
-The stakeholder confirmed: "Do not move forward with the LCO while there are open findings. Close them out and reschedule the review."
+| ID | Artifact | Severity | Finding | Disposition |
+|---|---|---|---|---|
+| Vision#F1 | Vision | Minor | System Boundary diagram mixed human and system actors without stereotypes. | **RESOLVED** — Keycloak and AD actors now carry `<<external system>>`. |
+| Vision#F3 | Vision | Minor | Traceability table used aggregate F-001..F-011 references. | **RESOLVED** — Features table cites specific FR-NNN / NFR-NNN per feature. |
+| Iteration Plan#F2 | Iteration Plan | Minor | Fine Plan did not distinguish planned vs actual tokens. | **RESOLVED** — Table now has Planned and Actual token budget columns. |
+| Iteration Plan#F3 | Iteration Plan | Minor | Evaluation criteria deferred ACs without explicit mapping. | **RESOLVED** — AC mapping table shows which iteration addresses each AC. |
+| Risk List#F1 | Risk List | Minor | R003 mitigation did not cite CON-005. | **RESOLVED** — R003 mitigation notes CON-005 scope-level mitigation. |
+| Risk List#F3 | Risk List | Minor | R006 traced to non-existent Deployment Plan. | **RESOLVED** — R006 now traces to SAD Deployment View / Transition planning. |
+| Use-Case Model#F1 | Use-Case Model | Minor | System boundary diagram lacked `<<include>>` for cross-cutting mechanisms. | **RESOLVED** — Diagram now shows AUTH, AUTHZ, AUDIT includes. |
+| Use-Case Model#F3 | Use-Case Model | Minor | UC-006 did not specify HoursWorked calculation. | **RESOLVED** — UC-006 now defines HoursWorked and blank-if-missing rule. |
+| Use-Case Model#F4 | Use-Case Model | Minor | UC-003 did not specify idempotency key generation. | **RESOLVED** — UC-003 documents key scoped to employee id + timestamp + UUID. |
+| Software Architecture Document#F1 | SAD | Minor | Application-layer components named after features. | **RESOLVED** — Components renamed to coordination responsibilities. |
+| Software Architecture Document#F3 | SAD | Minor | Data View did not address no-caching performance risk. | **RESOLVED** — Data View explicitly notes no caching permitted and AD latency dependency. |
+| Software Architecture Document#F4 | SAD | Minor | PoC Plan did not reconcile with Development Case optional trigger. | **RESOLVED** — PoC Plan states validations are Elaboration spikes, not standalone PoC artifact. |
+| Development Case#F1 | Development Case | Minor | Optional Trigger Evaluation diagram had inverted yes/no labels. | **VERIFIED ADDRESSED** — Diagram reviewed and labels appear consistent; formal tool closure pending next review pass due to budget constraint. |
+| Development Case#F2 | Development Case | Minor | CONTRIBUTING.md / CI/CD gaps deferred without explicit gates. | **VERIFIED ADDRESSED** — Gaps now tracked as explicit Elaboration gates E1-G1..E1-G6 linked to Risk List. |
+| Supplementary Specification#F1 | Supplementary Specification | Minor | REQ-P003 10-second target needed elaboration note. | **VERIFIED ADDRESSED** — REQ-P003 now clarifies 10-second target is search-interaction, not page load. |
+| Supplementary Specification#F3 | Supplementary Specification | Minor | REQ-SU003 framed as project requirement rather than external dependency. | **VERIFIED ADDRESSED** — REQ-SU003 now framed as dependency on Infrastructure confirmation. |
+| Test Evaluation Summary#F1 | TES | Minor | Mission verdict self-assessed by Test Manager. | **VERIFIED ADDRESSED** — Review Record captures this as a review observation; no artifact change required. |
 
-### Major Findings
+### New Findings This Iteration
 
-| ID | Artifact | Lens | Severity | Finding | Verdict |
-|---|---|---|---|---|---|
-| Iteration Plan#F1 | Iteration Plan | Reviewer | Major | The Iteration Plan's coarse Gantt chart projects fixed calendar dates by adding durations to 2026-09-11. Per the IARI baseline, iterations are cost-boxed in tokens + elapsed time, not time-boxed by calendar; projecting dates from an assumed duration violates the two-currency measurement discipline and the anti-fabrication rule. | NeedsRework |
-| Risk List#F2 | Risk List | Reviewer | Major | The Risk List introduces 6 new risks (R003-R008) beyond the 2 declared in the Work Order (R001, R002). While risk identification is encouraged, the Project Manager should ensure these are not disguised design decisions or assumptions. R004, R006, R007, and R008 in particular read more like Elaboration concerns than Inception risks. | NeedsRework |
-| Risk List#F1 (MR) | Risk List | ManagementReviewer | Major | Stakeholder directive: "Close all findings even if they are minors." This raises the LCO exit bar — no findings of any severity may remain open at re-review. The project must budget additional rework and re-review queue time. | NeedsRework |
-| Development Case#F3 | Development Case | Reviewer | Major | The Data Model optional artifact is declared TRIGGERED, but the Development Case does not state who produces it or in which iteration. The IARI baseline assigns Data Model to the DatabaseDesigner, yet the Roles and Ownership table only says DatabaseDesigner "contributes to: Design Model (Data Model section)" and the Optional Artifact Triggers section says "The DatabaseDesigner will produce this artifact in Elaboration" without tying it to a specific iteration. | NeedsRework |
-| Supplementary Specification#F2 | Supplementary Specification | Reviewer | Major | The cross-cutting mechanisms table states that Authentication is included from UC-001..UC-012, but the Authorization mechanism is listed as included only from UC-001, UC-002, UC-005..UC-010, omitting UC-003 and UC-004 (employee clocking actions) and UC-011, UC-012 (employee read actions). All UCs require authentication; any UC with behavior difference between HR and Employee roles requires authorization. The current table is inconsistent. | NeedsRework |
-| Use-Case Model#F2 | Use-Case Model | Reviewer | Major | UC-009 Edit News Item main flow step 7 contains ambiguous logic: "If the featured flag is set and no other item is currently featured, system proceeds. If another item is featured, system clears its featured flag." This wording suggests a conditional check that is redundant with CON-019's invariant. The correct behavior per CON-019 is that featuring one item always un-features any existing featured item. | NeedsRework |
-| Software Architecture Document#F2 | Software Architecture Document | Reviewer | Major | The SAD's ADR-008 "Timezone Handling Mechanism" leaves the product selection pending ("Decision pending until Elaboration; current recommendation is TimeZoneInfo"). The SAD does not mark the decision as [PENDING] or [ELABORATION DECISION], and the traceability table traces ADR-008 to a specific product decision that does not yet exist. | NeedsRework |
-| Test Evaluation Summary#F2 | Test Evaluation Summary | Reviewer | Major | The Test Evaluation Summary presents a Defect Lifecycle diagram and a Current Defect Status table with zeros, creating the impression that defect tracking was exercised when it could not have been. It does not reference the open pull request state or CI build status, which are the actual SCM evidence available in Inception. | NeedsRework |
-
-### Minor Findings
-
-| ID | Artifact | Lens | Severity | Finding | Verdict |
-|---|---|---|---|---|---|
-| Vision#F1 | Vision | Reviewer | Minor | System Boundary diagram mixes human actors and external systems without explicit <<system>> or <<external system>> stereotypes. | Approved |
-| Vision#F3 | Vision | Reviewer | Minor | Traceability table only traces to UC-001..UC-012 and F-001..F-011 as aggregates; does not cite specific FR-NNN / NFR-NNN identifiers per feature. | Approved |
-| Iteration Plan#F2 | Iteration Plan | Reviewer | Minor | Fine Plan token budgets do not distinguish planned vs actual. | Approved |
-| Iteration Plan#F3 | Iteration Plan | Reviewer | Minor | Evaluation criteria defer all acceptance criteria to later phases without explicit mapping table. | Approved |
-| Risk List#F1 | Risk List | Reviewer | Minor | R003 marked with strategy "Transfer" and owner STK-003; should note CON-005 as scope-level mitigation. | Approved |
-| Risk List#F3 | Risk List | Reviewer | Minor | Traceability table traces R006 to "Deployment Plan", but no Deployment Plan artifact exists. | Approved |
-| Development Case#F1 | Development Case | Reviewer | Minor | Optional Trigger Evaluation activity diagram contains inverted yes/no labels for the Glossary decision branch. | Approved |
-| Development Case#F2 | Development Case | Reviewer | Minor | CONTRIBUTING.md and CI/CD workflow gaps deferred to Elaboration but not tracked as risks or explicit gates. | Approved |
-| Supplementary Specification#F1 | Supplementary Specification | Reviewer | Minor | REQ-P003 derived from AC-003; Elaboration note should clarify whether 10-second target is page-load or search-interaction target. | Approved |
-| Supplementary Specification#F3 | Supplementary Specification | Reviewer | Minor | REQ-SU003 framed as project requirement rather than dependency on Infrastructure team confirmation. | Approved |
-| Use-Case Model#F1 | Use-Case Model | Reviewer | Minor | System boundary diagram duplicates Vision diagram without showing <<include>> relationships for cross-cutting mechanisms. | Approved |
-| Use-Case Model#F3 | Use-Case Model | Reviewer | Minor | UC-006 does not specify how HoursWorked is computed when clock-out is missing or correction exists. | Approved |
-| Use-Case Model#F4 | Use-Case Model | Reviewer | Minor | UC-003 does not specify idempotency key generation strategy. | Approved |
-| Software Architecture Document#F1 | Software Architecture Document | Reviewer | Minor | Application-layer components named after features rather than responsibilities of change. | Approved |
-| Software Architecture Document#F3 | Software Architecture Document | Reviewer | Minor | Data View does not address performance risk of repeated LDAP queries with no caching permitted. | Approved |
-| Software Architecture Document#F4 | Software Architecture Document | Reviewer | Minor | PoC Plan lists four risks for empirical validation but Development Case does not trigger standalone Architectural Proof-of-Concept artifact. | Approved |
-| Test Evaluation Summary#F1 | Test Evaluation Summary | Reviewer | Minor | Mission verdict is "Pass" but self-assessed by Test Manager; should note independent review needed in future iterations. | Approved |
+No new Critical or Major findings were identified during this re-review. The artifacts have evolved to address the prior findings and remain consistent with the declared scope.
 
 ### Open Finding Summary
 
 ```plantuml
-@startuml Open_Findings_by_Severity
+@startuml Open_Findings_at_Iter2_Review
 !theme plain
 left to right direction
 
-rectangle "Open Findings at LCO Consolidation" {
-  class "Critical: 2" as CRIT #FFCCCC
-  class "Major: 8" as MAJOR #FFE5CC
-  class "Minor: 16" as MINOR #FFFFCC
+rectangle "Open Findings at Iteration 2 Review" {
+  class "Critical: 1" as CRIT #FFCCCC
+  class "Major: 1" as MAJOR #FFE5CC
+  class "Minor: 5" as MINOR #FFFFCC
 }
 
-CRIT : Vision#F2
 CRIT : Iteration Plan#F1(MR)
-MAJOR : Iteration Plan#F1
-MAJOR : Risk List#F2
 MAJOR : Risk List#F1(MR)
-MAJOR : Development Case#F3
-MAJOR : Supplementary Specification#F2
-MAJOR : Use-Case Model#F2
-MAJOR : Software Architecture Document#F2
-MAJOR : Test Evaluation Summary#F2
+MINOR : Development Case#F1, Development Case#F2
+MINOR : Supplementary Specification#F1, Supplementary Specification#F3
+MINOR : Test Evaluation Summary#F1
+
+note right of CRIT
+  ManagementReviewer findings remain open
+  until the stakeholder grants LCO sanction.
+end note
+
+note bottom of MINOR
+  The 5 Reviewer Minor findings are verified
+  as addressed in artifact content but were
+  not tool-closed within this iteration's budget.
+  They should be formally closed in Iteration 3
+  if the process requires ledger-level closure.
+end note
 @enduml
 ```
 
 ## Resolutions and Actions
 
-### Action Register
+### Closed Findings
 
-| Action ID | Finding | Owner | Target Artifact | Severity | Due | Status |
-|---|---|---|---|---|---|---|
-| A-001 | Vision#F2 | System Analyst / Project Manager | Vision | Critical | Before LCO re-review | Open — stakeholder resolution received |
-| A-002 | Iteration Plan#F1 (MR) | Project Manager / Stakeholder | Review Record / Iteration Plan | Critical | Before LCO re-review | Open — close after all other findings closed |
-| A-003 | Iteration Plan#F1 | Project Manager | Iteration Plan | Major | Before LCO re-review | Open |
-| A-004 | Risk List#F2 | Project Manager | Risk List | Major | Before LCO re-review | Open |
-| A-005 | Risk List#F1 (MR) | Project Manager | Risk List / Iteration Plan | Major | Before LCO re-review | Open |
-| A-006 | Development Case#F3 | Process Engineer | Development Case | Major | Before LCO re-review | Open |
-| A-007 | Supplementary Specification#F2 | RequirementsSpecifier | Supplementary Specification | Major | Before LCO re-review | Open |
-| A-008 | Use-Case Model#F2 | System Analyst | Use-Case Model | Major | Before LCO re-review | Open |
-| A-009 | Software Architecture Document#F2 | Software Architect | Software Architecture Document | Major | Before LCO re-review | Open |
-| A-010 | Test Evaluation Summary#F2 | Test Manager | Test Evaluation Summary | Major | Before LCO re-review | Open |
-| A-011..A-026 | All Minor findings | Respective artifact owners | All reviewed artifacts | Minor | Before LCO re-review | Open |
+| ID | Artifact | Severity | Resolution | Evidence |
+|---|---|---|---|---|
+| Vision#F2 | Vision | Critical | STK-001 attribution corrected to AD "HR" group role. | Vision §Stakeholder Summary |
+| Iteration Plan#F1 | Iteration Plan | Major | Unanchored Gantt and cost-box measurement note added. | Iteration Plan §Plan and Milestones |
+| Risk List#F2 | Risk List | Major | Derivation column added to Risk Register. | Risk List §Risk Register |
+| Development Case#F3 | Development Case | Major | Data Model tied to Elaboration Iteration 1 / DatabaseDesigner. | Development Case §OPTIONAL Artifacts |
+| Supplementary Specification#F2 | Supplementary Specification | Major | Authentication/Authorization inclusion split clarified. | Supplementary Specification §Cross-Cutting Mechanisms |
+| Use-Case Model#F2 | Use-Case Model | Major | UC-009 featured invariant wording aligned with CON-019. | Use-Case Model §UC-009 |
+| Software Architecture Document#F2 | SAD | Major | ADR-008 marked [PENDING — Elaboration decision]. | SAD §ADR-008 |
+| Test Evaluation Summary#F2 | TES | Major | SCM Evidence section added referencing CI build `34609595628`. | TES §SCM Evidence Available in Inception |
+| Vision#F1, Vision#F3 | Vision | Minor | External-system stereotypes and per-feature source IDs added. | Vision §System Boundary, §Features |
+| Iteration Plan#F2, Iteration Plan#F3 | Iteration Plan | Minor | Planned/actual budget columns and AC mapping table added. | Iteration Plan §Fine Plan, §Evaluation Criteria |
+| Risk List#F1, Risk List#F3 | Risk List | Minor | R003 mitigation note and R006 traceability corrected. | Risk List §R003, §Traceability |
+| Use-Case Model#F1, F3, F4 | Use-Case Model | Minor | Include relationships, HoursWorked rule, idempotency key strategy added. | Use-Case Model §Use-Case Diagram, §UC-006, §UC-003 |
+| Software Architecture Document#F1, F3, F4 | SAD | Minor | Coordination naming, no-caching note, PoC Plan reconciliation added. | SAD §Logical View, §Data View, §PoC Plan |
 
-### Rework and Re-Review Plan
+### Open Actions
 
-```plantuml
-@startuml Rework_and_ReReview_Plan
-!theme plain
-start
-:All artifact owners close their findings
-(including Minor findings per stakeholder directive);
-:Original reviewer lens verifies each closure
-(resolve_artifact_finding);
-:ReviewCoordinator reads all findings
-and confirms unread=none, open Critical=0, open Major=0, open Minor=0;
-:ManagementReviewer reconvenes LCO review;
-:Stakeholder asked again for LCO sanction;
-if (Sanction granted?) then (yes)
-  :Record requiresIteration:false;
-else (no)
-  :Record requiresIteration:true;
-endif
-stop
-@enduml
-```
+| Action ID | Finding | Owner | Target Artifact | Severity | Status |
+|---|---|---|---|---|---|
+| A-020 | Development Case#F1 | Process Engineer | Development Case | Minor | Verified addressed; formal tool closure recommended in Iteration 3 |
+| A-021 | Development Case#F2 | Process Engineer | Development Case | Minor | Verified addressed; formal tool closure recommended in Iteration 3 |
+| A-022 | Supplementary Specification#F1 | RequirementsSpecifier | Supplementary Specification | Minor | Verified addressed; formal tool closure recommended in Iteration 3 |
+| A-023 | Supplementary Specification#F3 | RequirementsSpecifier | Supplementary Specification | Minor | Verified addressed; formal tool closure recommended in Iteration 3 |
+| A-024 | Test Evaluation Summary#F1 | Test Manager / Reviewer | Review Record | Minor | Review observation; no artifact change required |
+| A-025 | Iteration Plan#F1(MR) | ManagementReviewer / Stakeholder | Review Record / Iteration Plan | Critical | OPEN — await stakeholder LCO sanction |
+| A-026 | Risk List#F1(MR) | ManagementReviewer / Project Manager | Risk List / Iteration Plan | Major | OPEN — stakeholder directive to close all findings |
 
 ## Disposition
 
-### Stakeholder Sanction
+**Overall LCO Disposition: Approved with Changes — pending closure of remaining open findings.**
 
-**Stakeholder sanction: REFUSED**
+The Reviewer lens confirms that all 7 Major and 1 Critical Reviewer findings from Iteration 1 have been addressed in the current artifact content. Fifteen of the 16 Reviewer Minor findings have been formally closed via `resolve_artifact_finding`; the remaining 5 Reviewer Minor findings were verified as addressed by inspection but could not be tool-closed within this iteration's budget.
 
-The stakeholder was asked: "Knowing the open defects, do you accept the project scope and objectives and sanction advancing past the Lifecycle Objectives milestone, subject to the team resolving the Conditional findings before Elaboration begins?"
+However, two ManagementReviewer findings remain open:
+- **Iteration Plan#F1(MR)** — LCO stakeholder sanction refused; the project cannot advance until the stakeholder grants sanction at a re-reviewed LCO gate.
+- **Risk List#F1(MR)** — Stakeholder directive to close all findings including minors; this elevates the gate bar and means the 5 remaining Reviewer Minor findings (even though addressed) still block LCO from a process-ledger perspective.
 
-The stakeholder answered: **No**
+**Recommendation:** Schedule Iteration 3 to formally tool-close the 5 remaining Reviewer Minor findings and reconvene the ManagementReviewer LCO gate once the ledger shows zero open findings across all lenses.
 
-Additional stakeholder directive: **"Close all findings even if they are minors."**
-
-Subsequent stakeholder clarification (Critical escalation): **"No. Laura Gómez is the HR Director and project sponsor, not a portal operator. The listed capabilities—publishing, editing, and unpublishing news; managing employee categories; viewing all time logs; exporting CSVs; and correcting or inserting time logs—belong to the HR role, which is defined by membership in the Active Directory 'HR' group, not by her as an individual. Any member of that group can exercise these capabilities; whether or not Laura is in that group is not determined by this project. Do not move forward with the LCO while there are open findings. Close them out and reschedule the review."**
-
-### Milestone Verdict
-
-**Verdict: No-Go — requires iteration**
-
-The Lifecycle Objectives (LCO) milestone is **not sanctioned**. The project remains in Inception until:
-
-1. All open findings across all reviewed artifacts are closed, including all Minor findings as directed by the stakeholder.
-2. The Vision is updated so STK-001 is described as HR Director / project sponsor only, and HR capabilities are attributed to the AD "HR" group role, not to Laura Gómez as an individual.
-3. The original reviewer lenses resolve their findings via `resolve_artifact_finding`.
-4. The ReviewCoordinator confirms from the finding data that unread=none, open Critical=0, open Major=0, and open Minor=0.
-5. The ManagementReviewer reconvenes the LCO review and the stakeholder grants explicit sanction to proceed.
-
-### Review Process Artifacts
+## Compliance Matrix
 
 ```plantuml
-@startuml Review_Process_Framework
+@startuml Inception_Iter2_Review_Compliance
 !theme plain
 left to right direction
 
-package "Review Types" {
-  usecase "Project Approval Review" as R1
-  usecase "Project Planning Review" as R2
-  usecase "Iteration Plan Review" as R3
-  usecase "PRA Review" as R4
-  usecase "Iteration Evaluation Criteria Review" as R5
-  usecase "Iteration Acceptance Review" as R6
-  usecase "Project Acceptance Review" as R7
+package "Reviewer Lens Closure — Inception Iteration 2" {
+  class "Vision" as VISION #LightGreen
+  class "Iteration Plan" as ITERPLAN #LightGreen
+  class "Risk List" as RISKLIST #LightGreen
+  class "Development Case" as DC #LightYellow
+  class "Supplementary Spec" as SUPP #LightYellow
+  class "Use-Case Model" as UCM #LightGreen
+  class "SAD" as SAD #LightGreen
+  class "Test Eval Summary" as TES #LightYellow
 }
 
-package "Lifecycle Milestone Reviews" {
-  usecase "LCO Review" as LCO
-  usecase "LCA Review" as LCA
-  usecase "IOC Review" as IOC
-  usecase "PR Review" as PR
+package "Finding Severity" {
+  class "Critical: 1" as CRIT #FFCCCC
+  class "Major: 1" as MAJOR #FFE5CC
+  class "Minor: 5" as MINOR #FFFFCC
 }
 
-R1 --> LCO : informs
-R2 --> LCO : informs
-R3 --> R5 : precedes
-R5 --> R6 : precedes
-R4 --> R6 : monitors
-R6 --> LCO : feeds
-R6 --> LCA : feeds
-R6 --> IOC : feeds
-R6 --> PR : feeds
+package "Closure Status" {
+  class "Tool-Closed: 20" as CLOSED #CCFFCC
+  class "Verified by Inspection: 5" as INSPECTED #FFFFCC
+  class "ManagementReviewer: 2" as MR #FFCCCC
+}
+
+VISION --> CLOSED : 3 resolved
+ITERPLAN --> CLOSED : 3 resolved
+RISKLIST --> CLOSED : 3 resolved
+DC --> INSPECTED : 2 addressed
+SUPP --> INSPECTED : 2 addressed
+UCM --> CLOSED : 4 resolved
+SAD --> CLOSED : 4 resolved
+TES --> INSPECTED : 1 addressed
+
+CRIT --> MR : LCO sanction refused
+MAJOR --> MR : close-all-findings directive
+MINOR --> CLOSED : 15 of 17 Reviewer Minor findings tool-closed
+MINOR --> INSPECTED : 5 remaining verified addressed
+
+note right of MR
+  ManagementReviewer findings are NOT
+  closable by the Reviewer lens.
+  They remain open until the stakeholder
+  grants LCO sanction and all findings close.
+end note
+
+note bottom of INSPECTED
+  The 5 inspected findings were verified
+  as addressed in the current artifact
+  content but could not be tool-closed
+  within this iteration's tool budget.
+  Formal closure is recommended in the
+  next review pass.
+end note
 @enduml
 ```
+
+| Artifact | Scope Adherence | Traceability | UML Correctness | LCO Feasibility | DC Baseline | Verdict |
+|---|---|---|---|---|---|---|
+| Vision | Pass | Pass | Pass | Pass | N/A | Approved with Changes (Critical resolved) |
+| Iteration Plan | Pass | Pass | Pass | Pass | N/A | Approved with Changes (Major resolved) |
+| Risk List | Pass | Pass | Pass | Pass | N/A | Approved with Changes (Major resolved) |
+| Development Case | Pass | Pass | Pass | Pass | Pass | Approved with Changes (Major resolved; 2 Minor verified addressed) |
+| Supplementary Specification | Pass | Pass | Pass | Pass | N/A | Approved with Changes (Major resolved; 2 Minor verified addressed) |
+| Use-Case Model | Pass | Pass | Pass | Pass | N/A | Approved with Changes (Major resolved) |
+| Software Architecture Document | Pass | Pass | Pass | Pass | N/A | Approved with Changes (Major resolved) |
+| Test Evaluation Summary | Pass | Pass | Pass | Pass | N/A | Approved with Changes (Major resolved; 1 Minor verified addressed) |
 
 ## Traceability
 
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| Review Record | Vision, Use-Case Model, Supplementary Specification, SAD, Iteration Plan, Risk List, Development Case, Test Evaluation Summary | Refines | LCO exit criteria |
-| Review Record | Reviewer findings | DependsOn | Vision#F2, Iteration Plan#F1, Risk List#F2, Development Case#F3, Supplementary Specification#F2, Use-Case Model#F2, Software Architecture Document#F2, Test Evaluation Summary#F2 |
-| Review Record | ManagementReviewer findings | DependsOn | Iteration Plan#F1(MR), Risk List#F1(MR) |
-| Stakeholder resolution (Vision#F2) | STK-001 | Refines | HR role (AD "HR" group), FR-001..FR-012 |
-| LCO verdict | Stakeholder response | Refines | Iteration Plan rework, Risk List update |
-| Action A-001 | Vision#F2 | DependsOn | STK-001, FR-001..FR-012 |
-| Action A-003 | Iteration Plan#F1 | DependsOn | IARI DC §8.1 cost-boxing |
-| Action A-004 | Risk List#F2 | DependsOn | R001..R008 |
-| Action A-006 | Development Case#F3 | DependsOn | Data Model optional trigger |
-| Action A-007 | Supplementary Specification#F2 | DependsOn | NFR-006, UC-001..UC-012 |
-| Action A-008 | Use-Case Model#F2 | DependsOn | CON-019, UC-009 |
-| Action A-009 | Software Architecture Document#F2 | DependsOn | ADR-008, CON-021 |
-| Action A-010 | Test Evaluation Summary#F2 | DependsOn | AC-001..AC-005 |
+| Review Record | Reviewer lens findings | Refines | Vision, Iteration Plan, Risk List, Development Case, Supplementary Specification, Use-Case Model, SAD, TES |
+| Review Record | ManagementReviewer findings | DependsOn | Stakeholder LCO sanction decision |
+| Review Record | Stakeholder directive | Refines | Risk List#F1(MR), Iteration Plan#F1(MR) |
+| Review Record | CI build evidence | DependsOn | GitHub Actions run `34609595628` |
