@@ -32,7 +32,6 @@ Evaluation criteria applied:
 6. DC baseline conformance — Development Case remains a delta over the IARI baseline.
 
 ## Findings
-
 ### Prior Finding Reconciliation
 
 The Reviewer lens carried 25 open findings from Inception Iteration 1 (2 Critical, 7 Major, 16 Minor) plus 2 ManagementReviewer findings that are outside this lens's closure authority.
@@ -83,6 +82,71 @@ The Reviewer lens carried 25 open findings from Inception Iteration 1 (2 Critica
 
 No new Critical or Major findings were identified during this re-review. The artifacts have evolved to address the prior findings and remain consistent with the declared scope.
 
+### Business Modeling Discipline Assessment (Reviewer: Business Reviewer)
+
+```plantuml
+@startuml BusinessModeling_Coverage_Iter2
+!theme plain
+left to right direction
+
+rectangle "Business Modeling Discipline" {
+  class "BUC Model" as BUC_MODEL #FFCCCC
+  class "Business Workers" as WORKERS #FFCCCC
+  class "Business Entities" as ENTITIES #FFCCCC
+  class "Business Rules" as RULES #FFCCCC
+}
+
+BUC_MODEL : NOT PRESENT
+WORKERS : NOT PRESENT
+ENTITIES : NOT PRESENT
+RULES : NOT PRESENT
+
+note right of BUC_MODEL
+  **Business Modeling: INACTIVE**
+  DC §4 trigger evaluation: project is not
+  business-process-led. No BUC sections in
+  Use-Case Model; no business workers or
+  entities; no business rules document.
+end note
+
+note bottom of ENTITIES
+  **Verdict: BR-OK-INACTIVE**
+  Discipline correctly skipped per DC §4.
+end note
+@enduml
+```
+
+**Verdict: [BR-OK-INACTIVE] — Discipline NOT APPLICABLE per DC §4**
+
+DC §4 trigger evaluation: project does not exhibit business-process-led characteristics. No ERP / BPM / workflow-redesign / M&A signals found in Vision. No Business Use Cases / Workers / Entities sections present in Use-Case Model. No business-domain specialist terms in Glossary.
+
+Conclusion: BPA + BR are correctly INACTIVE for this engagement. No findings, no recommendations. Downstream reviewers (MR, RC) may treat the BM discipline as out-of-scope for the LCO milestone.
+
+#### Scenario Assessment
+
+The applicable business-modeling scenario for this engagement is **Domain Modeling / System Automation Support** (lightweight). The stakeholder scope is already expressed as 12 functional requirements (FR-001..FR-012), 8 non-functional requirements (NFR-001..NFR-008), business goals, constraints, and risks. The project automates known HR/employee processes rather than redesigning them. A dedicated Business Use-Case Model would duplicate the system Use-Case Model without adding value. The Development Case correctly identifies this and declares Business Modeling INACTIVE.
+
+#### Coverage Verification
+
+| BM Element | Expected per Scenario | Present | Verdict |
+|---|---|---|---|
+| Business Use Case Model | Optional / lightweight | No | OK — not warranted |
+| Business Workers | Optional / lightweight | No | OK — not warranted |
+| Business Entities | Optional / lightweight | No | OK — not warranted |
+| Business Rules Document | Optional / lightweight | No | OK — business rules live as CON-017..CON-021 |
+| System Use-Case Model | Required | Yes | PASS — 12 UCs trace to FR-001..FR-012 |
+
+#### Derivation Readiness Assessment
+
+Because Business Modeling is inactive, the derivation bridge from business to system use cases is collapsed: the declared requirements (FR-001..FR-012) directly drive the system Use-Case Model (UC-001..UC-012). The Use-Case Model correctly identifies:
+
+- Human actors: Employee (A-001), HR Administrator (A-002).
+- External system actors: Keycloak (A-003), Active Directory (A-004).
+- Automation disposition: HR Administrator capabilities are fully automated through the portal; Employee self-service is fully automated.
+- Candidate analysis classes are not yet required at Inception; the Software Architecture Document captures high-level components.
+
+The business-to-system derivation readiness verdict is **Ready** for the lightweight scenario: system analysts can trace directly from FR-NNN to UC-NNN without an intermediate BUC layer.
+
 ### Open Finding Summary
 
 ```plantuml
@@ -116,7 +180,6 @@ note bottom of MINOR
 end note
 @enduml
 ```
-
 ## Resolutions and Actions
 
 ### Closed Findings
