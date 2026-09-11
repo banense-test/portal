@@ -1,4 +1,5 @@
 ## Document Control
+
 | Field | Value |
 |---|---|
 | Project | Portal |
@@ -12,6 +13,7 @@
 ```plantuml
 @startuml Portal_System_Boundary
 left to right direction
+skinparam linetype ortho
 
 rectangle "Employee Portal" {
   usecase "UC-001\nAssign Worker Category" as UC001
@@ -26,6 +28,10 @@ rectangle "Employee Portal" {
   usecase "UC-010\nUnpublish News Item" as UC010
   usecase "UC-011\nBrowse and Filter News" as UC011
   usecase "UC-012\nSearch Corporate Directory" as UC012
+
+  usecase "AUTH\nAuthenticate via Keycloak" as AUTH <<include>>
+  usecase "AUTHZ\nAuthorize HR role" as AUTHZ <<include>>
+  usecase "AUDIT\nAudit log action" as AUDIT <<include>>
 }
 
 actor "Employee" as Employee
@@ -48,7 +54,7 @@ HR --> UC010
 actor "Keycloak" as Keycloak <<external system>>
 actor "Active Directory" as AD <<external system>>
 
-Keycloak -left-> UC003 : authenticates
+Keycloak -left-> AUTH : provides OIDC
 AD -left-> UC012 : reads directory
 AD -left-> UC001 : identifies employee
 AD -left-> UC002 : identifies employee
@@ -63,6 +69,39 @@ note bottom of UC012
   worker category from portal DB
 end note
 
+note top of AUTH
+  All use cases include Authentication
+end note
+
+UC001 ..> AUTH : <<include>>
+UC002 ..> AUTH : <<include>>
+UC003 ..> AUTH : <<include>>
+UC004 ..> AUTH : <<include>>
+UC005 ..> AUTH : <<include>>
+UC006 ..> AUTH : <<include>>
+UC007 ..> AUTH : <<include>>
+UC008 ..> AUTH : <<include>>
+UC009 ..> AUTH : <<include>>
+UC010 ..> AUTH : <<include>>
+UC011 ..> AUTH : <<include>>
+UC012 ..> AUTH : <<include>>
+
+UC001 ..> AUTHZ : <<include>>
+UC002 ..> AUTHZ : <<include>>
+UC005 ..> AUTHZ : <<include>>
+UC006 ..> AUTHZ : <<include>>
+UC007 ..> AUTHZ : <<include>>
+UC008 ..> AUTHZ : <<include>>
+UC009 ..> AUTHZ : <<include>>
+UC010 ..> AUTHZ : <<include>>
+
+UC001 ..> AUDIT : <<include>>
+UC002 ..> AUDIT : <<include>>
+UC007 ..> AUDIT : <<include>>
+UC008 ..> AUDIT : <<include>>
+UC009 ..> AUDIT : <<include>>
+UC010 ..> AUDIT : <<include>>
+
 @enduml
 ```
 
@@ -71,7 +110,7 @@ end note
 | ID | Actor | Type | Description |
 |---|---|---|---|
 | A-001 | Employee | Human | Cuba Corp employee who clocks in/out, views own clocking history, browses news, and searches the corporate directory. Derived from STK-004. |
-| A-002 | HR Administrator | Human | Member of the HR AD group who manages worker categories, oversees all clockings, exports reports, corrects clockings, and manages news. Derived from STK-001. |
+| A-002 | HR Administrator | Human | Member of the HR AD group who manages worker categories, oversees all clockings, exports reports, corrects clockings, and manages news. Derived from STK-001 (HR role) and NFR-006. |
 | A-003 | Keycloak | External System | Existing OIDC provider for authentication and AD group claims. Derived from CON-004, CON-005, NFR-006. |
 | A-004 | Active Directory | External System | Existing LDAP directory that is the system of record for employee attributes. Derived from CON-006, CON-010. |
 
@@ -87,8 +126,8 @@ end note
 | UC-006 | Export Monthly Clocking Report | HR Administrator | FR-006 | Must | Low | Outlined |
 | UC-007 | Correct or Insert Clocking | HR Administrator | FR-007, CON-020 | Must | Low | Detailed (architecturally significant) |
 | UC-008 | Publish News Item | HR Administrator | FR-008, CON-019 | Must | Medium | Detailed (architecturally significant) |
-| UC-009 | Edit News Item | HR Administrator | FR-009 | Must | Medium | Outlined |
-| UC-010 | Unpublish News Item | HR Administrator | FR-010 | Must | Medium | Outlined |
+| UC-009 | Edit News Item | HR Administrator | FR-009, CON-019 | Must | Medium | Outlined |
+| UC-010 | Unpublish News Item | HR Administrator | FR-010, CON-019 | Must | Medium | Outlined |
 | UC-011 | Browse and Filter News | Employee | FR-011 | Must | Low | Outlined |
 | UC-012 | Search Corporate Directory | Employee | FR-012, CON-010 | Must | Low | Detailed (architecturally significant) |
 
@@ -106,7 +145,7 @@ end note
 1. System displays the main page with a button labeled "Clock In" if the employee has no open clocking, or "Clock Out" if a clocking is open.
 2. Employee presses the button.
 3. Browser captures the exact local timestamp of the button press (Europe/Madrid).
-4. Browser generates an idempotency key for the request.
+4. Browser generates a unique idempotency key for this button press. The key is scoped to the employee and the press timestamp (e.g., a UUID combined with the employee AD identifier and the client timestamp) so that the same physical action cannot be recorded twice.
 5. Browser attempts to POST the event to the server.
 6. Server validates the OIDC token and records the event with the client-sent timestamp and idempotency key.
 7. Server returns a confirmation to the browser.
@@ -138,7 +177,8 @@ endif
 based on open clocking state;
 :Employee presses button;
 :Browser captures client timestamp (Europe/Madrid);
-:Browser generates idempotency key;
+:Browser generates idempotency key
+(employee AD id + timestamp + UUID);
 :Browser attempts POST to server;
 if (Network available?) then (yes)
   :Server validates OIDC token;
@@ -167,6 +207,36 @@ endif
 stop
 @enduml
 ```
+
+---
+
+### UC-006 Export Monthly Clocking Report
+
+**Source:** FR-006
+**Primary Actor:** HR Administrator (A-002)
+**Trigger:** HR Administrator selects a month and requests CSV export.
+**Precondition:** HR Administrator is authenticated and belongs to the HR AD group.
+**Postcondition:** A CSV file is generated with the exact columns and timezone specified in FR-006.
+
+**Main Flow:**
+1. HR Administrator opens the all-clockings view.
+2. HR Administrator selects a calendar month.
+3. HR Administrator chooses "Export CSV".
+4. System retrieves all clocking events for the month (00:00 first day to 23:59:59 last day, Europe/Madrid).
+5. For each employee and date, system computes the effective ClockIn and ClockOut values. If corrections exist, the latest correction for that date is used; original records are never overwritten (CON-020).
+6. System computes HoursWorked as the elapsed time between the effective ClockIn and ClockOut for that date, expressed in hours. If ClockOut is missing, HoursWorked is left blank.
+7. System generates a CSV with columns in order: EmployeeId, FullName, WorkerCategory, Date, ClockIn, ClockOut, HoursWorked, Corrected.
+8. System returns the file for download.
+
+**Alternative Flows:**
+- **A1 No clockings in month:** System generates a CSV containing only the header row.
+
+**Business Rules:**
+- FR-006: Exact column order and Europe/Madrid local time.
+- CON-020: Original records are preserved; corrections create new audited entries.
+- CON-021: All offices in Europe/Madrid.
+
+**Volatility:** Low
 
 ---
 
@@ -292,6 +362,67 @@ endif
 stop
 @enduml
 ```
+
+---
+
+### UC-009 Edit News Item
+
+**Source:** FR-009, NFR-004, CON-019
+**Primary Actor:** HR Administrator (A-002)
+**Trigger:** HR Administrator selects a published news item and edits it.
+**Precondition:** HR Administrator is authenticated and belongs to the HR AD group; the news item is published.
+**Postcondition:** The news item is updated; edits are audited; the CON-019 invariant (at most one featured item) holds.
+
+**Main Flow:**
+1. HR Administrator opens the news management page.
+2. System lists published news items.
+3. HR Administrator selects an item and chooses "Edit".
+4. System presents the edit form pre-filled with current values, including the current featured flag state.
+5. HR Administrator modifies fields and submits.
+6. System validates inputs.
+7. If the featured flag is set on this item, system clears the featured flag from any other currently featured item so that this item becomes the sole featured item.
+8. If the featured flag is cleared on the currently featured item, the banner disappears and no other item is automatically promoted.
+9. System records the edit with author and timestamp.
+10. System confirms the edit.
+
+**Alternative Flows:**
+- **A1 Validation fails:** System returns the form with error messages.
+- **A2 Unpublish during edit:** If HR Administrator chooses to unpublish instead, UC-010 applies.
+
+**Business Rules:**
+- CON-019: At most one featured news item at any moment; featuring one item always un-features the previous one; unpublishing the featured item un-features it and does not promote another.
+- NFR-004: Every edit is audited with author and timestamp.
+
+**Volatility:** Medium
+
+---
+
+### UC-010 Unpublish News Item
+
+**Source:** FR-010, NFR-004, CON-019
+**Primary Actor:** HR Administrator (A-002)
+**Trigger:** HR Administrator selects a published news item and unpublishes it.
+**Precondition:** HR Administrator is authenticated and belongs to the HR AD group; the news item is published.
+**Postcondition:** The item is hidden but retained; if it was featured, the banner disappears and no other item is promoted.
+
+**Main Flow:**
+1. HR Administrator opens the news management page.
+2. System lists published news items.
+3. HR Administrator selects an item and chooses "Unpublish".
+4. System confirms the action.
+5. If the item was featured, system clears the featured flag.
+6. System marks the item as unpublished.
+7. System records the unpublish action with author and timestamp.
+8. System confirms the action to HR Administrator.
+
+**Alternative Flows:**
+- **A1 Already unpublished:** The "Unpublish" option is unavailable.
+
+**Business Rules:**
+- CON-019: Unpublishing the featured item un-features it; no automatic promotion.
+- NFR-004: Unpublish is audited with author and timestamp.
+
+**Volatility:** Medium
 
 ---
 
@@ -427,74 +558,6 @@ stop
 - **A1 No clockings in period:** System displays an empty list.
 **Volatility:** Low
 
-### UC-006 Export Monthly Clocking Report
-
-**Source:** FR-006
-**Primary Actor:** HR Administrator (A-002)
-**Trigger:** HR Administrator selects a month and requests CSV export.
-**Precondition:** HR Administrator is authenticated and belongs to the HR AD group.
-**Postcondition:** A CSV file is generated with the exact columns and timezone specified in FR-006.
-**Main Flow:**
-1. HR Administrator opens the all-clockings view.
-2. HR Administrator selects a calendar month.
-3. HR Administrator chooses "Export CSV".
-4. System retrieves all clocking events for the month (00:00 first day to 23:59:59 last day, Europe/Madrid).
-5. System generates a CSV with columns in order: EmployeeId, FullName, WorkerCategory, Date, ClockIn, ClockOut, HoursWorked, Corrected.
-6. System returns the file for download.
-**Business Rules:**
-- FR-006: Exact column order and Europe/Madrid local time.
-- CON-021: All offices in Europe/Madrid.
-**Volatility:** Low
-
-### UC-009 Edit News Item
-
-**Source:** FR-009, NFR-004
-**Primary Actor:** HR Administrator (A-002)
-**Trigger:** HR Administrator selects a published news item and edits it.
-**Precondition:** HR Administrator is authenticated and belongs to the HR AD group; the news item is published.
-**Postcondition:** The news item is updated; edits are audited; featured flag changes maintain CON-019.
-**Main Flow:**
-1. HR Administrator opens the news management page.
-2. System lists published news items.
-3. HR Administrator selects an item and chooses "Edit".
-4. System presents the edit form pre-filled with current values.
-5. HR Administrator modifies fields and submits.
-6. System validates inputs.
-7. If the featured flag is set and no other item is currently featured, system proceeds. If another item is featured, system clears its featured flag.
-8. If the featured flag is cleared on the currently featured item, the banner disappears.
-9. System records the edit with author and timestamp.
-10. System confirms the edit.
-**Alternative Flows:**
-- **A1 Validation fails:** System returns the form with error messages.
-- **A2 Unpublish during edit:** If HR Administrator chooses to unpublish instead, UC-010 applies.
-**Business Rules:**
-- CON-019: At most one featured news item at any moment.
-- NFR-004: Every edit is audited with author and timestamp.
-**Volatility:** Medium
-
-### UC-010 Unpublish News Item
-
-**Source:** FR-010, NFR-004
-**Primary Actor:** HR Administrator (A-002)
-**Trigger:** HR Administrator selects a published news item and unpublishes it.
-**Precondition:** HR Administrator is authenticated and belongs to the HR AD group; the news item is published.
-**Postcondition:** The item is hidden but retained; if it was featured, the banner disappears and no other item is promoted.
-**Main Flow:**
-1. HR Administrator opens the news management page.
-2. System lists published news items.
-3. HR Administrator selects an item and chooses "Unpublish".
-4. System confirms the action.
-5. If the item was featured, system clears the featured flag.
-6. System marks the item as unpublished.
-7. System records the unpublish action with author and timestamp.
-8. System confirms the action to HR Administrator.
-**Alternative Flows:**
-- **A1 Already unpublished:** The "Unpublish" option is unavailable.
-**Business Rules:**
-- CON-019: Unpublishing the featured item un-features it; no automatic promotion.
-- NFR-004: Unpublish is audited with author and timestamp.
-**Volatility:** Medium
-
 ### UC-011 Browse and Filter News
 
 **Source:** FR-011
@@ -518,15 +581,15 @@ stop
 
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| UC-001 | FR-001 | Derives | F-001 |
-| UC-002 | FR-002 | Derives | F-001 |
+| UC-001 | FR-001, NFR-005 | Derives | F-001 |
+| UC-002 | FR-002, NFR-005 | Derives | F-001 |
 | UC-003 | FR-003, NFR-007 | Derives | F-002 |
 | UC-004 | FR-004 | Derives | F-003 |
 | UC-005 | FR-005 | Derives | F-004 |
 | UC-006 | FR-006 | Derives | F-004 |
 | UC-007 | FR-007, CON-020 | Derives | F-005 |
-| UC-008 | FR-008, CON-019 | Derives | F-006 |
-| UC-009 | FR-009 | Derives | F-007 |
-| UC-010 | FR-010 | Derives | F-008 |
+| UC-008 | FR-008, CON-019, NFR-004 | Derives | F-006 |
+| UC-009 | FR-009, CON-019, NFR-004 | Derives | F-007 |
+| UC-010 | FR-010, CON-019, NFR-004 | Derives | F-008 |
 | UC-011 | FR-011 | Derives | F-009 |
 | UC-012 | FR-012, CON-010 | Derives | F-010 |
