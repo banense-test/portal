@@ -196,7 +196,7 @@ The full set of declared constraints is reproduced below for traceability. See t
 
 | ID | Criterion |
 |---|---|
-| AC-001 | An employee can clock in and out without help from HR or the development team. |
+| AC-001 | An employee can clock in and clock out without help from HR or the development team. |
 | AC-002 | An HR Administrator can publish a news item without technical assistance. |
 | AC-003 | Any employee finds a colleague's phone or email in under 10 seconds. |
 | AC-004 | 80% of employees complete at least one clocking with no prior training. |
