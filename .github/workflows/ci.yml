@@ -86,11 +86,16 @@ jobs:
         shell: bash
         run: |
           set -e
+          echo "Current directory: $(pwd)"
+          ls -la
           rm -f Portal.sln
-          dotnet new sln --name Portal --output .
+          dotnet new sln -n Portal
+          ls -la
           find src tests -name '*.csproj' -print0 | sort -z | while IFS= read -r -d '' proj; do
+            echo "Adding project: $proj"
             dotnet sln Portal.sln add "$proj"
           done
+          echo "Projects in solution:"
           dotnet sln Portal.sln list
 
       - name: Restore dependencies
