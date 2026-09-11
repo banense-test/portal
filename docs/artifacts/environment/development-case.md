@@ -300,11 +300,11 @@ Guideline content is authored by the respective discipline experts and reference
 
 | Guideline | Owner | Location | Status |
 |---|---|---|---|
-| Coding standards | Implementer / CodeReviewer | `CONTRIBUTING.md` | To be drafted in Elaboration. |
-| UI conventions | UserInterfaceDesigner | `docs/inputs/employee-portal-design.html` (authoritative) + `CONTRIBUTING.md` | Committed input exists. |
-| Test conventions | TestDesigner / TestManager | `CONTRIBUTING.md` | To be drafted in Elaboration. |
-| Design conventions | SoftwareArchitect / Designer | `CONTRIBUTING.md` | To be drafted in Elaboration. |
-| CI/CD workflow | ConfigurationManager / Implementer | `.github/workflows/` | Verify exists; placeholder acceptable in Inception. |
+| Coding standards | Implementer / CodeReviewer | `CONTRIBUTING.md` | **NOT FOUND in repository — Implementer/CodeReviewer must create in Elaboration.** |
+| UI conventions | UserInterfaceDesigner | `docs/inputs/employee-portal-design.html` (authoritative) + `CONTRIBUTING.md` | Committed input exists; CONTRIBUTING.md section to be added in Elaboration. |
+| Test conventions | TestDesigner / TestManager | `CONTRIBUTING.md` | **NOT FOUND in repository — TestDesigner/TestManager must create in Elaboration.** |
+| Design conventions | SoftwareArchitect / Designer | `CONTRIBUTING.md` | **NOT FOUND in repository — SoftwareArchitect/Designer must create in Elaboration.** |
+| CI/CD workflow | ConfigurationManager / Implementer | `.github/workflows/` | Directory exists but content could not be verified via API; ConfigurationManager to confirm in Elaboration. |
 | Lint / formatting config | Implementer / CodeReviewer | Repository root (e.g., `.editorconfig`, `dotnet-tools.json`) | To be confirmed in Elaboration. |
 
 ### Measurement Policy
