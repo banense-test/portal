@@ -23,7 +23,7 @@ This review assesses the Inception Iteration 1 artifacts against the Lifecycle O
 
 Artifacts reviewed: Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Iteration Plan, Risk List, Development Case, Test Evaluation Summary.
 
-## LCO Compliance Assessment
+### LCO Compliance Assessment
 
 ```plantuml
 @startuml LCO_Compliance_Table
@@ -75,7 +75,7 @@ CRIT --> C005
 @enduml
 ```
 
-## Project Health State
+### Project Health State
 
 ```plantuml
 @startuml Project_Health_State_Machine
@@ -93,7 +93,7 @@ NoGo --> [*]
 @enduml
 ```
 
-## Risk Retirement Trend
+### Risk Retirement Trend
 
 ```plantuml
 @startuml Risk_Retirement_Trend
@@ -224,7 +224,7 @@ end note
 | Reserve token budget and queue time for finding closure and re-review | Project Manager | Iteration Plan / Risk List | Before LCO re-review |
 | Reconvene LCO review with stakeholder | ReviewCoordinator | Review Record | After all findings closed |
 
-## Stakeholder Sanction
+## Disposition
 
 **Stakeholder sanction: REFUSED**
 
@@ -235,8 +235,6 @@ The stakeholder answered: **No**
 Additional stakeholder directive: **"Close all findings even if they are minors."**
 
 This decision is recorded as the stakeholder's own answer. No signature from a named person is required; the stakeholder's response IS the documented acceptance/refusal.
-
-## Disposition
 
 **Verdict: No-Go**
 
