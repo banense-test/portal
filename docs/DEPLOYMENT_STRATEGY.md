@@ -1,110 +1,124 @@
-# Deployment Strategy — Portal (Employee Portal)
+# Deployment Strategy — Portal
 
-**Project:** Portal  
-**Phase:** Inception  
-**Iteration:** 2  
-**Deployment Mode:** Custom-built, single-server, internal Windows Server  
-**Target Community:** Cuba Corp employees (200 users, 3 offices) and HR Administrators (AD "HR" group members).
+## Document Control
 
-## Deployment Topology Sketch
+| Field | Value |
+|---|---|
+| Project | Portal |
+| Phase | Inception |
+| Iteration | 3 |
+| Status | Draft |
+| Milestone Target | End-of-Inception review (LCO final closure) |
+
+## Deployment Mode
+
+**Custom-built single-server deployment** — selected in Inception Iteration 1 and reaffirmed by the declared constraints.
+
+- The portal is built and packaged by the development team.
+- It is deployed to a single internal Windows Server already operated by the Infrastructure team (CON-007, CON-013).
+- Keycloak and Active Directory are existing corporate services maintained by the Infrastructure team; they are not deployed or modified by this project (CON-004, CON-006, CON-011).
+- No cloud hosting, no container orchestration, and no load balancer are in scope.
+
+## Target User Community
+
+- **Primary users:** Cuba Corp employees (STK-004) — 200 people across 3 offices.
+- **Administrative users:** Members of the AD "HR" group (A-002), who manage worker categories, clockings, news, and exports.
+- **Operators:** Infrastructure team (STK-003), who run the portal in production after handover.
+
+## Target Environments
+
+| Environment | Purpose | Topology | Owner |
+|---|---|---|---|
+| Development | Local development and CI builds | Developer workstation + shared PostgreSQL + corporate Keycloak/AD for integration tests | Development team |
+| Test / Staging | Pre-production validation on internal Windows Server estate | Single Windows Server + PostgreSQL; mirrors production configuration | Infrastructure team |
+| Production | Live employee portal | Single internal Windows Server + PostgreSQL; no external access | Infrastructure team |
+
+> **Inception note:** Environment names and exact server identities will be confirmed with the Infrastructure team in Elaboration. The topology (single server, external auth/directory services) is fixed by CON-007.
+
+## Initial Deployment Topology
 
 ```plantuml
-@startuml Portal_Deployment_Topology
+@startuml Portal_Inception_Deployment_Strategy
 !theme plain
-left to right direction
-
-title Portal Deployment Topology — Custom Single-Server (Inception Baseline)
 
 node "Employee Browser" as Browser {
-    component "Chrome / Edge" as Client
+    component "Razor Pages + Script" as UI
 }
 
-node "Corporate Network" as CorpNet #LightBlue {
-    node "Internal Windows Server" as WinServer {
-        component "ASP.NET Core Portal\n(.NET 10)" as PortalApp <<artifact>>
-        database "PostgreSQL" as DB <<artifact>>
-    }
-    node "Keycloak Server" as Keycloak <<external system>>
-    node "Active Directory DC" as AD <<external system>>
+node "Internal Windows Server" as Server {
+    component ".NET 10 Portal Application" as PortalApp
+    database "PostgreSQL" as DB
+}
+
+node "Corporate Network" as CorpNet {
+    node "Keycloak Server" as Keycloak
+    node "Active Directory Domain Controller" as AD
 }
 
 Browser --> PortalApp : HTTPS / intranet only
 PortalApp --> Keycloak : OIDC redirect + token validation
 PortalApp --> AD : LDAP read-only
-PortalApp --> DB : SQL / local socket
+PortalApp --> DB : SQL
 
 note right of PortalApp
-  Single-server custom deployment.
-  No cloud, no load balancer,
-  no container orchestrator.
+  Custom-built single-server deployment;
+  no external access; no cloud; no load balancer.
 end note
 
-note bottom of AD
-  Read-only directory projection.
-  No write-back, no sync job,
-  no local copy of employee data.
+note right of AD
+  Read-only LDAP for directory attributes;
+  no write-back; no sync job.
 end note
 
-note bottom of Client
-  localStorage retry queue for
-  clocking only (NFR-007).
+note bottom of UI
+  Current Chrome/Edge only;
+  localStorage retry for clocking.
 end note
 @enduml
 ```
 
-## Deployment Mode Rationale
+## Deployment Constraints and Risks
 
-- **Custom-built** (CON-007): the portal is built for Cuba Corp's internal Windows Server estate and handed over to the Infrastructure team.
-- **Single-server**: declared scope (200 employees, low data volume) does not justify multi-node topology; the optional Deployment Model trigger is therefore not fired.
-- **No cloud / no container orchestration**: explicit constraint (CON-007, CON-008).
-- **External systems maintained by Infrastructure**: Keycloak and AD are pre-existing and out of project scope (CON-004, CON-006, CON-011).
+| ID | Constraint / Risk | Impact on Deployment |
+|---|---|---|
+| CON-007 | Hosting: internal Windows Server | Deployment artifact must be a .NET 10 application that runs on Windows Server (IIS or Kestrel behind reverse proxy). |
+| CON-008 | No access from outside the corporate network | No external DNS, TLS, or firewall rules required; deployment is intranet-only. |
+| CON-013 | Infrastructure team operates portal post-launch | Handover must include runbook, connection strings, and Keycloak client configuration. |
+| CON-016 | Existing server-backup practice covers PostgreSQL | No backup tooling is delivered; deployment package must reference Infrastructure backup confirmation. |
+| R001 | AD LDAP attribute gaps | Validate AD attribute fill rates in Elaboration; deployment must not assume AD schema completeness. |
+| R006 | PostgreSQL on Windows Server differs from dev environment | Staging deployment on Windows Server must occur before production to retire deployment/integration risk. |
 
-## Target Environments
+## Rollout Approach (Initial)
 
-| Environment | Purpose | Owner | Notes |
-|---|---|---|---|
-| Development | Local / team development | Development team | Containerized PostgreSQL allowed for dev; not a deployment target. |
-| Staging | Pre-production smoke tests on Windows Server-like target | Infrastructure team (STK-003) | Must be available early in Construction (R006 mitigation). |
-| Production | Live intranet portal for all 200 employees | Infrastructure team (STK-003) | Same Windows Server estate as AD/Keycloak; no external access. |
+1. **Elaboration:** Confirm staging server identity with Infrastructure team; validate deployment artifact on Windows Server.
+2. **Construction:** Deploy each construction increment to staging; run smoke tests against Keycloak and AD.
+3. **Transition:** Deploy to production; conduct two-gate acceptance (development site first, then install site); hand over to Infrastructure team.
+4. **Beta program:** A limited beta with a subset of HR administrators and employees from each office will be run in late Construction / early Transition to validate clocking, directory, and news workflows before full rollout.
 
-## Rollout Approach (Draft — to be detailed in Transition)
+## Rollback Criteria (Initial)
 
-1. **Beta / Pilot:** HR Administrators (AD "HR" group) use the portal in Staging during late Construction to validate news, clocking oversight, and CSV export.
-2. **Soft Launch:** One office or a volunteer group uses clocking and directory for a short period before company-wide release.
-3. **General Availability:** All employees switch from Excel to the portal; HR retires Excel for new clockings (BG-002).
-
-## Two-Gate Acceptance
-
-- **Development-site gate:** Build, unit tests, integration tests, and deployment smoke test pass in Staging.
-- **Install-site gate:** Infrastructure team deploys to Production and verifies end-to-end login, a clocking round-trip, a directory search, and a news publish/unpublish cycle.
-
-## Rollback Criteria
-
-- Rollback is triggered if the install-site gate fails on any critical acceptance path (login, clocking, directory, news).
-- Rollback unit: the previous deployment package (binaries + database migration baseline).
-- Data integrity: no rollback that would lose already-recorded clockings or audit entries; forward-fix preferred over data rollback.
-
-## Risks and Constraints
-
-- R001: AD LDAP attribute gaps may affect directory quality.
-- R002: Employee adoption depends on communication; no technical mitigation.
-- R006: Windows Server + PostgreSQL deployment mismatch; mitigated by early Staging environment.
-- CON-013: Handover to Infrastructure team at end of Transition.
-- CON-016: Backup is covered by existing Infrastructure practice; no backup design in this project.
+- **Rollback trigger:** Production deployment fails two-gate acceptance, or a critical defect blocks clocking/news/directory access.
+- **Rollback action:** Restore the previous deployed application build from SCM release artifact; database remains at current version unless a data-integrity defect is found.
+- **Rollback owner:** Infrastructure team, with development team on-call support during Transition.
 
 ## Bill of Materials (Inline Summary)
 
-| Item | Source | Responsibility |
-|---|---|---|
-| .NET 10 ASP.NET Core portal application | This project | Development team builds; Infrastructure deploys. |
-| PostgreSQL database | CON-003 | Infrastructure team operates; existing backup practice covers it. |
-| Keycloak OIDC provider | Pre-existing corporate service | Infrastructure team maintains; portal is client only. |
-| Active Directory | Pre-existing corporate service | Infrastructure team maintains; read-only LDAP. |
-| Chrome / Edge browser | End-user device | Employees use current Chrome/Edge (CON-009). |
+The authoritative BOM is the repository lock files and package manifests. This inline summary captures the deployment-relevant items:
 
-## Open Items for Elaboration / Construction
+- .NET 10 runtime / ASP.NET Core 10 hosting bundle on Windows Server.
+- PostgreSQL instance (existing Infrastructure-managed instance).
+- Keycloak OIDC client credentials (already registered, CON-005).
+- Active Directory read-only LDAP service account and attribute list.
+- Application build artifact produced by `.github/workflows/ci.yml`.
 
-- Exact Staging server name and credentials (STK-003).
-- IIS / Windows Service hosting decision for the ASP.NET Core application.
-- Database migration strategy and rollback scripts.
-- Deployment package format (zip / MSI / folder copy).
+## Traceability
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| Deployment Strategy | CON-007, CON-013 | Refines | SAD §Deployment View |
+| Custom-built mode | Scope statement | Refines | Release Notes (Transition) |
+| Single-server topology | CON-007, CON-008 | Refines | SAD §Deployment View |
+| Beta program | BG-003, R002 | Refines | Transition Iteration Plan |
+| Two-gate acceptance | Deployment discipline heuristic | Refines | Transition acceptance criteria |
+| Rollback criteria | R006, CON-013 | Refines | Transition runbook |
+| BOM summary | CON-001..CON-005 | Refines | Repository lock files / CI artifact |
