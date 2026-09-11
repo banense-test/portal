@@ -4,7 +4,7 @@
 |---|---|
 | Project | Portal |
 | Phase | Inception |
-| Iteration | 1 |
+| Iteration | 2 |
 | Status | Draft |
 | Milestone Target | End-of-Inception review |
 
@@ -27,8 +27,29 @@ The following mechanisms are included from every dependent use case via `<<inclu
 | Mechanism | Included From | Description |
 |---|---|---|
 | Authentication (Keycloak OIDC) | UC-001..UC-012 | Validates the user before any portal action. |
-| Authorization (AD group → HR/Employee role) | UC-001, UC-002, UC-005..UC-010 | Enforces two-level access control. |
+| Authorization (AD group → HR/Employee role) | UC-001, UC-002, UC-005..UC-010 | Enforces two-level access control **only for use cases whose behavior differs by role**. UC-003, UC-004, UC-011, and UC-012 are performed identically by HR and Employee roles, so authentication suffices; no role-based authorization check is required for those actions. |
 | Audit logging | UC-001, UC-002, UC-007..UC-010 | Records author and timestamp for news and category changes; records correction details for clocking changes. |
+
+#### Authorization Inclusion Rule
+
+```plantuml
+@startuml Authorization_Inclusion_Rule
+start
+:Use case receives authenticated user;
+if (Behavior differs by HR vs Employee role?) then (yes)
+  :Include Authorization mechanism;
+  :Enforce HR-only or role-differentiated behavior;
+else (no)
+  :Authentication suffices;
+  :Both roles perform action identically;
+endif
+stop
+@enduml
+```
+
+**Rationale for inclusion list:**
+- UC-001, UC-002, UC-005..UC-010 are HR-only or role-differentiated; the portal must verify the HR AD group membership before executing the action.
+- UC-003 (Clock In/Out), UC-004 (View Own Clocking History), UC-011 (Browse and Filter News), and UC-012 (Search Corporate Directory) expose the same behavior to HR and Employee roles. The authenticated identity is sufficient to scope the action to the current user; no additional authorization check is required.
 
 ### Licensing
 
@@ -44,7 +65,6 @@ The following mechanisms are included from every dependent use case via `<<inclu
 | REQ-U002 | Mandatory custom design | CON-015 | UI visual layer must implement `docs/inputs/employee-portal-design.html`. | Low |
 | REQ-U003 | Clocking without training | AC-004 | 80% of employees complete at least one clocking with no prior training. | Low |
 | REQ-U004 | Directory lookup under 10 seconds | AC-003 | Any employee finds a colleague's phone or email in under 10 seconds. | Low |
-
 ## Reliability
 
 | ID | Requirement | Source | Detail | Volatility |
@@ -60,7 +80,7 @@ The following mechanisms are included from every dependent use case via `<<inclu
 |---|---|---|---|---|
 | REQ-P001 | Page load performance | NFR-001 | Pages must load in under 3 seconds on the corporate network. | Low |
 | REQ-P002 | Clocking response performance | NFR-002 | Clock in/out operation must respond in under 1 second. | Low |
-| REQ-P003 | Directory read performance | FR-012, AC-003 | Directory search results must support under-10-second lookup target. | Low |
+| REQ-P003 | Directory search interaction performance | FR-012, AC-003 | From the start of the directory search interaction (page already loaded) to locating a colleague's phone or email must be under 10 seconds. Page load itself is governed by REQ-P001 (<3 seconds). | Low |
 
 > **Elaboration note:** The RequirementsSpecifier will quantify exact measurement conditions, load assumptions, and percentile thresholds for REQ-P001..REQ-P003 in the next iteration.
 
@@ -70,12 +90,12 @@ The following mechanisms are included from every dependent use case via `<<inclu
 |---|---|---|---|---|
 | REQ-SU001 | Maintainable .NET 10 codebase | CON-001 | REST API backend; standard Razor Pages frontend. | Low |
 | REQ-SU002 | Infrastructure handover | CON-013 | Development team hands over to Infrastructure team at end of Transition; team operates portal thereafter. | Low |
-| REQ-SU003 | Backup coverage by existing practice | CON-016 | No backup design or tooling in project scope; Infrastructure confirms existing server-backup practice covers PostgreSQL. | Low |
+| REQ-SU003 | Backup coverage dependency on Infrastructure confirmation | CON-016 | No backup design or tooling in project scope; the project depends on Infrastructure confirming that existing server-backup practice covers the PostgreSQL instance. | Low |
 
 ## Design Constraints
 
 | ID | Constraint | Source | Detail |
-|---|---|---|---|
+|---|---|---|
 | CON-001 | Backend technology | Work Order | .NET 10, REST API. |
 | CON-002 | Frontend technology | Work Order | Razor Pages; no SPA, no client-side router. Page-level JavaScript allowed for clocking retry. |
 | CON-003 | Database | Work Order | PostgreSQL. |
@@ -85,7 +105,7 @@ The following mechanisms are included from every dependent use case via `<<inclu
 ### Implementation Constraints
 
 | ID | Constraint | Source | Detail |
-|---|---|---|---|
+|---|---|---|
 | CON-001 | Backend stack | Work Order | .NET 10, REST API. |
 | CON-002 | Frontend stack | Work Order | Razor Pages; page-level JavaScript permitted only where required (clocking retry). |
 | CON-003 | Database | Work Order | PostgreSQL. |
@@ -93,7 +113,7 @@ The following mechanisms are included from every dependent use case via `<<inclu
 ### Physical / Environmental Constraints
 
 | ID | Constraint | Source | Detail |
-|---|---|---|---|
+|---|---|---|
 | CON-007 | Hosting | Work Order | Internal Windows Server; no cloud deployment. |
 | CON-008 | Network access | Work Order | No access from outside the corporate network. |
 
@@ -102,7 +122,7 @@ The following mechanisms are included from every dependent use case via `<<inclu
 ### User Interfaces
 
 | ID | Interface | Source | Detail |
-|---|---|---|---|
+|---|---|---|
 | INT-001 | Main page / clocking page | FR-003, NFR-007 | Shows Clock In/Out button; includes localStorage retry script. |
 | INT-002 | Personal clocking history page | FR-004 | Current-month history view. |
 | INT-003 | HR all-clockings view | FR-005, FR-007 | List all clockings; launch correction/insertion. |
