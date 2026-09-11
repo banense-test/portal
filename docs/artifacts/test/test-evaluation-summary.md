@@ -1,13 +1,11 @@
 ## Document Control
-
 | Field | Value |
 |---|---|
 | Project | Portal |
 | Phase | Inception |
-| Iteration | 1 |
+| Iteration | 2 |
 | Status | Draft |
-| Milestone Target | End-of-Inception review |
-
+| Milestone Target | End-of-Inception review (LCO re-review after findings closed) |
 ## Test Scope
 
 ### Purpose
