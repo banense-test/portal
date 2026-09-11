@@ -20,6 +20,16 @@
 | REQ-S004 | Audit trail for worker category changes | NFR-005 | Every assign/clear of a worker category records who made the change and when. | Low |
 | REQ-S005 | Audit trail for clocking corrections | FR-007, CON-020 | Every correction/insertion records who, when, previous value, new value, and free-text reason. | Low |
 
+### Cross-Cutting Mechanisms (included from dependent use cases)
+
+The following mechanisms are included from every dependent use case via `<<include>>`. They are NOT standalone use cases.
+
+| Mechanism | Included From | Description |
+|---|---|---|
+| Authentication (Keycloak OIDC) | UC-001..UC-012 | Validates the user before any portal action. |
+| Authorization (AD group → HR/Employee role) | UC-001, UC-002, UC-005..UC-010 | Enforces two-level access control. |
+| Audit logging | UC-001, UC-002, UC-007..UC-010 | Records author and timestamp for news and category changes; records correction details for clocking changes. |
+
 ### Licensing
 
 | ID | Requirement | Source | Detail | Volatility |
@@ -99,16 +109,6 @@
 | STD-001 | Europe/Madrid timezone handling | CON-021 | Clockings stored in UTC; displayed and exported in Europe/Madrid local time. |
 | STD-002 | CSV column order | FR-006 | EmployeeId, FullName, WorkerCategory, Date, ClockIn, ClockOut, HoursWorked, Corrected. |
 | STD-003 | Closed worker category list | CON-017 | Full-time, Part-time, Contractor, Intern. |
-
-## Cross-Cutting Mechanisms
-
-The following mechanisms are included from every dependent use case via `<<include>>`. They are NOT standalone use cases.
-
-| Mechanism | Included From | Description |
-|---|---|---|
-| Authentication (Keycloak OIDC) | UC-001..UC-012 | Validates the user before any portal action. |
-| Authorization (AD group → HR/Employee role) | UC-001, UC-002, UC-005..UC-010 | Enforces two-level access control. |
-| Audit logging | UC-001, UC-002, UC-007..UC-010 | Records author and timestamp for news and category changes; records correction details for clocking changes. |
 
 ### Clocking Network Resilience Activity
 
