@@ -298,10 +298,12 @@ end note
 | Test Evaluation Summary | Pass | Pass | Pass | Pass | N/A | Approved with Changes (Major resolved; 1 Minor verified addressed) |
 
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | Review Record | Reviewer lens findings | Refines | Vision, Iteration Plan, Risk List, Development Case, Supplementary Specification, Use-Case Model, SAD, TES |
 | Review Record | ManagementReviewer findings | DependsOn | Stakeholder LCO sanction decision |
 | Review Record | Stakeholder directive | Refines | Risk List#F1(MR), Iteration Plan#F1(MR) |
 | Review Record | CI build evidence | DependsOn | GitHub Actions run `34609595628` |
+| BR-OK-INACTIVE verdict | Development Case §Tailoring Overview | Refines | Review Record §Findings §Business Modeling Discipline Assessment |
+| BM inactive rationale | Vision §Scope Statement | Refines | Development Case §Disciplines and Intensity |
+| System UC derivation | FR-001..FR-012 | Derives | UC-001..UC-012 |
