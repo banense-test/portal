@@ -4,7 +4,7 @@
 |---|---|
 | Project | Portal |
 | Phase | Inception |
-| Iteration | 1 |
+| Iteration | 2 |
 | Status | Draft |
 | Milestone Target | End-of-Inception review |
 
@@ -13,9 +13,10 @@
 Cuba Corp (200 employees across 3 offices) currently manages clocking, HR news distribution, and corporate directory access through disconnected, manual tools: shared Excel sheets for clockings, mass emails for news, and an outdated PDF for the phone directory. These tools are error-prone, create duplicate work for HR, and provide no reliable audit trail. The root problem is the absence of a single, authoritative internal web application that employees and HR can use for these daily processes.
 
 Affected stakeholders:
-- STK-001 Laura Gómez (HR Director / project sponsor) — loses time consolidating and correcting clocking data, lacks an auditable news channel.
-- STK-004 Cuba Corp Employees — cannot reliably clock in/out, find colleague contact details, or read current HR news in one place.
-- STK-003 Infrastructure team — must support fragmented data stores and ad-hoc distribution channels.
+- **STK-001 Laura Gómez** (HR Director / project sponsor) — sponsors the project and is accountable for HR process outcomes and project success.
+- **HR Administrators** (members of the AD "HR" group, represented in the Use-Case Model by Actor A-002) — lose time consolidating and correcting clocking data, lack an auditable news channel, and manually maintain worker categories.
+- **STK-004 Cuba Corp Employees** — cannot reliably clock in/out, find colleague contact details, or read current HR news in one place.
+- **STK-003 Infrastructure team** — must support fragmented data stores and ad-hoc distribution channels.
 
 Success criteria (measurable):
 - BG-001 Reduce HR management time by 50% for clockings, news distribution, and directory updates.
@@ -30,7 +31,7 @@ For Cuba Corp employees and HR administrators who need a single internal source 
 
 | ID | Stakeholder | Role / Interest | Influence |
 |---|---|---|---|
-| STK-001 | Laura Gómez | HR Director and project sponsor; uses HR capabilities (news, categories, clocking oversight) | High |
+| STK-001 | Laura Gómez | HR Director and project sponsor. Operational HR capabilities (news management, worker categories, clocking oversight, CSV export, clocking correction) are performed by members of the AD "HR" group (Actor A-002 HR Administrator), not by Laura as an individual. | High |
 | STK-002 | Miguel Torres | Software Engineer; clarifies engineering questions for technical roles | High |
 | STK-003 | Infrastructure team | Operates AD, Keycloak, and the portal in production; wants no AD/Keycloak changes or new platform types | High |
 | STK-004 | Cuba Corp Employees | 200 end users across 3 offices; clock in/out, read news, search directory | Medium |
@@ -206,6 +207,8 @@ The full set of declared constraints is reproduced below for traceability. See t
 
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| Vision | STK-001, STK-004 | Refines | UC-001..UC-012 |
+| Vision | STK-001 | Refines | BG-001, BG-002, BG-003 |
+| Vision | STK-004 | Refines | UC-003, UC-004, UC-011, UC-012 |
+| Vision | A-002 (HR Administrator) | Refines | UC-001, UC-002, UC-005, UC-006, UC-007, UC-008, UC-009, UC-010 |
 | Vision | BG-001, BG-002, BG-003 | Refines | F-001..F-011 |
 | Vision | R001, R002 | DependsOn | A-002 |
