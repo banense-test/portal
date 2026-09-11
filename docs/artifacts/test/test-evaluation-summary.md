@@ -7,12 +7,11 @@
 | Status | Draft |
 | Milestone Target | End-of-Inception review (LCO re-review after findings closed) |
 ## Test Scope
-
 ### Purpose
 
-This Test Evaluation Summary records the initial testing mission for the **Portal** project during Inception Iteration 1. At this stage no executable code exists; the test effort focuses on validating that the declared scope, use cases, supplementary requirements, and candidate architecture are ready to support a testable system in Elaboration and Construction.
+This Test Evaluation Summary records the testing mission for the **Portal** project during Inception. At this stage no executable code exists; the test effort focuses on validating that the declared scope, use cases, supplementary requirements, and candidate architecture are ready to support a testable system in Elaboration and Construction.
 
-### Evaluation Mission for Inception Iteration 1
+### Evaluation Mission for Inception
 
 | Element | Definition |
 |---|---|
@@ -21,40 +20,6 @@ This Test Evaluation Summary records the initial testing mission for the **Porta
 | **Scope out** | No test-case design, no test execution, no test environment provisioning, and no defect data collection — these activities require code or stable design artifacts that do not yet exist. |
 | **Resources** | Test Manager time; access to upstream artifacts; stakeholder input on acceptance-criteria interpretation. |
 | **Monitoring** | Traceability of test concerns to declared requirements, use cases, risks, and architecture decisions; this summary is the baseline against which future iterations will be evaluated. |
-
-### Target-of-Test Mapping
-
-| Declared Requirement / Acceptance Criterion | Use Case | Test Concern |
-|---|---|---|
-| FR-001, FR-002, NFR-005 | UC-001, UC-002 | Worker category assign/clear and audit trail |
-| FR-003, NFR-007, AC-005 | UC-003 | Clock in/out, client timestamp, idempotency, 5-minute localStorage retry |
-| FR-004 | UC-004 | Personal current-month clocking history |
-| FR-005, FR-006 | UC-005, UC-006 | HR all-clockings view and monthly CSV export (Europe/Madrid, column order) |
-| FR-007, CON-020, NFR-004 | UC-007 | Correction/insertion with immutable original records and audit trail |
-| FR-008, CON-019, NFR-004 | UC-008 | Publish news with at-most-one featured invariant and audit |
-| FR-009, NFR-004 | UC-009 | Edit news with featured-flag maintenance and audit |
-| FR-010, NFR-004 | UC-010 | Unpublish news without deletion, un-feature if featured |
-| FR-011 | UC-011 | News browsing, newest-first, category filter, featured banner |
-| FR-012, NFR-006, AC-003 | UC-012 | Directory search by AD-sourced fields + worker category, under 10 seconds |
-| NFR-001, NFR-002 | UC-003, UC-011, UC-012 | Page load < 3 s; clocking response < 1 s |
-| NFR-003 | All UCs | Availability Monday–Friday 7:00–19:00 |
-| AC-001 | UC-003 | Employee self-service clocking without assistance |
-| AC-002 | UC-008 | HR publishes news without technical assistance |
-| AC-004 | UC-003 | 80% of employees complete a clocking with no prior training |
-
-### Out-of-Scope Testing (Declared Exclusions)
-
-The following are explicitly excluded from the test mission because they are out of project scope per the Work Order and Vision:
-
-- Native mobile app, push notifications, payroll integration, vacation/sick-leave management, biometric clocking.
-- Keycloak deployment, provisioning, or configuration testing beyond OIDC client behavior.
-- AD write-back, sync jobs, reconciliation, conflict resolution.
-- News archive screen, hard delete of news items, automatic news featuring.
-- Offline mode beyond the 5-minute clocking retry (no PWA, service worker, or client cache testing).
-- Permission model beyond the two AD-group-derived levels.
-- Data migration from historical Excel sheets.
-- Self-service clocking correction by employees.
-
 ## Test Summary
 
 ### Inception Test Workflow
