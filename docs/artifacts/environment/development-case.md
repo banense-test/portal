@@ -101,7 +101,6 @@ stop
 ```
 
 ## Artifacts and Templates
-
 ### CORE Artifacts (always produced)
 
 All 16 CORE artifacts from the IARI baseline are required for Portal. The following table maps each CORE artifact to its primary owner and the project-specific template / tool reference.
@@ -137,7 +136,7 @@ All 16 CORE artifacts from the IARI baseline are required for Portal. The follow
 | Test Plan | NOT TRIGGERED | — | — | No formal delivery / regulatory / contractual test reporting requirement. |
 
 ```plantuml
-@startuml Portal_OptionalTriggerEvaluation_Fixed
+@startuml Portal_OptionalTriggerEvaluation
 !theme plain
 
 start
@@ -196,7 +195,6 @@ endif
 stop
 @enduml
 ```
-
 ## Optional Artifact Triggers
 
 Fired OPTIONAL artifacts this iteration:
