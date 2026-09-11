@@ -83,61 +83,15 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Sync solution from src/ + tests/
-        shell: pwsh
+        shell: bash
         run: |
-          $projects = Get-ChildItem -Path src, tests -Recurse -Filter '*.csproj' | Select-Object -ExpandProperty FullName
-          $guidMap = @{}
-          foreach ($proj in $projects) {
-            [xml]$csproj = Get-Content $proj
-            $guid = $csproj.Project.PropertyGroup.ProjectGuid
-            if (-not $guid) {
-              $guid = [Guid]::NewGuid().ToString().ToUpper()
-              $pg = $csproj.Project.PropertyGroup | Select-Object -First 1
-              if (-not $pg.ProjectGuid) {
-                $newNode = $csproj.CreateElement('ProjectGuid')
-                $newNode.InnerText = "{$guid}"
-                $pg.AppendChild($newNode) | Out-Null
-                $csproj.Save($proj)
-              } else {
-                $guid = $pg.ProjectGuid
-              }
-            }
-            $guidMap[$proj] = $guid
-          }
-
-          $slnContent = @(
-            'Microsoft Visual Studio Solution File, Format Version 12.00',
-            '# Visual Studio Version 17',
-            'VisualStudioVersion = 17.0.31903.59',
-            'MinimumVisualStudioVersion = 10.0.40219.1'
-          )
-
-          foreach ($proj in $projects) {
-            $relative = Resolve-Path -Relative -Path $proj
-            $relative = $relative -replace '^\.\', ''
-            $name = [System.IO.Path]::GetFileNameWithoutExtension($proj)
-            $guid = $guidMap[$proj]
-            $slnContent += "Project(\"{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}\") = \"$name\", \"$relative\", \"$guid\""
-            $slnContent += 'EndProject'
-          }
-
-          $slnContent += 'Global'
-          $slnContent += '	GlobalSection(SolutionConfigurationPlatforms) = preSolution'
-          $slnContent += '		Debug|Any CPU = Debug|Any CPU'
-          $slnContent += '		Release|Any CPU = Release|Any CPU'
-          $slnContent += '	EndGlobalSection'
-          $slnContent += '	GlobalSection(ProjectConfigurationPlatforms) = postSolution'
-          foreach ($guid in $guidMap.Values) {
-            $slnContent += "\t\t$guid.Debug|Any CPU.ActiveCfg = Debug|Any CPU"
-            $slnContent += "\t\t$guid.Debug|Any CPU.Build.0 = Debug|Any CPU"
-            $slnContent += "\t\t$guid.Release|Any CPU.ActiveCfg = Release|Any CPU"
-            $slnContent += "\t\t$guid.Release|Any CPU.Build.0 = Release|Any CPU"
-          }
-          $slnContent += '	EndGlobalSection'
-          $slnContent += 'EndGlobal'
-
-          $slnContent | Out-File -FilePath Portal.sln -Encoding utf8
-          Get-Content Portal.sln
+          set -e
+          rm -f Portal.sln
+          dotnet new sln --name Portal --output .
+          find src tests -name '*.csproj' -print0 | sort -z | while IFS= read -r -d '' proj; do
+            dotnet sln Portal.sln add "$proj"
+          done
+          dotnet sln Portal.sln list
 
       - name: Restore dependencies
         run: dotnet restore Portal.sln
