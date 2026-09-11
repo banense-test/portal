@@ -382,6 +382,64 @@ The Inception phase technical artifacts are feasible and acceptable to stakehold
 3. Reviewer verifies the corrections and tool-closes Use-Case Model#F5, #F6 and Software Architecture Document#F5.
 4. ReviewCoordinator confirms zero open findings and authorizes Elaboration entry.
 5. ProjectManager updates Iteration Assessment to reflect final closure.
+
+### Business Modeling Discipline (Reviewer: Business Reviewer)
+
+```plantuml
+@startuml BusinessModeling_Inactive_Status
+!theme plain
+skinparam classAttributeIconSize 0
+
+class "Business Modeling Discipline" as BM #LightGray {
+  Status: INACTIVE
+  Trigger: business-process-led = false
+}
+
+class "DC §4 Classification" as DC4 #LightGreen {
+  isBusinessProcessLed: false
+  classifiedAtUtc: 2026-09-11T14:40:45Z
+}
+
+class "Vision" as V #LightGreen {
+  Business Context section: absent
+}
+
+class "Use-Case Model" as UCM #LightGreen {
+  Business Use Cases section: absent
+}
+
+class "Glossary" as G #LightGreen {
+  Artifact: not present
+  Business terms: none
+}
+
+BM --> DC4 : governed by
+BM --> V : no BM sections
+BM --> UCM : no BM sections
+BM --> G : no specialist terms
+
+note right of BM
+  BR-OK-INACTIVE: Business Modeling
+  correctly omitted for this engagement.
+  No BUCs, workers, entities, or business
+  rules required at LCO.
+end note
+@enduml
+```
+
+**Verdict: [BR-OK-INACTIVE] — Discipline NOT APPLICABLE per DC §4**
+
+DC §4 trigger evaluation: the project does not exhibit business-process-led characteristics. The stakeholder scope is expressed as 12 functional requirements (FR-001..FR-012), 8 non-functional requirements (NFR-001..NFR-008), business goals, constraints, and risks. The project automates known HR/employee processes (clock in/out, news publishing, directory search) rather than redesigning business processes. There is no separate business-process re-engineering effort and no need for a dedicated Business Use-Case Model.
+
+Evidence observed:
+
+- `get_dc_classification` returns `isBusinessProcessLed: false` (classified 2026-09-11T14:40:45Z).
+- Vision artifact contains no `Business Context` section.
+- Use-Case Model artifact contains no `Business Use Cases`, `Business Workers`, or `Business Entities` sections.
+- Glossary artifact does not exist; no business-domain specialist terms requiring validated definitions are present.
+
+Conclusion: Business Process Analyst and Business Reviewer are correctly INACTIVE for this engagement. No business modeling findings, no recommendations, and no business-to-system derivation bridge review is required. The system use-case model (UC-001..UC-012) is the appropriate abstraction level for LCO. Downstream reviewers (Reviewer, ManagementReviewer, ReviewCoordinator) may treat the Business Modeling discipline as out-of-scope for the LCO milestone.
+
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
