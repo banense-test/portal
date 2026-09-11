@@ -5,7 +5,7 @@
 | Project | Portal |
 | Phase | Inception |
 | Iteration | 1 |
-| Status | Consolidated — LCO No-Go |
+| Status | Consolidated — LCO No-Go (stakeholder input received) |
 | Milestone Target | Lifecycle Objectives (LCO) |
 | Review Type | Lifecycle Milestone Review |
 | Review Coordinator | ReviewCoordinator |
@@ -13,7 +13,7 @@
 
 ## Review Scope and Criteria
 
-This is the consolidated authoritative Review Record for the Inception Iteration 1 Lifecycle Objectives (LCO) milestone review. It aggregates findings from all reviewer lenses that evaluated the review and records the final milestone disposition.
+This is the consolidated authoritative Review Record for the Inception Iteration 1 Lifecycle Objectives (LCO) milestone review. It aggregates findings from all reviewer lenses that evaluated the review and records the final milestone disposition, including stakeholder input received during Critical-finding escalation.
 
 ### Lenses Participating in This Review
 
@@ -79,6 +79,18 @@ C004 --> C005
 |---|---|---|---|---|---|
 | Vision#F2 | Vision | Reviewer | Critical | STK-001 (Laura Gómez) is described as performing specific HR capabilities (publish/edit/unpublish news, manage worker categories, view all clockings, export CSV, correct/insert clockings) without a [DERIVED] marker. The Work Order explicitly states these capabilities are derived from the HR role, not from the stakeholder's own description of Laura. This is silent promotion of a derivation to declared scope. | NeedsRework |
 | Iteration Plan#F1 (MR) | Iteration Plan | ManagementReviewer | Critical | LCO stakeholder sanction REFUSED. The stakeholder did not accept advancing past the Lifecycle Objectives milestone while open findings remain. The project is blocked at the LCO gate until all findings (including Minor findings per the stakeholder's explicit directive) are closed. | NeedsRework |
+
+#### Stakeholder Resolution for Critical Findings
+
+**Vision#F2 — STK-001 scope derivation:**
+
+The stakeholder answered: "No. Laura Gómez is the HR Director and project sponsor, not a portal operator. The listed capabilities—publishing, editing, and unpublishing news; managing employee categories; viewing all time logs; exporting CSVs; and correcting or inserting time logs—belong to the HR role, which is defined by membership in the Active Directory 'HR' group, not by her as an individual. Any member of that group can exercise these capabilities; whether or not Laura is in that group is not determined by this project."
+
+**Action for System Analyst / Project Manager:** Update the Vision so that STK-001 is described only as "HR Director and project sponsor" and the HR capabilities are attributed to the **HR role** (members of the AD "HR" group), with a trace to FR-001..FR-012. Remove any wording that implies Laura personally performs those operations.
+
+**Iteration Plan#F1 (MR) — LCO sanction:**
+
+The stakeholder confirmed: "Do not move forward with the LCO while there are open findings. Close them out and reschedule the review."
 
 ### Major Findings
 
@@ -147,8 +159,8 @@ MAJOR : Test Evaluation Summary#F2
 
 | Action ID | Finding | Owner | Target Artifact | Severity | Due | Status |
 |---|---|---|---|---|---|---|
-| A-001 | Vision#F2 | System Analyst / Project Manager | Vision | Critical | Before LCO re-review | Open |
-| A-002 | Iteration Plan#F1 (MR) | Project Manager / Stakeholder | Review Record / Iteration Plan | Critical | Before LCO re-review | Open |
+| A-001 | Vision#F2 | System Analyst / Project Manager | Vision | Critical | Before LCO re-review | Open — stakeholder resolution received |
+| A-002 | Iteration Plan#F1 (MR) | Project Manager / Stakeholder | Review Record / Iteration Plan | Critical | Before LCO re-review | Open — close after all other findings closed |
 | A-003 | Iteration Plan#F1 | Project Manager | Iteration Plan | Major | Before LCO re-review | Open |
 | A-004 | Risk List#F2 | Project Manager | Risk List | Major | Before LCO re-review | Open |
 | A-005 | Risk List#F1 (MR) | Project Manager | Risk List / Iteration Plan | Major | Before LCO re-review | Open |
@@ -170,7 +182,7 @@ start
 :Original reviewer lens verifies each closure
 (resolve_artifact_finding);
 :ReviewCoordinator reads all findings
-and confirms unread=none, open Critical=0, open Major=0;
+and confirms unread=none, open Critical=0, open Major=0, open Minor=0;
 :ManagementReviewer reconvenes LCO review;
 :Stakeholder asked again for LCO sanction;
 if (Sanction granted?) then (yes)
@@ -194,6 +206,8 @@ The stakeholder answered: **No**
 
 Additional stakeholder directive: **"Close all findings even if they are minors."**
 
+Subsequent stakeholder clarification (Critical escalation): **"No. Laura Gómez is the HR Director and project sponsor, not a portal operator. The listed capabilities—publishing, editing, and unpublishing news; managing employee categories; viewing all time logs; exporting CSVs; and correcting or inserting time logs—belong to the HR role, which is defined by membership in the Active Directory 'HR' group, not by her as an individual. Any member of that group can exercise these capabilities; whether or not Laura is in that group is not determined by this project. Do not move forward with the LCO while there are open findings. Close them out and reschedule the review."**
+
 ### Milestone Verdict
 
 **Verdict: No-Go — requires iteration**
@@ -201,9 +215,10 @@ Additional stakeholder directive: **"Close all findings even if they are minors.
 The Lifecycle Objectives (LCO) milestone is **not sanctioned**. The project remains in Inception until:
 
 1. All open findings across all reviewed artifacts are closed, including all Minor findings as directed by the stakeholder.
-2. The original reviewer lenses resolve their findings via `resolve_artifact_finding`.
-3. The ReviewCoordinator confirms from the finding data that unread=none, open Critical=0, open Major=0, and open Minor=0.
-4. The ManagementReviewer reconvenes the LCO review and the stakeholder grants explicit sanction to proceed.
+2. The Vision is updated so STK-001 is described as HR Director / project sponsor only, and HR capabilities are attributed to the AD "HR" group role, not to Laura Gómez as an individual.
+3. The original reviewer lenses resolve their findings via `resolve_artifact_finding`.
+4. The ReviewCoordinator confirms from the finding data that unread=none, open Critical=0, open Major=0, and open Minor=0.
+5. The ManagementReviewer reconvenes the LCO review and the stakeholder grants explicit sanction to proceed.
 
 ### Review Process Artifacts
 
@@ -248,6 +263,7 @@ R6 --> PR : feeds
 | Review Record | Vision, Use-Case Model, Supplementary Specification, SAD, Iteration Plan, Risk List, Development Case, Test Evaluation Summary | Refines | LCO exit criteria |
 | Review Record | Reviewer findings | DependsOn | Vision#F2, Iteration Plan#F1, Risk List#F2, Development Case#F3, Supplementary Specification#F2, Use-Case Model#F2, Software Architecture Document#F2, Test Evaluation Summary#F2 |
 | Review Record | ManagementReviewer findings | DependsOn | Iteration Plan#F1(MR), Risk List#F1(MR) |
+| Stakeholder resolution (Vision#F2) | STK-001 | Refines | HR role (AD "HR" group), FR-001..FR-012 |
 | LCO verdict | Stakeholder response | Refines | Iteration Plan rework, Risk List update |
 | Action A-001 | Vision#F2 | DependsOn | STK-001, FR-001..FR-012 |
 | Action A-003 | Iteration Plan#F1 | DependsOn | IARI DC §8.1 cost-boxing |
