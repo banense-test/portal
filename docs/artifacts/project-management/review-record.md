@@ -82,7 +82,6 @@ stop
 ```
 
 ## Findings
-
 ### Finding Lifecycle State Machine
 
 ```plantuml
@@ -116,15 +115,15 @@ note right of VERIFIED
 end note
 
 note bottom of OPEN
-  At LCO re-review:
+  At Iteration 3 LCO review:
   0 Critical, 0 Major,
-  5 Minor verified but
-  not yet tool-closed.
+  3 Minor open (new document-control
+  inconsistencies detected).
 end note
 @enduml
 ```
 
-### Consolidated Finding Register at LCO Re-review
+### Consolidated Finding Register at Iteration 3 LCO Review
 
 | ID | Artifact | Lens | Severity | Status | Finding Summary |
 |---|---|---|---|---|---|
@@ -135,9 +134,11 @@ end note
 | Use-Case Model#F2 | Use-Case Model | Reviewer | Major | Closed | UC-009 featured invariant wording ambiguous |
 | Use-Case Model#F3 | Use-Case Model | Reviewer | Minor | Closed | UC-006 HoursWorked calculation not specified |
 | Use-Case Model#F4 | Use-Case Model | Reviewer | Minor | Closed | UC-003 idempotency key strategy not specified |
-| Supplementary Specification#F1 | Supplementary Specification | Reviewer | Minor | Verified, open | REQ-P003 10-second target needs Elaboration decomposition note |
+| Use-Case Model#F5 | Use-Case Model | Reviewer | Minor | Open | Document Control iteration metadata stale (Iteration 2, should be 3) |
+| Use-Case Model#F6 | Use-Case Model | Reviewer | Minor | Open | UC-009 survey status says "Outlined" but specification is detailed |
+| Supplementary Specification#F1 | Supplementary Specification | Reviewer | Minor | Closed | REQ-P003 10-second target needs Elaboration decomposition note |
 | Supplementary Specification#F2 | Supplementary Specification | Reviewer | Major | Closed | Authentication/Authorization inclusion inconsistency |
-| Supplementary Specification#F3 | Supplementary Specification | Reviewer | Minor | Verified, open | REQ-SU003 should cite Infrastructure backup confirmation |
+| Supplementary Specification#F3 | Supplementary Specification | Reviewer | Minor | Closed | REQ-SU003 should cite Infrastructure backup confirmation |
 | Risk List#F1 | Risk List | Reviewer | Minor | Closed | R003 mitigation should cite CON-005 |
 | Risk List#F2 | Risk List | Reviewer | Major | Closed | Derived risks lack declared-vs-derived marker |
 | Risk List#F3 | Risk List | Reviewer | Minor | Closed | R006 traced to non-existent Deployment Plan |
@@ -146,25 +147,138 @@ end note
 | Iteration Plan#F3 | Iteration Plan | Reviewer | Minor | Closed | AC mapping to iterations not explicit |
 | Iteration Plan#F1(MR) | Iteration Plan | ManagementReviewer | Critical | Closed | LCO stakeholder sanction refused in Iteration 1 |
 | Risk List#F1(MR) | Risk List | ManagementReviewer | Major | Closed | Stakeholder directive: close all findings including minors |
-| Development Case#F1 | Development Case | Reviewer | Minor | Verified, open | Optional Trigger Evaluation diagram has inverted yes/no labels |
-| Development Case#F2 | Development Case | Reviewer | Minor | Verified, open | CONTRIBUTING.md / CI gaps should be explicit Elaboration gates |
+| Development Case#F1 | Development Case | Reviewer | Minor | Closed | Optional Trigger Evaluation diagram has inverted yes/no labels |
+| Development Case#F2 | Development Case | Reviewer | Minor | Closed | CONTRIBUTING.md / CI gaps should be explicit Elaboration gates |
 | Development Case#F3 | Development Case | Reviewer | Major | Closed | Data Model optional artifact lacked iteration/owner tie |
 | Software Architecture Document#F1 | SAD | Reviewer | Minor | Closed | Application-layer components named after features |
 | Software Architecture Document#F2 | SAD | Reviewer | Major | Closed | ADR-008 pending decision not marked |
 | Software Architecture Document#F3 | SAD | Reviewer | Minor | Closed | Data View did not address no-caching constraint |
 | Software Architecture Document#F4 | SAD | Reviewer | Minor | Closed | PoC Plan did not reconcile optional artifact trigger |
-| Test Evaluation Summary#F1 | Test Evaluation Summary | Reviewer | Minor | Verified, open | Verdict self-assessed; needs Reviewer/ReviewCoordinator confirmation |
+| Software Architecture Document#F5 | SAD | Reviewer | Minor | Open | Document Control iteration metadata stale (Iteration 2, should be 3) |
+| Test Evaluation Summary#F1 | Test Evaluation Summary | Reviewer | Minor | Closed | Verdict self-assessed; needs Reviewer/ReviewCoordinator confirmation |
 | Test Evaluation Summary#F2 | Test Evaluation Summary | Reviewer | Major | Closed | Defect table misrepresented Inception state |
 
 ### Finding Closure Summary
 
 | Lens | Critical Open | Major Open | Minor Open | Total Open |
 |---|---|---|---|---|
-| Reviewer | 0 | 0 | 5 | 5 |
+| Reviewer | 0 | 0 | 3 | 3 |
 | BusinessReviewer | INACTIVE — did not evaluate this review | — | — | — |
 | ManagementReviewer | 0 | 0 | 0 | 0 |
-| **Total** | **0** | **0** | **5** | **5** |
+| **Total** | **0** | **0** | **3** | **3** |
 
+### Compliance Matrix
+
+```plantuml
+@startuml Inception_Iter3_Reviewer_Compliance_Matrix
+!theme plain
+skinparam classAttributeIconSize 0
+
+class "Artifact" as A {
+}
+
+class "Development Case" as DC #LightGreen
+class "Vision" as V #LightGreen
+class "Use-Case Model" as UCM #LightYellow
+class "Supplementary Specification" as SS #LightGreen
+class "Risk List" as RL #LightGreen
+class "Iteration Plan" as IP #LightGreen
+class "Software Architecture Document" as SAD #LightYellow
+class "Test Evaluation Summary" as TES #LightGreen
+class "Iteration Assessment" as IA #LightGreen
+
+A <|-- DC
+A <|-- V
+A <|-- UCM
+A <|-- SS
+A <|-- RL
+A <|-- IP
+A <|-- SAD
+A <|-- TES
+A <|-- IA
+
+note right of DC : Document Control ✓\nTraceability ✓\nUML >60% ✓\nLCO alignment ✓
+note right of V : Document Control ✓\nTraceability ✓\nUML ✓\nLCO alignment ✓
+note right of UCM : Document Control ⚠ (Iteration 2)\nTraceability ✓\nUML ✓\nLCO alignment ✓\nUC-009 status ⚠
+note right of SS : Document Control ✓\nTraceability ✓\nUML ✓\nLCO alignment ✓
+note right of RL : Document Control ✓\nTraceability ✓\nUML ✓\nLCO alignment ✓
+note right of IP : Document Control ✓\nTraceability ✓\nUML ✓\nLCO alignment ✓
+note right of SAD : Document Control ⚠ (Iteration 2)\nTraceability ✓\nUML ✓\nLCO alignment ✓
+note right of TES : Document Control ✓\nTraceability ✓\nUML ✓\nLCO alignment ✓
+note right of IA : Document Control ✓\nTraceability ✓\nUML ✓\nLCO alignment ✓
+
+legend
+  ✓ = Pass
+  ⚠ = Minor finding
+endlegend
+@enduml
+```
+
+### Defect Distribution
+
+```plantuml
+@startuml Inception_Iter3_Defect_Distribution
+!theme plain
+
+object "Development Case" as DC {
+  Critical = 0
+  Major = 0
+  Minor = 0
+}
+object "Vision" as V {
+  Critical = 0
+  Major = 0
+  Minor = 0
+}
+object "Use-Case Model" as UCM {
+  Critical = 0
+  Major = 0
+  Minor = 2
+}
+object "Supplementary Specification" as SS {
+  Critical = 0
+  Major = 0
+  Minor = 0
+}
+object "Risk List" as RL {
+  Critical = 0
+  Major = 0
+  Minor = 0
+}
+object "Iteration Plan" as IP {
+  Critical = 0
+  Major = 0
+  Minor = 0
+}
+object "Software Architecture Document" as SAD {
+  Critical = 0
+  Major = 0
+  Minor = 1
+}
+object "Test Evaluation Summary" as TES {
+  Critical = 0
+  Major = 0
+  Minor = 0
+}
+object "Iteration Assessment" as IA {
+  Critical = 0
+  Major = 0
+  Minor = 0
+}
+
+DC --> V : no findings
+V --> UCM : 2 new Minor
+UCM --> SS : no findings
+SS --> RL : no findings
+RL --> IP : no findings
+IP --> SAD : 1 new Minor
+SAD --> TES : no findings
+TES --> IA : no findings
+
+note bottom of UCM : Use-Case Model#F5, #F6
+note bottom of SAD : Software Architecture Document#F5
+@enduml
+```
 ## Resolutions and Actions
 
 ### Closed ManagementReviewer Findings
