@@ -213,17 +213,17 @@ end note
 | A-026 | Risk List#F1(MR) | ManagementReviewer / Project Manager | Risk List / Iteration Plan | Major | OPEN — stakeholder directive to close all findings |
 
 ## Disposition
-
 **Overall LCO Disposition: Approved with Changes — pending closure of remaining open findings.**
 
 The Reviewer lens confirms that all 7 Major and 1 Critical Reviewer findings from Iteration 1 have been addressed in the current artifact content. Fifteen of the 16 Reviewer Minor findings have been formally closed via `resolve_artifact_finding`; the remaining 5 Reviewer Minor findings were verified as addressed by inspection but could not be tool-closed within this iteration's budget.
+
+The Business Reviewer lens assesses Business Modeling as **BR-OK-INACTIVE**: the project is not business-process-led, no Business Use Cases / Workers / Entities sections are present, and the Development Case correctly declares Business Modeling INACTIVE. No business-modeling findings are recorded. The business-to-system derivation bridge is satisfied by direct FR-NNN → UC-NNN traceability in the Use-Case Model.
 
 However, two ManagementReviewer findings remain open:
 - **Iteration Plan#F1(MR)** — LCO stakeholder sanction refused; the project cannot advance until the stakeholder grants sanction at a re-reviewed LCO gate.
 - **Risk List#F1(MR)** — Stakeholder directive to close all findings including minors; this elevates the gate bar and means the 5 remaining Reviewer Minor findings (even though addressed) still block LCO from a process-ledger perspective.
 
 **Recommendation:** Schedule Iteration 3 to formally tool-close the 5 remaining Reviewer Minor findings and reconvene the ManagementReviewer LCO gate once the ledger shows zero open findings across all lenses.
-
 ## Compliance Matrix
 
 ```plantuml
