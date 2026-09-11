@@ -1,0 +1,158 @@
+# Portal CI/CD baseline pipeline
+#
+# Dependency hierarchy (leaves first):
+#   Portal.Core (domain abstractions)
+#   Portal.Infrastructure (depends on Core)
+#   Portal.Web (depends on Core + Infrastructure)
+#   Portal.Web.Tests (depends on Portal.Web)
+#
+# Target build frequency: at least one CI run per day toward iteration end;
+# every push and pull request to the branch families below triggers a run.
+#
+# The solution file is regenerated from the src/ + tests/ tree before each build
+# so merged subsystems can never be silently omitted from CI.
+#
+# ```plantuml
+# @startuml Portal_CI_Component
+# !theme plain
+# left to right direction
+# package "GitHub Actions Runner" {
+#   [Checkout] as Checkout
+#   [Setup .NET 10 SDK] as SetupDotNet
+#   [Sync Solution\nfrom src/ + tests/] as SyncSln
+#   [Restore Dependencies] as Restore
+#   [Build All Projects] as Build
+#   [Run Tests] as Test
+#   [Publish Artifacts] as Publish
+# }
+# package "Repository" {
+#   folder "src/" as Src
+#   folder "tests/" as Tests
+#   [Portal.sln] as Sln
+# }
+# Src --> SyncSln : discovered
+# Tests --> SyncSln : discovered
+# SyncSln --> Sln : regenerate
+# Sln --> Restore
+# Restore --> Build
+# Build --> Test
+# Test --> Publish
+# note right of SyncSln
+#   CI regenerates the solution file
+#   from the src/ + tests/ tree so
+#   merged subsystems are never
+#   omitted from the build.
+# end note
+# note bottom of Test
+#   Runs on push and pull_request
+#   for main, iteration/**, chore/**,
+#   feature/**, hotfix/**.
+# end note
+# @enduml
+# ```
+
+name: Portal CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'iteration/**'
+      - 'chore/**'
+      - 'feature/**'
+      - 'hotfix/**'
+  pull_request:
+    branches:
+      - main
+      - 'iteration/**'
+      - 'chore/**'
+      - 'feature/**'
+      - 'hotfix/**'
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Sync solution from src/ + tests/
+        shell: pwsh
+        run: |
+          $projects = Get-ChildItem -Path src, tests -Recurse -Filter '*.csproj' | Select-Object -ExpandProperty FullName
+          $guidMap = @{}
+          foreach ($proj in $projects) {
+            [xml]$csproj = Get-Content $proj
+            $guid = $csproj.Project.PropertyGroup.ProjectGuid
+            if (-not $guid) {
+              $guid = [Guid]::NewGuid().ToString().ToUpper()
+              $pg = $csproj.Project.PropertyGroup | Select-Object -First 1
+              if (-not $pg.ProjectGuid) {
+                $newNode = $csproj.CreateElement('ProjectGuid')
+                $newNode.InnerText = "{$guid}"
+                $pg.AppendChild($newNode) | Out-Null
+                $csproj.Save($proj)
+              } else {
+                $guid = $pg.ProjectGuid
+              }
+            }
+            $guidMap[$proj] = $guid
+          }
+
+          $slnContent = @(
+            'Microsoft Visual Studio Solution File, Format Version 12.00',
+            '# Visual Studio Version 17',
+            'VisualStudioVersion = 17.0.31903.59',
+            'MinimumVisualStudioVersion = 10.0.40219.1'
+          )
+
+          foreach ($proj in $projects) {
+            $relative = Resolve-Path -Relative -Path $proj
+            $relative = $relative -replace '^\.\', ''
+            $name = [System.IO.Path]::GetFileNameWithoutExtension($proj)
+            $guid = $guidMap[$proj]
+            $slnContent += "Project(\"{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}\") = \"$name\", \"$relative\", \"$guid\""
+            $slnContent += 'EndProject'
+          }
+
+          $slnContent += 'Global'
+          $slnContent += '	GlobalSection(SolutionConfigurationPlatforms) = preSolution'
+          $slnContent += '		Debug|Any CPU = Debug|Any CPU'
+          $slnContent += '		Release|Any CPU = Release|Any CPU'
+          $slnContent += '	EndGlobalSection'
+          $slnContent += '	GlobalSection(ProjectConfigurationPlatforms) = postSolution'
+          foreach ($guid in $guidMap.Values) {
+            $slnContent += "\t\t$guid.Debug|Any CPU.ActiveCfg = Debug|Any CPU"
+            $slnContent += "\t\t$guid.Debug|Any CPU.Build.0 = Debug|Any CPU"
+            $slnContent += "\t\t$guid.Release|Any CPU.ActiveCfg = Release|Any CPU"
+            $slnContent += "\t\t$guid.Release|Any CPU.Build.0 = Release|Any CPU"
+          }
+          $slnContent += '	EndGlobalSection'
+          $slnContent += 'EndGlobal'
+
+          $slnContent | Out-File -FilePath Portal.sln -Encoding utf8
+          Get-Content Portal.sln
+
+      - name: Restore dependencies
+        run: dotnet restore Portal.sln
+
+      - name: Build solution
+        run: dotnet build Portal.sln --no-restore --configuration Release
+
+      - name: Run tests
+        run: dotnet test Portal.sln --no-build --configuration Release --verbosity normal
+
+      - name: Publish web artifact
+        run: dotnet publish src/Portal.Web/Portal.Web.csproj --no-build --configuration Release --output ./publish
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: portal-build
+          path: ./publish
