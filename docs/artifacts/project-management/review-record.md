@@ -279,6 +279,14 @@ end note
 @enduml
 ```
 
+### Stakeholder Input on Next Pass
+
+**Question asked:** "The LCO re-review is conditionally approved: 0 Critical and 0 Major findings remain, but 5 Reviewer Minor findings (Development Case#F1, Development Case#F2, Supplementary Specification#F1, Supplementary Specification#F3, Test Evaluation Summary#F1) are verified as addressed in artifact content and still need formal tool-closure before Elaboration begins. The project will iterate to complete this ledger closure. Anything to add for the next pass — a missed requirement, a correction, a priority?"
+
+**Stakeholder answer:** Nothing else new.
+
+**Disposition:** No additional requirements, corrections, or priorities were raised. The next iteration will focus solely on formal tool-closure of the 5 verified Minor findings and ReviewCoordinator confirmation of zero open findings.
+
 ### Conditions for Elaboration Entry
 
 1. The Reviewer lens must formally tool-close the 5 remaining Minor findings:
@@ -309,6 +317,7 @@ R008 (stakeholder availability for gates) has increased in observed magnitude be
 | Review Record | Iteration Plan#F1(MR) | Refines | Iteration Plan §Milestone Target |
 | Review Record | Risk List#F1(MR) | Refines | Risk List §Risk Register, §Risk Mitigation and Contingency |
 | Review Record | Stakeholder LCO sanction answer | DependsOn | Iteration Plan, Risk List |
+| Review Record | Stakeholder next-pass input answer | DependsOn | Review Record §Disposition |
 | Review Record | LCO compliance assessment | Refines | Vision, Iteration Plan, Risk List, SAD |
 | Review Record | Risk retirement trend | DependsOn | Risk List R001..R008 |
 | Review Record | Open action items | Refines | Development Case, Supplementary Specification, Test Evaluation Summary |
