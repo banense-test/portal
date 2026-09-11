@@ -1,0 +1,54 @@
+name: Portal Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Restore
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+      - name: Test
+        run: dotnet test --no-build --verbosity normal
+      - name: Publish
+        run: dotnet publish src/Portal.Web/Portal.Web.csproj --configuration Release --output ./publish
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: portal-app
+          path: ./publish
+
+  deploy:
+    needs: build-and-test
+    runs-on: windows-latest
+    environment: ${{ github.event.inputs.environment || 'staging' }}
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: portal-app
+          path: ./publish
+      - name: Deploy to Windows Server
+        # Placeholder: replace with actual deployment steps in Transition
+        run: |
+          Write-Host "Deploy to internal Windows Server - TBD in Transition"
+          Write-Host "Target environment: ${{ github.event.inputs.environment || 'staging' }}"
