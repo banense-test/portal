@@ -28,10 +28,9 @@ Success criteria (measurable):
 For Cuba Corp employees and HR administrators who need a single internal source for clocking, HR news, and the corporate directory, the Employee Portal is an internal web application that centralizes these processes and replaces shared Excel sheets, mass emails, and an outdated PDF directory. Unlike the current fragmented tools, the portal provides an authenticated, auditable, and responsive intranet experience integrated with existing Keycloak and Active Directory.
 
 ## Stakeholder Summary
-
 | ID | Stakeholder | Role / Interest | Influence |
 |---|---|---|---|
-| STK-001 | Laura Gómez | HR Director and project sponsor. Operational HR capabilities (news management, worker categories, clocking oversight, CSV export, clocking correction) are performed by members of the AD "HR" group (Actor A-002 HR Administrator), not by Laura as an individual. | High |
+| STK-001 | Laura Gómez | HR Director and project sponsor. Operational HR capabilities (news management, worker categories, clocking oversight, CSV export, clocking correction) are performed by members of the AD "HR" group (Actor A-002 HR Administrator), not by Laura as an individual. The HR role is defined by AD group membership per NFR-006; whether Laura personally belongs to that group is outside this project's scope. | High |
 | STK-002 | Miguel Torres | Software Engineer; clarifies engineering questions for technical roles | High |
 | STK-003 | Infrastructure team | Operates AD, Keycloak, and the portal in production; wants no AD/Keycloak changes or new platform types | High |
 | STK-004 | Cuba Corp Employees | 200 end users across 3 offices; clock in/out, read news, search directory | Medium |
