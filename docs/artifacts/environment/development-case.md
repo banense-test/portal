@@ -4,13 +4,13 @@
 |---|---|
 | Project | Portal |
 | Phase | Inception |
-| Iteration | 1 |
+| Iteration | 2 |
 | Status | Draft |
-| Milestone Target | End-of-Inception review |
+| Milestone Target | End-of-Inception review (LCO re-review after findings closed) |
 
 ## Tailoring Overview
 
-This Development Case records the project-specific deltas over the IARI DC baseline for the **Portal** project. The baseline roster (24 active roles), the 16 CORE artifacts, the 6 OPTIONAL artifacts, and the canonical discipline intensity matrix remain authoritative. Only deviations, optional trigger decisions, and project-specific tool references are declared here.
+This Development Case records the project-specific deltas over the IARI DC baseline for the **Portal** project. The baseline roster (25 active roles), the 16 CORE artifacts, the 6 OPTIONAL artifacts, and the canonical discipline intensity matrix remain authoritative. Only deviations, optional trigger decisions, and project-specific tool references are declared here.
 
 ### Project Context
 
@@ -23,7 +23,7 @@ This Development Case records the project-specific deltas over the IARI DC basel
 
 1. **Business Modeling is inactive.** The stakeholder scope is already expressed as 12 functional requirements (FR-001..FR-012), 8 non-functional requirements (NFR-001..NFR-008), business goals, constraints, and risks. There is no separate business-process re-engineering effort; the project automates known HR/employee processes rather than redesigning them. A dedicated Business Use-Case Model would duplicate the system Use-Case Model without adding value.
 2. **Architecture risk is moderate.** The main technical risks are AD LDAP attribute consistency (R001) and digital clocking adoption (R002), not architectural feasibility. Therefore an Architectural Proof-of-Concept is not triggered in Inception; it may be triggered in Elaboration if the Software Architect identifies an empirical validation need.
-3. **Data is bounded.** The portal stores only worker-category mappings, clocking records, news items, and audit entries. A separate Data Model artifact is triggered because the system is data-centric (clocking history, news audit trail, worker category) and the Database Designer needs a formal artifact.
+3. **Data is bounded but formalized.** The portal stores only worker-category mappings, clocking records, news items, and audit entries. A separate Data Model artifact is triggered because the system is data-centric (clocking history, news audit trail, worker category). The DatabaseDesigner owns the Data Model and produces the formal artifact in **Elaboration Iteration 1**; in Inception the DatabaseDesigner contributes the high-level Data View section to the Software Architecture Document.
 4. **Deployment is simple.** Single internal Windows Server, no cloud, no multi-node topology. A standalone Deployment Model is not triggered; deployment concerns live in the Software Architecture Document.
 5. **UI is prescribed.** The mandatory `docs/inputs/employee-portal-design.html` is the authoritative visual specification. A separate UI Prototype is not triggered because the design is already committed and not open to reinterpretation.
 6. **No regulatory / contractual test reporting.** Testing scope is managed through Iteration Plans and Test Evaluation Summaries; a formal Test Plan is not triggered.
@@ -38,7 +38,7 @@ package "RUP Library" as RUP_LIB {
 }
 
 package "Base Configuration" as BASE {
-  [24 Active Roles]
+  [25 Active Roles]
   [16 CORE Artifacts]
   [6 OPTIONAL Artifacts]
   [Canonical Intensity Matrix]
@@ -129,17 +129,17 @@ All 16 CORE artifacts from the IARI baseline are required for Portal. The follow
 
 ### OPTIONAL Artifacts
 
-| Artifact | Trigger Status | Reason |
-|---|---|---|
-| Glossary | NOT TRIGGERED | Domain terms are defined in constraints/requirements; no specialist vocabulary requiring stakeholder validation. |
-| Architectural Proof-of-Concept | NOT TRIGGERED | Inception phase; may be triggered in Elaboration if Software Architect identifies empirical validation need for AD LDAP or clocking resilience. |
-| Data Model | **TRIGGERED** | Data-centric system (clocking records, news audit, worker category). DatabaseDesigner produces formal data model. |
-| Deployment Model | NOT TRIGGERED | Single internal Windows Server; deployment is a section in SAD. |
-| User-Interface Prototype | NOT TRIGGERED | `docs/inputs/employee-portal-design.html` is mandatory and authoritative. |
-| Test Plan | NOT TRIGGERED | No formal delivery / regulatory / contractual test reporting requirement. |
+| Artifact | Trigger Status | Owner | Production Iteration | Reason |
+|---|---|---|---|---|
+| Glossary | NOT TRIGGERED | — | — | Domain terms are defined in constraints/requirements; no specialist vocabulary requiring stakeholder validation. |
+| Architectural Proof-of-Concept | NOT TRIGGERED | SoftwareArchitect | Re-evaluated at Elaboration start | Inception phase; may be triggered in Elaboration if empirical validation need emerges for AD LDAP or clocking resilience. |
+| Data Model | **TRIGGERED** | **DatabaseDesigner** | **Elaboration Iteration 1** (formal artifact); Inception contributes high-level Data View to SAD | Data-centric system (clocking records, news audit, worker category). |
+| Deployment Model | NOT TRIGGERED | — | — | Single internal Windows Server; deployment is a section in SAD. |
+| User-Interface Prototype | NOT TRIGGERED | — | — | `docs/inputs/employee-portal-design.html` is mandatory and authoritative. |
+| Test Plan | NOT TRIGGERED | — | — | No formal delivery / regulatory / contractual test reporting requirement. |
 
 ```plantuml
-@startuml Portal_OptionalTriggerEvaluation
+@startuml Portal_OptionalTriggerEvaluation_Fixed
 !theme plain
 
 start
@@ -148,24 +148,23 @@ against declared scope;
 
 :Glossary — specialist vocabulary
 requiring stakeholder validation?;
-if (No) then (yes)
-  :Glossary NOT TRIGGERED;
-else (no)
+if (Specialist vocabulary present?) then (yes)
   :Glossary TRIGGERED;
+else (no)
+  :Glossary NOT TRIGGERED;
 endif
 
 :Architectural Proof-of-Concept —
 Elaboration + technical risk?;
-if (No — Inception now) then (yes)
-  :PoC NOT TRIGGERED;
-else (no)
+if (Elaboration risk needs empirical validation?) then (yes)
   :PoC TRIGGERED;
+else (no)
+  :PoC NOT TRIGGERED;
 endif
 
 :Data Model — data-centric system,
 >10 entities, or data migration?;
-if (Yes — worker category, clocking,
-news audit) then (yes)
+if (Data-centric / >10 entities / migration?) then (yes)
   :Data Model TRIGGERED;
 else (no)
   :Data Model NOT TRIGGERED;
@@ -173,26 +172,26 @@ endif
 
 :Deployment Model — distributed /
 multi-node / multi-environment?;
-if (No — single internal Windows Server) then (yes)
-  :Deployment Model NOT TRIGGERED;
-else (no)
+if (Distributed or multi-node?) then (yes)
   :Deployment Model TRIGGERED;
+else (no)
+  :Deployment Model NOT TRIGGERED;
 endif
 
 :UI Prototype — UX-critical or
 complex UI requiring validation?;
-if (No — design.html is authoritative) then (yes)
-  :UI Prototype NOT TRIGGERED;
-else (no)
+if (UX-critical or complex UI?) then (yes)
   :UI Prototype TRIGGERED;
+else (no)
+  :UI Prototype NOT TRIGGERED;
 endif
 
 :Test Plan — formal delivery /
 regulatory / contractual reporting?;
-if (No) then (yes)
-  :Test Plan NOT TRIGGERED;
-else (no)
+if (Formal/regulatory/contractual reporting?) then (yes)
   :Test Plan TRIGGERED;
+else (no)
+  :Test Plan NOT TRIGGERED;
 endif
 
 :Record fired triggers;
@@ -204,11 +203,40 @@ stop
 
 Fired OPTIONAL artifacts this iteration:
 
-- **Data Model** — triggered because the portal is data-centric: clocking records with audit/correction history, news items with publication/edit/unpublish audit, worker-category assignments with audit. The DatabaseDesigner will produce this artifact in Elaboration.
+- **Data Model** — triggered because the portal is data-centric: clocking records with audit/correction history, news items with publication/edit/unpublish audit, worker-category assignments with audit. **Owner: DatabaseDesigner. Production: formal artifact in Elaboration Iteration 1; Inception contributes the high-level Data View section to the Software Architecture Document.**
 
 Not fired this iteration:
 
 - Glossary, Architectural Proof-of-Concept, Deployment Model, User-Interface Prototype, Test Plan.
+
+```plantuml
+@startuml Portal_DataModelProduction
+!theme plain
+
+start
+:Data Model triggered in Inception
+(Development Case decision);
+
+:Inception — DatabaseDesigner contributes
+high-level Data View section to SAD
+(sketch: worker category, clocking,
+news, audit entities);
+
+:Elaboration Iteration 1 — DatabaseDesigner
+produces formal Data Model artifact
+(ER diagram, table definitions,
+constraints, migration plan);
+
+:Elaboration Iteration 2 — DatabaseDesigner
+refines Data Model against PoC findings
+and design feedback;
+
+:Construction — Implementer applies
+migrations; Data Model evolves via CR;
+
+stop
+@enduml
+```
 
 ## Roles and Ownership
 
@@ -221,7 +249,7 @@ The IARI baseline role roster is unchanged. The following table highlights the m
 | RequirementsSpecifier | Supplementary Specification | NFR-001..NFR-008; auth/audit as `<<include>>` from dependent UCs. |
 | SoftwareArchitect | SAD initial outline | Keycloak OIDC client, AD LDAP read, PostgreSQL, internal Windows Server. |
 | Designer | Design Model initial outline | Razor Pages + page-level scripts. |
-| DatabaseDesigner | Data Model (triggered) | Worker category, clocking, news audit. |
+| DatabaseDesigner | **Data Model (triggered, formal artifact in Elaboration Iteration 1)** | Also contributes Data Model section to Design Model. |
 | TestManager / TestDesigner | Test strategy | Low intensity in Inception. |
 | ChangeControlManager | CR process | Active from Inception for scope control. |
 | ConfigurationManager | CM baseline | Repository, branching, CI/CD. |
@@ -258,6 +286,7 @@ class "Designer" as DES {
   + owns: Design Model
 }
 class "DatabaseDesigner" as DBD {
+  + owns: Data Model
   + contributes to: Design Model (Data Model section)
 }
 class "Implementer" as IMP {
@@ -298,14 +327,14 @@ PE --> REV : configures
 
 Guideline content is authored by the respective discipline experts and referenced here. The Process Engineer does not duplicate technical guidance.
 
-| Guideline | Owner | Location | Status |
-|---|---|---|---|
-| Coding standards | Implementer / CodeReviewer | `CONTRIBUTING.md` | **NOT FOUND in repository — Implementer/CodeReviewer must create in Elaboration.** |
-| UI conventions | UserInterfaceDesigner | `docs/inputs/employee-portal-design.html` (authoritative) + `CONTRIBUTING.md` | Committed input exists; CONTRIBUTING.md section to be added in Elaboration. |
-| Test conventions | TestDesigner / TestManager | `CONTRIBUTING.md` | **NOT FOUND in repository — TestDesigner/TestManager must create in Elaboration.** |
-| Design conventions | SoftwareArchitect / Designer | `CONTRIBUTING.md` | **NOT FOUND in repository — SoftwareArchitect/Designer must create in Elaboration.** |
-| CI/CD workflow | ConfigurationManager / Implementer | `.github/workflows/` | Directory exists but content could not be verified via API; ConfigurationManager to confirm in Elaboration. |
-| Lint / formatting config | Implementer / CodeReviewer | Repository root (e.g., `.editorconfig`, `dotnet-tools.json`) | To be confirmed in Elaboration. |
+| Guideline | Owner | Location | Status | Gate / Risk |
+|---|---|---|---|---|
+| Coding standards | Implementer / CodeReviewer | `CONTRIBUTING.md` | **NOT FOUND in repository — must be created in Elaboration Iteration 1.** | Gate E1-G1: CONTRIBUTING.md coding-standards section present before Construction starts. Escalate to Risk List as R010 if not resolved by end of Elaboration Iteration 1. |
+| UI conventions | UserInterfaceDesigner | `docs/inputs/employee-portal-design.html` (authoritative) + `CONTRIBUTING.md` | Committed input exists; CONTRIBUTING.md section to be added in Elaboration Iteration 1. | Gate E1-G2: UI conventions section present before UI construction begins. |
+| Test conventions | TestDesigner / TestManager | `CONTRIBUTING.md` | **NOT FOUND in repository — must be created in Elaboration Iteration 1.** | Gate E1-G3: test-conventions section present before Test Case production in Construction. Escalate to Risk List as R011 if not resolved by end of Elaboration Iteration 1. |
+| Design conventions | SoftwareArchitect / Designer | `CONTRIBUTING.md` | **NOT FOUND in repository — must be created in Elaboration Iteration 1.** | Gate E1-G4: design-conventions section present before Design Model elaboration in Elaboration Iteration 2. |
+| CI/CD workflow | ConfigurationManager / Implementer | `.github/workflows/` | Directory exists but content could not be verified via API; ConfigurationManager to confirm in Elaboration Iteration 1. | Gate E1-G5: CI workflow builds the solution and runs tests before Construction starts. Escalate to Risk List as R012 if not operational by end of Elaboration Iteration 1. |
+| Lint / formatting config | Implementer / CodeReviewer | Repository root (e.g., `.editorconfig`, `dotnet-tools.json`) | To be confirmed in Elaboration Iteration 1. | Gate E1-G6: lint/format config present and enforced in CI before Construction starts. |
 
 ### Measurement Policy
 
@@ -330,21 +359,35 @@ This project uses the two IARI baseline measures: **tokens consumed** and **elap
 5. Risk List reviewed and new risks added (ProjectManager).
 
 ```plantuml
-@startuml Portal_EnvironmentPrep
+@startuml Portal_EnvironmentPrep_Fixed
 !theme plain
 
 start
 :Verify repository exists;
 :Verify GitHub Actions workflow
 placeholder or existing CI config;
+if (CI config missing or incomplete?) then (yes)
+  :Log gap as R009 / explicit gate
+for ConfigurationManager;
+else (no)
+  :CI config verified;
+endif
+
 :Verify CONTRIBUTING.md exists
 or note gap for discipline experts;
+if (CONTRIBUTING.md missing?) then (yes)
+  :Log gap as R010 / explicit gate
+for Implementer + CodeReviewer;
+else (no)
+  :CONTRIBUTING.md verified;
+endif
+
 :Verify lint / formatting config
 or note gap;
 :Confirm .NET 10 SDK, PostgreSQL,
 Keycloak client credentials available;
-:Development Case drafted;
-:Environment ready for Inception iteration;
+:Development Case updated;
+:Environment ready for iteration;
 stop
 @enduml
 ```
@@ -356,9 +399,12 @@ stop
 | Development Case | IARI DC Baseline | Refines | Portal project deltas |
 | Business Modeling inactive | Scope statement | Derives | FR-001..FR-012 declared as system requirements |
 | Data Model triggered | CON-010, CON-014, FR-001..FR-012 | Derives | DatabaseDesigner artifact scope |
+| Data Model production plan | Development Case | Specifies | Elaboration Iteration 1 |
 | Glossary not triggered | Scope statement | Refines | Domain terms defined in constraints |
 | Deployment Model not triggered | CON-007, CON-013 | Refines | Deployment section in SAD |
 | UI Prototype not triggered | CON-015 | Refines | design.html as authoritative UI spec |
 | Test Plan not triggered | Acceptance criteria | Refines | Iteration Plan + Test Evaluation Summary |
 | Version policy | CON-001, CON-002, CON-003 | Derives | Software Architecture Document |
 | Measurement policy | IARI DC §8.1 | Refines | Iteration Plan, Iteration Assessment |
+| CONTRIBUTING.md gate | Development Case | DependsOn | Risk List (R010) |
+| CI/CD gate | Development Case | DependsOn | Risk List (R012) |
