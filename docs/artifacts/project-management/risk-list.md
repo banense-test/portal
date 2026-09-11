@@ -4,14 +4,15 @@
 |---|---|
 | Project | Portal |
 | Phase | Inception |
-| Iteration | 2 |
+| Iteration | 3 |
 | Status | Draft |
-| Milestone Target | End-of-Inception review (LCO re-review after findings closed) |
+| Milestone Target | LCO final closure / Elaboration entry readiness |
 
 ## Risk Classification
 
 ```plantuml
 @startuml Risk_Classification_Structure
+!theme plain
 class "Risk" as RISK {
   + ID: String
   + Description: String
@@ -86,11 +87,18 @@ RISK --> DER
 | R006 | PostgreSQL on internal Windows Server deployment differs from team development environment; deployment/integration issues in Transition | Technical | 2 | 3 | 6 (Minor) | Transfer | STK-003 | Derived — from CON-007, CON-013 | Open |
 | R007 | HR news featuring invariant (CON-019) implemented only in UI form, not enforced at service/domain layer; data integrity risk | Technical | 2 | 4 | 8 (Minor) | Avoid | STK-002 | Derived — from CON-019 | Open |
 | R008 | Stakeholder availability for iteration-close review and acceptance decisions; gates extend elapsed time | Schedule | 3 | 2 | 6 (Minor) | Accept + Mitigate | STK-001 | Derived — from project-management inference (gate model) | Open |
+| R010 | `CONTRIBUTING.md` coding-standards section missing at end of Inception; blocks CodeReviewer gate E1-G1 before Construction | Schedule | 2 | 3 | 6 (Minor) | Avoid | Implementer + CodeReviewer | Derived — from Development Case §Guidelines and Procedures E1-G1 | Open |
+| R011 | `CONTRIBUTING.md` UI-conventions section missing; blocks UserInterfaceDesigner gate E1-G2 before UI construction | Schedule | 2 | 3 | 6 (Minor) | Avoid | UserInterfaceDesigner | Derived — from Development Case §Guidelines and Procedures E1-G2 | Open |
+| R012 | `CONTRIBUTING.md` test-conventions section missing; blocks TestDesigner/TestManager gate E1-G3 before Test Case production | Schedule | 2 | 3 | 6 (Minor) | Avoid | TestDesigner + TestManager | Derived — from Development Case §Guidelines and Procedures E1-G3 | Open |
+| R013 | `CONTRIBUTING.md` design-conventions section missing; blocks SoftwareArchitect/Designer gate E1-G4 before Design Model elaboration | Schedule | 2 | 3 | 6 (Minor) | Avoid | SoftwareArchitect + Designer | Derived — from Development Case §Guidelines and Procedures E1-G4 | Open |
+| R014 | `.github/workflows/ci.yml` does not build solution or run tests green before Construction; blocks gate E1-G5 | Technical | 2 | 4 | 8 (Minor) | Avoid | ConfigurationManager + Implementer | Derived — from Development Case §Guidelines and Procedures E1-G5 | Open |
+| R015 | Lint/format config (`.editorconfig`, `dotnet-tools.json`) missing or not enforced in CI; blocks gate E1-G6 | Technical | 2 | 3 | 6 (Minor) | Avoid | Implementer + CodeReviewer | Derived — from Development Case §Guidelines and Procedures E1-G6 | Open |
 
 ## Risk Mitigation and Contingency
 
 ```plantuml
 @startuml Risk_Mitigation_Flow
+!theme plain
 start
 :Identify risk from scope, constraints, stakeholders;
 :Classify category (Technical/Schedule/Resource/External);
@@ -150,6 +158,36 @@ stop
 - **Mitigation:** Schedule iteration-close reviews at the start of each iteration and send the review package 2 days before the gate. Track gate queue time separately from agent work.
 - **Contingency:** If a stakeholder cannot attend, obtain written sign-off asynchronously; if sign-off is delayed beyond 5 queue days, record the slip in the Iteration Assessment and adjust the next iteration's elapsed-time forecast.
 
+### R010 — Missing coding-standards section
+
+- **Mitigation:** Avoid by assigning Implementer + CodeReviewer to create the `CONTRIBUTING.md` coding-standards section as the first work item in Elaboration Iteration 1, before any Construction work.
+- **Contingency:** If the section is not reviewed by the end of Elaboration Iteration 1, block Construction Iteration 1 start until CodeReviewer sign-off is obtained.
+
+### R011 — Missing UI-conventions section
+
+- **Mitigation:** Avoid by assigning UserInterfaceDesigner to add a UI-conventions section to `CONTRIBUTING.md` referencing `design.html` in Elaboration Iteration 1.
+- **Contingency:** If missing before UI construction, defer UI work and request stakeholder clarification on whether the mandatory design file is sufficient guidance.
+
+### R012 — Missing test-conventions section
+
+- **Mitigation:** Avoid by assigning TestDesigner + TestManager to add test-conventions to `CONTRIBUTING.md` in Elaboration Iteration 1.
+- **Contingency:** If missing before Test Case production in Construction, use the IARI baseline test conventions as a fallback and record a technical-debt item.
+
+### R013 — Missing design-conventions section
+
+- **Mitigation:** Avoid by assigning SoftwareArchitect + Designer to add design-conventions to `CONTRIBUTING.md` in Elaboration Iteration 1.
+- **Contingency:** If missing before Design Model elaboration in Elaboration Iteration 2, hold a design review and document agreed conventions in the Iteration Assessment.
+
+### R014 — CI workflow not green
+
+- **Mitigation:** Avoid by verifying `.github/workflows/ci.yml` builds the .NET 10 solution and runs tests successfully on the default branch before Construction starts. The workflow is already present (SHA `631383c12d2692881e092439857a435d6392b2a7`); the gate is to confirm it is green.
+- **Contingency:** If the workflow fails, assign ConfigurationManager + Implementer to fix it and block Construction code merge until CI is green.
+
+### R015 — Lint/format config missing
+
+- **Mitigation:** Avoid by creating `.editorconfig` and/or `dotnet-tools.json` and enforcing them in CI in Elaboration Iteration 1.
+- **Contingency:** If config cannot be enforced in CI, run lint/format checks locally and record the gap as a technical-debt item for Transition.
+
 ## Traceability
 
 | Element | Traces From | Link Type | Traces To |
@@ -162,3 +200,9 @@ stop
 | R006 | CON-007, CON-013 | DependsOn | SAD Deployment View, Transition planning |
 | R007 | CON-019 | DependsOn | UC-008, UC-009, UC-010 |
 | R008 | STK-001, gate model | DependsOn | Iteration Plan |
+| R010 | Development Case §Guidelines and Procedures E1-G1 | DependsOn | CONTRIBUTING.md coding-standards section |
+| R011 | Development Case §Guidelines and Procedures E1-G2 | DependsOn | CONTRIBUTING.md UI-conventions section |
+| R012 | Development Case §Guidelines and Procedures E1-G3 | DependsOn | CONTRIBUTING.md test-conventions section |
+| R013 | Development Case §Guidelines and Procedures E1-G4 | DependsOn | CONTRIBUTING.md design-conventions section |
+| R014 | Development Case §Guidelines and Procedures E1-G5 | DependsOn | `.github/workflows/ci.yml` |
+| R015 | Development Case §Guidelines and Procedures E1-G6 | DependsOn | `.editorconfig` / `dotnet-tools.json` |
