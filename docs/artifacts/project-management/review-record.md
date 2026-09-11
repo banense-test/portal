@@ -6,330 +6,254 @@
 | Phase | Inception |
 | Iteration | 1 |
 | Status | Draft |
-| Milestone Target | End-of-Inception review (LCO) |
-| Review Type | Technical / LCO feasibility review |
-| Reviewer Lens | Reviewer (base) |
-| Review Date | 2026-09-11 |
+| Milestone Target | Lifecycle Objectives (LCO) |
+| Review Type | Lifecycle Milestone Review |
+| Reviewer | Management Reviewer |
+| Date | 2026-09-11 |
 
 ## Review Scope and Criteria
 
-This review evaluates the Inception Iteration 1 artifacts produced for the Portal project against the Lifecycle Objectives (LCO) exit criteria. The review applies a feasibility and acceptability lens: scope clarity, traceability to declared requirements, architectural viability, risk ownership, and readiness for Elaboration.
+This review assesses the Inception Iteration 1 artifacts against the Lifecycle Objectives (LCO) exit criteria:
 
-Artifacts reviewed:
+1. Stakeholders agree on what is in/out of scope.
+2. Project is viable: proposed approach is feasible and constraints are respected.
+3. Key risks are identified with magnitude ratings, owners, and strategies.
+4. Initial planning baseline exists (Iteration Plan + Risk List).
+5. Project Approval Review / sanction to proceed to Elaboration is obtained from the stakeholder.
 
-| # | Artifact | Owner | Status |
-|---|---|---|---|
-| 1 | Development Case | ProcessEngineer | Reviewed |
-| 2 | Vision | SystemAnalyst | Reviewed |
-| 3 | Use-Case Model | SystemAnalyst | Reviewed |
-| 4 | Supplementary Specification | RequirementsSpecifier | Reviewed |
-| 5 | Risk List | ProjectManager | Reviewed |
-| 6 | Iteration Plan | ProjectManager | Reviewed |
-| 7 | Software Architecture Document | SoftwareArchitect | Reviewed |
-| 8 | Test Evaluation Summary | TestManager | Reviewed |
+Artifacts reviewed: Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Iteration Plan, Risk List, Development Case, Test Evaluation Summary.
 
-Review criteria applied:
-
-- **Development Case:** IARI baseline conformance, optional trigger justification, tailoring clarity.
-- **Vision:** Scope clarity, stakeholder traceability, in/out-of-scope lists, derivation transparency.
-- **Use-Case Model:** UC count matches declared FRs, no cross-cutting UCs, source citations, invariant correctness.
-- **Supplementary Specification:** FURPS+ coverage, cross-cutting mechanisms as `<<include>>`, NFR traceability.
-- **Risk List:** Declared risks present, magnitude calculation, mitigations/contingencies, declared vs derived distinction.
-- **Iteration Plan:** Objectives traceable, resource profile, acceptance criteria mapping, calendar-date discipline.
-- **Software Architecture Document:** 4+1 views, ADR traceability, constraint coverage, performance notes.
-- **Test Evaluation Summary:** Mission definition, testability assessment, defect tracking readiness, SCM evidence.
-
-## Findings
-
-### Compliance Matrix
+## LCO Compliance Assessment
 
 ```plantuml
-@startuml Portal_Review_Compliance_Matrix_v2
+@startuml LCO_Compliance_Table
 !theme plain
 skinparam classAttributeIconSize 0
 
-class "Development Case" as DC {
-  + DC Baseline Conformance: PASS
-  + Optional Trigger Justification: PASS
-  + Tailoring Clarity: PASS
-  + Tooling Gap Tracking: MINOR
+class "LCO Exit Criterion" as CRIT {
+  + ID
+  + Criterion
+  + Status
+  + Evidence
 }
 
-class "Vision" as VISION {
-  + Scope Clarity: PASS
-  + Stakeholder Traceability: PASS
-  + In/Out Scope Lists: PASS
-  + Derived Stakeholder Markers: CRITICAL
+class "C-001" as C001 <<scope>> {
+  + Stakeholders agree on what is in/out of scope
+  + Status: MET
+  + Evidence: Vision In Scope / Not In Scope lists match Work Order; Use-Case Model traces FR-001..FR-012 to UC-001..UC-012
 }
 
-class "Use-Case Model" as UCM {
-  + UC Count Matches Declared FRs: PASS
-  + No Cross-Cutting UCs: PASS
-  + Source Citations (FR-NNN): PASS
-  + UC-009 Featured Invariant Wording: MAJOR
+class "C-002" as C002 <<viability>> {
+  + Project is viable: approach feasible, constraints respected
+  + Status: MET WITH RISK
+  + Evidence: SAD sketches layered .NET 10 / Razor Pages / PostgreSQL architecture; ADR-001..ADR-008 recorded; R001/R003/R005/R007 flagged for Elaboration spikes
 }
 
-class "Supplementary Specification" as SUPP {
-  + FURPS+ Coverage: PASS
-  + Cross-Cutting as <<include>>: MAJOR
-  + NFR Traceability: PASS
-  + External Dependency Notes: MINOR
+class "C-003" as C003 <<risks>> {
+  + Key risks identified with magnitude, owner, strategy
+  + Status: MET WITH GAP
+  + Evidence: Risk List has 8 risks with P/I/magnitude; R001/R002 declared; R003-R008 derived without explicit declared-vs-derived marker
 }
 
-class "Risk List" as RISK {
-  + Declared Risks Present: PASS
-  + Magnitude Calculation: PASS
-  + Mitigations/Contingencies: PASS
-  + Declared vs Derived Risks: MAJOR
+class "C-004" as C004 <<planning>> {
+  + Initial planning baseline exists (Iteration Plan + Risk List)
+  + Status: MET WITH GAP
+  + Evidence: Iteration Plan has coarse roadmap, fine plan, token budgets; calendar Gantt violates IARI cost-box discipline (Reviewer F1)
 }
 
-class "Iteration Plan" as PLAN {
-  + Objectives Traceable: PASS
-  + Resource Profile: PASS
-  + Acceptance Criteria Mapping: MINOR
-  + Calendar Date Projection: MAJOR
+class "C-005" as C005 <<approval>> {
+  + Project Approval Review conducted / sanction to proceed to Elaboration
+  + Status: NOT MET
+  + Evidence: Stakeholder refused LCO sanction; all findings must be closed before re-review
 }
 
-class "Software Architecture Document" as SAD {
-  + 4+1 Views Present: PASS
-  + ADRs Traceable: MAJOR
-  + Constraint Coverage: PASS
-  + Performance Notes: MINOR
-}
-
-class "Test Evaluation Summary" as TES {
-  + Mission Defined: PASS
-  + Testability Assessment: PASS
-  + Defect Tracking Readiness: MAJOR
-  + SCM Evidence Reference: MISSING
-}
-
-DC --> VISION : LCO package
-VISION --> UCM : derives
-UCM --> SUPP : specifies
-SUPP --> SAD : architects
-SAD --> RISK : drives
-RISK --> PLAN : plans
-PLAN --> TES : evaluates
+CRIT --> C001
+CRIT --> C002
+CRIT --> C003
+CRIT --> C004
+CRIT --> C005
 @enduml
 ```
+
+## Project Health State
+
+```plantuml
+@startuml Project_Health_State_Machine
+!theme plain
+
+state "Healthy" as Healthy
+state "At-Risk" as AtRisk
+state "No-Go" as NoGo
+
+[*] --> AtRisk : Inception draft artifacts; open Reviewer findings; calendar Gantt issue
+AtRisk --> Healthy : Stakeholder grants LCO sanction; calendar Gantt corrected; derived-risk markers added; all findings closed
+AtRisk --> NoGo : Stakeholder refuses sanction; Critical scope finding unresolved
+Healthy --> [*]
+NoGo --> [*]
+@enduml
+```
+
+## Risk Retirement Trend
+
+```plantuml
+@startuml Risk_Retirement_Trend
+!theme plain
+
+left to right direction
+
+rectangle "Inception Iteration 1" {
+  class "R001" as R001 {
+    + AD attribute gaps
+    + P=3 I=3 Exp=9 (Minor)
+    + Trend: STABLE → Elaboration spike planned
+  }
+  class "R002" as R002 {
+    + Digital clocking adoption
+    + P=3 I=2 Exp=6 (Minor)
+    + Trend: STABLE → Communication plan in Construction
+  }
+  class "R003" as R003 {
+    + Keycloak claim mapping
+    + P=2 I=4 Exp=8 (Minor)
+    + Trend: STABLE → Elaboration spike planned
+  }
+  class "R007" as R007 {
+    + News featured invariant
+    + P=2 I=4 Exp=8 (Minor)
+    + Trend: STABLE → Elaboration spike planned
+  }
+}
+
+note bottom of R001
+  No risks retired in Inception —
+  this iteration is planning-only.
+  All top technical risks have
+  Elaboration spike plans in SAD.
+end note
+@enduml
+```
+
+## Findings
+
+### Management Reviewer Findings (this review)
+
+| ID | Artifact | Severity | Finding | Recommendation | Verdict |
+|---|---|---|---|---|---|
+| MR-001 | Iteration Plan | Critical | LCO stakeholder sanction REFUSED. The stakeholder did not accept advancing past the Lifecycle Objectives milestone while open findings remain. The project is blocked at the LCO gate until all findings (including Minor findings per the stakeholder's explicit directive) are closed. | Resolve all open Reviewer findings across Vision, Iteration Plan, Risk List, Development Case, Supplementary Specification, Use-Case Model, Software Architecture Document, and Test Evaluation Summary. Reconvene the LCO review after closure confirmation. | NeedsRework |
+| MR-002 | Risk List | Major | Stakeholder directive: "Close all findings even if they are minors." This raises the LCO exit bar — no findings of any severity may remain open at re-review. The project must budget additional rework and re-review queue time. | Add a stakeholder-communication risk or update R008 to reflect the elevated gate bar; ensure the Iteration Plan reserves token budget and queue time for finding closure and re-review before Elaboration starts. | NeedsRework |
+
+### Reviewer Findings Relevant to LCO (not closed by this lens)
+
+The following findings were emitted by the Reviewer lens and remain open. They are cited here as evidence for the No-Go verdict; closure is owned by the Reviewer lens in the reconciliation state.
+
+| Artifact | Severity | Finding Key | Summary |
+|---|---|---|---|
+| Vision | Critical | F2 | STK-001 description silently promotes derivation to declared scope. |
+| Iteration Plan | Major | F1 | Calendar Gantt projects dates from assumed durations, violating IARI cost-box discipline. |
+| Risk List | Major | F2 | R003-R008 lack declared-vs-derived marker. |
+| Development Case | Major | F3 | Data Model optional trigger lacks iteration/owner tie. |
+| Supplementary Specification | Major | F2 | Authorization inclusion table inconsistent. |
+| Use-Case Model | Major | F2 | UC-009 featured invariant wording ambiguous. |
+| Software Architecture Document | Major | F2 | ADR-008 pending product selection not marked. |
+| Test Evaluation Summary | Major | F2 | Zero-value defect table misrepresents Inception state. |
 
 ### Defect Distribution
 
 ```plantuml
-@startuml Portal_Defect_Distribution_v2
+@startuml Defect_Distribution_LCO
 !theme plain
+left to right direction
 
-package "Findings by Severity" {
-  class "Critical: 1" as CRIT #Red
-  class "Major: 7" as MAJOR #Orange
-  class "Minor: 17" as MINOR #Yellow
-  class "Suggestion: 0" as SUGG #LightGreen
+rectangle "Open Findings by Artifact (Reviewer + Management Lenses)" {
+  class "Vision" as VISION {
+    + F2: Critical (scope derivation)
+    + F1, F3: Minor
+  }
+  class "Iteration Plan" as ITERPLAN {
+    + F1: Major (calendar Gantt)
+    + F2, F3: Minor
+    + MR-001: Critical (LCO refused)
+  }
+  class "Risk List" as RISKLIST {
+    + F2: Major (derived risks)
+    + F1, F3: Minor
+    + MR-002: Major (stakeholder directive)
+  }
+  class "Development Case" as DC {
+    + F3: Major (Data Model trigger)
+    + F1, F2: Minor
+  }
+  class "Supplementary Spec" as SUPP {
+    + F2: Major (authorization inclusion)
+    + F1, F3: Minor
+  }
+  class "Use-Case Model" as UCM {
+    + F2: Major (UC-009 wording)
+    + F1, F3, F4: Minor
+  }
+  class "SAD" as SAD {
+    + F2: Major (ADR-008 pending)
+    + F1, F3, F4: Minor
+  }
+  class "Test Eval Summary" as TES {
+    + F2: Major (defect table)
+    + F1: Minor
+  }
 }
 
-package "Findings by Artifact" {
-  class "Vision: 1 Critical" as VISION #Red
-  class "Development Case: 1 Major" as DC #Orange
-  class "Use-Case Model: 1 Major" as UCM #Orange
-  class "Supplementary Specification: 1 Major" as SUPP #Orange
-  class "Risk List: 1 Major" as RISK #Orange
-  class "Iteration Plan: 1 Major" as PLAN #Orange
-  class "SAD: 1 Major" as SAD #Orange
-  class "Test Eval Summary: 1 Major" as TES #Orange
-}
-
-CRIT --> MAJOR
-MAJOR --> MINOR
-MINOR --> SUGG
-VISION --> DC
-DC --> UCM
-UCM --> SUPP
-SUPP --> RISK
-RISK --> PLAN
-PLAN --> SAD
-SAD --> TES
+note bottom of ITERPLAN
+  Management Reviewer findings
+  MR-001 / MR-002 record the
+  stakeholder refusal and directive.
+end note
 @enduml
 ```
-
-### Per-Artifact Findings
-
-#### Development Case
-
-| ID | Severity | Finding | Recommendation | Verdict |
-|---|---|---|---|---|
-| F1 | Minor | Optional Trigger Evaluation activity diagram has inverted yes/no labels on the Glossary decision branch. | Correct branch labels or rephrase the decision text. | Approved |
-| F2 | Minor | CONTRIBUTING.md / CI workflow gaps are noted but not tracked as risks or gates. | Add to Risk List or as explicit Environment exit criteria. | Approved |
-| F3 | Major | Data Model optional artifact is triggered but lacks sanctioned iteration/owner in the DC. | Clarify owner (DatabaseDesigner) and iteration in Optional Triggers; ensure Iteration Plan includes work item. | NeedsRework |
-
-#### Vision
-
-| ID | Severity | Finding | Recommendation | Verdict |
-|---|---|---|---|---|
-| F1 | Minor | System-boundary diagram does not stereotype external-system actors. | Add `<<system>>` / `<<external system>>` stereotypes to Keycloak and AD. | Approved |
-| F2 | Critical | STK-001 (Laura Gómez) is described as performing specific HR capabilities without a [DERIVED] marker, silently promoting derived capabilities to declared scope. | Add [DERIVED — from FR-001..FR-012 / HR role, awaiting stakeholder confirmation] marker, or obtain stakeholder confirmation and remove the marker. | NeedsRework |
-| F3 | Minor | Traceability table aggregates UC-001..UC-012 and F-001..F-011 without specific FR/NFR citations. | Expand table to cite specific FR-NNN / NFR-NNN per feature. | Approved |
-
-#### Use-Case Model
-
-| ID | Severity | Finding | Recommendation | Verdict |
-|---|---|---|---|---|
-| F1 | Minor | System boundary diagram omits `<<include>>` relationships for cross-cutting mechanisms. | Add include arrows to Authentication, Authorization, Audit Logging. | Approved |
-| F2 | Major | UC-009 step 7 wording is ambiguous about the featured invariant; reads as conditional rather than unconditional un-feature. | Rewrite step to match CON-019: setting featured always clears any existing featured item. | NeedsRework |
-| F3 | Minor | UC-006 does not define HoursWorked calculation rule. | Add [ELABORATION NOTE] for HoursWorked formula. | Approved |
-| F4 | Minor | UC-003 does not specify idempotency key generation strategy. | Add [ELABORATION NOTE] for idempotency key strategy. | Approved |
-
-#### Supplementary Specification
-
-| ID | Severity | Finding | Recommendation | Verdict |
-|---|---|---|---|---|
-| F1 | Minor | REQ-P003 10-second target from AC-003 needs decomposition in Elaboration. | Add [ELABORATION NOTE] decomposing query vs render time. | Approved |
-| F2 | Major | Authorization `<<include>>` table is inconsistent: omits employee-only UCs that still need role derivation, and conflates authentication with authorization. | Split into Authentication (all UCs) and Authorization (role-gated UCs) columns. | NeedsRework |
-| F3 | Minor | REQ-SU003 should cite Infrastructure confirmation as external dependency. | Add dependency note citing written confirmation + verified restore test. | Approved |
-
-#### Risk List
-
-| ID | Severity | Finding | Recommendation | Verdict |
-|---|---|---|---|---|
-| F1 | Minor | R003 does not cite CON-005 as a scope-level mitigation. | Add mitigation note citing CON-005 and clarify residual risk is claim mapping. | Approved |
-| F2 | Major | Six derived risks (R003-R008) are not distinguished from the two stakeholder-declared risks (R001-R002). | Add Declared vs Derived column and ensure each derived risk links to a constraint/AC. | NeedsRework |
-| F3 | Minor | R006 traces to 'Deployment Plan' which does not exist in Inception. | Update trace to Software Architecture Document Deployment View. | Approved |
-
-#### Iteration Plan
-
-| ID | Severity | Finding | Recommendation | Verdict |
-|---|---|---|---|---|
-| F1 | Major | Gantt chart projects calendar dates from assumed durations, violating cost-boxed iteration discipline. | Replace with cost-boxed roadmap; do not project calendar dates. | NeedsRework |
-| F2 | Minor | Fine plan token budgets are not distinguished from actuals. | Add planned vs actual budget columns. | Approved |
-| F3 | Minor | Acceptance criteria mapping is implicit; all ACs deferred without iteration mapping. | Add table mapping each AC to the iteration that will verify it. | Approved |
-
-#### Software Architecture Document
-
-| ID | Severity | Finding | Recommendation | Verdict |
-|---|---|---|---|---|
-| F1 | Minor | Application-layer components are named after features. | Rename to coordination responsibilities or add note that boundaries are candidates. | Approved |
-| F2 | Major | ADR-008 product selection is pending but not marked [PENDING] and traceability cites a non-existent product. | Mark ADR-008 [PENDING — Elaboration decision]; trace to component, not product. | NeedsRework |
-| F3 | Minor | Data View does not address no-caching performance implication for AD queries. | Add note that no caching is permitted and performance depends on AD latency. | Approved |
-| F4 | Minor | PoC Plan does not reconcile with Development Case's non-triggered Architectural Proof-of-Concept. | Clarify that listed validations are Elaboration spikes, not a standalone PoC artifact. | Approved |
-
-#### Test Evaluation Summary
-
-| ID | Severity | Finding | Recommendation | Verdict |
-|---|---|---|---|---|
-| F1 | Minor | Mission verdict is self-assessed by Test Manager with no independent review noted. | Capture in Review Record; add independent review step in future iterations. | Approved |
-| F2 | Major | Defect status table with zeros implies tracking was exercised; no SCM evidence section exists. | Replace zero table with statement that defect tracking begins in Construction; add SCM State section. | NeedsRework |
 
 ## Resolutions and Actions
 
-No prior findings of this Reviewer lens existed; all findings above are new for Inception Iteration 1.
+| Action | Owner | Target Artifact | Due |
+|---|---|---|---|
+| Close Vision F2 (STK-001 derivation marker) and F1/F3 | System Analyst / Project Manager | Vision | Before LCO re-review |
+| Close Iteration Plan F1 (calendar Gantt) and F2/F3 | Project Manager | Iteration Plan | Before LCO re-review |
+| Close Risk List F2 (declared-vs-derived marker) and F1/F3 | Project Manager | Risk List | Before LCO re-review |
+| Close Development Case F3 (Data Model trigger iteration/owner) and F1/F2 | Process Engineer | Development Case | Before LCO re-review |
+| Close Supplementary Specification F2 (authorization inclusion) and F1/F3 | RequirementsSpecifier | Supplementary Specification | Before LCO re-review |
+| Close Use-Case Model F2 (UC-009 wording) and F1/F3/F4 | System Analyst | Use-Case Model | Before LCO re-review |
+| Close SAD F2 (ADR-008 pending mark) and F1/F3/F4 | Software Architect | Software Architecture Document | Before LCO re-review |
+| Close Test Evaluation Summary F2 (defect table) and F1 | Test Manager | Test Evaluation Summary | Before LCO re-review |
+| Reserve token budget and queue time for finding closure and re-review | Project Manager | Iteration Plan / Risk List | Before LCO re-review |
+| Reconvene LCO review with stakeholder | ReviewCoordinator | Review Record | After all findings closed |
 
-Required actions before LCO can be considered achieved:
+## Stakeholder Sanction
 
-1. **Vision#F2 (Critical):** Resolve the stakeholder-derived capability question for STK-001. Either add a [DERIVED] marker awaiting stakeholder confirmation or obtain confirmation that Laura Gómez personally performs all listed HR capabilities.
-2. **Development Case#F3:** Clarify Data Model owner and iteration in Optional Triggers.
-3. **Use-Case Model#F2:** Correct UC-009 featured invariant wording.
-4. **Supplementary Specification#F2:** Split authentication/authorization include table.
-5. **Risk List#F2:** Distinguish declared vs derived risks.
-6. **Iteration Plan#F1:** Remove calendar-date Gantt; use cost-boxed roadmap.
-7. **Software Architecture Document#F2:** Mark ADR-008 pending and correct traceability.
-8. **Test Evaluation Summary#F2:** Remove premature defect status table; add SCM state section.
+**Stakeholder sanction: REFUSED**
 
-Minor findings should be addressed in the same rework pass but do not block LCO on their own.
+The stakeholder was asked: "Knowing the open defects, do you accept the project scope and objectives and sanction advancing past the Lifecycle Objectives milestone, subject to the team resolving the Conditional findings before Elaboration begins?"
+
+The stakeholder answered: **No**
+
+Additional stakeholder directive: **"Close all findings even if they are minors."**
+
+This decision is recorded as the stakeholder's own answer. No signature from a named person is required; the stakeholder's response IS the documented acceptance/refusal.
 
 ## Disposition
 
-**Overall LCO Disposition: Rejected — Pending Critical Resolution**
+**Verdict: No-Go**
 
-The Inception artifact set is structurally feasible and aligned with the declared scope, but one Critical finding (Vision#F2) blocks LCO completion. The Critical finding represents a scope-derivation ambiguity that only the stakeholder can resolve: whether Laura Gómez (STK-001) personally performs the listed HR capabilities or whether those capabilities are derived from the HR Administrator role.
+The Lifecycle Objectives (LCO) milestone is **not sanctioned**. The project may not proceed to Elaboration until:
 
-Seven additional Major findings require rework. All findings are actionable and localized; none indicate fundamental architectural infeasibility.
+1. All open findings across all reviewed artifacts are closed, including all Minor findings as directed by the stakeholder.
+2. The Reviewer lens reconciles and closes its prior findings (F1-F4 / F1-F3 as applicable per artifact).
+3. The Management Reviewer confirms closure in a follow-up LCO review.
+4. The stakeholder grants explicit sanction to proceed.
 
-The project may NOT proceed to Elaboration until Vision#F2 is resolved and the Reviewer lens confirms closure. The seven Major findings should be resolved in the same rework pass.
-
-## Business Modeling Discipline (Reviewer: Business Reviewer)
-
-**Verdict: [BR-OK-INACTIVE] — Discipline NOT APPLICABLE per DC §4**
-
-DC §4 trigger evaluation: project does not exhibit business-process-led characteristics. No ERP / BPM / workflow-redesign / M&A signals found in Vision. No Business Use Cases / Workers / Entities sections present in Use-Case Model. No business-domain specialist terms in Glossary (Glossary optional not triggered).
-
-Evidence:
-- `get_dc_classification` returned `isBusinessProcessLed: false` (classified 2026-09-11).
-- Development Case explicitly declares **Business Modeling: INACTIVE** with rationale: scope is already captured as declared FRs/NFRs; project automates known HR/employee processes rather than redesigning them.
-- Use-Case Model contains only system use cases (UC-001..UC-012) and system actors (Employee, HR Administrator, Keycloak, Active Directory). No `<<business actor>>`, `<<business worker>>`, `<<business entity>>`, or `<<business use case>>` stereotypes.
-- Glossary artifact does not exist; optional trigger evaluation in Development Case records Glossary as NOT TRIGGERED because domain terms are defined in constraints and requirements.
-
-Conclusion: BPA + BR are correctly INACTIVE for this engagement. No findings, no recommendations. Downstream reviewers (MR, RC) may treat the BM discipline as out-of-scope for the LCO milestone.
-
-### Business Modeling Coverage Map
-
-```plantuml
-@startuml Portal_BM_Coverage_Map
-!theme plain
-
-package "Business Modeling Discipline" as BM {
-  class "Business Use Cases" as BUC #LightGray {
-    + Required: 0
-    + Present: 0
-    + Status: N/A
-  }
-  class "Business Workers" as BW #LightGray {
-    + Required: 0
-    + Present: 0
-    + Status: N/A
-  }
-  class "Business Entities" as BE #LightGray {
-    + Required: 0
-    + Present: 0
-    + Status: N/A
-  }
-  class "Business Rules Document" as BRD #LightGray {
-    + Required: 0
-    + Present: 0
-    + Status: N/A
-  }
-}
-
-note right of BUC
-  Business Modeling is INACTIVE per DC §4.
-  No BUC/BW/BE/BRD artifacts are expected
-  or required for the LCO milestone.
-end note
-
-BUC --> BW : not applicable
-BW --> BE : not applicable
-BE --> BRD : not applicable
-@enduml
-```
-
-### Scenario Assessment
-
-| Assessment Item | Finding |
-|---|---|
-| Modeling scenario | Not applicable — Business Modeling discipline inactive |
-| Scenario selection by BPA | Correctly omitted; no BPL signal |
-| BUC completeness test | N/A — no BUCs produced |
-| Realization coverage | N/A — no realizations required |
-| Derivation bridge | N/A — system UCs derive directly from declared FRs/NFRs |
-| Resource planning compliance | N/A |
-| Same modeling technique at business level | N/A |
-| Stakeholder representation coverage | Covered by Requirements discipline (Vision stakeholder table) |
-| Business rule audit | Covered by Requirements/Supplementary Specification (CON-017..CON-021) |
+The project remains in Inception until the LCO gate is satisfied.
 
 ## Traceability
 
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| Review Record | Development Case | Reviews | DC#F1, DC#F2, DC#F3 |
-| Review Record | Vision | Reviews | Vision#F1, Vision#F2, Vision#F3 |
-| Review Record | Use-Case Model | Reviews | UCM#F1, UCM#F2, UCM#F3, UCM#F4 |
-| Review Record | Supplementary Specification | Reviews | Supp#F1, Supp#F2, Supp#F3 |
-| Review Record | Risk List | Reviews | Risk#F1, Risk#F2, Risk#F3 |
-| Review Record | Iteration Plan | Reviews | Plan#F1, Plan#F2, Plan#F3 |
-| Review Record | Software Architecture Document | Reviews | SAD#F1, SAD#F2, SAD#F3, SAD#F4 |
-| Review Record | Test Evaluation Summary | Reviews | TES#F1, TES#F2 |
-| Review Record | FR-001..FR-012 | Refines | UC-001..UC-012 |
-| Review Record | NFR-001..NFR-008 | Refines | Supplementary Specification |
-| Review Record | R001, R002 | DependsOn | Risk List |
-| Review Record | AC-001..AC-005 | Refines | Test Evaluation Summary |
-| BR-OK-INACTIVE | Development Case | Reviews | Business Modeling inactive |
-| BR-OK-INACTIVE | DC §4 classification | Reviews | isBusinessProcessLed: false |
-| BR-OK-INACTIVE | Use-Case Model | Reviews | No business sections present |
+| Review Record | Vision, Use-Case Model, Supplementary Specification, SAD, Iteration Plan, Risk List, Development Case, Test Evaluation Summary | Refines | LCO exit criteria |
+| MR-001 | Iteration Plan#F1 (Reviewer) | DependsOn | Stakeholder refusal |
+| MR-002 | Stakeholder directive | DependsOn | Risk List, Iteration Plan |
+| LCO verdict | C-001..C-005 | Refines | Stakeholder sanction |
