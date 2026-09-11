@@ -201,3 +201,4 @@ The Inception test mission is **documented and ready for review**. The project i
 | Test Evaluation Summary | BG-001, BG-002, BG-003 | Refines | AC-001, AC-002, AC-004 |
 | Inception test mission | UC-001..UC-012 | Tests | AC-001..AC-005 |
 | SCM evidence (CI build success, no open issues) | `main` branch | DependsOn | GitHub Actions run `34609595628` |
+| SCM evidence (CI build failure — solution-sync regression) | `main` branch | DependsOn | GitHub Actions run `34612406692` |
