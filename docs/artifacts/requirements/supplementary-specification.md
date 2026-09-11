@@ -4,9 +4,10 @@
 |---|---|
 | Project | Portal |
 | Phase | Inception |
-| Iteration | 2 |
+| Iteration | 3 |
 | Status | Draft |
-| Milestone Target | End-of-Inception review |
+| Milestone Target | End-of-Inception review (not yet achieved) |
+| Review Notes | Supplementary Specification#F1 and #F3 addressed in content; awaiting formal tool-closure by Reviewer lens before Elaboration. |
 
 ## Functionality
 
@@ -65,6 +66,7 @@ stop
 | REQ-U002 | Mandatory custom design | CON-015 | UI visual layer must implement `docs/inputs/employee-portal-design.html`. | Low |
 | REQ-U003 | Clocking without training | AC-004 | 80% of employees complete at least one clocking with no prior training. | Low |
 | REQ-U004 | Directory lookup under 10 seconds | AC-003 | Any employee finds a colleague's phone or email in under 10 seconds. | Low |
+
 ## Reliability
 
 | ID | Requirement | Source | Detail | Volatility |
@@ -82,7 +84,7 @@ stop
 | REQ-P002 | Clocking response performance | NFR-002 | Clock in/out operation must respond in under 1 second. | Low |
 | REQ-P003 | Directory search interaction performance | FR-012, AC-003 | From the start of the directory search interaction (page already loaded) to locating a colleague's phone or email must be under 10 seconds. Page load itself is governed by REQ-P001 (<3 seconds). | Low |
 
-> **Elaboration note:** The RequirementsSpecifier will quantify exact measurement conditions, load assumptions, and percentile thresholds for REQ-P001..REQ-P003 in the next iteration.
+> **Elaboration decomposition note (Supplementary Specification#F1):** The 10-second target in REQ-P003 spans page-load time (REQ-P001), LDAP query latency, result rendering, and user recognition time. In Elaboration the RequirementsSpecifier will decompose this into measurable sub-targets (e.g., LDAP query ≤ X ms, render ≤ Y ms) under defined load assumptions and percentile thresholds, and the UI Designer will confirm the interaction start/end points.
 
 ## Supportability
 
@@ -90,7 +92,9 @@ stop
 |---|---|---|---|---|
 | REQ-SU001 | Maintainable .NET 10 codebase | CON-001 | REST API backend; standard Razor Pages frontend. | Low |
 | REQ-SU002 | Infrastructure handover | CON-013 | Development team hands over to Infrastructure team at end of Transition; team operates portal thereafter. | Low |
-| REQ-SU003 | Backup coverage dependency on Infrastructure confirmation | CON-016 | No backup design or tooling in project scope; the project depends on Infrastructure confirming that existing server-backup practice covers the PostgreSQL instance. | Low |
+| REQ-SU003 | Backup coverage dependency on Infrastructure confirmation | CON-016 | No backup design or tooling in project scope. Backup coverage depends on the Infrastructure team's written confirmation that their existing server-backup practice already covers this PostgreSQL instance in restorable form, with a verified restore test. | Low |
+
+> **Reviewer note (Supplementary Specification#F3):** REQ-SU003 explicitly cites the Infrastructure team's written confirmation and verified restore test recorded in CON-016.
 
 ## Design Constraints
 
