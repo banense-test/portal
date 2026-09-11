@@ -245,6 +245,75 @@ Seven additional Major findings require rework. All findings are actionable and 
 
 The project may NOT proceed to Elaboration until Vision#F2 is resolved and the Reviewer lens confirms closure. The seven Major findings should be resolved in the same rework pass.
 
+## Business Modeling Discipline (Reviewer: Business Reviewer)
+
+**Verdict: [BR-OK-INACTIVE] — Discipline NOT APPLICABLE per DC §4**
+
+DC §4 trigger evaluation: project does not exhibit business-process-led characteristics. No ERP / BPM / workflow-redesign / M&A signals found in Vision. No Business Use Cases / Workers / Entities sections present in Use-Case Model. No business-domain specialist terms in Glossary (Glossary optional not triggered).
+
+Evidence:
+- `get_dc_classification` returned `isBusinessProcessLed: false` (classified 2026-09-11).
+- Development Case explicitly declares **Business Modeling: INACTIVE** with rationale: scope is already captured as declared FRs/NFRs; project automates known HR/employee processes rather than redesigning them.
+- Use-Case Model contains only system use cases (UC-001..UC-012) and system actors (Employee, HR Administrator, Keycloak, Active Directory). No `<<business actor>>`, `<<business worker>>`, `<<business entity>>`, or `<<business use case>>` stereotypes.
+- Glossary artifact does not exist; optional trigger evaluation in Development Case records Glossary as NOT TRIGGERED because domain terms are defined in constraints and requirements.
+
+Conclusion: BPA + BR are correctly INACTIVE for this engagement. No findings, no recommendations. Downstream reviewers (MR, RC) may treat the BM discipline as out-of-scope for the LCO milestone.
+
+### Business Modeling Coverage Map
+
+```plantuml
+@startuml Portal_BM_Coverage_Map
+!theme plain
+
+package "Business Modeling Discipline" as BM {
+  class "Business Use Cases" as BUC #LightGray {
+    + Required: 0
+    + Present: 0
+    + Status: N/A
+  }
+  class "Business Workers" as BW #LightGray {
+    + Required: 0
+    + Present: 0
+    + Status: N/A
+  }
+  class "Business Entities" as BE #LightGray {
+    + Required: 0
+    + Present: 0
+    + Status: N/A
+  }
+  class "Business Rules Document" as BRD #LightGray {
+    + Required: 0
+    + Present: 0
+    + Status: N/A
+  }
+}
+
+note right of BUC
+  Business Modeling is INACTIVE per DC §4.
+  No BUC/BW/BE/BRD artifacts are expected
+  or required for the LCO milestone.
+end note
+
+BUC --> BW : not applicable
+BW --> BE : not applicable
+BE --> BRD : not applicable
+@enduml
+```
+
+### Scenario Assessment
+
+| Assessment Item | Finding |
+|---|---|
+| Modeling scenario | Not applicable — Business Modeling discipline inactive |
+| Scenario selection by BPA | Correctly omitted; no BPL signal |
+| BUC completeness test | N/A — no BUCs produced |
+| Realization coverage | N/A — no realizations required |
+| Derivation bridge | N/A — system UCs derive directly from declared FRs/NFRs |
+| Resource planning compliance | N/A |
+| Same modeling technique at business level | N/A |
+| Stakeholder representation coverage | Covered by Requirements discipline (Vision stakeholder table) |
+| Business rule audit | Covered by Requirements/Supplementary Specification (CON-017..CON-021) |
+
 ## Traceability
 
 | Element | Traces From | Link Type | Traces To |
@@ -261,3 +330,6 @@ The project may NOT proceed to Elaboration until Vision#F2 is resolved and the R
 | Review Record | NFR-001..NFR-008 | Refines | Supplementary Specification |
 | Review Record | R001, R002 | DependsOn | Risk List |
 | Review Record | AC-001..AC-005 | Refines | Test Evaluation Summary |
+| BR-OK-INACTIVE | Development Case | Reviews | Business Modeling inactive |
+| BR-OK-INACTIVE | DC §4 classification | Reviews | isBusinessProcessLed: false |
+| BR-OK-INACTIVE | Use-Case Model | Reviews | No business sections present |
