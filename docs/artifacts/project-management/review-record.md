@@ -383,15 +383,19 @@ The Inception phase technical artifacts are feasible and acceptable to stakehold
 4. ReviewCoordinator confirms zero open findings and authorizes Elaboration entry.
 5. ProjectManager updates Iteration Assessment to reflect final closure.
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| Review Record | Iteration Plan#F1(MR) | Refines | Iteration Plan §Milestone Target |
-| Review Record | Risk List#F1(MR) | Refines | Risk List §Risk Register, §Risk Mitigation and Contingency |
-| Review Record | Stakeholder LCO sanction answer | DependsOn | Iteration Plan, Risk List |
-| Review Record | Stakeholder next-pass input answer | DependsOn | Review Record §Disposition |
-| Review Record | LCO compliance assessment | Refines | Vision, Iteration Plan, Risk List, SAD |
-| Review Record | Risk retirement trend | DependsOn | Risk List R001..R008 |
-| Review Record | Open action items | Refines | Development Case, Supplementary Specification, Test Evaluation Summary |
-| Review Record | Finding lifecycle state machine | Refines | Review Record §Findings |
-| Review Record | LCO disposition diagram | Refines | Iteration Plan §Evaluation Criteria |
+| Review Record | Vision | Refines | UC-001..UC-012 |
+| Review Record | FR-001..FR-012, NFR-001..NFR-008 | Refines | Supplementary Specification |
+| Review Record | Development Case | DependsOn | Elaboration gates E1-G1..E1-G6 |
+| Review Record | Risk List | DependsOn | R001..R015 |
+| Review Record | Iteration Plan | Refines | AC-001..AC-005 |
+| Review Record | Test Evaluation Summary | Refines | SCM evidence (CI runs, open issues) |
+| Use-Case Model#F5 | Review Record | Refines | Use-Case Model §Document Control |
+| Use-Case Model#F6 | Review Record | Refines | Use-Case Model §Use-Case Survey |
+| Software Architecture Document#F5 | Review Record | Refines | SAD §Document Control |
+| Development Case#F1 closure | Development Case §Optional Artifact Triggers | Refines | Review Record §Resolutions and Actions |
+| Development Case#F2 closure | Development Case §Guidelines and Procedures | Refines | Review Record §Resolutions and Actions |
+| Supplementary Specification#F1 closure | Supplementary Specification §Performance | Refines | Review Record §Resolutions and Actions |
+| Supplementary Specification#F3 closure | Supplementary Specification §Supportability | Refines | Review Record §Resolutions and Actions |
+| Test Evaluation Summary#F1 closure | Test Evaluation Summary §Conclusions | Refines | Review Record §Resolutions and Actions |
