@@ -318,19 +318,31 @@ PE --> REV : configures
 ```
 
 ## Guidelines and Procedures
-
 ### Project-Specific Guidelines
 
 Guideline content is authored by the respective discipline experts and referenced here. The Process Engineer does not duplicate technical guidance.
 
-| Guideline | Owner | Location | Status | Gate / Risk |
+| Guideline | Owner | Location | Status | Elaboration Gate |
 |---|---|---|---|---|
-| Coding standards | Implementer / CodeReviewer | `CONTRIBUTING.md` | **NOT FOUND in repository — must be created in Elaboration Iteration 1.** | Gate E1-G1: CONTRIBUTING.md coding-standards section present before Construction starts. Escalate to Risk List as R010 if not resolved by end of Elaboration Iteration 1. |
-| UI conventions | UserInterfaceDesigner | `docs/inputs/employee-portal-design.html` (authoritative) + `CONTRIBUTING.md` | Committed input exists; CONTRIBUTING.md section to be added in Elaboration Iteration 1. | Gate E1-G2: UI conventions section present before UI construction begins. |
-| Test conventions | TestDesigner / TestManager | `CONTRIBUTING.md` | **NOT FOUND in repository — must be created in Elaboration Iteration 1.** | Gate E1-G3: test-conventions section present before Test Case production in Construction. Escalate to Risk List as R011 if not resolved by end of Elaboration Iteration 1. |
-| Design conventions | SoftwareArchitect / Designer | `CONTRIBUTING.md` | **NOT FOUND in repository — must be created in Elaboration Iteration 1.** | Gate E1-G4: design-conventions section present before Design Model elaboration in Elaboration Iteration 2. |
-| CI/CD workflow | ConfigurationManager / Implementer | `.github/workflows/` | Directory exists but content could not be verified via API; ConfigurationManager to confirm in Elaboration Iteration 1. | Gate E1-G5: CI workflow builds the solution and runs tests before Construction starts. Escalate to Risk List as R012 if not operational by end of Elaboration Iteration 1. |
-| Lint / formatting config | Implementer / CodeReviewer | Repository root (e.g., `.editorconfig`, `dotnet-tools.json`) | To be confirmed in Elaboration Iteration 1. | Gate E1-G6: lint/format config present and enforced in CI before Construction starts. |
+| Coding standards | Implementer / CodeReviewer | `CONTRIBUTING.md` | **MISSING** — verified absent from repository at Inception Iteration 3. | **Gate E1-G1:** `CONTRIBUTING.md` coding-standards section present and reviewed by CodeReviewer before Construction Iteration 1. |
+| UI conventions | UserInterfaceDesigner | `docs/inputs/employee-portal-design.html` (authoritative) + `CONTRIBUTING.md` | Committed input exists; CONTRIBUTING.md section to be added in Elaboration Iteration 1. | **Gate E1-G2:** UI conventions section present in `CONTRIBUTING.md` before UI construction begins. |
+| Test conventions | TestDesigner / TestManager | `CONTRIBUTING.md` | **MISSING** — depends on `CONTRIBUTING.md` creation. | **Gate E1-G3:** test-conventions section present in `CONTRIBUTING.md` before Test Case production in Construction. |
+| Design conventions | SoftwareArchitect / Designer | `CONTRIBUTING.md` | **MISSING** — depends on `CONTRIBUTING.md` creation. | **Gate E1-G4:** design-conventions section present in `CONTRIBUTING.md` before Design Model elaboration in Elaboration Iteration 2. |
+| CI/CD workflow | ConfigurationManager / Implementer | `.github/workflows/ci.yml` | **PRESENT** — verified in repository at Inception Iteration 3 (SHA `631383c12d2692881e092439857a435d6392b2a7`). Builds .NET 10 solution, runs tests, publishes web artifact on push/PR to main, iteration/**, chore/**, feature/**, hotfix/**. | **Gate E1-G5:** CI workflow builds the solution and runs tests successfully before Construction starts. |
+| Lint / formatting config | Implementer / CodeReviewer | Repository root (e.g., `.editorconfig`, `dotnet-tools.json`) | **NOT VERIFIED** — to be confirmed in Elaboration Iteration 1. | **Gate E1-G6:** lint/format config present and enforced in CI before Construction starts. |
+
+### Elaboration Iteration 1 Environment Gates
+
+The following gates must be satisfied before Construction begins. Each gate is owned by the discipline shown and tracked in the Risk List if not closed.
+
+| Gate | Condition | Owner | Escalation if Not Met |
+|---|---|---|---|
+| E1-G1 | `CONTRIBUTING.md` exists with coding-standards section reviewed by CodeReviewer. | Implementer + CodeReviewer | Risk List R010 |
+| E1-G2 | `CONTRIBUTING.md` exists with UI conventions section referencing `design.html`. | UserInterfaceDesigner | Risk List R011 |
+| E1-G3 | `CONTRIBUTING.md` exists with test-conventions section. | TestDesigner + TestManager | Risk List R012 |
+| E1-G4 | `CONTRIBUTING.md` exists with design-conventions section. | SoftwareArchitect + Designer | Risk List R013 |
+| E1-G5 | `.github/workflows/ci.yml` builds solution and runs tests green on default branch. | ConfigurationManager + Implementer | Risk List R014 |
+| E1-G6 | Lint/format config (`.editorconfig`, `dotnet-tools.json`, or equivalent) present and enforced in CI. | Implementer + CodeReviewer | Risk List R015 |
 
 ### Measurement Policy
 
@@ -355,7 +367,7 @@ This project uses the two IARI baseline measures: **tokens consumed** and **elap
 5. Risk List reviewed and new risks added (ProjectManager).
 
 ```plantuml
-@startuml Portal_EnvironmentPrep_Fixed
+@startuml Portal_EnvironmentPrep
 !theme plain
 
 start
@@ -363,7 +375,7 @@ start
 :Verify GitHub Actions workflow
 placeholder or existing CI config;
 if (CI config missing or incomplete?) then (yes)
-  :Log gap as R009 / explicit gate
+  :Log gap as explicit gate
 for ConfigurationManager;
 else (no)
   :CI config verified;
@@ -372,7 +384,7 @@ endif
 :Verify CONTRIBUTING.md exists
 or note gap for discipline experts;
 if (CONTRIBUTING.md missing?) then (yes)
-  :Log gap as R010 / explicit gate
+  :Log gap as explicit gate
 for Implementer + CodeReviewer;
 else (no)
   :CONTRIBUTING.md verified;
@@ -387,7 +399,6 @@ Keycloak client credentials available;
 stop
 @enduml
 ```
-
 ## Traceability
 
 | Element | Traces From | Link Type | Traces To |
