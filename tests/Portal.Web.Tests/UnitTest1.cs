@@ -1,3 +1,5 @@
+using Xunit;
+
 namespace Portal.Web.Tests;
 
 public class UnitTest1
