@@ -1,41 +1,25 @@
-# Skeleton CI/CD workflow for Portal deployment
-# To be refined in Elaboration/Transition once the Windows Server target is confirmed.
-name: portal-deploy
+# Portal deployment pipeline
+#
+# [PASSIVE AT INCEPTION]
+# Deployment automation is intentionally not active during Inception.
+# The project skeleton and CI build/test pipeline are the only integration
+# concerns at this milestone. Deployment design will be refined in
+# Elaboration and activated in Transition once the internal Windows Server
+# target and hand-over procedure are confirmed with the Infrastructure team.
+#
+# See docs/DEPLOYMENT_STRATEGY.md for the evolving deployment plan.
+#
+name: Portal Deploy
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: windows-latest
+  placeholder:
+    name: Deployment placeholder
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup .NET 10
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
-      - name: Build
-        run: dotnet build --configuration Release
-      - name: Test
-        run: dotnet test --configuration Release --no-build
-      - name: Publish artifact
-        run: dotnet publish --configuration Release --output ./publish
-      # TODO: upload publish folder to internal artifact store
-
-  deploy-staging:
-    needs: build
-    runs-on: windows-latest
-    environment: staging
-    steps:
-      - name: Deploy to Staging
-        run: echo 'TODO: invoke infra/deploy.ps1 against Staging server'
-
-  deploy-production:
-    needs: deploy-staging
-    runs-on: windows-latest
-    environment: production
-    steps:
-      - name: Deploy to Production
-        run: echo 'TODO: invoke infra/deploy.ps1 against Production server'
+      - name: Explain passive state
+        run: |
+          echo "Deployment pipeline is passive at Inception."
+          echo "Activate in Transition after confirming Windows Server target and hand-over."

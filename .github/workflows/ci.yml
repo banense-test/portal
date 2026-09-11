@@ -82,12 +82,15 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      - name: Pin SDK version
+        run: dotnet --version
+
       - name: Sync solution from src/ + tests/
         shell: bash
         run: |
           set -e
           rm -f Portal.sln Portal.slnx
-          dotnet new sln -n Portal --format sln
+          dotnet new sln -n Portal
           find src tests -name '*.csproj' -print0 | sort -z | while IFS= read -r -d '' proj; do
             dotnet sln Portal.sln add "$proj"
           done
