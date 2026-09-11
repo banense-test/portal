@@ -1,14 +1,10 @@
-# Portal deployment packaging metadata
-# This file reserves the infrastructure packaging location.
-# Detailed deployment packaging (MSDeploy, zip, or container) will be selected in Elaboration/Transition.
+# Helm chart skeleton — NOT USED for Portal.
+# Portal deployment is custom-built to a single internal Windows Server.
+# This file is retained as a deliberate negative record so that no role
+# introduces container orchestration without a Change Request.
 
 apiVersion: v2
 name: portal
-description: Cuba Corp Employee Portal deployment package
-type: application
-version: 0.1.0
-appVersion: "0.1.0"
-
-# NOTE: This is a skeleton placeholder. The project uses a single-server
-# Windows Server deployment (CON-007). Helm/Kubernetes is NOT in scope.
-# This file marks the infra/ directory for future deployment artifacts.
+# OMITTED: container orchestration is out of scope per CON-007.
+# If a future Change Request moves deployment to Kubernetes, this skeleton
+# can be activated and versioned.

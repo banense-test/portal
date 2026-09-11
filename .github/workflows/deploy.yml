@@ -1,25 +1,35 @@
-# Portal deployment pipeline
-#
-# [PASSIVE AT INCEPTION]
-# Deployment automation is intentionally not active during Inception.
-# The project skeleton and CI build/test pipeline are the only integration
-# concerns at this milestone. Deployment design will be refined in
-# Elaboration and activated in Transition once the internal Windows Server
-# target and hand-over procedure are confirmed with the Infrastructure team.
-#
-# See docs/DEPLOYMENT_STRATEGY.md for the evolving deployment plan.
-#
+# Deployment workflow skeleton for Portal
+# Triggered manually or by SCM release creation in Transition.
+# This is a placeholder for Elaboration/Construction refinement.
+
 name: Portal Deploy
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment (staging | production)'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      release_tag:
+        description: 'SCM release tag to deploy'
+        required: true
+        type: string
 
 jobs:
-  placeholder:
-    name: Deployment placeholder
+  deploy:
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
     steps:
-      - name: Explain passive state
-        run: |
-          echo "Deployment pipeline is passive at Inception."
-          echo "Activate in Transition after confirming Windows Server target and hand-over."
+      - name: Download release artifact
+        run: echo "TODO: download artifact for ${{ github.event.inputs.release_tag }}"
+
+      - name: Deploy to internal Windows Server
+        run: echo "TODO: deploy to ${{ github.event.inputs.environment }} via Infrastructure team process"
+
+      - name: Smoke test
+        run: echo "TODO: run smoke tests against deployed portal"
