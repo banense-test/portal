@@ -8,30 +8,30 @@
 
 ## Iteration Objectives Reached
 
-The four phase-planned objectives for Inception Iteration 1 are assessed against the Review Record and Test Evaluation Summary. **The milestone verdict is the ReviewCoordinator's, already issued: LCO No-Go — stakeholder sanction REFUSED.** This assessment records the objective-by-objective result *given* that verdict; it does not gate the phase.
+The four phase-planned objectives for Inception are assessed against the Review Record and Test Evaluation Summary. **The milestone verdict is the ReviewCoordinator's, already issued: LCO Go — stakeholder sanction GRANTED ("Yes" / "let's move to elaboration").** This assessment records the objective-by-objective result *given* that verdict; it does not gate the phase.
 
 | # | Planned objective | Result | Evidence |
 |---|---|---|---|
-| 1 | Define Project Scope | **Met** | Vision scope statement delineates in/out; 12 UCs trace 1:1 to FR-001…FR-012; Review Record: "Scope agreement: PASS" |
-| 2 | Identify Critical Risks | **Met** | Risk List carries R001–R004 with P/I/exposure/magnitude/strategy/mitigation/contingency; Review Record: "Risk identification: PASS" |
-| 3 | Tailor Development Process | **Met** | Development Case produced (Environment discipline); Business Modeling discipline correctly INACTIVE |
-| 4 | Establish Feasibility | **Met** | Candidate SAD honors all 21 constraints; layered monolith on single node; Review Record: "Feasibility: PASS" |
+| 1 | Define Project Scope | **Met** | Vision scope statement delineates in/out; 12 UCs trace 1:1 to FR-001…FR-012; Review Record technical lens: "scope delineation PASS / traceability PASS" |
+| 2 | Identify Critical Risks | **Met** | Risk List carries R001–R004 with P/I/exposure/magnitude/strategy/mitigation/contingency; Review Record: "Risk List: magnitude + strategy PASS" |
+| 3 | Tailor Development Process | **Met** | Development Case produced (Environment discipline); Business Modeling discipline correctly INACTIVE (BR-OK-INACTIVE verdict) |
+| 4 | Establish Feasibility | **Met** | Candidate SAD honors all 21 constraints; layered monolith on single node; Review Record: "SAD: volatility wording PASS / constraint coverage PASS" |
 
-**Net:** all four objectives are substantively met. The No-Go verdict is a **governance/consistency stop, not a scope or feasibility stop** — the baseline is sound; the Iteration Plan's internal consistency and cost-box governance failed review.
+**Net:** all four objectives are met. The Iteration 1 No-Go verdict was a governance/consistency stop on the Iteration Plan (4 Major findings), not a scope or feasibility stop. All five findings (4 Major on the Iteration Plan, 1 Minor on the SAD) are now **Resolved**; the stakeholder re-sanctioned LCO with "Yes".
 
 ## Adherence to Plan
 
-The iteration produced **9 artifacts** (Vision, Use-Case Model, Supplementary Specification, Development Case, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary, Review Record) against a plan that committed to a 6-artifact baseline (Vision, Use-Case Model, Supplementary Specification, Development Case, Risk List, Iteration Plan).
+The iteration produced **10 artifacts** (Vision, Use-Case Model, Supplementary Specification, Development Case, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary, Review Record, Iteration Assessment) against a plan that committed to a 6-artifact baseline (Vision, Use-Case Model, Supplementary Specification, Development Case, Risk List, Iteration Plan).
 
 **Variance (plan vs. facts):**
 
 | Variance | Root cause | N+1 adjustment |
 |---|---|---|
-| SAD and Test Evaluation Summary were produced, but the Iteration Plan's Resources table marked Software Architect "Dormant" and omitted Test Manager entirely | The plan's resource profile was written before the actual artifact set was known; it was not updated when the SAD and Test Evaluation Summary landed | Iteration Plan#F1 (Reviewer) remediation: add Software Architect (candidate SAD) and Test Manager rows; fold SAD + Test Evaluation Summary into Objective 1 |
-| Iteration Plan Gantt expressed agent work in "days" (duration/effort fusion) | The Gantt was authored before the DC measurement policy (tokens + elapsed time only) was applied consistently | Iteration Plan#F2 (Reviewer) remediation: replace "days" with token budgets for agent work; keep "days" only for human-gate queue time |
-| No single total cost-box stated; per-stretch budgets present but no measurable stop condition | Budget-box governance was applied per-stretch but never summed into one iteration total | Iteration Plan#F1 (MR) remediation: state the iteration's total token budget as an explicit assumption with basis named |
+| SAD and Test Evaluation Summary were produced, but the Iteration Plan's Resources table marked Software Architect "Dormant" and omitted Test Manager entirely | The plan's resource profile was written before the actual artifact set was known; it was not updated when the SAD and Test Evaluation Summary landed | Iteration Plan#F1 (Reviewer) remediation: add Software Architect (candidate SAD) and Test Manager rows; fold SAD + Test Evaluation Summary into Objective 1 — **Resolved** |
+| Iteration Plan Gantt expressed agent work in "days" (duration/effort fusion) | The Gantt was authored before the DC measurement policy (tokens + elapsed time only) was applied consistently | Iteration Plan#F2 (Reviewer) remediation: replace "days" with token budgets for agent work; keep "days" only for human-gate queue time — **Resolved** |
+| No single total cost-box stated; per-stretch budgets present but no measurable stop condition | Budget-box governance was applied per-stretch but never summed into one iteration total | Iteration Plan#F1 (MR) remediation: state the iteration's total token budget (~38k tokens) as an explicit assumption with basis named — **Resolved** |
 
-**Measured actuals (this iteration):** token spend = 1,860,682; agent elapsed time = 0:30:46.6; stakeholder queue time = 0:00:00 (excludes the end-of-iteration approval gate, which is not measured). These replace every assumed share in the Elaboration forecast.
+**Measured actuals (Inception, cumulative across both iterations):** token spend = 1,048,968; agent elapsed time = 0:22:02.5; stakeholder queue time = 0:00:00 (excludes the end-of-iteration approval gate, which is not measured). These replace every assumed share in the Elaboration forecast. The Iteration 1 cost-box assumption (~38k tokens) is superseded by this measured figure — the measured shape wins.
 
 ## Use Cases and Scenarios Implemented
 
@@ -58,10 +58,10 @@ Remaining UCs (UC-002…UC-007, UC-009…UC-012) are outlined; flows are detaile
 
 | Criterion | Result | Evidence |
 |---|---|---|
-| 1. Six baseline artifacts exist and are internally consistent | **Not met** | All six exist, but the Iteration Plan is internally inconsistent (resource table, Gantt units) — 4 Major findings |
-| 2. All 12 UCs trace to FRs; all 21 constraints + 5 NFRs captured | **Met** | Review Record: "Scope agreement: PASS"; Supplementary Specification captures NFR-001…NFR-005 |
+| 1. Baseline artifacts exist and are internally consistent | **Met** | All 8 technical artifacts pass the LCO checklist; 0 Critical, 0 Major, 0 Minor open after Iter 2 reconciliation |
+| 2. All 12 UCs trace to FRs; all 21 constraints + 5 NFRs captured | **Met** | Review Record: "scope delineation PASS / traceability PASS"; Supplementary Specification captures NFR-001…NFR-005 |
 | 3. R001 and R003 classified with mitigation + contingency | **Met** | Risk List: R001 (High, 9), R003 (Significant, 6) both carry strategy/mitigation/contingency |
-| 4. ReviewCoordinator issues an LCO verdict | **Met** | Verdict issued: No-Go (stakeholder sanction REFUSED) |
+| 4. ReviewCoordinator issues an LCO verdict | **Met** | Verdict issued: Go (stakeholder sanction GRANTED) |
 
 ## Test Results
 
@@ -76,21 +76,21 @@ Three Low testability findings (10 UCs outlined only; NFR-001/002 thresholds not
 
 ## External Changes
 
-None. No Change Request was raised this iteration. The stakeholder's two answers (LCO sanction "No"; directive "Fix all findings") are recorded in the Review Record and drive the rework below — they are not scope changes.
+None. No Change Request was raised this iteration. The stakeholder's two answers at the Iter 2 LCO gate (sanction "Yes"; directive "let's move to elaboration") are recorded in the Review Record — they are not scope changes.
 
 ## Rework Required
 
-The Review Record consolidated **0 Critical, 4 Major, 1 Minor** findings. All four Major findings target the Iteration Plan and are owned by the Project Manager; the one Minor targets the SAD and is owned by the Software Architect.
+**None.** The Review Record consolidated **0 Critical, 0 Major, 0 Minor** open findings after Iteration 2 reconciliation. All five findings emitted in Iteration 1 (three Reviewer, two Management Reviewer) are now **Resolved**:
 
-| Finding | Severity | Owner | Remediation |
+| Finding | Severity | Owner | Status |
 |---|---|---|---|
-| Iteration Plan#F1 (Reviewer) — resource table inconsistent | Major | Project Manager | Add Software Architect (candidate SAD) + Test Manager rows; fold SAD + Test Evaluation Summary into Objective 1 |
-| Iteration Plan#F2 (Reviewer) — Gantt "days" unit violation | Major | Project Manager | Replace "days" with token budgets for agent work; keep "days" only for human-gate queue time |
-| Iteration Plan#F1 (MR) — cost-box total not stated | Major | Project Manager | State the iteration's total token budget as an explicit assumption with basis named |
-| Iteration Plan#F2 (MR) — stakeholder refusal directive | Major | Project Manager | Resolves once the other three Major findings are remediated; then re-review at next LCO gate |
-| Software Architecture Document#F1 — Volatility High vs Medium | Minor | Software Architect | Correct prose to "Volatility: Medium" or "the two most volatile UCs" |
+| Iteration Plan#F1 (Reviewer) — resource table inconsistent | Major | Project Manager | Resolved (Iter 2) |
+| Iteration Plan#F2 (Reviewer) — Gantt "days" unit violation | Major | Project Manager | Resolved (Iter 2) |
+| Iteration Plan#F1 (MR) — cost-box total not stated | Major | Project Manager | Resolved (Iter 2) |
+| Iteration Plan#F2 (MR) — stakeholder refusal directive | Major | Project Manager | Resolved (Iter 2) |
+| Software Architecture Document#F1 — Volatility High vs Medium | Minor | Software Architect | Resolved (Iter 2) |
 
-**Next-iteration plan adjustment:** the Iteration Plan must be remediated (all four Major findings) before the stakeholder re-sanctions LCO. The measured token spend (1,860,682) and elapsed time (0:30:46.6) now anchor the Elaboration forecast — no assumed share survives.
+**Next-iteration plan adjustment:** the project advances to Elaboration. The measured token spend (1,048,968) and elapsed time (0:22:02.5) now anchor the Elaboration forecast — no assumed share survives. Elaboration iteration 1 must retire R001 (AD attribute consistency) via the UC-008 PoC and realize UC-001/UC-008, matching the Software Architect's prioritized use-case list and the Test Evaluation Summary's recommendation to derive test cases for UC-001 and UC-008 first.
 
 ```plantuml
 @startuml
@@ -100,7 +100,7 @@ start
 :Read Test Evaluation Summary\n(quality evidence);
 :Assess each planned objective\n(met / not met / not addressed);
 :Record variance (plan vs facts)\nroot cause + N+1 adjustment;
-:Record rework required\n(4 Major findings on Iteration Plan);
+:Record rework required\n(0 open findings after Iter 2);
 :Persist Iteration Assessment;
 stop
 @enduml
@@ -110,11 +110,11 @@ stop
 
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| Iteration Assessment (Inception Iter-1) | Iteration Plan, Review Record, Test Evaluation Summary, Risk List | DependsOn | LCO milestone verdict (ReviewCoordinator) |
-| Iteration Plan#F1 (Reviewer) | Iteration Plan (resource table) | DependsOn | Project Manager (rework) |
-| Iteration Plan#F2 (Reviewer) | Iteration Plan (Gantt units) | DependsOn | Project Manager (rework) |
-| Iteration Plan#F1 (MR) | Iteration Plan (cost-box) | DependsOn | Project Manager (rework) |
-| Iteration Plan#F2 (MR) | Iteration Plan (stakeholder refusal) | DependsOn | Project Manager (rework) |
-| Software Architecture Document#F1 | SAD (Volatility wording) | DependsOn | Software Architect (rework) |
+| Iteration Assessment (Inception Iter-2) | Iteration Plan, Review Record, Test Evaluation Summary, Risk List | DependsOn | LCO milestone verdict (ReviewCoordinator) |
+| Iteration Plan#F1 (Reviewer) | Iteration Plan (resource table) | DependsOn | Project Manager (rework — Resolved) |
+| Iteration Plan#F2 (Reviewer) | Iteration Plan (Gantt units) | DependsOn | Project Manager (rework — Resolved) |
+| Iteration Plan#F1 (MR) | Iteration Plan (cost-box) | DependsOn | Project Manager (rework — Resolved) |
+| Iteration Plan#F2 (MR) | Iteration Plan (stakeholder refusal) | DependsOn | Project Manager (rework — Resolved) |
+| Software Architecture Document#F1 | SAD (Volatility wording) | DependsOn | Software Architect (rework — Resolved) |
 | R001 | CON-007, FR-008, UC-008 | DependsOn | Elaboration PoC |
 | R003 | STK-003, CON-006, CON-010 | DependsOn | Iteration Plan (human gates) |
