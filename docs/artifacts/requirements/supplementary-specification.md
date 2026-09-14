@@ -14,6 +14,7 @@
 | NFR-005 | Two-level authorization from AD group membership: HR group → publish/edit/unpublish news + manage categories; everyone else → employee (read directory/news + own clockings). No role matrix, no permission screen, no per-category rule. | NFR-005 | Cross-cutting; `<<include>>`d by every UC |
 | — | Authentication via Keycloak OIDC (portal is a client only; register client, redirect, validate token, read roles from claims). | CON-006 | Cross-cutting mechanism — NOT a use case |
 | — | Employee data read from AD on demand, never copied; portal stores only `AD user id → worker category`. | CON-007 | Cross-cutting mechanism — NOT a use case |
+| — | No access from outside the corporate network (internal-only application). | CON-009 | Security boundary — cross-cutting |
 
 ## Usability
 
@@ -30,6 +31,34 @@
 | NFR-003 | Availability window: extended working hours Mon–Fri 7:00–19:00, with fault tolerance within the corporate network. 24/7 not required. | NFR-003 |
 | — | Clocking made while the network is down up to 5 minutes is not lost: clocking page keeps the press in localStorage and retries its POST up to 5 minutes; beyond 5 minutes the employee reports to HR. Applies to clocking only — directory and news show a "no connection" message. | AC-005 |
 | — | Backups covered by Infrastructure's existing server-backup practice (verified restore test). No backup design/tooling in this project. | CON-013 |
+
+**Offline-retry and idempotency flow (AC-005, CON-021):**
+
+```plantuml
+@startuml
+start
+:Employee presses Clock In/Out;
+:Client records press timestamp\nand generates idempotency key (CON-021);
+:Client sends POST (timestamp + key);
+
+if (Network available?) then (yes)
+  if (Idempotency key already known?) then (yes)
+    :Return existing result\n(no duplicate record — CON-021);
+  else (no)
+    :Persist clocking with client timestamp\n(stored UTC — CON-014);
+    :Show confirmation;
+  endif
+else (no)
+  :Keep press in localStorage;
+  :Retry POST;
+  while (Still failing and < 5 min?) is (yes)
+    :Retry POST;
+  endwhile (no)
+  :Beyond 5 min — employee reports to HR\n(AC-005);
+endif
+stop
+@enduml
+```
 
 ## Performance
 
@@ -56,6 +85,7 @@
 | CON-006 | Keycloak is an OIDC client dependency only — not part of this project | CON-006 |
 | CON-007 | Employee data read from AD on demand, never copied | CON-007 |
 | CON-008 | Custom design (docs/inputs/employee-portal-design.html) mandatory and authoritative | CON-008 |
+| CON-009 | No access from outside the corporate network | CON-009 |
 | CON-014 | Single timezone (Europe/Madrid); clockings stored UTC, displayed Europe/Madrid | CON-014 |
 | CON-015 | At most one featured news item (invariant) | CON-015 |
 | CON-016 | Worker categories: closed list of exactly four values (Full-time, Part-time, Contractor, Intern) | CON-016 |
