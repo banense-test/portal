@@ -67,6 +67,29 @@ end note
 ## Findings
 Consolidated findings across all three lenses. **No cross-lens conflicts** — every finding is distinct. The BusinessReviewer lens executed and reported zero findings.
 
+**Business Modeling lens (Business Reviewer) — Iteration 2 verdict: [BR-OK-INACTIVE].** The Development Case §4 classification is authoritative: `isBusinessProcessLed = false`. This is a tool replacement (shared Excel sheets, mass emails, outdated PDF) with a fully-specified system use-case model (FR-001..FR-012). No Business Use Cases / Workers / Entities sections exist in the Use-Case Model; no business-domain specialist terms in the Glossary; none of the DC §4 business-process-led criteria genuinely hold. External systems (AD, Keycloak) are consumed, not re-engineered (CON-006, CON-007, CON-010). **Conclusion:** BPA + BR are correctly INACTIVE for this engagement — no findings, no recommendations. Downstream reviewers may treat the BM discipline as out-of-scope for the LCO milestone.
+
+```plantuml
+@startuml
+skinparam objectStyle rectangle
+
+object "Business Modeling Discipline — LCO Gate (Inception Iter 2)" as BM {
+  DC §4 classification : isBusinessProcessLed = FALSE
+  BPL trigger criteria : none triggered
+  Business Use Cases : none (system UCs FR-001..FR-012 only)
+  Business Workers / Entities : none
+  Glossary specialist terms : none
+  Verdict : BR-OK-INACTIVE
+}
+
+note bottom of BM
+  Business Modeling is correctly INACTIVE per DC §4.
+  BPA + BR roles are dormant for this engagement.
+  No findings, no recommendations.
+end note
+@enduml
+```
+
 **Iteration 2 reconciliation (technical lens — Reviewer):** all three findings emitted by the Reviewer lens in Iteration 1 are now **Resolved** (see Resolutions and Actions). The two Management Reviewer findings on the Iteration Plan remain open pending that lens's own closure and the stakeholder's re-sanction.
 
 **Totals after Iteration 2 reconciliation: 0 Critical, 2 Major (Management Reviewer, open), 0 Minor.**
