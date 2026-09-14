@@ -90,30 +90,29 @@ end note
 @enduml
 ```
 
-**Iteration 2 reconciliation (technical lens — Reviewer):** all three findings emitted by the Reviewer lens in Iteration 1 are now **Resolved** (see Resolutions and Actions). The two Management Reviewer findings on the Iteration Plan remain open pending that lens's own closure and the stakeholder's re-sanction.
+**Iteration 2 reconciliation (all lenses):** all five findings emitted in Iteration 1 (three Reviewer, two Management Reviewer) are now **Resolved** (see Resolutions and Actions). The stakeholder has re-sanctioned the LCO milestone.
 
-**Totals after Iteration 2 reconciliation: 0 Critical, 2 Major (Management Reviewer, open), 0 Minor.**
+**Totals after Iteration 2 reconciliation: 0 Critical, 0 Major, 0 Minor — all findings closed.**
 
 ```plantuml
 @startuml
 skinparam objectStyle rectangle
 
-object "Defect Distribution\n(severity x artifact — Iter 2)" as DD {
-  Iteration Plan : 2 Major (MR) OPEN
-  Iteration Plan : 2 Major (Reviewer) RESOLVED
-  Software Architecture Document : 1 Minor (Reviewer) RESOLVED
-  Total open : 0 Critical, 2 Major, 0 Minor
+object "Defect Distribution — Final (Inception Iter 2)" as DD {
+  Iteration Plan : 4 Major — ALL RESOLVED
+  Software Architecture Document : 1 Minor — RESOLVED
+  Total open : 0 Critical, 0 Major, 0 Minor
 }
 
 object "Iteration Plan" as IP {
-  Major (Reviewer F1) : resource table — RESOLVED
-  Major (Reviewer F2) : Gantt 'days' — RESOLVED
-  Major (MR F1) : cost-box total — content now present, MR closure pending
-  Major (MR F2) : stakeholder refusal — pending re-sanction
+  Reviewer F1 (resource table) : RESOLVED
+  Reviewer F2 (Gantt 'days') : RESOLVED
+  MR F1 (cost-box total) : RESOLVED
+  MR F2 (stakeholder refusal) : RESOLVED
 }
 
 object "SAD" as SAD {
-  Minor (Reviewer F1) : Volatility wording — RESOLVED
+  Reviewer F1 (Volatility wording) : RESOLVED
 }
 
 DD --> IP
@@ -121,17 +120,17 @@ DD --> SAD
 @enduml
 ```
 
-### Consolidated finding register (Iteration 2 status)
+### Consolidated finding register (Iteration 2 final status)
 
 | Artifact | Key | Lens | Severity | Finding | Recommendation | Owner | Status |
 |---|---|---|---|---|---|---|---|
 | Iteration Plan | F1 | Reviewer | Major | Resources table marks SA "Dormant" and omits Test Manager. | Update Resources table + Objective 1. | Project Manager | **Resolved** (Iter 2) |
 | Iteration Plan | F2 | Reviewer | Major | Gantt expresses agent work in "days". | Replace with token budgets. | Project Manager | **Resolved** (Iter 2) |
-| Iteration Plan | F1 | Management Reviewer | Major | No single total cost-box stated. | State total token budget as assumption. | Project Manager | Open (content now present — MR closure pending) |
-| Iteration Plan | F2 | Management Reviewer | Major | Stakeholder REFUSED LCO sanction. | Remediate all three Major findings; re-review. | Project Manager | Open (pending re-sanction) |
+| Iteration Plan | F1 | Management Reviewer | Major | No single total cost-box stated. | State total token budget as assumption. | Project Manager | **Resolved** (Iter 2) |
+| Iteration Plan | F2 | Management Reviewer | Major | Stakeholder REFUSED LCO sanction. | Remediate all three Major findings; re-review. | Project Manager | **Resolved** (Iter 2) |
 | Software Architecture Document | F1 | Reviewer | Minor | Logical View cites "Volatility: High" vs Medium. | Correct prose. | Software Architect | **Resolved** (Iter 2) |
 
-**Technical-lens re-evaluation (Iteration 2):** all 8 technical artifacts (Vision, Use-Case Model, Supplementary Specification, Development Case, Risk List, Test Evaluation Summary, Iteration Plan, Software Architecture Document) were re-read against the LCO checklist. No new defects detected. The three Reviewer-lens findings are remediated in the current artifact content.
+**Technical-lens re-evaluation (Iteration 2):** all 8 technical artifacts (Vision, Use-Case Model, Supplementary Specification, Development Case, Risk List, Test Evaluation Summary, Iteration Plan, Software Architecture Document) were re-read against the LCO checklist. No new defects detected. All five prior findings are remediated in the current artifact content.
 
 ```plantuml
 @startuml
