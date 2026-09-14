@@ -1,0 +1,96 @@
+# =============================================================================
+# Employee Portal — CI Baseline Pipeline
+# Stack: .NET 10 (REST API) + Razor Pages + PostgreSQL (CON-001/002/003)
+#
+# Dependency hierarchy (bottom-up integration order — SAD Logical/Process View):
+#
+# @startuml
+# skinparam componentStyle rectangle
+# package "Employee Portal" {
+#   [Clocking] as CLK
+#   [News] as NWS
+#   [Directory] as DIR
+#   [Worker Category] as WC
+#   database "PostgreSQL" as PG
+# }
+# actor "Keycloak (OIDC)" as KC <<external>>
+# actor "Active Directory" as AD <<external>>
+# CLK --> PG : persists clockings
+# NWS --> PG : persists news
+# DIR --> AD : read-only projection
+# WC --> PG : persists category mapping
+# DIR --> WC : shows category
+# CLK --> KC : auth
+# NWS --> KC : auth
+# DIR --> KC : auth
+# @enduml
+#
+# Integration order: PostgreSQL (foundation) -> Clocking / News / Directory
+# -> Worker Category (depends on Directory).
+#
+# Target build frequency: >= 1 build/day toward iteration end (Construction).
+# =============================================================================
+
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'iteration/**'
+      - 'chore/**'
+      - 'feature/**'
+      - 'hotfix/**'
+  pull_request:
+    branches:
+      - main
+      - 'iteration/**'
+      - 'chore/**'
+      - 'feature/**'
+      - 'hotfix/**'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Sync solution manifest from src/ + tests/ tree
+        run: |
+          dotnet new sln -n Portal --format sln --force
+          for proj in $(find src tests -name '*.csproj' | sort); do
+            dotnet sln Portal.sln add "$proj"
+          done
+
+      - name: Build
+        run: dotnet build Portal.sln --configuration Release
+
+  test:
+    name: Test
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Sync solution manifest from src/ + tests/ tree
+        run: |
+          dotnet new sln -n Portal --format sln --force
+          for proj in $(find src tests -name '*.csproj' | sort); do
+            dotnet sln Portal.sln add "$proj"
+          done
+
+      - name: Test
+        run: dotnet test Portal.sln --configuration Release
