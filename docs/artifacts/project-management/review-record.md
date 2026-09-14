@@ -161,17 +161,19 @@ end note
 2. **Iteration Plan#F2 (Reviewer, Major) — Resolved.** The Gantt labels now carry token budgets (~8k, ~10k, ~6k tokens) and the section header annotates "agent work (token budgets; sequence only, not duration)". The uniform "lasts 1 day" is a gantt-rendering placeholder for pure sequence, not a duration/effort claim; effort currency is tokens, matching the activity diagram.
 3. **Software Architecture Document#F1 (Reviewer, Minor) — Resolved.** The Logical View prose now reads "Volatility: Medium" with "no High-volatility UC exists", matching the Use-Case Model and the SAD's own subsystem rationale table.
 
-**Remaining open findings (not owned by the Reviewer lens):**
+**Iteration 2 reconciliation (management lens — Management Reviewer):** the two findings emitted by the Management Reviewer lens in Iteration 1 are now closed via `resolve_artifact_finding`:
 
-- **Iteration Plan#F1 (Management Reviewer, Major)** — cost-box total. The Iteration Plan now states the total cost-box (~38k tokens) as an explicit assumption with basis named. Closure is the Management Reviewer's to record.
-- **Iteration Plan#F2 (Management Reviewer, Major)** — stakeholder refusal directive. The three underlying Major findings are remediated; re-sanction is the stakeholder's decision at the next LCO gate.
+1. **Iteration Plan#F1 (Management Reviewer, Major) — Resolved.** The Iteration Plan now states the iteration's total cost-box as a single token budget: "~38k tokens" (assumption), the sum of the per-stretch budgets (Risk List ~8k + Iteration Plan ~8k + SAD ~10k + Test Evaluation Summary ~6k + LCO Review ~6k), with basis named ("no phase has closed yet, so no measured token actual exists"). This gives the cost-box a single measurable stop condition governing scope.
+2. **Iteration Plan#F2 (Management Reviewer, Major) — Resolved.** Stakeholder re-sanctioned the LCO milestone with "Yes" and directed "let's move to elaboration". All three underlying Major findings are remediated; the refusal directive is satisfied.
 
-**Action items (prioritized):**
+**Stakeholder sanction: GRANTED.** The stakeholder's answer at the Inception Iter-2 LCO gate is "Yes" / "let's move to elaboration". The prior "Fix all findings" directive is satisfied — all three Major findings are remediated and closed.
 
-1. **Management Reviewer** — verify the Iteration Plan's cost-box statement and close its two Major findings (F1, F2) once the stakeholder re-sanctions.
-2. **Stakeholder** — re-sanction the LCO milestone now that all three Major findings are remediated.
+**Action items (all closed):**
 
-**Stakeholder sanction: still REFUSED (pending re-review).** The stakeholder's "Fix all findings" directive has been satisfied for the three Reviewer-lens findings and the cost-box content is now present; re-sanction awaits the stakeholder's decision at the next LCO gate.
+1. ~~Management Reviewer — verify cost-box statement and close F1, F2~~ — **DONE** (both closed via `resolve_artifact_finding`).
+2. ~~Stakeholder — re-sanction the LCO milestone~~ — **DONE** (sanction GRANTED).
+
+**No open findings remain.** The project advances to Elaboration.
 ## Disposition
 **Overall LCO disposition (consolidated, Iteration 2): GO — stakeholder sanction GRANTED.**
 
