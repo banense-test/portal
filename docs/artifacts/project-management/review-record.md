@@ -65,30 +65,32 @@ end note
 ```
 
 ## Findings
+Consolidated findings across all three lenses. **No cross-lens conflicts** — every finding is distinct. The BusinessReviewer lens executed and reported zero findings.
 
-Consolidated findings across all three lenses. **No cross-lens conflicts** — every finding is distinct (no two lenses reported the same defect, and no lens contradicted another). The BusinessReviewer lens executed and reported zero findings.
+**Iteration 2 reconciliation (technical lens — Reviewer):** all three findings emitted by the Reviewer lens in Iteration 1 are now **Resolved** (see Resolutions and Actions). The two Management Reviewer findings on the Iteration Plan remain open pending that lens's own closure and the stakeholder's re-sanction.
 
-**Totals: 0 Critical, 4 Major, 1 Minor.**
+**Totals after Iteration 2 reconciliation: 0 Critical, 2 Major (Management Reviewer, open), 0 Minor.**
 
 ```plantuml
 @startuml
 skinparam objectStyle rectangle
 
-object "Defect Distribution\n(severity x artifact)" as DD {
-  Iteration Plan : 4 Major
-  Software Architecture Document : 1 Minor
-  Total : 0 Critical, 4 Major, 1 Minor
+object "Defect Distribution\n(severity x artifact — Iter 2)" as DD {
+  Iteration Plan : 2 Major (MR) OPEN
+  Iteration Plan : 2 Major (Reviewer) RESOLVED
+  Software Architecture Document : 1 Minor (Reviewer) RESOLVED
+  Total open : 0 Critical, 2 Major, 0 Minor
 }
 
 object "Iteration Plan" as IP {
-  Major (Reviewer F1) : resource table inconsistent
-  Major (Reviewer F2) : Gantt 'days' unit violation
-  Major (MR F1) : cost-box total not stated
-  Major (MR F2) : stakeholder refusal directive
+  Major (Reviewer F1) : resource table — RESOLVED
+  Major (Reviewer F2) : Gantt 'days' — RESOLVED
+  Major (MR F1) : cost-box total — content now present, MR closure pending
+  Major (MR F2) : stakeholder refusal — pending re-sanction
 }
 
 object "SAD" as SAD {
-  Minor (Reviewer F1) : Volatility High vs Medium
+  Minor (Reviewer F1) : Volatility wording — RESOLVED
 }
 
 DD --> IP
@@ -96,16 +98,39 @@ DD --> SAD
 @enduml
 ```
 
-### Consolidated finding register
+### Consolidated finding register (Iteration 2 status)
 
 | Artifact | Key | Lens | Severity | Finding | Recommendation | Owner | Status |
 |---|---|---|---|---|---|---|---|
-| Iteration Plan | F1 | Reviewer | Major | Resources table marks Software Architect "Dormant" and omits Test Manager, yet the SAD and Test Evaluation Summary were both produced in Inception Iter-1. Iteration Objective 1 also omits SAD and Test Evaluation Summary from the baseline set. | Update Resources table (SA produced candidate SAD; add Test Manager row); update Objective 1 to include SAD + Test Evaluation Summary. | Project Manager | Open |
-| Iteration Plan | F2 | Reviewer | Major | Gantt chart expresses agent work in "days" (duration/effort fusion), contradicting the DC measurement policy (tokens + elapsed time only) and the artifact's own activity diagram. | Replace "days" with token budgets for agent work; keep "days" only for human-gate queue time. | Project Manager | Open |
-| Iteration Plan | F1 | Management Reviewer | Major | Per-stretch token budgets stated but no single total cost-box; "scope bends to the box" has no measurable stop condition. | State the iteration's total token budget as an explicit assumption with basis named. | Project Manager | Open |
-| Iteration Plan | F2 | Management Reviewer | Major | Stakeholder REFUSED LCO sanction ("Fix all findings"); all three Major findings must be remediated before re-sanction. | Project Manager remediates all three Major findings; re-review at next LCO gate. | Project Manager | Open |
-| Software Architecture Document | F1 | Reviewer | Minor | Logical View prose cites "Volatility: High" for UC-001/UC-008, but the Use-Case Model marks them Medium (no High-volatility UC exists). | Correct prose to "Volatility: Medium" or "the two most volatile UCs". | Software Architect | Open |
+| Iteration Plan | F1 | Reviewer | Major | Resources table marks SA "Dormant" and omits Test Manager. | Update Resources table + Objective 1. | Project Manager | **Resolved** (Iter 2) |
+| Iteration Plan | F2 | Reviewer | Major | Gantt expresses agent work in "days". | Replace with token budgets. | Project Manager | **Resolved** (Iter 2) |
+| Iteration Plan | F1 | Management Reviewer | Major | No single total cost-box stated. | State total token budget as assumption. | Project Manager | Open (content now present — MR closure pending) |
+| Iteration Plan | F2 | Management Reviewer | Major | Stakeholder REFUSED LCO sanction. | Remediate all three Major findings; re-review. | Project Manager | Open (pending re-sanction) |
+| Software Architecture Document | F1 | Reviewer | Minor | Logical View cites "Volatility: High" vs Medium. | Correct prose. | Software Architect | **Resolved** (Iter 2) |
 
+**Technical-lens re-evaluation (Iteration 2):** all 8 technical artifacts (Vision, Use-Case Model, Supplementary Specification, Development Case, Risk List, Test Evaluation Summary, Iteration Plan, Software Architecture Document) were re-read against the LCO checklist. No new defects detected. The three Reviewer-lens findings are remediated in the current artifact content.
+
+```plantuml
+@startuml
+skinparam objectStyle rectangle
+
+object "Compliance Matrix — Technical Lens (Inception Iter 2)" as CM {
+  Vision : scope delineation PASS / traceability PASS
+  Use-Case Model : 1:1 FR mapping PASS / no phantom UC PASS / no per-actor split PASS
+  Supplementary Spec : cross-cutting mechanisms PASS / NFR capture PASS
+  Development Case : baseline conformance PASS / optional triggers PASS
+  Risk List : magnitude + strategy PASS
+  Test Evaluation Summary : AC/NFR traceability PASS / no fabricated results PASS
+  Iteration Plan : cost-box PASS / resources PASS / gantt units PASS
+  SAD : volatility wording PASS / constraint coverage PASS
+}
+
+note bottom of CM
+  All 8 technical artifacts pass the LCO checklist.
+  No new findings this iteration.
+end note
+@enduml
+```
 ## Resolutions and Actions
 
 No prior-iteration findings exist (Iteration 1, Cycle 1) — nothing to reconcile from earlier cycles. All five findings above are **open** and carry concrete remediation.
