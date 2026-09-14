@@ -20,7 +20,6 @@
 | Management | ManagementReviewer | EXECUTED |
 
 ## Review Scope and Criteria
-
 This is the **consolidated LCO (Lifecycle Objectives) review** — the single authoritative record that merges the three executed lenses (technical, business, management) into one disposition. The four LCO questions are: (1) do stakeholders agree on what is in/out of scope? (2) have key risks been identified with magnitude ratings? (3) is the proposed approach feasible? (4) is the project sanctioned to proceed to Elaboration?
 
 The consolidation workflow and the finding lifecycle are modeled below.
@@ -58,12 +57,11 @@ Verified --> Closed : resolve_artifact_finding
 Open --> Closed : rejected / duplicate
 
 note right of Open
-  Current: 4 Major (Iteration Plan) + 1 Minor (SAD)
-  all Open — none assigned yet
+  Final state (Iter 2): 4 Major (Iteration Plan) + 1 Minor (SAD)
+  all Resolved/Closed — 0 open findings remain
 end note
 @enduml
 ```
-
 ## Findings
 Consolidated findings across all three lenses. **No cross-lens conflicts** — every finding is distinct. The BusinessReviewer lens executed and reported zero findings.
 
