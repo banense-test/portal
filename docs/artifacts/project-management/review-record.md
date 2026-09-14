@@ -225,12 +225,11 @@ end note
 
 **Verdict: GO.** The Lifecycle Objectives milestone is met. The project is sanctioned to proceed to Elaboration. The three Major findings that blocked the prior gate are remediated and closed; the stakeholder has re-sanctioned. The baseline is sound, the plan is internally consistent, and the cost-box is governed by a single measurable stop condition.
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| Iteration Plan#F1 (Reviewer) | Iteration Plan (resource table) | DependsOn | Project Manager (rework) |
-| Iteration Plan#F2 (Reviewer) | Iteration Plan (Gantt units) | DependsOn | Project Manager (rework) |
-| Iteration Plan#F1 (MR) | Iteration Plan (cost-box) | DependsOn | Project Manager (rework) |
-| Iteration Plan#F2 (MR) | Iteration Plan (stakeholder refusal) | DependsOn | Project Manager (rework) |
-| Software Architecture Document#F1 | SAD (Volatility wording) | DependsOn | Software Architect (rework) |
+| Iteration Plan#F1 (Reviewer) | Iteration Plan (resource table) | DependsOn | Project Manager (rework — Resolved) |
+| Iteration Plan#F2 (Reviewer) | Iteration Plan (Gantt units) | DependsOn | Project Manager (rework — Resolved) |
+| Iteration Plan#F1 (MR) | Iteration Plan (cost-box) | DependsOn | Project Manager (rework — Resolved) |
+| Iteration Plan#F2 (MR) | Iteration Plan (stakeholder refusal) | DependsOn | Project Manager (rework — Resolved) |
+| Software Architecture Document#F1 | SAD (Volatility wording) | DependsOn | Software Architect (rework — Resolved) |
 | Review Record | Vision, Iteration Plan, Risk List, Development Case, Use-Case Model, Supplementary Specification, Software Architecture Document, Test Evaluation Summary | DependsOn | LCO milestone verdict (ReviewCoordinator) |
