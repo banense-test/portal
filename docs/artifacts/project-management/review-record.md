@@ -173,17 +173,56 @@ end note
 
 **Stakeholder sanction: still REFUSED (pending re-review).** The stakeholder's "Fix all findings" directive has been satisfied for the three Reviewer-lens findings and the cost-box content is now present; re-sanction awaits the stakeholder's decision at the next LCO gate.
 ## Disposition
-**Overall LCO disposition (consolidated, Iteration 2): No-Go — stakeholder sanction still REFUSED (pending re-review).**
+**Overall LCO disposition (consolidated, Iteration 2): GO — stakeholder sanction GRANTED.**
 
 - **0 Critical findings** — no scope, feasibility, or viability blocker from any lens.
 - **Scope agreement: PASS** — Vision scope statement clearly delineates in/out; all 12 UCs trace 1:1 to FR-001…FR-012; no scope creep detected.
 - **Risk identification: PASS** — R001 (High, 9), R002 (Significant, 6), R003 (Significant, 6), R004 (Moderate, 4) all carry magnitude, strategy, mitigation, contingency.
 - **Feasibility: PASS** — candidate architecture (SAD) honors all 21 constraints; layered monolith on a single node, appropriate for 200 users.
-- **Cost-box governance: PASS (was FAIL)** — the Iteration Plan now states the iteration total (~38k tokens) as an explicit assumption with basis named.
-- **Plan internal consistency: PASS (was FAIL)** — resource table and Gantt units now match the DC measurement policy and the actual artifact set produced.
-- **Stakeholder sanction: REFUSED** — "Fix all findings." The three Major findings are now remediated; re-sanction is the stakeholder's decision at the next LCO gate.
+- **Cost-box governance: PASS** — the Iteration Plan states the iteration total (~38k tokens) as an explicit assumption with basis named.
+- **Plan internal consistency: PASS** — resource table and Gantt units match the DC measurement policy and the actual artifact set produced.
+- **Stakeholder sanction: GRANTED** — "Yes" / "let's move to elaboration". The prior refusal ("Fix all findings") is satisfied: all three Major findings are remediated and closed.
 
-**Verdict: No-Go (pending re-sanction).** The technical and management defects that blocked the LCO milestone are remediated. The project does not advance past the Lifecycle Objectives milestone until the stakeholder re-sanctions. This is a governance stop, not a scope or feasibility stop — the baseline is sound and the plan is now internally consistent.
+```plantuml
+@startuml
+skinparam objectStyle rectangle
+
+object "LCO Compliance Table — Inception Iter 2 (Final)" as CT {
+  Scope agreement : PASS — Vision in/out delineated; 12 UCs trace 1:1 to FR-001..FR-012
+  Risk identification : PASS — R001(9), R002(6), R003(6), R004(4) with magnitude + strategy
+  Feasibility : PASS — candidate SAD honors all 21 constraints
+  Cost-box governance : PASS — ~38k tokens stated as assumption with basis
+  Plan internal consistency : PASS — resources + Gantt units match DC policy
+  Stakeholder sanction : GRANTED — "Yes" / "let's move to elaboration"
+}
+
+note bottom of CT
+  All LCO exit criteria PASS.
+  Verdict: GO — proceed to Elaboration.
+end note
+@enduml
+```
+
+```plantuml
+@startuml
+[*] --> AtRisk : Iter 1 — 3 Major findings + sanction REFUSED
+AtRisk --> Remediating : Iter 2 — PM fixes all 3 Major findings
+Remediating --> Healthy : all findings Resolved + sanction GRANTED
+Healthy --> [*] : LCO GO — proceed to Elaboration
+
+note right of AtRisk
+  Iter 1: cost-box missing, resources inconsistent,
+  Gantt 'days' — stakeholder refused sanction.
+end note
+
+note right of Healthy
+  Iter 2: 0 Critical, 0 Major open.
+  Stakeholder: "Yes" / "let's move to elaboration".
+end note
+@enduml
+```
+
+**Verdict: GO.** The Lifecycle Objectives milestone is met. The project is sanctioned to proceed to Elaboration. The three Major findings that blocked the prior gate are remediated and closed; the stakeholder has re-sanctioned. The baseline is sound, the plan is internally consistent, and the cost-box is governed by a single measurable stop condition.
 ## Traceability
 
 | Element | Traces From | Link Type | Traces To |
