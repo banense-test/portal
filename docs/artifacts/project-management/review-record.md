@@ -132,16 +132,23 @@ end note
 @enduml
 ```
 ## Resolutions and Actions
+**Iteration 2 reconciliation (technical lens — Reviewer):** the three findings emitted by the Reviewer lens in Iteration 1 are now closed via `resolve_artifact_finding`:
 
-No prior-iteration findings exist (Iteration 1, Cycle 1) — nothing to reconcile from earlier cycles. All five findings above are **open** and carry concrete remediation.
+1. **Iteration Plan#F1 (Reviewer, Major) — Resolved.** The Resources table now lists SoftwareArchitect as "Software Architecture Document (candidate SAD emitted in Inception Iter-1)" and adds a TestManager row "Test Evaluation Summary (emitted in Inception Iter-1)". Iteration Objective 1 now includes the Software Architecture Document and Test Evaluation Summary in the baseline set.
+2. **Iteration Plan#F2 (Reviewer, Major) — Resolved.** The Gantt labels now carry token budgets (~8k, ~10k, ~6k tokens) and the section header annotates "agent work (token budgets; sequence only, not duration)". The uniform "lasts 1 day" is a gantt-rendering placeholder for pure sequence, not a duration/effort claim; effort currency is tokens, matching the activity diagram.
+3. **Software Architecture Document#F1 (Reviewer, Minor) — Resolved.** The Logical View prose now reads "Volatility: Medium" with "no High-volatility UC exists", matching the Use-Case Model and the SAD's own subsystem rationale table.
+
+**Remaining open findings (not owned by the Reviewer lens):**
+
+- **Iteration Plan#F1 (Management Reviewer, Major)** — cost-box total. The Iteration Plan now states the total cost-box (~38k tokens) as an explicit assumption with basis named. Closure is the Management Reviewer's to record.
+- **Iteration Plan#F2 (Management Reviewer, Major)** — stakeholder refusal directive. The three underlying Major findings are remediated; re-sanction is the stakeholder's decision at the next LCO gate.
 
 **Action items (prioritized):**
 
-1. **Project Manager** — remediate all four Major findings on the Iteration Plan (cost-box total; resource table; Gantt units; then the refusal directive resolves once the other three are fixed).
-2. **Software Architect** — remediate the one Minor finding on the SAD (Volatility wording).
+1. **Management Reviewer** — verify the Iteration Plan's cost-box statement and close its two Major findings (F1, F2) once the stakeholder re-sanctions.
+2. **Stakeholder** — re-sanction the LCO milestone now that all three Major findings are remediated.
 
-**Stakeholder sanction: REFUSED.** The stakeholder answered "No" to the LCO sanction question and directed "Fix all findings." The project does NOT advance past LCO until the four Major findings on the Iteration Plan are remediated and the stakeholder re-sanctions.
-
+**Stakeholder sanction: still REFUSED (pending re-review).** The stakeholder's "Fix all findings" directive has been satisfied for the three Reviewer-lens findings and the cost-box content is now present; re-sanction awaits the stakeholder's decision at the next LCO gate.
 ## Disposition
 
 **Overall LCO disposition (consolidated): No-Go — stakeholder sanction REFUSED.**
