@@ -60,6 +60,58 @@ Authentication is delegated to Keycloak (OIDC); authorization derives from AD gr
 - Permission model beyond two levels
 - Automatic news featuring
 
+### System boundary and actors
+
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Employee" as EMP <<STK-004>>
+actor "HR Administrator" as HR <<STK-001>>
+actor "Keycloak (OIDC)" as KC <<external>>
+actor "Active Directory" as AD <<external>>
+
+rectangle "Employee Portal" {
+  usecase "UC-001 Clock In/Out" as UC1
+  usecase "UC-002 Export Clocking CSV" as UC2
+  usecase "UC-003 Publish News" as UC3
+  usecase "UC-004 Read & Filter News" as UC4
+  usecase "UC-005 Feature News" as UC5
+  usecase "UC-006 Edit News" as UC6
+  usecase "UC-007 Unpublish News" as UC7
+  usecase "UC-008 Search Directory" as UC8
+  usecase "UC-009 Assign Worker Category" as UC9
+  usecase "UC-010 Clear Worker Category" as UC10
+  usecase "UC-011 Correct Clocking" as UC11
+  usecase "UC-012 Insert Clocking" as UC12
+}
+
+EMP --> UC1
+EMP --> UC4
+EMP --> UC8
+HR --> UC2
+HR --> UC3
+HR --> UC5
+HR --> UC6
+HR --> UC7
+HR --> UC9
+HR --> UC10
+HR --> UC11
+HR --> UC12
+
+KC --> UC1 : authenticates
+AD --> UC8 : read-only projection
+
+note right of KC
+  Cross-cutting: Keycloak authenticates
+  every use case (CON-006, NFR-005).
+  AD is read on demand, never copied
+  (CON-007).
+end note
+@enduml
+```
+
 ## Features
 
 | Feature | Description | Traces To |
@@ -122,58 +174,6 @@ Authentication is delegated to Keycloak (OIDC); authorization derives from AD gr
 | NFR-003 | Reliability | Availability Mon–Fri 7:00–19:00; 24/7 not required |
 | NFR-004 | Functionality (audit) | Mandatory audit of news publication/edit/unpublish, category changes, clocking corrections/insertions |
 | NFR-005 | Functionality (authorization) | Two-level authorization from AD group membership (HR vs. employee) |
-
-## System Boundary & Actor Overview
-
-```plantuml
-@startuml
-left to right direction
-skinparam packageStyle rectangle
-
-actor "Employee" as EMP <<STK-004>>
-actor "HR Administrator" as HR <<STK-001>>
-actor "Keycloak (OIDC)" as KC <<external>>
-actor "Active Directory" as AD <<external>>
-
-rectangle "Employee Portal" {
-  usecase "UC-001 Clock In/Out" as UC1
-  usecase "UC-002 Export Clocking CSV" as UC2
-  usecase "UC-003 Publish News" as UC3
-  usecase "UC-004 Read & Filter News" as UC4
-  usecase "UC-005 Feature News" as UC5
-  usecase "UC-006 Edit News" as UC6
-  usecase "UC-007 Unpublish News" as UC7
-  usecase "UC-008 Search Directory" as UC8
-  usecase "UC-009 Assign Worker Category" as UC9
-  usecase "UC-010 Clear Worker Category" as UC10
-  usecase "UC-011 Correct Clocking" as UC11
-  usecase "UC-012 Insert Clocking" as UC12
-}
-
-EMP --> UC1
-EMP --> UC4
-EMP --> UC8
-HR --> UC2
-HR --> UC3
-HR --> UC5
-HR --> UC6
-HR --> UC7
-HR --> UC9
-HR --> UC10
-HR --> UC11
-HR --> UC12
-
-KC --> UC1 : authenticates
-AD --> UC8 : read-only projection
-
-note right of KC
-  Cross-cutting: Keycloak authenticates
-  every use case (CON-006, NFR-005).
-  AD is read on demand, never copied
-  (CON-007).
-end note
-@enduml
-```
 
 ## Traceability
 
