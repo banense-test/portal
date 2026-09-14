@@ -5,167 +5,134 @@
 | Phase | Inception |
 | Status | Draft |
 | Milestone Target | End-of-Inception (Lifecycle Objectives) — NOT YET ACHIEVED |
-| Review Type | Phase-level milestone review (LCO) — technical lens |
-| Review Point | Lifecycle Objectives (feasibility + exit criteria) |
-| Reviewer | Reviewer (technical lens) |
+| Review Type | Lifecycle Milestone Review (LCO) — management lens |
+| Review Point | Lifecycle Objectives (feasibility + exit criteria + stakeholder sanction) |
+| Reviewer | Management Reviewer (management lens) |
 | Date | 2026-09-14 |
-| Artifacts Reviewed | Development Case, Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary |
+| Artifacts Reviewed | Vision, Iteration Plan, Risk List, Development Case, Use-Case Model, Supplementary Specification, Software Architecture Document, Test Evaluation Summary |
 
 ## Review Scope and Criteria
 
-This review applies the **LCO (Lifecycle Objectives) exit-criteria lens**: are the Inception artifacts feasible, internally consistent, scope-adherent, and sufficient to decide whether the project is viable and initial risks are identified? The technical lens evaluates each artifact against its type-specific checklist (requirements quality, architecture integrity, DC baseline conformance, traceability, scope adherence).
+This review applies the **LCO (Lifecycle Objectives) exit-criteria lens** from the management (project governance) perspective. The four LCO questions are: (1) do stakeholders agree on what is in/out of scope? (2) have key risks been identified with magnitude ratings? (3) is the proposed approach feasible? (4) is the project sanctioned to proceed to Elaboration?
 
-**Checklist applied per artifact:**
-
-| Artifact | Checklist |
-|---|---|
-| Development Case | DC Baseline Conformance (roster/ownership/CORE/merge), Optional Trigger Justification (§5.2) |
-| Vision | Scope adherence, traceability, data-source verification |
-| Use-Case Model | UC-to-FR 1:1 traceability, no phantom UCs, no cross-cutting UCs, multi-actor rule |
-| Supplementary Specification | NFR capture, cross-cutting mechanisms as `<<include>>` |
-| Risk List | Risk classification (P×I), mitigation + contingency |
-| Iteration Plan | Resource consistency, measurement policy (tokens/elapsed vs days) |
-| Software Architecture Document | Subsystem decomposition, constraint coverage, volatility reference |
-| Test Evaluation Summary | AC/NFR traceability, testability assessment |
-
-**SCM state:** No open pull requests at review time — nothing to dispose.
-
-## Findings
-
-Three findings were recorded via `record_artifact_finding` (0 Critical, 2 Major, 1 Minor). No Critical findings — no LCO blocker from the technical lens.
+The management lens evaluates project viability, risk retirement posture, cost-box governance, and — critically — obtains the stakeholder's sanction directly (the sanction is the stakeholder's call, not a finding the team manufactures).
 
 ```plantuml
 @startuml
 skinparam classAttributeIconSize 0
 skinparam classFontSize 11
 
-class "Development Case" as DC <<PASS>> {
-  DC Baseline Conformance : PASS
-  Optional Trigger Justification : PASS
-  Scope Adherence : PASS
+class "LCO Exit Criteria — Management Lens" as LCO {
+  Scope Agreement (in/out) : PASS
+  Risk Identification (magnitude) : PASS
+  Feasibility of Approach : PASS
+  Cost-Box Governance : FAIL (Major)
+  Stakeholder Sanction : REFUSED
 }
 
 class "Vision" as V <<PASS>> {
-  Scope Adherence : PASS
-  Traceability : PASS
-  Data Source Verification : PASS
-}
-
-class "Use-Case Model" as UCM <<PASS>> {
-  UC-to-FR 1:1 Traceability : PASS
-  No Phantom UCs : PASS
-  No Cross-cutting UCs : PASS
-}
-
-class "Supplementary Specification" as SS <<PASS>> {
-  NFR Capture : PASS
-  Cross-cutting Mechanisms : PASS
+  Scope statement : clear in/out
+  Stakeholders : STK-001..004
+  No unsourced financial data : PASS
 }
 
 class "Risk List" as RL <<PASS>> {
-  Risk Classification : PASS
-  Mitigation + Contingency : PASS
+  R001 High (9) : identified + mitigation
+  R002 Significant (6) : identified + mitigation
+  R003 Significant (6) : identified + mitigation
+  R004 Moderate (4) : identified + mitigation
 }
 
 class "Iteration Plan" as IP <<FAIL>> {
-  Resource Consistency : FAIL
-  Measurement Policy : FAIL
+  Cost-box (total tokens) : NOT STATED
+  Per-stretch budgets : stated (assumption)
+  Resource table : inconsistent (Reviewer F1)
+  Gantt units : days (Reviewer F2)
 }
 
-class "Software Architecture Document" as SAD <<FAIL>> {
-  Subsystem Decomposition : PASS
-  Volatility Reference : FAIL
-  Constraint Coverage : PASS
-}
-
-class "Test Evaluation Summary" as TES <<PASS>> {
-  AC/NFR Traceability : PASS
-  Testability Assessment : PASS
-}
+LCO --> V : scope
+LCO --> RL : risks
+LCO --> IP : feasibility + governance
 @enduml
 ```
+
+```plantuml
+@startuml
+state "Healthy" as H
+state "At-Risk" as AR
+state "Critical" as C
+state "Stopped" as S
+
+[*] --> H : Inception baseline produced\nscope-adherent, feasible, risks identified
+
+H --> AR : Major findings open\n(cost-box gap + Reviewer F1/F2)
+AR --> H : findings remediated
+AR --> C : Critical finding OR\nR001 exposure rises
+C --> S : stakeholder refuses sanction\nOR R003 ceiling (14d) SUSPENDS
+H --> [*] : LCO sanction GRANTED\n(proceed to Elaboration)
+
+note right of AR
+  Current state: At-Risk
+  3 Major (Iteration Plan) open.
+  Stakeholder refused sanction: "Fix all findings."
+end note
+@enduml
+```
+
+## Findings
+
+Two findings were recorded via `record_artifact_finding` from the management lens (2 Major). Combined with the technical lens (Reviewer), the Iteration Plan carries 3 Major findings total — all on the same artifact.
 
 ```plantuml
 @startuml
 skinparam objectStyle rectangle
 
 object "Defect Distribution\n(severity x artifact)" as DD {
-  Iteration Plan : 2 Major
-  Software Architecture Document : 1 Minor
-  Total : 3 findings (0 Critical)
+  Iteration Plan : 3 Major (2 MR + 1 Reviewer... see note)
+  Total : 3 Major, 0 Critical
 }
 
 object "Iteration Plan" as IP {
-  Major : Resource table inconsistency
-  Major : Gantt 'days' unit violation
-}
-
-object "Software Architecture Document" as SAD {
-  Minor : Volatility High vs Medium
+  Major (MR F1) : cost-box total not stated
+  Major (MR F2) : stakeholder refusal directive
+  Major (Reviewer F1) : resource table inconsistency
+  Major (Reviewer F2) : Gantt 'days' unit violation
 }
 
 DD --> IP
-DD --> SAD
 @enduml
 ```
 
-### Finding details
+### Finding details (management lens)
 
 | Artifact | Key | Severity | Finding | Recommendation |
 |---|---|---|---|---|
-| Iteration Plan | F1 | Major | Resources table marks Software Architect "Dormant (SAD is Elaboration)" and omits Test Manager, yet the SAD and Test Evaluation Summary were both produced this iteration; Objective 1 omits them from the baseline set | Update Resources table (SA produced candidate SAD; add Test Manager) and Objective 1 to include SAD + Test Evaluation Summary |
-| Iteration Plan | F2 | Major | Gantt chart expresses agent work in "days", contradicting the DC measurement policy (tokens + elapsed time) and the same artifact's own token-based activity diagram | Replace "days" for agent work with token budgets; keep "days" only for human-gate queue time |
-| Software Architecture Document | F1 | Minor | Logical View prose cites "Volatility: High" for UC-001/UC-008, but the Use-Case Model marks them Medium (no High-volatility UC exists) | Correct to "Volatility: Medium" or "the two most volatile UCs" |
+| Iteration Plan | F1 | Major | The Iteration Plan states per-stretch token budgets (~8k, ~8k, ~8k, ~6k tokens) but never states the iteration's total cost-box as a single token budget. The Development Case measurement policy governs iterations by cost-boxing — "an iteration ends when exit criteria pass or the token budget is spent (scope bends to the box)" — but without an absolute total box, the "scope bends to the box" rule has no measurable stop condition. | State the iteration's total token budget as an explicit assumption with its basis named (e.g., "~30k tokens, the sum of the per-stretch budgets"). |
+| Iteration Plan | F2 | Major | Stakeholder REFUSED the LCO sanction with the directive "Fix all findings." The three open Major findings on this artifact must all be remediated before the stakeholder will sanction advancing past the LCO milestone. | Project Manager remediates all three Major findings (cost-box total; resource table; Gantt units). Re-review at the next LCO gate. |
 
 ## Resolutions and Actions
 
-No prior-iteration findings exist (Iteration 1, Cycle 1) — nothing to reconcile. The three findings above are open and carry concrete remediation for the authoring roles (Project Manager for Iteration Plan; Software Architect for SAD).
+No prior-iteration Management Reviewer findings exist (Iteration 1, Cycle 1) — nothing to reconcile from the management lens. The two findings above are open and carry concrete remediation for the Project Manager.
+
+**Stakeholder sanction: REFUSED.** The stakeholder answered "No" to the LCO sanction question and directed "Fix all findings." This is the recorded acceptance decision — the project does NOT advance past LCO until the three Major findings on the Iteration Plan are remediated and the stakeholder re-sanctions.
 
 ## Disposition
-**Overall LCO disposition (technical lens): Approved with Changes.**
 
-- **0 Critical findings** — no LCO blocker. The Inception baseline is feasible, scope-adherent, and internally traceable.
-- **2 Major findings** on the Iteration Plan (resource-table inconsistency; measurement-unit violation) require rework before the plan is fully consistent, but neither blocks the LCO decision — they are internal-consistency defects, not scope or feasibility defects.
-- **1 Minor finding** on the SAD (volatility reference) is a wording correction.
-- The Development Case conforms to the IARI baseline (no roster redefinition, no ownership reassignment, no CORE omission, no role merge) and all 6 optional triggers are correctly NOT FIRED against their §5.2 conditions.
-- The Use-Case Model is scope-adherent: 12 UCs trace 1:1 to FR-001…FR-012, no phantom UCs, no cross-cutting mechanisms promoted to UCs, no per-actor splitting of a single declared process.
+**Overall LCO disposition (management lens): No-Go — stakeholder sanction REFUSED.**
 
-**Business Modeling lens disposition: [BR-OK-INACTIVE] — Discipline NOT APPLICABLE per DC §4.**
+- **0 Critical findings** — no scope, feasibility, or viability blocker from the management lens.
+- **Scope agreement: PASS** — the Vision's scope statement clearly delineates in/out; all 12 UCs trace 1:1 to FR-001…FR-012; no scope creep detected.
+- **Risk identification: PASS** — R001 (High, exposure 9), R002 (Significant, 6), R003 (Significant, 6), R004 (Moderate, 4) all carry magnitude ratings, strategy, mitigation, and contingency.
+- **Feasibility: PASS** — the candidate architecture (SAD) honors all 21 constraints; the approach is a layered monolith on a single node, appropriate for 200 users.
+- **Cost-box governance: FAIL (Major)** — the iteration's total token budget is not stated, so the cost-box stop condition is unmeasurable.
+- **Stakeholder sanction: REFUSED** — the stakeholder directed "Fix all findings" before sanctioning Elaboration.
 
-The Business Modeling discipline is correctly INACTIVE for this engagement. The Process Engineer's DC §4 classification (`business-process-led = false`, rationale dated 2026-09-14) is confirmed by independent inspection of the artifacts:
+**Verdict: No-Go.** The project does not advance past the Lifecycle Objectives milestone until the three Major findings on the Iteration Plan are remediated and the stakeholder re-sanctions. This is a governance stop, not a scope or feasibility stop — the baseline is sound; the plan's internal consistency and cost-box governance must be corrected first.
 
-- **No ERP / BPM / workflow-redesign / M&A signals** in the Vision — the project is a tool replacement (shared Excel sheets, mass emails, an outdated PDF → a single internal web application), not a business transformation.
-- **No Business Use Cases / Workers / Entities sections** in the Use-Case Model — the model contains only system use cases (UC-001…UC-012), each tracing 1:1 to a stakeholder-declared requirement (FR-001…FR-012). The stakeholder fully specified the system use cases at the system level; there is no business process to model before the system.
-- **No business-domain specialist terms** in a Glossary (no Glossary artifact exists; the domain vocabulary — clocking, worker category, featured news — is ordinary internal-HR language, not regulated/legal/medical/financial jargon).
-
-```plantuml
-@startuml
-skinparam classAttributeIconSize 0
-skinparam classFontSize 11
-
-class "Business Modeling Discipline" as BM <<INACTIVE>> {
-  DC §4 classification : business-process-led = FALSE
-  Business Use Cases : 0 (none present)
-  Business Workers : 0 (none present)
-  Business Entities : 0 (none present)
-  Glossary specialist terms : 0 (no Glossary artifact)
-}
-
-note bottom of BM
-  Verdict: [BR-OK-INACTIVE]
-  Discipline NOT APPLICABLE per DC §4.
-  No findings, no recommendations.
-  Downstream (MR, RC) may treat BM as out-of-scope for LCO.
-end note
-@enduml
-```
-
-**Conclusion (business lens):** The Business Process Analyst and Business Reviewer are correctly INACTIVE for this engagement. No findings, no recommendations. Downstream reviewers (Management Reviewer, Review Coordinator) may treat the Business Modeling discipline as out-of-scope for the LCO milestone. None of the six business modeling scenarios applies — the stakeholder declared concrete system features, not business processes to be modeled or re-engineered.
 ## Traceability
 
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| Iteration Plan#F1 | Iteration Plan (Resources table) | DependsOn | Project Manager (rework) |
-| Iteration Plan#F2 | Iteration Plan (Gantt) | DependsOn | Project Manager (rework) |
-| Software Architecture Document#F1 | SAD (Logical View) | DependsOn | Software Architect (rework) |
-| Review Record | Development Case, Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary | DependsOn | LCO milestone verdict (ReviewCoordinator) |
+| Iteration Plan#F1 | Iteration Plan (cost-box) | DependsOn | Project Manager (rework) |
+| Iteration Plan#F2 | Iteration Plan (stakeholder refusal) | DependsOn | Project Manager (rework) |
+| Review Record | Vision, Iteration Plan, Risk List, Development Case, Use-Case Model, Supplementary Specification, Software Architecture Document, Test Evaluation Summary | DependsOn | LCO milestone verdict (ReviewCoordinator) |
