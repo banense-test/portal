@@ -83,8 +83,7 @@ The architecturally significant use cases are **UC-001 (Clock In/Out)** and **UC
 | 12 | UC-012 Insert Clocking | Reuses immutable-record + audit pattern |
 
 ## Logical View
-
-The candidate decomposition is a **layered architecture** with four layers. Within the Domain layer, subsystems are decomposed by **area of change**, not by feature: each subsystem encapsulates one decision likely to change (per the Use-Case Model's "Volatility: High" annotations — UC-001 clocking interaction and UC-008 directory field availability).
+The candidate decomposition is a **layered architecture** with four layers. Within the Domain layer, subsystems are decomposed by **area of change**, not by feature: each subsystem encapsulates one decision likely to change (per the Use-Case Model's "Volatility: Medium" annotations — UC-001 clocking interaction and UC-008 directory field availability are the two most volatile UCs; no High-volatility UC exists).
 
 ```plantuml
 @startuml
