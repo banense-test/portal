@@ -122,7 +122,6 @@ DD --> SAD
 No prior-iteration findings exist (Iteration 1, Cycle 1) — nothing to reconcile. The three findings above are open and carry concrete remediation for the authoring roles (Project Manager for Iteration Plan; Software Architect for SAD).
 
 ## Disposition
-
 **Overall LCO disposition (technical lens): Approved with Changes.**
 
 - **0 Critical findings** — no LCO blocker. The Inception baseline is feasible, scope-adherent, and internally traceable.
@@ -131,6 +130,37 @@ No prior-iteration findings exist (Iteration 1, Cycle 1) — nothing to reconcil
 - The Development Case conforms to the IARI baseline (no roster redefinition, no ownership reassignment, no CORE omission, no role merge) and all 6 optional triggers are correctly NOT FIRED against their §5.2 conditions.
 - The Use-Case Model is scope-adherent: 12 UCs trace 1:1 to FR-001…FR-012, no phantom UCs, no cross-cutting mechanisms promoted to UCs, no per-actor splitting of a single declared process.
 
+**Business Modeling lens disposition: [BR-OK-INACTIVE] — Discipline NOT APPLICABLE per DC §4.**
+
+The Business Modeling discipline is correctly INACTIVE for this engagement. The Process Engineer's DC §4 classification (`business-process-led = false`, rationale dated 2026-09-14) is confirmed by independent inspection of the artifacts:
+
+- **No ERP / BPM / workflow-redesign / M&A signals** in the Vision — the project is a tool replacement (shared Excel sheets, mass emails, an outdated PDF → a single internal web application), not a business transformation.
+- **No Business Use Cases / Workers / Entities sections** in the Use-Case Model — the model contains only system use cases (UC-001…UC-012), each tracing 1:1 to a stakeholder-declared requirement (FR-001…FR-012). The stakeholder fully specified the system use cases at the system level; there is no business process to model before the system.
+- **No business-domain specialist terms** in a Glossary (no Glossary artifact exists; the domain vocabulary — clocking, worker category, featured news — is ordinary internal-HR language, not regulated/legal/medical/financial jargon).
+
+```plantuml
+@startuml
+skinparam classAttributeIconSize 0
+skinparam classFontSize 11
+
+class "Business Modeling Discipline" as BM <<INACTIVE>> {
+  DC §4 classification : business-process-led = FALSE
+  Business Use Cases : 0 (none present)
+  Business Workers : 0 (none present)
+  Business Entities : 0 (none present)
+  Glossary specialist terms : 0 (no Glossary artifact)
+}
+
+note bottom of BM
+  Verdict: [BR-OK-INACTIVE]
+  Discipline NOT APPLICABLE per DC §4.
+  No findings, no recommendations.
+  Downstream (MR, RC) may treat BM as out-of-scope for LCO.
+end note
+@enduml
+```
+
+**Conclusion (business lens):** The Business Process Analyst and Business Reviewer are correctly INACTIVE for this engagement. No findings, no recommendations. Downstream reviewers (Management Reviewer, Review Coordinator) may treat the Business Modeling discipline as out-of-scope for the LCO milestone. None of the six business modeling scenarios applies — the stakeholder declared concrete system features, not business processes to be modeled or re-engineered.
 ## Traceability
 
 | Element | Traces From | Link Type | Traces To |
