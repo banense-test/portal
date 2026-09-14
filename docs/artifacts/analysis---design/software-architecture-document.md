@@ -50,6 +50,14 @@ The architecture is represented using the 4+1 view model. In Inception, two view
 
 No other technology is declared. The PostgreSQL driver version is not pinned by policy and is not invented here; it is resolved at implementation time against the enterprise version policy.
 
+**Key decisions and trade-offs (ADRs):**
+
+**ADR-001 — Layered architecture (Presentation / Application / Domain / Infrastructure).** *Context:* internal web app, 200 users, three functional areas, Razor Pages + .NET 10 REST API + PostgreSQL. *Decision:* four-layer architecture with domain subsystems decomposed by area of change (Clocking, News, Directory, Worker Category). *Alternatives:* microservices (rejected — 200 users, single node, no independent scaling); feature-based modular monolith (rejected — feature decomposition maximizes change ripple; the two volatile areas are UC-001 and UC-008). *Consequences:* Designer refines subsystems into classes in Elaboration; Implementer builds within these boundaries.
+
+**ADR-002 — AD on-demand projection (no copy, no sync).** *Context:* CON-007 mandates employee data read from AD on demand, never copied; portal stores only `AD user id → worker category`. *Decision:* Directory subsystem reads six AD fields at read time and joins with the portal-owned category mapping; no sync job. *Alternatives:* local employee cache (rejected — violates CON-007, introduces reconciliation); nightly sync (rejected — same). *Consequences:* R001 must be validated early (Elaboration iteration 1) against UC-008.
+
+**ADR-003 — Persistence mechanism (PostgreSQL, immutable records).** *Context:* CON-003 declares PostgreSQL; CON-019/CON-020 require immutable clocking and news records; CON-015 requires a single-featured invariant. *Decision:* PostgreSQL as the single store; clocking and news records append-only (corrections/insertions and unpublish are separate audited records, never in-place overwrites); featured invariant enforced transactionally. *Alternatives:* in-place update with audit columns (rejected — CON-019/CON-020 forbid overwrite/delete); document store (rejected — CON-003 declares PostgreSQL). *Consequences:* Database Designer models the immutable-record schema in Elaboration.
+
 ## Use-Case View
 
 The architecturally significant use cases are **UC-001 (Clock In/Out)** and **UC-008 (Search Directory)** — both detailed in the Use-Case Model. They are prioritized first because they force the two highest-risk decisions:
@@ -258,32 +266,6 @@ Employee identity and the six directory fields are **projected from AD at read t
 | Auditability | NFR-004 | Append-only audit mechanism; immutable clocking/news records |
 | Security | NFR-005, CON-009 | Two-level AD-group authorization; internal-network-only |
 | Maintainability | CON-011 | Layered architecture; clean handover to Infrastructure at end of Transition |
-
-## Architecture Decisions (ADRs)
-
-### ADR-001 — Layered architecture (Presentation / Application / Domain / Infrastructure)
-
-- **Context:** Internal web app, 200 users, three functional areas (clocking, news, directory), Razor Pages + .NET 10 REST API + PostgreSQL.
-- **Decision:** Four-layer architecture with domain subsystems decomposed by area of change (Clocking, News, Directory, Worker Category).
-- **Alternatives considered:** Microservices (rejected — 200 users, single node, no independent scaling needs); modular monolith with feature-based decomposition (rejected — feature decomposition maximizes change ripple; the two volatile areas are UC-001 and UC-008).
-- **Trade-offs:** Layering adds indirection but isolates the two volatile areas and keeps the audit/authorization mechanisms cross-cutting.
-- **Consequences:** Designer refines subsystems into classes in Elaboration; Implementer builds within these boundaries.
-
-### ADR-002 — AD on-demand projection (no copy, no sync)
-
-- **Context:** CON-007 mandates employee data read from AD on demand, never copied; portal stores only `AD user id → worker category`.
-- **Decision:** Directory subsystem reads six AD fields at read time and joins with the portal-owned category mapping; no sync job, nothing to reconcile.
-- **Alternatives considered:** Local cache of employee data (rejected — violates CON-007, introduces reconciliation); nightly sync (rejected — same).
-- **Trade-offs:** Read latency depends on AD responsiveness (R001); mitigated by on-demand single-read and gap-tolerant rendering.
-- **Consequences:** R001 must be validated early (Elaboration iteration 1) against UC-008.
-
-### ADR-003 — Persistence mechanism (PostgreSQL, immutable records)
-
-- **Context:** CON-003 declares PostgreSQL; CON-019/CON-020 require immutable clocking and news records; CON-015 requires a single-featured invariant.
-- **Decision:** PostgreSQL as the single persistence store; clocking and news records are append-only (corrections/insertions and unpublish are separate audited records, never in-place overwrites); the featured invariant is enforced transactionally.
-- **Alternatives considered:** In-place update with audit columns (rejected — CON-019/CON-020 forbid overwrite/delete); document store (rejected — CON-003 declares PostgreSQL).
-- **Trade-offs:** Append-only increases storage slightly but guarantees the audit trail (NFR-004).
-- **Consequences:** Database Designer models the immutable-record schema in Elaboration.
 
 ## Traceability
 
