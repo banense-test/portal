@@ -1,10 +1,9 @@
 ## Document Control
-
 | Field | Value |
 |---|---|
-| Phase | Inception |
+| Phase | Elaboration |
 | Status | Draft |
-| Milestone Target | End-of-Inception (Lifecycle Objectives) — NOT YET ACHIEVED |
+| Milestone Target | End-of-Elaboration (Lifecycle Architecture) — NOT YET ACHIEVED |
 
 ## Functionality
 
