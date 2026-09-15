@@ -71,7 +71,6 @@ end note
 **Actor coverage note:** No time-triggered actors (no scheduled jobs — backups are Infrastructure's, CON-013; no sync, CON-007). No hardware-device actors. No separate administrative actor beyond HR (Infrastructure operates the portal post-launch but has no in-app use cases — CON-011).
 
 ## Use-Case Survey
-
 | UC | Name | Primary Actor | Priority (MoSCoW) | Volatility | Source |
 |---|---|---|---|---|---|
 | UC-001 | Clock In/Out | Employee | Must | Medium | FR-001 |
@@ -89,7 +88,7 @@ end note
 
 **Volatility rationale:** UC-001 (Medium) — clocking interaction may evolve with adoption feedback (R002) and the offline-retry window (AC-005). UC-008 (Medium) — directory field availability depends on AD attribute consistency across offices (R001). All others are stable business rules fixed by the closed-list category set (CON-016), the single-featured invariant (CON-015), and the immutable-record audit rules (CON-019, CON-020).
 
-**Architecturally significant use cases (detailed this iteration):** UC-001 and UC-008. UC-001 forces decisions on client-timestamp acceptance + idempotency (CON-021) and offline retry (AC-005). UC-008 forces the AD on-demand projection boundary (CON-007) and surfaces R001. Remaining UCs are outlined; the Requirements Specifier details their flows in Elaboration.
+**Architecturally significant use cases (fully specified in Elaboration Iter-1):** UC-001 and UC-008. UC-001 forces decisions on client-timestamp acceptance + idempotency (CON-021) and offline retry (AC-005). UC-008 forces the AD on-demand projection boundary (CON-007) and surfaces R001. Both now carry full main flow, alternative flows, concrete scenarios, and activity diagrams. Remaining UCs are outlined; the Requirements Specifier details their flows in Elaboration.
 
 ## Use-Case Specifications
 ### UC-001 — Clock In/Out (fully specified)
