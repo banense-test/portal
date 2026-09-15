@@ -77,12 +77,13 @@
 | — | No external regulatory/legal standards declared for this internal intranet. | — |
 
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| NFR-001 | Declared input | — | (Elaboration: quantified thresholds by Requirements Specifier) |
-| NFR-002 | Declared input | — | (Elaboration: quantified thresholds) |
-| NFR-003 | Declared input | — | (Elaboration: quantified thresholds) |
+| NFR-001 | Declared input | — | Performance (quantified: ≤ 3.0 s TTI) |
+| NFR-002 | Declared input | — | Performance (quantified: ≤ 1.0 s clocking round-trip) |
+| NFR-003 | Declared input | — | Reliability (quantified: Mon–Fri 07:00–19:00 Europe/Madrid) |
 | NFR-004 | Declared input | — | UC-003, UC-005, UC-006, UC-007, UC-009, UC-010, UC-011, UC-012 |
 | NFR-005 | Declared input | — | All UCs |
+| AC-003 | Declared input | — | Usability (quantified: ≤ 10 s directory lookup) |
+| AC-005 | Declared input | — | Reliability (quantified: ≤ 5 min offline retry) |
 | CON-001…CON-021 | Declared input | — | Vision (Constraints) |
