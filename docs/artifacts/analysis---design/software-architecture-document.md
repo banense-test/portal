@@ -493,7 +493,6 @@ Employee identity and the six directory fields are **projected from AD at read t
 - **Architectural tactics to meet NFR-001/NFR-002:** AD projection is on-demand and read-only (no sync latency); clocking is a single-row insert with idempotency-key lookup; news/directory reads are simple indexed queries. The AD read path (UC-008) is the main latency risk and is validated against R001 (gap-tolerant rendering, not latency-bound).
 
 ## Quality
-
 | Quality attribute | Requirement | Architectural response |
 |---|---|---|
 | Performance | NFR-001, NFR-002 | Single-node, indexed reads, on-demand AD projection |
@@ -501,6 +500,28 @@ Employee identity and the six directory fields are **projected from AD at read t
 | Auditability | NFR-004 | Append-only audit mechanism; immutable clocking/news records |
 | Security | NFR-005, CON-009 | Two-level AD-group authorization; internal-network-only |
 | Maintainability | CON-011 | Layered architecture; interface-based boundaries; clean handover to Infrastructure at end of Transition |
+
+**Lifecycle Architecture Milestone (LAM) self-assessment — Elaboration iteration 1.** The six LAM criteria are assessed against the baselined architecture; the milestone verdict is issued by the ReviewCoordinator, not by this document.
+
+| # | Criterion | Assessment | Status |
+|---|---|---|---|
+| 1 | Vision stable | Vision scope statement unchanged since Inception; all 12 UCs trace 1:1 to FR-001…FR-012; no scope creep | PASS |
+| 2 | Architecture stable | All 5 4+1 views baselined; subsystem boundaries interface-defined (ADR-004); design mechanisms derived from analysis mechanisms | PASS |
+| 3 | Executable prototype shows major risks resolved | R001 retired via analysis-only PoC (gap-tolerant rendering designed in); R002 is a Transition concern (communication plan), not an architectural risk; no empirical prototype required — no technical risk in the Risk List demands running code | PASS |
+| 4 | Construction plan credible | Prioritized UC list (12 ranks) provided for the Project Manager; risk-ordered ordering (UC-001, UC-008, UC-003 first) | PASS |
+| 5 | Stakeholder agreement | LCO sanction GRANTED ("Yes" / "let's move to elaboration"); LAM sanction pending ReviewCoordinator verdict | PENDING |
+| 6 | Actual vs planned expenditure | Inception closed at 22 min agent time / 1,048,968 tokens / 10 artifacts; Elaboration spend is measured at iteration close, not forecast here | PENDING |
+
+**Open architecture issues:** none blocking. The PostgreSQL driver version is not pinned by policy (no version declared for CON-003) and is resolved at implementation time against the enterprise version policy.
+
+**Risk resolution status:**
+
+| Risk | Status |
+|---|---|
+| R001 | Retired (analysis-only PoC) — gap-tolerant rendering designed into Directory subsystem |
+| R002 | Open — Transition communication plan (Project Manager owns) |
+| R003 | Open — human-gate queue tracking (Project Manager owns) |
+| R004 | Open — scope volatility of UC-001/UC-008; flows through CCB Change Request process |
 
 ## Traceability
 
