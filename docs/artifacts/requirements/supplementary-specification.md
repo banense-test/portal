@@ -14,13 +14,11 @@
 | — | Employee data read from AD on demand, never copied; portal stores only `AD user id → worker category`. | The portal database contains no employee field other than the `AD user id → worker category` mapping; all six directory fields are projected from AD at read time. | CON-007 |
 | — | No access from outside the corporate network (internal-only application). | Requests originating outside the corporate network are not served. | CON-009 |
 ## Usability
-
-| ID | Requirement | Source |
-|---|---|---|
-| — | Custom design at docs/inputs/employee-portal-design.html is mandatory and authoritative for the UI visual layer. | CON-008 |
-| — | Responsive web only; compatible with current Chrome and Edge (corporate browsers). | CON-005 |
-| — | Employee can find a colleague's phone/email in under 10 seconds. | AC-003 |
-
+| ID | Requirement | Testable Threshold | Source |
+|---|---|---|---|
+| — | Custom design at docs/inputs/employee-portal-design.html is mandatory and authoritative for the UI visual layer. | The implemented UI matches the custom design's visual layer (not only structure). | CON-008 |
+| — | Responsive web only; compatible with current Chrome and Edge (corporate browsers). | All pages render and function correctly in current Chrome and Edge. | CON-005 |
+| — | Employee can find a colleague's phone/email in under 10 seconds. | From the directory screen, a colleague's phone/email is reachable within 10 seconds of initiating a search (AC-003). | AC-003 |
 ## Reliability
 | ID | Requirement | Testable Threshold | Source |
 |---|---|---|---|
