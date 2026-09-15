@@ -88,8 +88,7 @@ end note
 
 **Volatility rationale:** UC-001 (Medium) — clocking interaction may evolve with adoption feedback (R002) and the offline-retry window (AC-005). UC-008 (Medium) — directory field availability depends on AD attribute consistency across offices (R001). All others are stable business rules fixed by the closed-list category set (CON-016), the single-featured invariant (CON-015), and the immutable-record audit rules (CON-019, CON-020).
 
-**Architecturally significant use cases (fully specified in Elaboration Iter-1):** UC-001 and UC-008. UC-001 forces decisions on client-timestamp acceptance + idempotency (CON-021) and offline retry (AC-005). UC-008 forces the AD on-demand projection boundary (CON-007) and surfaces R001. Both now carry full main flow, alternative flows, concrete scenarios, and activity diagrams. Remaining UCs are outlined; the Requirements Specifier details their flows in Elaboration.
-
+**Specification status (Elaboration Iter-1):** all 12 use cases are now fully specified — main flow, alternative flows, concrete scenarios, and activity diagrams. UC-001 and UC-008 were detailed in Inception (architecturally significant: UC-001 forces CON-021 client-timestamp + idempotency and AC-005 offline retry; UC-008 forces CON-007 AD on-demand projection and surfaces R001). UC-002…UC-007 and UC-009…UC-012 were detailed in Elaboration Iter-1 by the Requirements Specifier.
 ## Use-Case Specifications
 ### UC-001 — Clock In/Out (fully specified)
 
