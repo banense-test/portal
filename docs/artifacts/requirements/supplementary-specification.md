@@ -6,15 +6,13 @@
 | Milestone Target | End-of-Elaboration (Lifecycle Architecture) — NOT YET ACHIEVED |
 
 ## Functionality
-
-| ID | Requirement | Source | Notes |
+| ID | Requirement | Testable Threshold | Source |
 |---|---|---|---|
-| NFR-004 | Audit traceability: who publishes/edits/unpublishes each news item (author + timestamp); any worker-category change; every clocking HR corrects or inserts (who, when, previous value, reason). Employee fields are read-only from AD — nothing to audit there. | NFR-004 | Cross-cutting; `<<include>>`d by UC-003, UC-005, UC-006, UC-007, UC-009, UC-010, UC-011, UC-012 |
-| NFR-005 | Two-level authorization from AD group membership: HR group → publish/edit/unpublish news + manage categories; everyone else → employee (read directory/news + own clockings). No role matrix, no permission screen, no per-category rule. | NFR-005 | Cross-cutting; `<<include>>`d by every UC |
-| — | Authentication via Keycloak OIDC (portal is a client only; register client, redirect, validate token, read roles from claims). | CON-006 | Cross-cutting mechanism — NOT a use case |
-| — | Employee data read from AD on demand, never copied; portal stores only `AD user id → worker category`. | CON-007 | Cross-cutting mechanism — NOT a use case |
-| — | No access from outside the corporate network (internal-only application). | CON-009 | Security boundary — cross-cutting |
-
+| NFR-004 | Audit traceability: who publishes/edits/unpublishes each news item (author + timestamp); any worker-category change; every clocking HR corrects or inserts (who, when, previous value, reason). Employee fields are read-only from AD — nothing to audit there. | Every audited action persists an immutable audit record with the declared fields: news (author + timestamp), category change (author + timestamp), clocking correction (who, when, previous value, reason), clocking insertion (who, when, reason). The original record is never overwritten or deleted (CON-019, CON-020). | NFR-004 |
+| NFR-005 | Two-level authorization from AD group membership: HR group → publish/edit/unpublish news + manage categories; everyone else → employee (read directory/news + own clockings). No role matrix, no permission screen, no per-category rule. | A non-HR-group user attempting any HR-only action (UC-002, UC-003, UC-005, UC-006, UC-007, UC-009, UC-010, UC-011, UC-012) is denied; an HR-group user can perform them. Authorization derives solely from AD group membership — no portal-side role store. | NFR-005 |
+| — | Authentication via Keycloak OIDC (portal is a client only; register client, redirect, validate token, read roles from claims). | Every request is authenticated via a validated Keycloak OIDC token; unauthenticated requests redirect to Keycloak login. | CON-006 |
+| — | Employee data read from AD on demand, never copied; portal stores only `AD user id → worker category`. | The portal database contains no employee field other than the `AD user id → worker category` mapping; all six directory fields are projected from AD at read time. | CON-007 |
+| — | No access from outside the corporate network (internal-only application). | Requests originating outside the corporate network are not served. | CON-009 |
 ## Usability
 
 | ID | Requirement | Source |
