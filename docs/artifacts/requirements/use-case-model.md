@@ -92,14 +92,13 @@ end note
 **Architecturally significant use cases (detailed this iteration):** UC-001 and UC-008. UC-001 forces decisions on client-timestamp acceptance + idempotency (CON-021) and offline retry (AC-005). UC-008 forces the AD on-demand projection boundary (CON-007) and surfaces R001. Remaining UCs are outlined; the Requirements Specifier details their flows in Elaboration.
 
 ## Use-Case Specifications
-
-### UC-001 — Clock In/Out (detailed)
+### UC-001 — Clock In/Out (fully specified)
 
 | Field | Value |
 |---|---|
 | Primary Actor | Employee (STK-004) |
 | Trigger | Employee opens the portal main screen and presses the Clock In / Clock Out button |
-| Precondition | Employee authenticated via Keycloak OIDC (CON-006); no clocking already open for "Clock In" (or one open for "Clock Out") |
+| Precondition | Employee authenticated via Keycloak OIDC (CON-006); for "Clock In" no open clocking exists, for "Clock Out" one open clocking exists |
 | Postcondition | A clocking record is persisted with the exact press time; confirmation shown; current-month history updated |
 | Priority | Must | Volatility: Medium |
 
@@ -115,9 +114,55 @@ end note
 - **A2 — Network down (offline retry):** the POST fails → the clocking page keeps the press in localStorage and retries for up to 5 minutes; beyond 5 minutes the employee reports the clocking to HR (AC-005). Directory and news show a "no connection" message instead.
 - **A3 — Not authenticated:** Keycloak redirects to login; flow resumes at step 1 after authentication.
 
+**Concrete scenarios (discovery walk-through):**
+
+| # | Scenario | Data | Outcome |
+|---|---|---|---|
+| S1 | First clock-in of the day | Employee "Ana Ruiz" (AD id `aruiz`), presses Clock In at 08:03:12 Europe/Madrid | Clocking persisted with press time 08:03:12 (stored UTC 06:03:12Z); button flips to "Clock Out"; history shows the entry |
+| S2 | Clock-out after a shift | Same employee presses Clock Out at 17:15:44 | Clocking persisted; button flips to "Clock In"; day's pair complete |
+| S3 | Double-click on the button | Employee double-clicks Clock In; two POSTs carry the same idempotency key | First POST persists; second returns the existing result — exactly one record (CON-021) |
+| S4 | Network blip during press | POST fails at 09:00; network returns at 09:02 | Press held in localStorage, retried, persisted at 09:02 with the original 09:00 press timestamp; no data loss (AC-005) |
+| S5 | Network down > 5 min | POST fails at 09:00; network returns at 09:07 | Retry window expired; employee reports the clocking to HR (UC-011/UC-012 path) |
+
 **Business rules:** CON-014 (UTC storage, Europe/Madrid display), CON-021 (client timestamp + idempotency key), AC-005 (offline retry window).
 
-### UC-008 — Search Directory (detailed)
+**Activity diagram:**
+
+```plantuml
+@startuml
+start
+:Employee opens portal;
+:Keycloak OIDC authenticates (CON-006);
+:Determine current clocking status;
+if (Open clocking exists?) then (yes)
+  :Show "Clock Out" button;
+else (no)
+  :Show "Clock In" button;
+endif
+:Employee presses button;
+:Client records press timestamp (Europe/Madrid)\n+ generates idempotency key (CON-021);
+:Client sends POST (timestamp + key);
+if (Network available?) then (yes)
+  if (Idempotency key already known?) then (yes)
+    :Return existing result\n(no duplicate — CON-021);
+  else (no)
+    :Persist clocking with client timestamp\n(stored UTC — CON-014);
+    :Show confirmation;
+    :Refresh current-month history;
+  endif
+else (no)
+  :Keep press in localStorage;
+  :Retry POST;
+  while (Still failing and < 5 min?) is (yes)
+    :Retry POST;
+  endwhile (no)
+  :Beyond 5 min — employee reports to HR\n(AC-005);
+endif
+stop
+@enduml
+```
+
+### UC-008 — Search Directory (fully specified)
 
 | Field | Value |
 |---|---|
@@ -137,7 +182,37 @@ end note
 - **A1 — No match:** system shows an empty result with a clear message.
 - **A2 — AD attribute gap:** a field (e.g., job title or extension) is empty in AD → the field renders blank; the entry still appears (R001 — to be validated early).
 
+**Concrete scenarios (discovery walk-through):**
+
+| # | Scenario | Data | Outcome |
+|---|---|---|---|
+| S1 | Search by name | Employee searches "Ruiz" | Ana Ruiz listed with all seven fields populated |
+| S2 | Search by department | Employee searches "HR" | All HR members listed |
+| S3 | Search by office | Employee searches "Madrid" | All Madrid-office employees listed |
+| S4 | AD attribute gap | Employee "Carlos Vega" has no extension in AD (R001) | Entry appears with extension blank; other six fields populated |
+| S5 | No match | Employee searches "Zzz" | Empty result with clear "no match" message |
+
 **Business rules:** CON-007 (AD read on demand, no copy), CON-017 (worker category descriptive only), FR-008 (six AD fields + category; no private info).
+
+**Activity diagram:**
+
+```plantuml
+@startuml
+start
+:Employee opens directory;
+:Employee enters search term\n(name, department, or office);
+:Read six employee fields from AD on demand\n(never copied — CON-007);
+:Read worker category from portal mapping\n(AD user id → category);
+:Filter matching entries;
+if (Match found?) then (yes)
+  :List entries: name, job title, department,\noffice, email, extension, worker category;
+  :Employee views result;
+else (no)
+  :Show empty result with clear message;
+endif
+stop
+@enduml
+```
 
 ### UC-002 — Export Clocking CSV (outline)
 
