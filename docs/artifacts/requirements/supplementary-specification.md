@@ -24,41 +24,13 @@
 | — | Employee can find a colleague's phone/email in under 10 seconds. | AC-003 |
 
 ## Reliability
+| ID | Requirement | Testable Threshold | Source |
+|---|---|---|---|
+| NFR-003 | Availability window: extended working hours Mon–Fri 7:00–19:00, with fault tolerance within the corporate network. 24/7 not required. | System available and responsive Mon–Fri 07:00–19:00 Europe/Madrid; outside this window no availability commitment. | NFR-003 |
+| — | Clocking made while the network is down up to 5 minutes is not lost: clocking page keeps the press in localStorage and retries its POST up to 5 minutes; beyond 5 minutes the employee reports to HR. Applies to clocking only — directory and news show a "no connection" message. | A clocking press during a network outage ≤ 5 min is persisted (retried) with the original press timestamp; > 5 min the employee reports to HR (UC-011/UC-012). Directory and news render a "no connection" message, not a stale/partial result. | AC-005 |
+| — | Backups covered by Infrastructure's existing server-backup practice (verified restore test). No backup design/tooling in this project. | Out of scope for this project (CON-013); verified by Infrastructure's restore test, not by this project's acceptance. | CON-013 |
 
-| ID | Requirement | Source |
-|---|---|---|
-| NFR-003 | Availability window: extended working hours Mon–Fri 7:00–19:00, with fault tolerance within the corporate network. 24/7 not required. | NFR-003 |
-| — | Clocking made while the network is down up to 5 minutes is not lost: clocking page keeps the press in localStorage and retries its POST up to 5 minutes; beyond 5 minutes the employee reports to HR. Applies to clocking only — directory and news show a "no connection" message. | AC-005 |
-| — | Backups covered by Infrastructure's existing server-backup practice (verified restore test). No backup design/tooling in this project. | CON-013 |
-
-**Offline-retry and idempotency flow (AC-005, CON-021):**
-
-```plantuml
-@startuml
-start
-:Employee presses Clock In/Out;
-:Client records press timestamp\nand generates idempotency key (CON-021);
-:Client sends POST (timestamp + key);
-
-if (Network available?) then (yes)
-  if (Idempotency key already known?) then (yes)
-    :Return existing result\n(no duplicate record — CON-021);
-  else (no)
-    :Persist clocking with client timestamp\n(stored UTC — CON-014);
-    :Show confirmation;
-  endif
-else (no)
-  :Keep press in localStorage;
-  :Retry POST;
-  while (Still failing and < 5 min?) is (yes)
-    :Retry POST;
-  endwhile (no)
-  :Beyond 5 min — employee reports to HR\n(AC-005);
-endif
-stop
-@enduml
-```
-
+**Implied reliability requirement (what stakeholders would reject even if functional requirements are met):** a clocking press must never be silently lost — the offline-retry window (AC-005) plus the idempotency key (CON-021) together guarantee at-most-once persistence with no silent drop. This is the reliability floor behind AC-001 and AC-004.
 ## Performance
 | ID | Requirement | Testable Threshold | Source |
 |---|---|---|---|
