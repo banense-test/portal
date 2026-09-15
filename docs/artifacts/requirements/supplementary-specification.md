@@ -60,12 +60,12 @@ stop
 ```
 
 ## Performance
+| ID | Requirement | Testable Threshold | Source |
+|---|---|---|---|
+| NFR-001 | Pages load in under 3 seconds on the corporate network. | Time-to-interactive ≤ 3.0 s for every page, measured on the corporate network with current Chrome/Edge (CON-005). | NFR-001 |
+| NFR-002 | Clock in/out operation responds in under 1 second. | Server round-trip for the clocking POST ≤ 1.0 s from press to confirmation, measured on the corporate network. | NFR-002 |
 
-| ID | Requirement | Source |
-|---|---|---|
-| NFR-001 | Pages load in under 3 seconds on the corporate network. | NFR-001 |
-| NFR-002 | Clock in/out operation responds in under 1 second. | NFR-002 |
-
+**Measurement basis:** thresholds are the declared values (NFR-001, NFR-002); the measurement conditions (corporate network, current Chrome/Edge) are the declared constraints (CON-005, CON-009). No percentile or load profile is declared — the thresholds are absolute ceilings, not statistical targets. `[ASSUMPTION — requires validation]` basis: "normal load" is not quantified in the declared scope; the 200-employee / 3-office population (Vision) is the implicit load context.
 ## Supportability
 
 | ID | Requirement | Source |
