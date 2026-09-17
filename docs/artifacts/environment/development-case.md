@@ -13,7 +13,6 @@
 **What this document is.** The IARI DC baseline (25-role roster, 16 CORE artifacts, 6 OPTIONAL artifacts, canonical intensity matrix, fixed ownership) is the law and is **not restated here**. This document declares **only the project-specific deltas** over that baseline. Anything not listed as a delta is baseline and applies unchanged.
 
 ## Tailoring Overview
-
 ### S1 assessment — organization and tools (2026-09-17)
 
 **Organization.** Greenfield: `list_artifacts` returned zero artifacts, so there is no prior process baseline, no inherited template set and no legacy tooling to migrate. The full 25-role roster is available. The project is small in artifact surface (3 system use cases, 14 declared functional requirements, 4 non-functional requirements) but carries one high-exposure technical risk, so the process is tailored **light on ceremony, heavy on early empirical validation of the AD/LDAP boundary**.
@@ -130,10 +129,9 @@ end note
 | D1 | Business Modeling declared **INACTIVE** | Structural (discipline activation) | DC §4 verdict `business-process-led = false` |
 | D2 | OPTIONAL artifact **Architectural Proof-of-Concept** trigger **FIRED**; the other five NOT FIRED | Thin (artifact scope) | R001 exposure 9; see *Optional Artifact Triggers* |
 | D3 | Project tool / guideline references added: `docs/inputs/employee-portal-design.html`, `CONTRIBUTING.md`, CI workflow, lint config | Thin (tooling reference) | CON-013; S1 tool inventory |
-| D4 | Enterprise version policy: framework pin `.NET 10` | Thin (version governance) | CON-001 |
+| D4 | Enterprise version policy: framework pins `.NET 10` and `PostgreSQL latest` | Thin (version governance) | CON-001; CON-004 as answered by the stakeholder |
 
 No intensity deviation is requested. No CORE artifact is omitted. No primary ownership is reassigned. No role is merged.
-
 ## Disciplines and Intensity
 
 **All nine disciplines are applied per the canonical matrix.** No level is restated and no level is changed.
