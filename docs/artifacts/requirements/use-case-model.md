@@ -11,6 +11,7 @@
 | Date | 2026-09-17 |
 | Detail level | Inception — all 3 use cases identified; UC-001 and UC-003 detailed (the architecturally significant ones). UC-002 surveyed with its scenarios; RequirementsSpecifier details per-UC flows in Elaboration. |
 | Governing process | Development Case (Inception) — Business Modeling INACTIVE, so no BUC → UC derivation applies |
+| Evolution this iteration | Actors section corrected: the audit trail is **written, never read in the portal** (SS-AUD-07, stakeholder decision 2026-09-17). The prior statement that HR reads the audit through the scenarios of UC-001/UC-002 is retired. No use case gained an audit-reading scenario. |
 
 ## Use-Case Diagram
 
@@ -77,6 +78,8 @@ note bottom of AD
   CON-006, CON-010: read-only over LDAP.
   The portal never writes to Active Directory.
 end note
+
+note "Cross-cutting mechanisms are NOT use cases.\nAuthentication (CON-005), the audit trail (NFR-004)\nand the no-connection handling (FR-013) are\nSupplementary Specification constraints included\nby the use cases that need them.\nThere is no UC-AUTH, no UC-LOG and no UC-SYNC.\nThe audit trail is WRITTEN, never read in the portal:\nthere is no audit view screen (SS-AUD-07)." as N1
 @enduml
 ```
 
@@ -100,10 +103,12 @@ end note
 |---|---|---|
 | Time-based trigger (batch job, scheduled report) | **Absent** | No scheduled or batch process is declared. FR-014's monthly CSV export is an on-demand HR action, not a scheduled job. Inventing a scheduler would be scope creep. |
 | Hardware device | **Absent** | Biometric clocking is explicitly excluded from the declared scope; clocking is AD username/password only. |
-| Administrative actor (sysadmin, auditor) | **Absent as a portal actor** | STK-003 operates the portal in production — deployment, monitoring, patching (CON-011). That is operational activity *on* the system, not a goal *served by* the system, so it produces no use case. The audit trail (NFR-004) is read by HR through the scenarios of UC-001 and UC-002, not by a separate auditor actor. |
+| Administrative actor (sysadmin, auditor) | **Absent as a portal actor** | STK-003 operates the portal in production — deployment, monitoring, patching (CON-011). That is operational activity *on* the system, not a goal *served by* the system, so it produces no use case. **There is no auditor actor either:** the audit trail is *written*, not read in the portal — there is no in-portal audit view screen (SS-AUD-07, stakeholder decision 2026-09-17). The audit is recorded for compliance and read directly from the database by whoever needs it, which is activity outside the system boundary and therefore produces no use case and no actor. |
 | Negative actor | **Absent** | No actor is declared as hostile or adversarial. CON-008 (no access from outside the corporate network) is an environmental constraint, not an actor. |
 
 **Authorization is not an actor.** CON-016 derives two levels from AD group membership. The HR Administrator is a *role an Employee holds*, not a separate person type — which is why ACT-002 appears as a distinct actor for goal-clarity while the underlying identity is the same corporate account. The worker category does **not** drive access control (CON-021), so it never appears in an actor definition.
+
+**The audit trail produces no actor and no use case.** NFR-004 mandates that the audit be *written* — who published, edited and unpublished each news item; who changed a worker's category; and who corrected or inserted a clocking, with the previous value and a reason. The declared scope does not say how it is *read*, and on being asked whether the portal needs an in-portal audit view screen for HR or whether the audit is recorded for compliance and read directly from the database, the stakeholder answered **No** (2026-09-17). The consequence for this model is explicit: no use case gains an audit-reading scenario, no screen is added, and no auditor actor exists. The audit remains a cross-cutting constraint (SS-AUD-01..SS-AUD-07) included by UC-001, UC-002 and UC-003 — never a use case, and never a screen.
 
 ## Use-Case Survey
 
@@ -142,7 +147,7 @@ All three pass: each has a named initiating actor, a trigger event, and an outco
 | **Alternative flows** | **A1 — Duplicate press (FR-012).** The idempotency key is already recorded; the server rejects the duplicate and the page shows the confirmation without creating a second record. **A2 — Network lost at press (FR-012, AC-005).** The page shows the no-connection state and retries the POST for up to 5 minutes; on success the flow rejoins step 8. **A3 — Network lost beyond 5 minutes (AC-005).** The page stops retrying and the employee reports the clocking to HR, who inserts it under A4. **A4 — HR corrects or inserts a clocking (FR-004, CON-017).** HR supplies the corrected value and a free-text reason; the system records who, when, the previous value and the reason; the original record is never overwritten in place and never deleted. **A5 — HR views all clockings (FR-001).** HR opens the attendance view and sees the clockings of all employees. **A6 — HR exports the month (FR-014).** HR selects one calendar month; the system produces a CSV covering 00:00 on the first day to 23:59:59 on the last day, Europe/Madrid, with exactly the columns EmployeeId, FullName, WorkerCategory, Date, ClockIn, ClockOut, HoursWorked, Corrected, timestamps in Europe/Madrid local time. **A7 — Employee views own history (FR-003).** The employee opens their own clocking history for the current month. |
 | **Exception flows** | **E1 — Token invalid or expired.** The user is redirected to Keycloak to authenticate; no clocking is recorded. **E2 — Employee identity not resolvable.** The clocking is refused with an error; nothing is written. |
 | **Business rules** | CON-015 (store UTC, display Europe/Madrid; one timezone, no normalisation), CON-017 (only HR corrects; additive, audited, never overwritten or deleted), CON-021 (the worker category appears in the CSV as a column and nowhere else in this use case), CON-022 (a worker with no category appears in the export with that field blank — no invented default). |
-| **Non-functional** | NFR-002 (clocking responds in under 1 s), NFR-003 (available Mon–Fri 07:00–19:00), NFR-004 (audit of every correction: who, when, previous value, reason). |
+| **Non-functional** | NFR-002 (clocking responds in under 1 s), NFR-003 (available Mon–Fri 07:00–19:00), NFR-004 (audit of every correction: who, when, previous value, reason — **written only**; there is no audit view screen, SS-AUD-07). |
 
 ```plantuml
 @startuml
@@ -203,7 +208,7 @@ endif
 | **Alternative flows** | **A1 — Edit a published item (FR-008).** HR changes title, body, date or category; the system records who edited and when; a typo does not force a republish. **A2 — Feature an existing item (FR-007).** HR sets the flag on an already-published item; the previously featured item is un-featured. **A3 — Un-feature and leave none (FR-007).** HR clears the flag; the banner simply does not appear. **A4 — Unpublish (FR-009, CON-019).** The item is hidden and never deleted; if it was the featured one it is un-featured and **no other item is promoted in its place** (CON-018). **A5 — Employee reads and filters (FR-006).** The employee sees news on the main page sorted by date, filters by category (General, HR, IT, Events), and sees the featured item in the banner at the top; read-only, no comments or reactions. **A6 — No connection (FR-013).** The news shows a no-connection message; nothing is cached locally. |
 | **Exception flows** | **E1 — Token invalid or expired.** Redirect to Keycloak; no change is made. **E2 — Non-HR user attempts a management action.** Refused; the employee has read access only (CON-016). |
 | **Business rules** | CON-016 (only the HR AD group publishes, edits and unpublishes), CON-018 (featuring is a manual flag, never automatic; at most one featured — a **system invariant** that must hold wherever the change comes from, not only in the form HR happens to use; unpublishing the featured item promotes nothing), CON-019 (never hard-deleted). |
-| **Non-functional** | NFR-001 (page load under 3 s), NFR-004 (author + timestamp on every publish, edit and unpublish). |
+| **Non-functional** | NFR-001 (page load under 3 s), NFR-004 (author + timestamp on every publish, edit and unpublish — **written only**; there is no audit view screen, SS-AUD-07). |
 
 ```plantuml
 @startuml
@@ -255,7 +260,7 @@ stop
 | **Alternative flows** | **A1 — HR assigns or clears a category (FR-011).** HR acts from the directory screen itself; the system stores the link AD user id → category and records who changed it and when. This is the only write the portal makes about a person. **A2 — Employee with no category (CON-022).** The employee still appears in the directory with that field blank; no default value is invented. **A3 — No connection (FR-013).** The directory shows a no-connection message; nothing is copied locally, so there is nothing to cache and nothing to sync. |
 | **Exception flows** | **E1 — AD unreachable.** The directory reports the failure; no partial or stale data is shown, because no local copy exists (CON-020). **E2 — AD attribute missing for a person (R001).** The field is shown empty; the directory does not substitute a value. **E3 — Non-HR user attempts a category change.** Refused; the directory is read-only for the employee (CON-016). |
 | **Business rules** | CON-006 (AD is the system of record; Keycloak is never queried as a directory), CON-010 (AD is never written to), CON-016 (only the HR AD group manages categories), CON-020 (the category is a link, two columns, no sync, no reconciliation, no local copy of the employee), CON-021 (the category is descriptive and appears in exactly two places — this directory column that also filters it, and the CSV export column — and nowhere else; it does **not** drive access control), CON-022 (at most one category, may be empty, no invented default), CON-023 (closed list of exactly four values: Full-time, Part-time, Contractor, Intern — not configurable, no screen to create or rename, no fifth value without a Change Request), CON-024 (corporate data only, no private personal information). |
-| **Non-functional** | NFR-001 (page load under 3 s), NFR-004 (audit of any change to a worker's category). |
+| **Non-functional** | NFR-001 (page load under 3 s), NFR-004 (audit of any change to a worker's category — **written only**; there is no audit view screen, SS-AUD-07). |
 
 ```plantuml
 @startuml
@@ -305,3 +310,4 @@ endif
 | UC-001 | CON-015, CON-017, CON-021, CON-022 | Derives | Supplementary Specification |
 | UC-002 | CON-018, CON-019 | Derives | Supplementary Specification |
 | UC-003 | CON-006, CON-010, CON-020, CON-021, CON-022, CON-023, CON-024 | Derives | Supplementary Specification |
+| UC-001, UC-002, UC-003 | NFR-004; stakeholder decision 2026-09-17 (no in-portal audit view screen) | Derives | Supplementary Specification |
