@@ -427,6 +427,7 @@ Every row reads: the declared input on the left **Derives** this Development Cas
 |---|---|---|---|
 | Development Case | CON-001 | Derives | Software Architecture Document |
 | Development Case | CON-003 | Derives | Design Model |
+| Development Case | CON-004 | Derives | Software Architecture Document |
 | Development Case | CON-005 | Derives | Software Architecture Document |
 | Development Case | CON-006 | Derives | Software Architecture Document |
 | Development Case | CON-007, CON-008 | Derives | Software Architecture Document |
