@@ -374,9 +374,9 @@ These are process rules, not technical guidance. Each exists because a declared 
 
 ### Version policy
 
-Recorded via `record_version_policy` (delta D4): framework pin `.NET` at version `10`, ecosystem `framework`, `ltsOnly = false`, derived from CON-001. The stakeholder declared the version explicitly and declared no LTS-only rule. CON-003 (Razor Pages) is a capability of that same target, not a separate pin.
+**Declared and recorded (delta D4).** Framework pin `.NET` at version `10`, ecosystem `framework`, `ltsOnly = false`, derived from CON-001. The stakeholder declared the version explicitly and declared no LTS-only rule. CON-003 (Razor Pages) is a capability of that same target, not a separate pin. Persisted via `record_version_policy`. The SoftwareArchitect anchors this pin in the Software Architecture Document.
 
-PostgreSQL (CON-004) carries **no declared version pin**: the stakeholder fixed the product, not a version, and the instance is operated by the Infrastructure team under their existing practice (CON-014). The installed version is an operational fact to be established with STK-003, not an enterprise pin for the ProcessEngineer to record and not a stakeholder decision. The SoftwareArchitect anchors the framework pin in the Software Architecture Document.
+**Undeclared and consequential — escalated, not invented.** CON-004 declares PostgreSQL as the database but declares **no version**. The version is architecturally consequential: it constrains the .NET 10 data-access stack (provider and driver compatibility), the SQL feature set available to the Design Model, and the migration tooling the Implementer may use. Per the version-governance rule, an undeclared consequential version is the stakeholder's decision and is **never invented** by the ProcessEngineer. It has been escalated this round via `REQUIRES_USER_INPUT`; no PostgreSQL pin is recorded until the answer arrives. The ProcessEngineer governs the policy, the SoftwareArchitect resolves the version against the registry — neither invents it.
 
 ### Iteration preparation and process support
 
