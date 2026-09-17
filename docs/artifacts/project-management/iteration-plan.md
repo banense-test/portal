@@ -10,7 +10,7 @@
 | Owner | ProjectManager |
 | Date | 2026-09-17 |
 | Governing process | Development Case (Inception) — cost-boxed iterations; two currencies, never summed |
-| Evolution this iteration | Initial plan created. Carries the coarse cross-iteration roadmap (LCO → LCA → IOC → PR) and the fine plan for Inception Iteration 1. |
+| Evolution this iteration | Initial plan created. Carries the coarse cross-iteration roadmap (LCO → LCA → IOC → PR) and the fine plan for Inception Iteration 1. Risks are cited by their **declared** identifiers R001 and R002 only; the four additional risks the ProjectManager identified are recorded in the Risk List **without** R-family identifiers, because that family is declared input and is not minted by this role. |
 
 **Two levels, one artifact.** *Plan and Milestones* carries both: the **coarse roadmap** (the milestone sequence and the iteration boundaries, cross-iteration) and the **fine plan** (this iteration's work items, owners and token budgets, bounded by the iteration's budget box). The coarse level narrates across iterations; the fine level stays inside this iteration's box. They are not mixed.
 
@@ -100,7 +100,7 @@ title Portal — Iteration Sequence and Human Gates (UNANCHORED: no start date, 
 | IOC approval | End of Construction Iter 2 | STK-001's acceptance that the system is operational | days of queue time | 14 days |
 | PR acceptance | End of Transition Iter 1 | STK-003's acceptance of the handover | days of queue time | 14 days |
 
-**A gate is a risk, not an estimate.** The 14-day ceiling is the Development Case measurement policy: beyond it the process suspends and nothing is auto-filled. Gate queue time is carried as **R005** in the Risk List. The questionnaire gate was cleared on 2026-09-17; the LCO gate is **OPEN** — the milestone is not yet achieved.
+**A gate is a risk, not an estimate.** The 14-day ceiling is the Development Case measurement policy: beyond it the process suspends and nothing is auto-filled. Gate queue time is carried in the Risk List as the *human gate queue time* risk. The questionnaire gate was cleared on 2026-09-17; the LCO gate is **OPEN** — the milestone is not yet achieved.
 
 ### Fine plan — Inception Iteration 1
 
@@ -120,7 +120,7 @@ title Portal — Iteration Sequence and Human Gates (UNANCHORED: no start date, 
 | WI-8 | LCO milestone verdict | ReviewCoordinator | Review Record | 70,000 |
 | | **Total committed** | | | **1,000,000** |
 
-**Box compliance.** The nine work items sum to exactly the box. Nothing is promised beyond it. Work that does not fit the box goes to the next iteration's backlog rather than extending this one — and the only item deliberately held back is the **Iteration Assessment**, which is produced at iteration close *after* the ReviewCoordinator's verdict, not before it.
+**Box compliance.** The eight work items sum to exactly the box. Nothing is promised beyond it. Work that does not fit the box goes to the next iteration's backlog rather than extending this one — and the only item deliberately held back is the **Iteration Assessment**, which is produced at iteration close *after* the ReviewCoordinator's verdict, not before it.
 
 **No work item exists for Keycloak, for a data migration, for a backup design, or for a permission model.** Each is excluded by a declared constraint (CON-005, CON-012, CON-014, CON-016) and the Development Case records each as a project-specific process rule so that no discipline role creates one.
 
@@ -151,7 +151,7 @@ partition "SystemAnalyst — 420k tokens" {
 }
 
 partition "ProjectManager — 150k tokens" {
-  :Risk List: R001-R006 classified,\nstrategy + mitigation + contingency;
+  :Risk List: R001 and R002 classified,\nplus four further risks, strategy + mitigation + contingency;
   :Iteration Plan: coarse roadmap + fine plan\nfor this iteration;
 }
 
@@ -203,7 +203,7 @@ The split above is the **assumed** profile for this iteration, derived from the 
 |---|---|---|
 | Tokens consumed this iteration | Whether the box is spent, and therefore whether scope bends to the box | ProjectManager, at iteration close |
 | Elapsed **agent** time | Whether a discipline is consuming disproportionate agent time, and therefore whether its workflow should be simplified | ProjectManager; ProcessEngineer when it drives a process change |
-| Elapsed **human queue** time (days) | Whether a gate is becoming a schedule risk, and therefore whether it must be bounded (R005) | ProjectManager; ProcessEngineer |
+| Elapsed **human queue** time (days) | Whether a gate is becoming a schedule risk, and therefore whether it must be bounded | ProjectManager; ProcessEngineer |
 
 No velocity is quoted, no per-iteration figure is recorded as a trend, and the two clocks are never added.
 
@@ -245,7 +245,7 @@ Every AC-NNN in the declared scope appears below. None is absent. Inception does
 |---|---|---|
 | X1 | Every declared input is placed in the requirements baseline — no FR-NNN, NFR-NNN, CON-NNN, STK-NNN, BG-NNN or AC-NNN is unplaced | Vision, Use-Case Model and Supplementary Specification coverage checks |
 | X2 | Every risk is classified with probability, impact, exposure, magnitude, strategy, mitigation and contingency; the highest-magnitude risk is scheduled into the iteration that confronts it | Risk List — R001 (High) scheduled into Elaboration |
-| X3 | The coarse roadmap and the fine plan both exist, and the fine plan sums within the iteration's budget box | This artifact — 9 work items summing to 1,000,000 tokens |
+| X3 | The coarse roadmap and the fine plan both exist, and the fine plan sums within the iteration's budget box | This artifact — 8 work items summing to 1,000,000 tokens |
 | X4 | The iteration's scope is a named set of use cases, and no use case is added, split or promoted | This artifact — UC-001, UC-002, UC-003 |
 | X5 | The reviewers have ruled and the ReviewCoordinator has issued the LCO verdict | Review Record — **pending; the milestone is NOT YET ACHIEVED** |
 
@@ -259,8 +259,10 @@ Every AC-NNN in the declared scope appears below. None is absent. Inception does
 | Iteration Plan | BG-001, BG-002, BG-003 | Derives | Iteration Assessment |
 | Iteration Plan | AC-001, AC-002, AC-003, AC-004, AC-005 | Derives | Test Evaluation Summary |
 | Iteration Plan | UC-001, UC-002, UC-003 | Derives | Design Model |
-| Iteration Plan | R001, R002, R003, R004, R005, R006 | Derives | Iteration Assessment |
+| Iteration Plan | R001, R002 | Derives | Iteration Assessment |
 | Iteration Plan | R001 | Derives | Architectural Proof-of-Concept |
 | Iteration Plan | CON-005, CON-012, CON-014, CON-016 | Derives | Development Case |
 | Iteration Plan | CON-007, CON-011, CON-013 | Derives | Release Notes |
 | Iteration Plan | NFR-001, NFR-002, NFR-003, NFR-004 | Derives | Test Case |
+
+**Why only R001 and R002 appear above.** The `RNNN` family is **declared input** — assigned in the Work Order and copied, never minted. R001 and R002 are the two risks the declared scope carries, and they are the only risk identifiers this plan may cite. The four additional risks the ProjectManager identified (client-timestamp trust boundary; featured invariant under concurrent HR edits; human gate queue time; mandatory design versus closed declared scope) are recorded in the Risk List **without** R-family identifiers, and therefore carry no trace edge here. They are referenced descriptively. If the stakeholder wants them tracked as first-class risks with identifiers, assigning those identifiers is the stakeholder's act, not this role's.
