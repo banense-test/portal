@@ -136,6 +136,7 @@ end note
 - No offline mode beyond the clocking retry — no PWA, no service worker, no installable app, no client cache of the directory or the news.
 - No permission model beyond the two levels — no role matrix, no permission administration screen, no rule that reads the worker category to decide what somebody may do.
 - No rule that features a news item by itself — no "most recent", no "most read", no expiry date on the banner.
+- **No in-portal audit view screen.** The audit trail is written, not read in the portal: it is recorded for compliance and read directly from the database by whoever needs it. (Stakeholder decision, 2026-09-17 — asked whether the portal needs an in-portal audit view screen for HR or whether the audit is recorded for compliance and read directly from the database; the stakeholder answered **No**.)
 
 ## Features
 
@@ -207,7 +208,7 @@ The declared constraints are binding on every downstream artifact. They are list
 
 | Area | Requirement | Basis |
 |---|---|---|
-| Non-functional requirements | NFR-001 (page load under 3 s), NFR-002 (clocking response under 1 s), NFR-003 (available Mon–Fri 07:00–19:00, fault tolerance within the corporate network; 24/7 not required), NFR-004 (audit trail for news, worker category and clocking corrections) | Carried and quantified in the Supplementary Specification. |
+| Non-functional requirements | NFR-001 (page load under 3 s), NFR-002 (clocking response under 1 s), NFR-003 (available Mon–Fri 07:00–19:00, fault tolerance within the corporate network; 24/7 not required), NFR-004 (audit trail for news, worker category and clocking corrections) | Carried and quantified in the Supplementary Specification. NFR-004's obligation is discharged by *writing* the audit; there is no in-portal audit view screen (stakeholder decision, 2026-09-17). |
 | Applicable standards | OIDC for authentication (CON-005); LDAP for directory reads (CON-006); CSV as the export format (FR-014); Europe/Madrid for display and export, UTC for storage (CON-015) | Supplementary Specification, *Applicable Standards*. |
 | Interface requirements | REST API (CON-002); the AD/LDAP read interface (CON-006); the Keycloak OIDC interface (CON-005); the browser interface on current Chrome and Edge (CON-009) | Supplementary Specification, *Interfaces*. |
 | Design constraints | The supplied design is authoritative for the visual layer, not only its structure (CON-013) | Supplementary Specification, *Design Constraints*. |
@@ -223,5 +224,6 @@ The declared constraints are binding on every downstream artifact. They are list
 | Vision | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014 | Derives | Use-Case Model |
 | Vision | NFR-001, NFR-002, NFR-003, NFR-004 | Derives | Supplementary Specification |
 | Vision | CON-001, CON-002, CON-003, CON-004, CON-005, CON-006, CON-007, CON-008, CON-009, CON-010, CON-011, CON-012, CON-013, CON-014, CON-015, CON-016, CON-017, CON-018, CON-019, CON-020, CON-021, CON-022, CON-023, CON-024 | Derives | Supplementary Specification |
+| Vision | NFR-004; stakeholder decision 2026-09-17 (no in-portal audit view screen) | Derives | Supplementary Specification |
 | Vision | R001, R002 | Derives | Risk List |
 | Vision | AC-001, AC-002, AC-003, AC-004, AC-005 | Derives | Test Evaluation Summary |
