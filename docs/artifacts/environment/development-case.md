@@ -374,9 +374,16 @@ These are process rules, not technical guidance. Each exists because a declared 
 
 ### Version policy
 
-**Declared and recorded (delta D4).** Framework pin `.NET` at version `10`, ecosystem `framework`, `ltsOnly = false`, derived from CON-001. The stakeholder declared the version explicitly and declared no LTS-only rule. CON-003 (Razor Pages) is a capability of that same target, not a separate pin. Persisted via `record_version_policy`. The SoftwareArchitect anchors this pin in the Software Architecture Document.
+Recorded via `record_version_policy` (delta D4). Two pins, both derived from this project's declared Constraints:
 
-**Undeclared and consequential — escalated, not invented.** CON-004 declares PostgreSQL as the database but declares **no version**. The version is architecturally consequential: it constrains the .NET 10 data-access stack (provider and driver compatibility), the SQL feature set available to the Design Model, and the migration tooling the Implementer may use. Per the version-governance rule, an undeclared consequential version is the stakeholder's decision and is **never invented** by the ProcessEngineer. It has been escalated this round via `REQUIRES_USER_INPUT`; no PostgreSQL pin is recorded until the answer arrives. The ProcessEngineer governs the policy, the SoftwareArchitect resolves the version against the registry — neither invents it.
+| Ecosystem | Package | Pinned version | LTS only | Basis |
+|---|---|---|---|---|
+| `framework` | `.NET` | `10` | false | CON-001 — the stakeholder declared the backend target explicitly and declared no LTS-only rule. CON-003 (Razor Pages) is a capability of this same target, not a separate pin. |
+| `framework` | `PostgreSQL` | `latest` | false | CON-004 — the stakeholder declared PostgreSQL as the database without a version, and on being asked which version the project must target, answered **latest**. Recorded in the stakeholder's own word: the project targets the latest PostgreSQL release, with no version floor and no LTS-only rule. |
+
+The PostgreSQL pin was escalated rather than invented: the version is architecturally consequential (it constrains the .NET 10 data-access provider and driver, the SQL feature set available to the Design Model, and the migration tooling the Implementer may use), and an undeclared consequential version is the stakeholder's decision. The answer is now recorded and the question is closed.
+
+The SoftwareArchitect anchors both pins in the Software Architecture Document and resolves them against the registry; the ProcessEngineer governs the policy and does not resolve versions.
 
 ### Iteration preparation and process support
 
