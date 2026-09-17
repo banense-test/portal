@@ -315,7 +315,6 @@ end note
 ```
 
 ## Guidelines and Procedures
-
 ### Measurement policy (what THIS project does with the two currencies)
 
 The baseline measures two and only two quantities — tokens consumed, and elapsed time split into agent time and human queue time. This project does not restate that; it states the **decision each quantity enables and who reads it**:
@@ -327,6 +326,23 @@ The baseline measures two and only two quantities — tokens consumed, and elaps
 | Elapsed **human queue** time (days waiting on a stakeholder gate) | Whether a human gate is becoming a schedule risk, and therefore whether it must be bounded in the Risk List. A gate is a risk, not an estimate: ceiling 14 days, after which the process suspends and nothing is auto-filled | ProjectManager; ProcessEngineer |
 
 A metric whose decision cannot be named does not enter this policy. No velocity is quoted, per-iteration figures are not recorded, and the two clocks are never added. Before any phase closes, the box is stated as an assumption with its basis named.
+
+### Environment readiness checkpoint — Inception iteration 1
+
+Recorded at the close of the Prepare Environment for Project activity. This is the "is the environment ready?" gate that precedes development, and it recurs at the start of every iteration.
+
+| Check | Verdict | Note |
+|---|---|---|
+| SCM repository reachable and readable | READY | `docs/inputs/employee-portal-design.html` read at sha `ba1cb26` |
+| Authoritative UI design reference present | READY | CON-013 — committed, mandatory, needs no confirmation that it will arrive |
+| Keycloak OIDC client available for login testing | READY | CON-005 — already registered, credentials with the development team, so login is testable from day one |
+| Active Directory reachable for LDAP reads | READY (external) | CON-006, CON-010 — operated by the Infrastructure team; the portal reads and never writes |
+| PostgreSQL instance available | READY (external) | CON-004, CON-014 — covered by the Infrastructure team's existing backup practice |
+| `CONTRIBUTING.md` | **GAP** | Absent. Content owner: discipline experts. Target: Elaboration |
+| CI workflow | **GAP** | Unverified. Content owner: Implementer / Integrator. Target: verified before the first Construction iteration |
+| Lint / format config | **GAP** | Unverified. Content owner: Implementer. Target: alongside `CONTRIBUTING.md` |
+
+**Verdict: READY for the Inception iteration to start.** The three gaps are guideline-and-tooling content owned by discipline experts, not by the ProcessEngineer, and none of them blocks Inception work — Inception produces requirements and architecture artifacts, not build output. They are carried forward as Elaboration actions with named owners. This verdict is a readiness statement, not a milestone completion: the end-of-Inception milestone is **NOT YET ACHIEVED** and is decided by review.
 
 ### Guideline ownership and the Elaboration gaps
 
@@ -399,7 +415,6 @@ stop
 **Process support during the iteration.** Process questions are answered within one iteration cycle; a blocking process issue is escalated immediately rather than left to the next checkpoint. Ambiguous templates and tool malfunctions are corrected in the Development Case or the referenced guideline file, and the correction is recorded as a delta.
 
 **Improvement is evidence-based.** Each iteration's process changes trace to a specific problem observed in the previous iteration — a Review Record finding, a Change Request, or a measured actual. A process change with no such trigger is not made.
-
 ## Traceability
 
 | Element | Traces From | Link Type | Traces To |
