@@ -11,6 +11,7 @@
 | Date | 2026-09-17 |
 | Detail level | Inception — FURPS+ categories established and every declared NFR/constraint placed. RequirementsSpecifier quantifies thresholds and details per-UC non-functional flows in Elaboration. |
 | Governing process | Development Case (Inception) — CON-016/CON-021 and CON-023 are the DC's named inputs to this artifact |
+| Evolution this iteration | Traceability section completed: every requirement element family (SS-SEC, SS-AUD, SS-BR, SS-USA, SS-REL, SS-PER, SS-SUP, SS-DC, SS-IF, SS-STD) now carries its own trace row, and R001 is attached to SS-IF-02, the interface it threatens. No requirement text changed. |
 
 **Scope of this artifact.** It carries the requirements that are **not** expressible as a use-case flow: the non-functional requirements (NFR-001..NFR-004), the cross-cutting mechanisms, and the design, interface and standard constraints (CON-001..CON-024). Every category below is addressed; where a category has no declared requirement, that is stated as **N/A with its basis** rather than left blank.
 
@@ -135,7 +136,7 @@
 | ID | Interface | Direction | Specification | Basis |
 |---|---|---|---|---|
 | SS-IF-01 | **Keycloak OIDC** | Outbound (portal is the client) | OIDC authorization-code redirect for login; token validation; roles read from claims. The client is already registered and its credentials are with the development team, so login is testable from day one. | CON-005 |
-| SS-IF-02 | **Active Directory over LDAP** | Outbound, **read-only** | Reads corporate attributes: job title, department, office, email, extension. Never writes. | CON-006, CON-010 |
+| SS-IF-02 | **Active Directory over LDAP** | Outbound, **read-only** | Reads corporate attributes: job title, department, office, email, extension. Never writes. **Carries R001** — the attributes may not be filled consistently across the 3 offices, and the portal holds no local copy (CON-020), so a gap in AD is a gap in the directory with no fallback. | CON-006, CON-010, R001 |
 | SS-IF-03 | **REST API** | Internal, frontend ↔ backend | The portal's own API. | CON-002 |
 | SS-IF-04 | **Browser** | Inbound | Current Chrome and Edge, from the internal corporate network only. | CON-009, CON-008 |
 | SS-IF-05 | **CSV export** | Outbound, file | One calendar month, 00:00 on the first day to 23:59:59 on the last day, Europe/Madrid. Exactly these columns, in this order: `EmployeeId, FullName, WorkerCategory, Date, ClockIn, ClockOut, HoursWorked, Corrected`. Timestamps in Europe/Madrid local time. | FR-014, CON-015 |
@@ -215,6 +216,10 @@ end note
 
 ## Traceability
 
+Every requirement element in this artifact is listed below with its declared source. The table is organised by element family so that no requirement is left without an upstream basis and no declared input is left unplaced.
+
+### Declared non-functional requirements and constraints → this artifact
+
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | Supplementary Specification | NFR-001, NFR-002 | Derives | Design Model |
@@ -224,11 +229,131 @@ end note
 | Supplementary Specification | CON-012, CON-013, CON-014, CON-015 | Derives | Design Model |
 | Supplementary Specification | CON-016, CON-017, CON-018, CON-019 | Derives | Design Model |
 | Supplementary Specification | CON-020, CON-021, CON-022, CON-023, CON-024 | Derives | Design Model |
+
+### Functionality — security and access control
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| SS-SEC-01, SS-SEC-02 | CON-005 | Derives | Software Architecture Document |
+| SS-SEC-03 | CON-016 | Derives | Design Model |
+| SS-SEC-04 | CON-021 | Derives | Test Case |
+| SS-SEC-05 | CON-008 | Derives | Software Architecture Document |
+| SS-SEC-06 | CON-006, CON-010 | Derives | Software Architecture Document |
+| SS-SEC-07 | CON-024 | Derives | Test Case |
+
+### Functionality — audit trail
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
 | SS-AUD-01, SS-AUD-02, SS-AUD-03, SS-AUD-04, SS-AUD-05 | NFR-004 | Derives | Test Case |
+| SS-AUD-03, SS-AUD-04 | CON-017 | Derives | Design Model |
+| SS-AUD-05 | CON-019 | Derives | Design Model |
+| SS-AUD-06 | NFR-004 | Derives | Design Model |
 | SS-AUD-07 | NFR-004; stakeholder decision 2026-09-17 (no in-portal audit view screen) | Derives | Design Model |
-| SS-REL-02 | FR-012, AC-005 | Derives | Test Case |
+
+### Functionality — business rules carried as functional constraints
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| SS-BR-01 | CON-012 | Derives | Design Model |
+| SS-BR-02 | CON-015 | Derives | Design Model |
+| SS-BR-03 | CON-017 | Derives | Design Model |
+| SS-BR-04, SS-BR-05 | CON-018 | Derives | Test Case |
+| SS-BR-06 | CON-020 | Derives | Design Model |
+| SS-BR-07 | CON-022 | Derives | Test Case |
+| SS-BR-08 | CON-023 | Derives | Test Case |
+| SS-BR-09 | FR-006 | Derives | Design Model |
+
+### Usability
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| SS-USA-01 | CON-013 | Derives | Design Model |
+| SS-USA-02 | Declared scope (responsive web, no native app) | Derives | Design Model |
+| SS-USA-03 | CON-009 | Derives | Test Case |
 | SS-USA-04 | AC-003 | Derives | Test Case |
 | SS-USA-05 | AC-004 | Derives | Test Case |
-| SS-IF-05 | FR-014 | Derives | Design Model |
-| SS-DC-06, SS-DC-07 | CON-006, CON-020 | Derives | Design Model |
-| SS-BR-05 | CON-018 | Derives | Test Case |
+| SS-USA-06 | AC-001 | Derives | Test Case |
+| SS-USA-07 | AC-002 | Derives | Test Case |
+| SS-USA-08 | FR-002 | Derives | Design Model |
+
+### Reliability
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| SS-REL-01 | NFR-003 | Derives | Test Case |
+| SS-REL-02 | FR-012, AC-005 | Derives | Test Case |
+| SS-REL-03, SS-REL-04 | FR-013 | Derives | Test Case |
+| SS-REL-05 | CON-014 | Derives | Software Architecture Document |
+| SS-REL-06 | FR-012 | Derives | Design Model |
+
+### Performance
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| SS-PER-01 | NFR-001 | Derives | Test Case |
+| SS-PER-02 | NFR-002 | Derives | Test Case |
+
+### Supportability
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| SS-SUP-01 | CON-011 | Derives | Software Architecture Document |
+| SS-SUP-02 | CON-007, CON-001 | Derives | Software Architecture Document |
+| SS-SUP-03 | CON-010 | Derives | Software Architecture Document |
+| SS-SUP-04 | CON-001, CON-002, CON-003, CON-004 | Derives | Software Architecture Document |
+| SS-SUP-05 | CON-003 | Derives | Design Model |
+| SS-SUP-06 | CON-023, CON-016 | Derives | Design Model |
+
+### Design constraints
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| SS-DC-01 | CON-001 | Derives | Software Architecture Document |
+| SS-DC-02 | CON-002 | Derives | Software Architecture Document |
+| SS-DC-03 | CON-003 | Derives | Software Architecture Document |
+| SS-DC-04 | CON-004; Development Case version policy D4 (stakeholder answered "latest") | Derives | Software Architecture Document |
+| SS-DC-05 | CON-007 | Derives | Software Architecture Document |
+| SS-DC-06 | CON-006 | Derives | Software Architecture Document |
+| SS-DC-07 | CON-020 | Derives | Design Model |
+| SS-DC-08 | CON-013 | Derives | Design Model |
+| SS-DC-09 | CON-005 | Derives | Software Architecture Document |
+
+### Interfaces
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| SS-IF-01 | CON-005 | Derives | Software Architecture Document |
+| SS-IF-02 | CON-006, CON-010, R001 | Derives | Software Architecture Document |
+| SS-IF-03 | CON-002 | Derives | Design Model |
+| SS-IF-04 | CON-009, CON-008 | Derives | Design Model |
+| SS-IF-05 | FR-014, CON-015 | Derives | Design Model |
+| SS-IF-06 | CON-004, CON-014 | Derives | Software Architecture Document |
+
+**R001 attaches to SS-IF-02.** The project's dominant technical risk (exposure 9) is that the LDAP attributes the directory reads may not be filled consistently across the 3 offices. That risk is a property of the AD/LDAP interface, not of a use case: the portal holds no local copy of the employee (CON-020), so a gap in AD is a gap in the directory with no fallback. SS-IF-02 is therefore the interface the Architectural Proof-of-Concept must exercise, and the reason the Proof-of-Concept trigger fired.
+
+### Applicable standards
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| SS-STD-01 | CON-005 | Derives | Design Model |
+| SS-STD-02 | CON-006 | Derives | Design Model |
+| SS-STD-03 | FR-014 | Derives | Design Model |
+| SS-STD-04 | CON-015 | Derives | Design Model |
+| SS-STD-05 | CON-002 | Derives | Design Model |
+| SS-STD-06 | CON-009 | Derives | Test Case |
+
+### Coverage check
+
+| Declared input | Placed in this artifact as |
+|---|---|
+| NFR-001 | SS-PER-01 |
+| NFR-002 | SS-PER-02 |
+| NFR-003 | SS-REL-01 |
+| NFR-004 | SS-AUD-01..SS-AUD-07 |
+| CON-001..CON-024 | SS-DC-01..SS-DC-09, SS-SEC-01..SS-SEC-07, SS-SUP-01..SS-SUP-06, SS-BR-01..SS-BR-09, SS-REL-05, SS-IF-01..SS-IF-06 |
+| AC-001..AC-005 | SS-USA-04..SS-USA-07, SS-REL-02 |
+| FR-002, FR-006, FR-012, FR-013, FR-014 | SS-USA-08, SS-BR-09, SS-REL-02, SS-REL-03, SS-REL-06, SS-IF-05 |
+| R001 | SS-IF-02 (the interface the risk attaches to) |
+
+No declared non-functional requirement and no declared constraint is left unplaced. No requirement in this artifact lacks a declared upstream basis.
