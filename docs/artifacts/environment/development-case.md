@@ -416,22 +416,25 @@ stop
 
 **Improvement is evidence-based.** Each iteration's process changes trace to a specific problem observed in the previous iteration — a Review Record finding, a Change Request, or a measured actual. A process change with no such trigger is not made.
 ## Traceability
+Every row reads: the declared input on the left **Derives** this Development Case, which governs the artifact named on the right. Endpoints are identifiers only — declared-input identifiers (`CON-`, `R`, `AC-`) and canonical artifact names.
 
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| Development Case | CON-001 | Derives | version policy — framework pin .NET 10 |
-| Development Case | CON-003 | Derives | Razor Pages process rule (no SPA ≠ no JavaScript) |
-| Development Case | CON-005 | Derives | Keycloak out-of-scope process rule |
-| Development Case | CON-006 | Derives | AD/LDAP read-only directory rule |
-| Development Case | CON-007, CON-008 | Derives | Deployment Model NOT TRIGGERED |
-| Development Case | CON-011 | Derives | handover process rule |
-| Development Case | CON-012 | Derives | Data Model NOT TRIGGERED; no migration work item |
-| Development Case | CON-013 | Derives | UI design reference; User-Interface Prototype NOT TRIGGERED |
-| Development Case | CON-015 | Derives | UTC storage / Europe-Madrid display rule |
-| Development Case | CON-016, CON-021 | Derives | two-level authorization rule |
-| Development Case | CON-018 | Derives | single-featured-item invariant rule |
-| Development Case | CON-019 | Derives | no hard delete rule |
-| Development Case | CON-020 | Derives | worker-category link rule |
-| Development Case | CON-023 | Derives | Glossary NOT TRIGGERED |
-| Development Case | R001 | Derives | Architectural Proof-of-Concept trigger FIRED |
-| Development Case | AC-001, AC-002, AC-003, AC-004, AC-005 | Derives | Test Plan NOT TRIGGERED; acceptance verified via Test Case and Test Evaluation Summary |
+| Development Case | CON-001 | Derives | Software Architecture Document |
+| Development Case | CON-003 | Derives | Design Model |
+| Development Case | CON-005 | Derives | Software Architecture Document |
+| Development Case | CON-006 | Derives | Software Architecture Document |
+| Development Case | CON-007, CON-008 | Derives | Software Architecture Document |
+| Development Case | CON-011 | Derives | Release Notes |
+| Development Case | CON-012 | Derives | Design Model |
+| Development Case | CON-013 | Derives | Design Model |
+| Development Case | CON-015 | Derives | Design Model |
+| Development Case | CON-016, CON-021 | Derives | Supplementary Specification |
+| Development Case | CON-018 | Derives | Test Case |
+| Development Case | CON-019 | Derives | Design Model |
+| Development Case | CON-020 | Derives | Design Model |
+| Development Case | CON-023 | Derives | Supplementary Specification |
+| Development Case | R001 | Derives | Architectural Proof-of-Concept |
+| Development Case | AC-001, AC-002, AC-003, AC-004, AC-005 | Derives | Test Evaluation Summary |
+
+**Not traced, and why.** `FR-001`..`FR-014` and `NFR-001`..`NFR-004` are traced by the Use-Case Model and the Supplementary Specification respectively; the Development Case governs *how* those artifacts are produced, not their content, so it does not duplicate their trace rows. `STK-001`..`STK-004` and `BG-001`..`BG-003` are consumed by the Vision. `R002` (adoption) is a Project Management concern carried in the Risk List and does not drive a process tailoring decision in this iteration.
