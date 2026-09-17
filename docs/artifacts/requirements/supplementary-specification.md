@@ -40,8 +40,9 @@
 | SS-AUD-04 | Corrections are **additive**: the original record is never overwritten in place and never deleted. | CON-017 | The original clocking row is byte-identical after a correction. |
 | SS-AUD-05 | News items are **never hard-deleted**. Unpublish hides an item; the record stays for the audit trail. | CON-019 | Zero hard-delete operations on news items. |
 | SS-AUD-06 | Employee fields are read-only from AD, so there is nothing to audit there. | NFR-004 | No audit record is produced for employee attributes. |
+| SS-AUD-07 | **The audit trail is written, not read in the portal.** There is **no in-portal audit view screen** for HR or for anyone else. The audit is recorded for compliance and read directly from the database by whoever needs it. | Stakeholder decision, 2026-09-17 — asked whether the portal needs an in-portal audit view screen for HR or whether the audit is recorded for compliance and read directly from the database; the stakeholder answered **No**. | Zero audit-view screens in the portal. The audit records of SS-AUD-01..SS-AUD-03 are persisted and queryable in the database. |
 
-`[SCOPE_QUESTION — not declared, but potentially critical: the audit trail's READ surface. NFR-004 mandates traceability of news changes, worker-category changes and clocking corrections, and SS-AUD-01..SS-AUD-03 make the audit mandatory to WRITE. The declared scope does not say how the audit is READ: whether HR (or an auditor) needs a screen in the portal to view it, or whether the audit is recorded for compliance and read directly from the database. The declared exclusions name "no news archive screen", "no permission administration screen" and "no self-service correction screen", but do not exclude an audit view — and the scope guard forbids me from adding an undeclared screen. This determines whether an audit-view screen is in scope.]`
+**Consequence of SS-AUD-07 for the rest of the model.** NFR-004's obligation is discharged entirely by *writing* the audit. No use case gains an audit-reading scenario, no screen is added, and the declared exclusions (no news archive screen, no permission administration screen, no self-service correction screen) are joined by this one: no audit view screen. The audit remains a cross-cutting constraint included by UC-001, UC-002 and UC-003 — never a use case, and now explicitly never a screen either.
 
 ### Business rules carried as functional constraints
 
@@ -152,7 +153,7 @@ package "Employee Portal — system boundary" as PORTAL {
   component "UC-003 Employee Directory" as UC3
 
   component "Authentication and role claims\n<<include>> from every UC\nCON-005, CON-016" as AUTH
-  component "Audit trail\n<<include>> from UC-001, UC-002, UC-003\nNFR-004" as AUDIT
+  component "Audit trail\n<<include>> from UC-001, UC-002, UC-003\nNFR-004, SS-AUD-07" as AUDIT
   component "No-connection handling\nscenario of UC-002, UC-003\nFR-013" as NOCONN
   component "Clocking retry queue\nscenario of UC-001\nFR-012" as RETRY
 }
@@ -194,6 +195,7 @@ end note
 note right of AUDIT
   The audit trail is a cross-cutting constraint,
   NOT a use case. There is no UC-LOG.
+  SS-AUD-07: it is written, never read in the portal.
 end note
 @enduml
 ```
@@ -223,6 +225,7 @@ end note
 | Supplementary Specification | CON-016, CON-017, CON-018, CON-019 | Derives | Design Model |
 | Supplementary Specification | CON-020, CON-021, CON-022, CON-023, CON-024 | Derives | Design Model |
 | SS-AUD-01, SS-AUD-02, SS-AUD-03, SS-AUD-04, SS-AUD-05 | NFR-004 | Derives | Test Case |
+| SS-AUD-07 | NFR-004; stakeholder decision 2026-09-17 (no in-portal audit view screen) | Derives | Design Model |
 | SS-REL-02 | FR-012, AC-005 | Derives | Test Case |
 | SS-USA-04 | AC-003 | Derives | Test Case |
 | SS-USA-05 | AC-004 | Derives | Test Case |
