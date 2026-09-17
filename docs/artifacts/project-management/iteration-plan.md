@@ -10,7 +10,7 @@
 | Owner | ProjectManager |
 | Date | 2026-09-17 |
 | Governing process | Development Case (Inception) — cost-boxed iterations; two currencies, never summed |
-| Evolution this iteration | Initial plan created. Carries the coarse cross-iteration roadmap (LCO → LCA → IOC → PR) and the fine plan for Inception Iteration 1. Risks are cited by their **declared** identifiers R001 and R002 only; the four additional risks the ProjectManager identified are recorded in the Risk List **without** R-family identifiers, because that family is declared input and is not minted by this role. |
+| Evolution this iteration | Initial plan created. Carries the coarse cross-iteration roadmap (LCO → LCA → IOC → PR) and the fine plan for Inception Iteration 1. All six risks are cited by identifier: R001 and R002 from the declared scope, and R003–R006 adopted as first-class risks on the stakeholder's decision of 2026-09-17. |
 
 **Two levels, one artifact.** *Plan and Milestones* carries both: the **coarse roadmap** (the milestone sequence and the iteration boundaries, cross-iteration) and the **fine plan** (this iteration's work items, owners and token budgets, bounded by the iteration's budget box). The coarse level narrates across iterations; the fine level stays inside this iteration's box. They are not mixed.
 
@@ -23,7 +23,7 @@
 | # | Objective | Verifiable outcome |
 |---|---|---|
 | O1 | Establish the requirements baseline for the declared scope | Vision, Use-Case Model and Supplementary Specification exist and place every declared FR-NNN, NFR-NNN, CON-NNN, STK-NNN, BG-NNN and AC-NNN |
-| O2 | Identify and classify the project's risks, and sequence the iterations to confront them | Risk List carries every risk with probability, impact, exposure, magnitude, strategy, mitigation and contingency; the highest-magnitude risk is scheduled into the iteration that confronts it |
+| O2 | Identify and classify the project's risks, and sequence the iterations to confront them | Risk List carries all six risks (R001–R006) with probability, impact, exposure, magnitude, strategy, mitigation and contingency; the highest-magnitude risk is scheduled into the iteration that confronts it |
 | O3 | Compose the coarse cross-iteration roadmap and the fine plan for this iteration | This artifact: milestone sequence LCO → LCA → IOC → PR, iteration boundaries, agent role profile, and this iteration's work items inside its budget box |
 | O4 | Assess Lifecycle Objectives (LCO) readiness | The ReviewCoordinator's LCO verdict, given the reviewers' findings — the milestone is **NOT YET ACHIEVED** and is not marked complete by this artifact |
 
@@ -38,14 +38,14 @@
 | Milestone | Closed by | Exit criteria |
 |---|---|---|
 | **LCO** — Lifecycle Objectives | Inception Iter 1 | Stakeholders agree on the scope; the project is viable; initial risks are identified and classified. |
-| **LCA** — Lifecycle Architecture | Elaboration Iter 2 | The architecture is baselined; **R001 is confronted empirically** by the Architectural Proof-of-Concept reading the real AD attributes across the 3 offices; the UC-001 and UC-003 realizations are stable. |
+| **LCA** — Lifecycle Architecture | Elaboration Iter 2 | The architecture is baselined; **R001 is confronted empirically** by the Architectural Proof-of-Concept reading the real AD attributes across the 3 offices; **R003, R004 and R006 are discharged** in the UC-001 and UC-002 realizations; the UC-001 and UC-003 realizations are stable. |
 | **IOC** — Initial Operational Capability | Construction Iter 2 | All three use cases are implemented and integrated; AC-001..AC-005 are testable against a running system. |
-| **PR** — Product Release | Transition Iter 1 | The product is released and handed over to the Infrastructure team (CON-011); the development team's operational duty ends. |
+| **PR** — Product Release | Transition Iter 1 | The product is released and handed over to the Infrastructure team (CON-011); the development team's operational duty ends; **R002 is measured** against BG-003 and AC-004. |
 
 | Phase | Iterations | Count | Rubber-profile starting point | Adjustment and justification |
 |---|---|---|---|---|
 | Inception | 1 | 1 | ~5% → 0.3 | **Raised to 1** — a phase cannot hold a fractional iteration; 1 is the floor. The scope is already declared and closed, so no scope-discovery iteration is needed. |
-| Elaboration | 1–2 | 2 | ~20% → 1.2 | **Stretched to 2** — R001 (High, exposure 9) requires *empirical* validation that design reasoning cannot supply, and the Development Case fired the Architectural Proof-of-Concept trigger on exactly that basis (delta D2). The AD/LDAP boundary is the project's dominant technical risk and the portal holds no local copy of the employee (CON-020), so a gap in AD has no fallback. |
+| Elaboration | 1–2 | 2 | ~20% → 1.2 | **Stretched to 2** — R001 (High, exposure 9) requires *empirical* validation that design reasoning cannot supply, and the Development Case fired the Architectural Proof-of-Concept trigger on exactly that basis (delta D2). The AD/LDAP boundary is the project's dominant technical risk and the portal holds no local copy of the employee (CON-020), so a gap in AD has no fallback. R003, R004 and R006 are also discharged here. |
 | Construction | 1–2 | 2 | ~65% → 3.9 | **Compressed to 2** — the artifact surface is small (3 use cases, 14 FRs, 4 NFRs); there is no data migration (CON-012), no Keycloak work (CON-005), no backup design (CON-014), no permission model (CON-016) and no category-management screen (CON-023); and the UI design is already supplied and mandated (CON-013), so Construction carries no UI discovery work. |
 | Transition | 1 | 1 | ~10% → 0.6 | **Raised to 1** — the floor. Compressed because deployment is internal and single-node on the existing Windows Server estate (CON-007), and AC-004 requires that no prior training be needed. |
 
@@ -94,19 +94,19 @@ title Portal — Iteration Sequence and Human Gates (UNANCHORED: no start date, 
 
 | Gate | Where | What is being waited on | Unit | Ceiling |
 |---|---|---|---|---|
-| Stakeholder questionnaire | Before Inception Iter 1's chain | STK-001's answers on the PostgreSQL version and on whether an in-portal audit view screen is needed | days of queue time | 14 days |
+| Stakeholder questionnaire | Before Inception Iter 1's chain | STK-001's answers on the PostgreSQL version, on whether an in-portal audit view screen is needed, and on adopting R003–R006 as first-class risks | days of queue time | 14 days |
 | **LCO approval** | End of Inception Iter 1 | STK-001's agreement that the scope is right and the project is viable | days of queue time | 14 days |
 | LCA approval | End of Elaboration Iter 2 | STK-001's acceptance of the baselined architecture | days of queue time | 14 days |
 | IOC approval | End of Construction Iter 2 | STK-001's acceptance that the system is operational | days of queue time | 14 days |
 | PR acceptance | End of Transition Iter 1 | STK-003's acceptance of the handover | days of queue time | 14 days |
 
-**A gate is a risk, not an estimate.** The 14-day ceiling is the Development Case measurement policy: beyond it the process suspends and nothing is auto-filled. Gate queue time is carried in the Risk List as the *human gate queue time* risk. The questionnaire gate was cleared on 2026-09-17; the LCO gate is **OPEN** — the milestone is not yet achieved.
+**A gate is a risk, not an estimate.** The 14-day ceiling is the Development Case measurement policy: beyond it the process suspends and nothing is auto-filled. Gate queue time is carried as **R005** in the Risk List. The questionnaire gate was cleared on 2026-09-17; the LCO gate is **OPEN** — the milestone is not yet achieved.
 
 ### Fine plan — Inception Iteration 1
 
 **The budget box.** The iteration is bounded by a fixed token budget; the scope adapts to fill the box, and the box does not grow to fit the scope. No phase has closed, so no measured actual exists and the box is an explicit assumption with its basis named:
 
-> **Inception Iteration 1 box: 1,000,000 tokens** — `[ASSUMPTION — basis: 9 work items across 5 agent roles, producing 7 artifacts; the dominant cost driver is re-reading the accumulating artifact surface, not emitting text. No phase has closed, so no measured actual exists to replace this figure. It is replaced by the measured Inception spend the moment this phase closes.]`
+> **Inception Iteration 1 box: 1,000,000 tokens** — `[ASSUMPTION — basis: 8 work items across 5 agent roles, producing 7 artifacts; the dominant cost driver is re-reading the accumulating artifact surface, not emitting text. No phase has closed, so no measured actual exists to replace this figure. It is replaced by the measured Inception spend the moment this phase closes.]`
 
 | WI | Work item | Owner | Deliverable | Token budget |
 |---|---|---|---|---|
@@ -114,7 +114,7 @@ title Portal — Iteration Sequence and Human Gates (UNANCHORED: no start date, 
 | WI-2 | Problem, position, stakeholders, features, assumptions, dependencies | SystemAnalyst | Vision | 150,000 |
 | WI-3 | Three use cases identified; UC-001 and UC-003 detailed (the architecturally significant ones) | SystemAnalyst | Use-Case Model | 150,000 |
 | WI-4 | FURPS+ categories; every declared NFR and constraint placed | SystemAnalyst | Supplementary Specification | 120,000 |
-| WI-5 | Identify, classify and plan mitigation for every risk | ProjectManager | Risk List | 80,000 |
+| WI-5 | Identify, classify and plan mitigation for all six risks | ProjectManager | Risk List | 80,000 |
 | WI-6 | Coarse roadmap + this iteration's fine plan | ProjectManager | Iteration Plan | 70,000 |
 | WI-7 | Review across four lenses | Reviewer | Review Record | 180,000 |
 | WI-8 | LCO milestone verdict | ReviewCoordinator | Review Record | 70,000 |
@@ -135,7 +135,8 @@ start
 note right
   Human gate already cleared before the chain:
   stakeholder questionnaire answered 2026-09-17
-  (PostgreSQL version; no in-portal audit view screen).
+  (PostgreSQL version; no in-portal audit view screen;
+  R003-R006 adopted as first-class risks).
   Queue time is a separate clock, never added to tokens.
 end note
 
@@ -151,7 +152,7 @@ partition "SystemAnalyst — 420k tokens" {
 }
 
 partition "ProjectManager — 150k tokens" {
-  :Risk List: R001 and R002 classified,\nplus four further risks, strategy + mitigation + contingency;
+  :Risk List: R001-R006 classified,\nstrategy + mitigation + contingency;
   :Iteration Plan: coarse roadmap + fine plan\nfor this iteration;
 }
 
@@ -203,7 +204,7 @@ The split above is the **assumed** profile for this iteration, derived from the 
 |---|---|---|
 | Tokens consumed this iteration | Whether the box is spent, and therefore whether scope bends to the box | ProjectManager, at iteration close |
 | Elapsed **agent** time | Whether a discipline is consuming disproportionate agent time, and therefore whether its workflow should be simplified | ProjectManager; ProcessEngineer when it drives a process change |
-| Elapsed **human queue** time (days) | Whether a gate is becoming a schedule risk, and therefore whether it must be bounded | ProjectManager; ProcessEngineer |
+| Elapsed **human queue** time (days) | Whether a gate is becoming a schedule risk, and therefore whether it must be bounded (R005) | ProjectManager; ProcessEngineer |
 
 No velocity is quoted, no per-iteration figure is recorded as a trend, and the two clocks are never added.
 
@@ -213,11 +214,11 @@ No velocity is quoted, no per-iteration figure is recorded as a trend, and the t
 
 | UC | Name | Source | This iteration's treatment | Scenarios addressed this iteration | Deferred |
 |---|---|---|---|---|---|
-| UC-001 | Clocking | FR-001, FR-002, FR-003, FR-004, FR-012, FR-014 | **Detailed** — architecturally significant (the only client-side mechanism; client timestamp, idempotency key and 5-minute window cross the boundary) | Main flow; A1 duplicate press; A2 network lost at press; A3 network lost beyond 5 minutes; A4 HR corrects or inserts; A5 HR views all clockings; A6 HR exports the month; A7 own history; E1 token invalid; E2 identity unresolvable | Realization and implementation → Elaboration Iter 1–2, Construction |
-| UC-002 | News | FR-005, FR-006, FR-007, FR-008, FR-009 | **Surveyed** with its scenarios — partly architecturally significant (CON-018's "at most one featured" is a declared system invariant) | Main flow; A1 edit; A2 feature an existing item; A3 un-feature and leave none; A4 unpublish; A5 read and filter; A6 no connection; E1 token invalid; E2 non-HR attempt | Realization and implementation → Elaboration Iter 2, Construction |
-| UC-003 | Employee Directory | FR-010, FR-011, FR-013 | **Detailed** — architecturally significant (the AD/LDAP boundary carries R001, exposure 9, and there is no local copy of the employee) | Main flow; A1 HR assigns or clears a category; A2 employee with no category; A3 no connection; E1 AD unreachable; E2 AD attribute missing; E3 non-HR attempt | Realization and implementation → Elaboration Iter 1–2, Construction |
+| UC-001 | Clocking | FR-001, FR-002, FR-003, FR-004, FR-012, FR-014 | **Detailed** — architecturally significant (the only client-side mechanism; client timestamp, idempotency key and 5-minute window cross the boundary — **R003**) | Main flow; A1 duplicate press; A2 network lost at press; A3 network lost beyond 5 minutes; A4 HR corrects or inserts; A5 HR views all clockings; A6 HR exports the month; A7 own history; E1 token invalid; E2 identity unresolvable | Realization and implementation → Elaboration Iter 1–2, Construction |
+| UC-002 | News | FR-005, FR-006, FR-007, FR-008, FR-009 | **Surveyed** with its scenarios — partly architecturally significant (CON-018's "at most one featured" is a declared system invariant — **R004**) | Main flow; A1 edit; A2 feature an existing item; A3 un-feature and leave none; A4 unpublish; A5 read and filter; A6 no connection; E1 token invalid; E2 non-HR attempt | Realization and implementation → Elaboration Iter 2, Construction |
+| UC-003 | Employee Directory | FR-010, FR-011, FR-013 | **Detailed** — architecturally significant (the AD/LDAP boundary carries **R001**, exposure 9, and there is no local copy of the employee) | Main flow; A1 HR assigns or clears a category; A2 employee with no category; A3 no connection; E1 AD unreachable; E2 AD attribute missing; E3 non-HR attempt | Realization and implementation → Elaboration Iter 1–2, Construction |
 
-**Why UC-001 and UC-003 are detailed first.** They carry the project's architectural risk. UC-003 sits on the AD/LDAP boundary where R001 lives; UC-001 carries the only client-side mechanism in the product (FR-012) and the only place a client-supplied timestamp crosses the boundary. UC-002 is surveyed because its risk is a design invariant (CON-018) rather than an unknown — it is confronted in Elaboration, not deferred to Construction.
+**Why UC-001 and UC-003 are detailed first.** They carry the project's architectural risk. UC-003 sits on the AD/LDAP boundary where R001 lives; UC-001 carries the only client-side mechanism in the product (FR-012) and the only place a client-supplied timestamp crosses the boundary (R003). UC-002 is surveyed because its risk is a design invariant (CON-018, R004) rather than an unknown — it is confronted in Elaboration, not deferred to Construction.
 
 **No use case is added, split or promoted.** Three declared use cases, three in the model. There is no per-actor split (each UC has two primary actors interacting with the *same* declared process) and no cross-cutting mechanism promoted to a use case — authentication (CON-005), the audit trail (NFR-004) and the no-connection handling (FR-013) are Supplementary Specification constraints, and there is deliberately no `UC-AUTH`, no `UC-LOG` and no `UC-SYNC`.
 
@@ -234,8 +235,8 @@ Every AC-NNN in the declared scope appears below. None is absent. Inception does
 | AC-001 | An employee can clock in and out without help from HR or the development team | Made testable: SS-USA-06 (no HR or developer involvement in the clocking path); UC-001 main flow and A7 | Construction Iter 2 (IOC) |
 | AC-002 | An HR Administrator can publish a news item without technical assistance | Made testable: SS-USA-07 (publishing requires no developer, no deployment, no database access); UC-002 main flow | Construction Iter 2 (IOC) |
 | AC-003 | Any employee finds a colleague's phone/email in under 10 seconds | Made testable: SS-USA-04 (contact data appears in the search result list itself, not behind a second click); UC-003 main flow. **Carries R001** — if the AD attribute is empty, the field shows empty | Construction Iter 2 (IOC) |
-| AC-004 | 80% of employees complete at least one clocking with no prior training | Made testable: SS-USA-05 (the clocking action is reachable and unambiguous from the main screen); UC-001 main flow | Transition Iter 1 (PR) — measured against BG-003 |
-| AC-005 | A clocking made while the corporate network is down for up to 5 minutes is not lost; beyond 5 minutes the employee reports the clocking to HR | Made testable: SS-REL-02 (5-minute retry, client-supplied timestamp, idempotency key); UC-001 A2 and A3 | Construction Iter 2 (IOC) |
+| AC-004 | 80% of employees complete at least one clocking with no prior training | Made testable: SS-USA-05 (the clocking action is reachable and unambiguous from the main screen); UC-001 main flow | Transition Iter 1 (PR) — measured against BG-003 and **R002** |
+| AC-005 | A clocking made while the corporate network is down for up to 5 minutes is not lost; beyond 5 minutes the employee reports the clocking to HR | Made testable: SS-REL-02 (5-minute retry, client-supplied timestamp, idempotency key); UC-001 A2 and A3. **Carries R003** | Construction Iter 2 (IOC) |
 
 **No acceptance criterion is invented.** The declared scope carries exactly five, and all five are above. No criterion is added for the audit trail, for the worker category or for the featured invariant — those are verified through the Test Case and Test Evaluation Summary artifacts against SS-AUD-01..SS-AUD-07, SS-BR-05 and SS-BR-08, not through a new AC.
 
@@ -244,7 +245,7 @@ Every AC-NNN in the declared scope appears below. None is absent. Inception does
 | # | Exit criterion | Evidence |
 |---|---|---|
 | X1 | Every declared input is placed in the requirements baseline — no FR-NNN, NFR-NNN, CON-NNN, STK-NNN, BG-NNN or AC-NNN is unplaced | Vision, Use-Case Model and Supplementary Specification coverage checks |
-| X2 | Every risk is classified with probability, impact, exposure, magnitude, strategy, mitigation and contingency; the highest-magnitude risk is scheduled into the iteration that confronts it | Risk List — R001 (High) scheduled into Elaboration |
+| X2 | Every risk is classified with probability, impact, exposure, magnitude, strategy, mitigation and contingency; the highest-magnitude risk is scheduled into the iteration that confronts it | Risk List — all six risks R001–R006 classified; R001 (High) scheduled into Elaboration |
 | X3 | The coarse roadmap and the fine plan both exist, and the fine plan sums within the iteration's budget box | This artifact — 8 work items summing to 1,000,000 tokens |
 | X4 | The iteration's scope is a named set of use cases, and no use case is added, split or promoted | This artifact — UC-001, UC-002, UC-003 |
 | X5 | The reviewers have ruled and the ReviewCoordinator has issued the LCO verdict | Review Record — **pending; the milestone is NOT YET ACHIEVED** |
@@ -259,10 +260,11 @@ Every AC-NNN in the declared scope appears below. None is absent. Inception does
 | Iteration Plan | BG-001, BG-002, BG-003 | Derives | Iteration Assessment |
 | Iteration Plan | AC-001, AC-002, AC-003, AC-004, AC-005 | Derives | Test Evaluation Summary |
 | Iteration Plan | UC-001, UC-002, UC-003 | Derives | Design Model |
-| Iteration Plan | R001, R002 | Derives | Iteration Assessment |
+| Iteration Plan | R001, R002, R003, R004, R005, R006 | Derives | Iteration Assessment |
 | Iteration Plan | R001 | Derives | Architectural Proof-of-Concept |
+| Iteration Plan | R003, R004, R006 | Derives | Design Model |
 | Iteration Plan | CON-005, CON-012, CON-014, CON-016 | Derives | Development Case |
 | Iteration Plan | CON-007, CON-011, CON-013 | Derives | Release Notes |
 | Iteration Plan | NFR-001, NFR-002, NFR-003, NFR-004 | Derives | Test Case |
 
-**Why only R001 and R002 appear above.** The `RNNN` family is **declared input** — assigned in the Work Order and copied, never minted. R001 and R002 are the two risks the declared scope carries, and they are the only risk identifiers this plan may cite. The four additional risks the ProjectManager identified (client-timestamp trust boundary; featured invariant under concurrent HR edits; human gate queue time; mandatory design versus closed declared scope) are recorded in the Risk List **without** R-family identifiers, and therefore carry no trace edge here. They are referenced descriptively. If the stakeholder wants them tracked as first-class risks with identifiers, assigning those identifiers is the stakeholder's act, not this role's.
+**All six risks are cited by identifier.** R001 and R002 come from the declared scope. R003–R006 were identified by the ProjectManager and adopted as first-class risks on the stakeholder's decision of 2026-09-17 ("Adopt all four as first-class risks and assign them identifiers"), which is the authority that authorises their identifiers. Each is scheduled into the iteration that confronts it: R001, R003, R004 and R006 in Elaboration; R002 in Transition; R005 monitored every iteration.
