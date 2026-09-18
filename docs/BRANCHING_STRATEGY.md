@@ -280,6 +280,12 @@ The tag message is the audit statement. It is terse, factual and Git-native, and
 
 A tag message reading `"baseline"` alone is a defect: it claims a pedigree it does not evidence.
 
+### Gate dependency — CI must exist before the first baseline
+
+The second gate reads `scm_get_build_status("main")`. The Development Case records the CI workflow as **UNVERIFIED** in its S1 tool inventory (2026-09-17), with the Implementer / Integrator as content owner and the target "verified before the first Construction iteration". The first baseline this strategy writes is `baseline-elaboration-E1-v1` at LAM close, which precedes that target — so the gate is satisfiable, but only if the workflow exists by then.
+
+Until it does, the second gate **cannot be read**, and an unreadable gate is a **failed** gate, not a waived one: no tag is written. The ConfigurationManager does not author the CI workflow — it is not a CM deliverable, and the Development Case assigns it to the Implementer / Integrator — but it does refuse to tag without it. This dependency is named here so that the gate's validity is auditable rather than assumed.
+
 ## Change Control Interface
 
 The Change Request state machine and the CCB decisions belong to the **ChangeControlManager**. The ConfigurationManager does not triage CRs and does not evaluate impact. It consumes the CCM-triaged outcome indirectly, through the branch and the PR that outcome authorises.
