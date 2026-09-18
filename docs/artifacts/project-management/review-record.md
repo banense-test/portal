@@ -8,12 +8,13 @@
 | Iteration / Cycle | 1 / 1 |
 | Owner | Reviewer (technical lens) + Business Reviewer (business modeling lens) |
 | Date | 2026-09-18 |
-| Review type | Technical review against the LCO exit criteria — feasibility lens; plus the Business Modeling lens (DC §4 applicability) |
+| Review type | Technical review against the LCO exit criteria — feasibility lens; plus the Business Modeling lens (DC §4 applicability) and the Vision business-goal measurability check |
 | Review point | Lifecycle Milestone (LCO) — exit criteria, not completion |
 | Artifacts reviewed | 8 of 8 persisted artifacts |
-| Findings this iteration | 13 (Critical 0, Major 9, Minor 4) — all from the technical lens. Business Modeling lens: **0 findings** (`[BR-OK-INACTIVE]`) |
+| Findings this iteration | 14 (Critical 0, Major 9, Minor 5) — 13 from the technical lens, 1 from the Business Reviewer (Vision F1, Minor). Business Modeling discipline itself: **0 findings** (`[BR-OK-INACTIVE]`) |
 | Prior findings of this lens | 0 — iteration 1, nothing to reconcile (both lenses) |
 | Business Modeling discipline | **INACTIVE** per DC §4 (`business-process-led = false`) — BusinessProcessAnalyst / BusinessReviewer not engaged |
+| Open markers | **None.** The BG-001 measurement-basis question was answered by the stakeholder on 2026-09-18 and its marker is retired |
 
 ## Review Scope and Criteria
 **What was reviewed.** Every artifact persisted for this project at the time of review — the complete inventory returned by `list_artifacts`, not a sample. The review point is the **Lifecycle Milestone (LCO)**, so the evaluative lens is **exit criteria**: do these artifacts collectively satisfy the conditions for phase transition? It is not a completion lens — Inception's increment is a decision-ready baseline, not an executable, and no artifact was judged for lacking code, test results or a running system.
