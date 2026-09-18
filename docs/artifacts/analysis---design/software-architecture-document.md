@@ -932,7 +932,6 @@ Each declared quality attribute is mapped to the architectural tactic that addre
 **Quality attributes with no declared requirement.** No accessibility standard, no regulatory standard, no scalability target beyond 200 users, and no code-quality metric is declared. None is asserted here. If one is required it is a Change Request.
 
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | Software Architecture Document | CON-001, CON-002, CON-003, CON-004 | Derives | Design Model |
@@ -971,4 +970,15 @@ Each declared quality attribute is mapped to the architectural tactic that addre
 | R006 | CON-013 | Derives | COMP-009 |
 | Software Architecture Document | R001, R003, R004, R006 | Derives | Architectural Proof-of-Concept |
 
-**Coverage.** All 24 declared constraints, all 4 declared NFRs, all 14 declared FRs and all 3 declared use cases are placed in this document. R001, R003, R004 and R006 are each attached to the component that must discharge them. R002 (adoption) and R005 (gate queue time) are Project Management concerns and are not architectural; they are carried in the Risk List and the Iteration Plan.
+### Settled contract decisions — FR-014 export
+
+Three cells of the declared CSV contract had semantics the declared scope did not state. All three were put to the stakeholder and answered on 2026-09-17; the answers are recorded verbatim in the Data View and are traced here so no later role re-opens them.
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| COMP-003 export contract — `EmployeeId` = `sAMAccountName` read from the authenticated session, no mapping table | FR-014, CON-020; stakeholder decision 2026-09-17 | Derives | Design Model |
+| COMP-003 export contract — `HoursWorked` blank and `ClockOut` empty when there is no clock-out; the row is never omitted | FR-014, CON-022, FR-004; stakeholder decision 2026-09-17 | Derives | Design Model |
+| COMP-003 export contract — a clocking pair never spans midnight; the row is keyed strictly by calendar date | FR-014, CON-015; stakeholder decision 2026-09-17 | Derives | Design Model |
+
+**Coverage.** All 24 declared constraints, all 4 declared NFRs, all 14 declared FRs and all 3 declared use cases are placed in this document. R001, R003, R004 and R006 are each attached to the component that must discharge them. R002 (adoption) and R005 (gate queue time) are Project Management concerns and are not architectural; they are carried in the Risk List and the Iteration Plan. No open question remains in this document: the three FR-014 contract cells were answered by the stakeholder on 2026-09-17 and are recorded as decisions, not as pending markers.
+
