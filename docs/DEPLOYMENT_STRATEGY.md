@@ -11,11 +11,12 @@
 | Iteration / Cycle | 1 / 1 |
 | Owner | DeploymentManager |
 | Date | 2026-09-18 |
-| Detail level | Inception — **deployment strategy and topology sketch**. Per DC §5.1 the Release Notes enter in Transition; this document carries the strategy, the mode, the two acceptance gates, the rollout and rollback criteria and the bill of materials until then. |
+| Revision | 2 — adds *Deployment Prerequisites* and *Pilot Feedback Programme* (revision 1 baselined at `69b672a`) |
+| Detail level | Inception — **deployment strategy and topology sketch**. Per DC §5.1 the Release Notes enter in Transition; this document carries the strategy, the mode, the two acceptance gates, the rollout and rollback criteria, the pilot feedback programme and the bill of materials until then. |
 | Governing process | Development Case (Inception) — **Deployment Model trigger NOT FIRED** (single internal Windows Server, no cloud, no external route); deployment is a section in the Software Architecture Document. **Architectural Proof-of-Concept trigger FIRED** on R001. |
 | Deployment mode | **Custom-built** — see *Deployment Mode* |
 
-**What this document is.** The deployment strategy for the Portal, seeded in Inception as the Development Case requires and executed in Transition. It states the deployment **mode**, the target user community, the target environments, the two acceptance gates, the rollout and rollback criteria, and the bill of materials.
+**What this document is.** The deployment strategy for the Portal, seeded in Inception as the Development Case requires and executed in Transition. It states the deployment **mode**, the target user community, the target environments, the install-time prerequisites, the two acceptance gates, the rollout and rollback criteria, the pilot feedback programme and the bill of materials.
 
 **Why this is a repository document and not an artifact.** The Deployment Plan is not an upsertable artifact in this project's artifact set, and the two artifacts that would carry the strategy are not available in Inception: the **Release Notes** enter at Transition (DC §5.1 — the artifact service rejects them in Inception), and the **Deployment Model** optional artifact has its trigger **NOT FIRED** (single node, no cloud, no multi-environment topology). The strategy is therefore baselined here, in the repository, and is folded into the Release Notes when they open in Transition.
 
@@ -53,6 +54,25 @@ The three deployment modes are custom-built, shrink-wrapped and downloadable. Th
 | **Production install site** — internal Windows Server estate | Where the same build is installed and where **Gate 2** is held, followed by go-live. | CON-007, CON-011 |
 
 **One production environment, and no staging environment is invented.** CON-007 fixes hosting to a single internal Windows Server with no cloud, and CON-008 forbids any external route. A staging environment would be a second environment the declared scope does not name, and the Development Case's Deployment Model trigger did not fire on multi-environment topology. The two-gate discipline below is what substitutes for it: the development site is the first gate, and the install site is the second.
+
+## Deployment Prerequisites
+
+What must be in place before each gate. Every prerequisite is either already satisfied or is provided by the party that owns the underlying system — none of them is a work item this project creates.
+
+| # | Prerequisite | Provided by | Needed before | Basis |
+|---|---|---|---|---|
+| 1 | OIDC client credentials for the Keycloak client | Already with the development team | **Gate 1** | CON-005 — the client is already registered, so login is testable from day one |
+| 2 | An Active Directory bind account with **read-only** rights, for the LDAP directory read | STK-003, as AD's operator | **Gate 1** | CON-006 (the directory is read directly from AD over LDAP), CON-010 (this project neither administers AD nor writes to it). The account is a prerequisite, not a scope item: the project needs read access, and AD's operator grants it |
+| 3 | A PostgreSQL instance reachable from the build host | STK-003 | **Gate 1** | CON-004 |
+| 4 | The supplied design at `docs/inputs/employee-portal-design.html` | Committed to the repository | Already present | CON-013 — mandatory and authoritative for the UI visual layer; not pending and needs no confirmation that it will arrive |
+| 5 | Server access on the internal Windows Server estate | STK-003 | **Gate 2** | CON-007, CON-011 |
+| 6 | A PostgreSQL instance reachable from the production server, with the portal database created empty | STK-003 | **Gate 2** | CON-004, CON-012 — the portal starts empty; there is no import step |
+| 7 | A workstation in each of the 3 offices, to verify reachability | STK-003 | **Gate 2** | CON-008, CON-009 |
+| 8 | Confirmation that the existing server-backup practice covers the production PostgreSQL instance in restorable form | STK-003 | Already confirmed in writing, with a verified restore test | CON-014 — no backup design, no backup tooling and no restore procedure is part of this project |
+
+**No prerequisite is a Keycloak work item.** CON-005 forbids realm design, client provisioning scripts and Keycloak hosting, and the Development Case repeats it as a process rule binding the DeploymentManager. Prerequisite 1 is the *use* of an already-registered client, not the creation of one.
+
+**No prerequisite is an Active Directory change.** Prerequisite 2 grants read access; it does not alter AD, its schema or its data (CON-010).
 
 ## Deployment Topology
 
@@ -272,6 +292,34 @@ endif
 **Rollback mechanism.** Redeploy the previous SCM release. Because the portal starts empty and imports nothing (CON-012), rollback needs no data-restore step for migrated content; the clockings recorded since go-live are covered by the Infrastructure team's existing backup practice (CON-014). **Rollback is a deployment action, not a scope decision** — and if a rollback trigger fires, the remedy is a fix or a Change Request decided by STK-001, never a new feature added to the release.
 
 **What is deliberately NOT a rollback trigger.** Low adoption (R002) is not a rollback trigger. It is measured by BG-003 and AC-004 over 3 months, and its remedy is communication by HR — the declared scope forbids every feature-shaped remedy (no push notifications, no reminders). Rolling back a working system because people have not yet changed their habit would be the wrong response to the right signal.
+
+## Pilot Feedback Programme
+
+Beta testing is a structured feedback mechanism, not a QA activity. Functional verification happens at **Gate 1**; the pilot exists to answer the questions the development site cannot answer.
+
+**Participants.** HR (STK-001) plus a representative sample of STK-004 across the 3 offices. The sample is sized by STK-001 as the sponsor; no figure is asserted here, because the declared scope names none and inventing one would be a fabricated measurement.
+
+**Feedback mechanism — deliberately outside the portal.** The declared scope forbids every in-portal feedback feature: no comments, no reactions, no push notifications, and no new screen. The mechanism is therefore:
+
+1. **A short structured questionnaire**, administered by HR (STK-001) through the channel HR already uses for internal communication. Using the incumbent channel for the pilot is not a new feature and adds nothing to the release.
+2. **A named triage point.** HR (STK-001) collects and triages; STK-002 answers engineering clarifications; the DeploymentManager records the outcome against the acceptance criteria.
+3. **Three buckets, and only three.** Every reported item is classified as (a) a **defect against a declared requirement** — fixed; (b) an **environmental or installation defect** — re-installed; or (c) a **request for something the declared scope does not authorise** — raised as a Change Request decided by STK-001, never implemented silently. There is no fourth bucket, and in particular no "quick win" bucket.
+
+**The questions the pilot must answer**, each mapped to a declared criterion:
+
+| Question put to pilot participants | Answers | Criterion |
+|---|---|---|
+| Could you clock in and out without help from HR or the development team? | yes / no, and what you did | AC-001 |
+| Did you need any instruction before your first clocking? | yes / no | AC-004 |
+| How long did it take you to find a colleague's phone or email? | under 10 seconds / over | AC-003 |
+| Could HR publish a news item without technical assistance? | yes / no | AC-002 |
+| Was any clocking lost when the network dropped? | yes / no | AC-005 |
+| For each directory entry you looked at, was any field empty? | which field, which office | R001 |
+| Would you use the portal instead of Excel next time? | yes / no, and why not | R002, BG-002 |
+
+**Success criteria for the pilot.** The pilot passes when: no rollback trigger has fired; AC-001, AC-002, AC-003 and AC-005 are met by the pilot participants; and the R001 field-emptiness observations are **recorded as measured data** rather than scored pass/fail — AD's completeness is not this project's to fix (CON-010), and a gap is reported to STK-003 as an AD data-quality issue.
+
+**What the pilot is not.** It is not a QA activity — the functional verification happened at Gate 1. It is not a feature-request channel. And it is not a substitute for the 3-month adoption measurement (BG-003), which continues after go-live and is the only measure of R002.
 
 ## Known Issues and Limitations
 
