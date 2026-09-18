@@ -725,7 +725,6 @@ end note
 **Module boundaries.** `Portal.Domain` is the only project that holds the volatile decisions, and it references no infrastructure package. `Portal.Infrastructure` holds adapters only. There is deliberately **no** `Portal.Keycloak` project (CON-005) and **no** synchronisation or reconciliation module (CON-020). The Development Case records `CONTRIBUTING.md`, the CI workflow and the lint configuration as Elaboration gaps owned by the Implementer; they are not architecture.
 
 ## Data View
-
 The Data Model optional artifact is **NOT FIRED** per the Development Case (fewer than 10 entities, no data migration), so the entity surface is carried here. This is an entity sketch, not a schema — the Database Designer owns the physical model in Elaboration.
 
 ```plantuml
@@ -812,7 +811,7 @@ package "Portal-owned data — the only new system of record" as OWNED {
 
 package "NOT stored — read from AD over LDAP (CON-006, CON-020)" as EXTERNAL {
   class "AD Employee Attributes" as ADE <<external>> {
-    + adUserId : string
+    + sAMAccountName : string
     + displayName : string
     + jobTitle : string
     + department : string
@@ -850,6 +849,16 @@ note bottom of CLK
   Europe/Madrid. CON-017: the original row
   is never overwritten in place.
   idempotencyKey is unique (FR-012).
+  employeeId is the sAMAccountName read from
+  the authenticated session (stakeholder
+  decision 2026-09-17) — no mapping table.
+end note
+
+note top of ADE
+  sAMAccountName is the identifier the export
+  keys on (FR-014, stakeholder decision
+  2026-09-17). It is read from the authenticated
+  session, not looked up per row.
 end note
 @enduml
 ```
@@ -868,7 +877,22 @@ end note
 | Timestamps are stored in UTC and displayed in Europe/Madrid | CON-015 |
 | No migration, no import, no seed of historical data | CON-012 |
 
-**Two cells of the declared CSV contract are not yet settled.** FR-014 declares an exact column set and order, and the export is produced by COMP-003 from the Attendance Ledger. Two of its cells have semantics the declared scope does not state: the source attribute behind `EmployeeId`, and the value of `HoursWorked` for a day that has a clock-in and no clock-out — a case the declared scope treats as real (FR-004 exists precisely because an employee forgets to clock out). Both are raised with the stakeholder this iteration; neither is invented here, and the Design Model of UC-001 realizes whichever answer comes back.
+### The monthly CSV export contract (FR-014)
+
+FR-014 declares the column set and order exactly. Three cells of that contract had semantics the declared scope did not state; all three were put to the stakeholder and are now settled. COMP-003 Attendance Reporting owns the contract, and the Design Model of UC-001 realizes it.
+
+| Column | Source | Settled semantics |
+|---|---|---|
+| `EmployeeId` | **`sAMAccountName`** | The stakeholder's decision of 2026-09-17: *"Use sAMAccountName. HR keys employees by their network login, which is the only identifier guaranteed to be populated and unique across all three offices — employeeID and employeeNumber are not reliably filled in AD (R001). The portal stores no employee data of its own (CON-020): it reads the login from the authenticated session and writes it to the CSV as-is, with no mapping table."* The value is read from the authenticated session, not looked up per row — so the export adds **no new dependency on AD attribute completeness** beyond the session that already exists. |
+| `FullName` | AD `displayName` | Read over LDAP by COMP-005. Subject to R001: if unpopulated, the field is written empty and no value is substituted. |
+| `WorkerCategory` | COMP-006 link | Blank when no category is assigned (CON-022). No default is invented. |
+| `Date` | Clocking date | One row per calendar date. **A clocking pair never spans midnight** — the stakeholder's decision of 2026-09-17: *"No"*. The row is therefore keyed strictly by calendar date, and no date-boundary pairing logic is designed. |
+| `ClockIn` | Clocking | Europe/Madrid local time (CON-015). |
+| `ClockOut` | Clocking | Europe/Madrid local time. **Empty when the employee never clocked out.** |
+| `HoursWorked` | Derived | **Blank when there is no clock-out.** The stakeholder's decision of 2026-09-17: *"Leave HoursWorked blank. A zero would assert the employee worked no hours that day, which is false; blank states that the value is unknown, which is the truth (CON-022). The row must still appear in the export, with an empty ClockOut and an empty HoursWorked — an omitted row hides the incident from HR instead of reporting it. Resolving the missing clock-out is a manual HR task outside the portal."* |
+| `Corrected` | Clocking | Distinguishes a corrected or inserted row from an untouched one (FR-014, CON-017). |
+
+**Consequences for the architecture.** The export is a **read-only projection** of the Attendance Ledger joined with the category link and the session identity. It introduces no new subsystem, no new interface and no new dependency: `EmployeeId` comes from the session, not from a per-row AD lookup, so the export does not widen the R001 exposure. A day with a clock-in and no clock-out produces a row with an empty `ClockOut` and an empty `HoursWorked` — the row is never omitted, because omitting it would hide the incident from HR rather than report it. Resolving a missing clock-out remains a manual HR task outside the portal (FR-004, CON-017).
 
 ## Size and Performance
 
