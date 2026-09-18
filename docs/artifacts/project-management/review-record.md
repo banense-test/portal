@@ -494,6 +494,7 @@ DC §4 trigger evaluation: the project does not exhibit business-process-led cha
 | Risk List#F1 | R002, R005 | Derives | Iteration Plan |
 | Iteration Plan#F1 | R005 | Derives | Iteration Assessment |
 | Test Evaluation Summary#F1 | AC-004 | Derives | Iteration Assessment |
+| Vision#F1 | BG-001; stakeholder decision 2026-09-18 (baseline 14 h/month, target 7 h/month or less, third month after go-live, owner STK-001) | Derives | Iteration Assessment |
 | Review Record — Business Modeling lens | Development Case (DC §4 classification, `business-process-led = false`) | Derives | Iteration Assessment |
 | Review Record — Business Modeling lens | Use-Case Model (UC-001, UC-002, UC-003; ACT-001, ACT-002, ACT-003, ACT-004) | Derives | Iteration Assessment |
 | Review Record — Business Modeling lens | Vision (root-cause statement; no BPL signal) | Derives | Iteration Assessment |
@@ -504,5 +505,7 @@ DC §4 trigger evaluation: the project does not exhibit business-process-led cha
 
 **The SAD F2 row carries a settled decision, not an open question.** The stakeholder answered on 2026-09-18 that Keycloak runs inside the corporate network — the company's internal identity provider, deployed on the internal estate and operated by STK-003 alongside Active Directory. The row therefore cites the decision as the authority for the correction, and the SoftwareArchitect redraws the Deployment View against it. No marker remains open on this question, and no later role should re-ask it.
 
-**The Business Modeling lens rows cite no finding identifier.** That lens emitted zero findings — a `[BR-OK-INACTIVE]` verdict is the absence of a defect, and an absent defect has no key to cite. Its rows trace the section to the Development Case's §4 classification and to the three artifacts searched for business-level content, and they feed the same Iteration Assessment.
+**The Vision#F1 row carries a settled decision, not an open question.** The stakeholder answered on 2026-09-18 that BG-001's baseline is 14 hours per month of HR administration measured over one full calendar month before go-live, and that BG-001 means 7 hours per month or less measured the same way over a full calendar month in the third month after go-live, owned by STK-001. The row cites that decision as the authority for retiring the Vision's stale assumption A1. No marker remains open on this question, and no later role should re-ask it.
+
+**The Business Modeling lens rows cite no finding identifier.** That lens emitted zero findings against the Business Modeling discipline — a `[BR-OK-INACTIVE]` verdict is the absence of a defect, and an absent defect has no key to cite. Its rows trace the section to the Development Case's §4 classification and to the three artifacts searched for business-level content, and they feed the same Iteration Assessment. The Vision#F1 finding is a Vision-measurability finding raised by the Business Reviewer, not a Business Modeling finding: the discipline remains INACTIVE.
 
