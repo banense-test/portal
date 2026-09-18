@@ -1007,6 +1007,18 @@ The end-of-Inception milestone is **NOT YET ACHIEVED** and is **not marked compl
 | Review Record — Business Modeling lens | Vision (root-cause statement; no BPL signal) | Derives | Iteration Assessment |
 | Review Record — Business Modeling lens | CON-010, CON-011, CON-016, CON-017, CON-018, CON-019, CON-021, CON-022, CON-023 | Derives | Iteration Assessment |
 | Review Record — Business Modeling lens | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014 | Derives | Iteration Assessment |
+| Iteration Plan#F1 (management lens) | R005; CON-011 | Derives | Iteration Assessment |
+| Iteration Plan#F2 (management lens) | R005 | Derives | Iteration Assessment |
+| Risk List#F1 (management lens) | R001, R002, R003, R004, R005, R006 | Derives | Iteration Assessment |
+| Development Case#F1 (management lens) | CON-011 | Derives | Iteration Assessment |
+| Software Architecture Document#F1 (management lens) | R001, CON-006, CON-020 | Derives | Architectural Proof-of-Concept |
+| Review Record — Management lens | Development Case, Iteration Plan, Risk List, Software Architecture Document | Derives | Iteration Assessment |
+| Review Record — Management lens | AC-001, AC-002, AC-003, AC-004, AC-005 | Derives | Iteration Assessment |
+| Review Record — Management lens | R001, R002, R003, R004, R005, R006 | Derives | Iteration Assessment |
+| Review Record — Management lens | CON-001, CON-003, CON-004, CON-005, CON-006, CON-007, CON-008, CON-010, CON-011, CON-012, CON-014, CON-020 | Derives | Iteration Assessment |
+| Review Record — Management lens | BG-001, BG-002, BG-003 | Derives | Iteration Assessment |
+| Review Record — Management lens | STK-001, STK-003, STK-004 | Derives | Iteration Assessment |
+| Review Record — LCO sanction | STK-001; stakeholder decision 2026-09-18 (sanction GRANTED, three conditions) | Derives | Iteration Assessment |
 
 **Reading the table.** The Review Record itself derives from all eight reviewed artifacts and from the declared acceptance criteria and risks, and it feeds the Iteration Assessment — which the ProjectManager authors after this review, given this verdict. Each finding row traces to the elements the finding concerns, so a downstream role can follow a defect from this record into the artifact and element it names. Finding identifiers are `<artifact>#<key>` as minted by `record_artifact_finding`; no action identifier is minted, because a remediation is the finding's Recommendation and its status is that finding's Resolution.
 
@@ -1015,4 +1027,10 @@ The end-of-Inception milestone is **NOT YET ACHIEVED** and is **not marked compl
 **The Vision#F1 row carries a settled decision, not an open question.** The stakeholder answered on 2026-09-18 that BG-001's baseline is 14 hours per month of HR administration measured over one full calendar month before go-live, and that BG-001 means 7 hours per month or less measured the same way over a full calendar month in the third month after go-live, owned by STK-001. The row cites that decision as the authority for retiring the Vision's stale assumption A1. No marker remains open on this question, and no later role should re-ask it.
 
 **The Business Modeling lens rows cite no finding identifier.** That lens emitted zero findings against the Business Modeling discipline — a `[BR-OK-INACTIVE]` verdict is the absence of a defect, and an absent defect has no key to cite. Its rows trace the section to the Development Case's §4 classification and to the three artifacts searched for business-level content, and they feed the same Iteration Assessment. The Vision#F1 finding is a Vision-measurability finding raised by the Business Reviewer, not a Business Modeling finding: the discipline remains INACTIVE.
+
+**The management-lens rows cite this lens's own keys.** The five findings recorded by the Management Reviewer carry keys minted by `record_artifact_finding` under this lens — `Iteration Plan#F1`, `Iteration Plan#F2`, `Risk List#F1`, `Development Case#F1`, `Software Architecture Document#F1`. They are distinct from the technical lens's keys of the same artifact names: a finding key is scoped per artifact **and** per reviewer lens, so `Iteration Plan#F1` from the management lens and `Iteration Plan#F1` from the technical lens are two different findings. The management lens's `Software Architecture Document#F1` traces to the Architectural Proof-of-Concept because the decision it flags — ADR-004's direct-LDAP-read trade-off — is conditional on that artifact's measured result.
+
+**The LCO sanction row carries a settled decision, not an open question.** The stakeholder answered **Yes** on 2026-09-18, sanctioning the advance past the LCO subject to three conditions. The row cites that decision as the authority for the Conditional Go verdict. The sanction is captured, not flagged: it is recorded as the token line and the verbatim acceptance in the Disposition section. No marker remains open on this question, and no later role should re-ask it.
+
+**No SUSPECT edge remains open against this artifact.** The one inbound suspect edge targeting the Review Record — `CON-004 → Software Architecture Document`, raised when the Software Architecture Document's disposition was updated in this Review Record by the Business Reviewer — was reviewed against this artifact's own end and cleared with `model_clear_suspect`: the Findings section still holds, because the SAD's technology table still pins Npgsql 10.0.3 against a PostgreSQL target of `latest` and its Deployment View still places Keycloak outside the corporate network boundary, both of which this record's findings and compliance table record. The edge stands and no evolution of this section was required.
 
