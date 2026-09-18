@@ -16,7 +16,6 @@
 | Business Modeling discipline | **INACTIVE** per DC §4 (`business-process-led = false`) — BusinessProcessAnalyst / BusinessReviewer not engaged |
 
 ## Review Scope and Criteria
-
 **What was reviewed.** Every artifact persisted for this project at the time of review — the complete inventory returned by `list_artifacts`, not a sample. The review point is the **Lifecycle Milestone (LCO)**, so the evaluative lens is **exit criteria**: do these artifacts collectively satisfy the conditions for phase transition? It is not a completion lens — Inception's increment is a decision-ready baseline, not an executable, and no artifact was judged for lacking code, test results or a running system.
 
 **Checklist applied.** The artifact-type checklists from the Reviewer base competencies, plus the two Development-Case-specific criteria (DC Baseline Conformance, Optional Trigger Justification) applied to the Development Case, plus the scope-adherence criterion applied to every artifact that creates elements.
@@ -61,6 +60,28 @@ Entry criteria | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS
 **Scope-adherence verification (the criterion most likely to fail on this project).** The declared scope is a closed set of 14 FRs, 4 NFRs, 24 CONs, 3 UCs, 5 ACs, 3 BGs, 4 STKs and 2 risks. Verified: the Use-Case Model defines **exactly three** use cases, matching the three declared `UC01`/`UC02`/`UC03`; there is no `UC-AUTH`, no `UC-LOG`, no `UC-SYNC`; authentication, the audit trail and the no-connection handling are Supplementary Specification constraints, correctly; each of the three use cases carries two primary actors on the **same** declared process rather than being split per actor. The Vision's "Not in scope" list reproduces every declared exclusion and adds the stakeholder's audit-view answer. No artifact invented a requirement, a screen or a subsystem outside the declared scope. **No scope-creep finding is recorded.**
 
 **Optional-trigger audit (every FIRED row checked against its §5.2 condition).** The Development Case declares exactly one FIRED trigger: Architectural Proof-of-Concept, on R001 (exposure 9). The §5.2 condition is "Elaboration phase + at least one technical risk requiring empirical validation". R001 is a fact about the organization's AD data, not about the architecture, and the portal holds no local copy of the employee (CON-020) so a gap in AD has no fallback — the condition genuinely holds. The five NOT-FIRED verdicts were each checked: Glossary (no specialist vocabulary; the one closed value set is fixed by CON-023), Data Model (fewer than 10 entities, no migration per CON-012), Deployment Model (single node per CON-007, no multi-environment), User-Interface Prototype (the stakeholder already supplied and mandated the design per CON-013), Test Plan (no regulatory or contractual test-reporting obligation). **All six verdicts are justified; no over-triggering finding is recorded.**
+
+### Business Modeling lens — scope and criteria (Business Reviewer)
+
+**Scope of this lens.** The Business Modeling discipline only, and only the question DC §4 puts to it: is `business-process-led` true, and if so, are the business artifacts complete and derivation-ready? The lens does **not** re-review the Requirements, Analysis & Design, Environment, Project Management or Test artifacts — those are the technical lens's, and its findings above stand unaltered.
+
+**Criteria applied.**
+
+| Criterion | Standard applied | Outcome |
+|---|---|---|
+| Scenario selection | Which of the six BM scenarios applies, and is the BPA's selection correct? | **No scenario applies** — BM is inactive, so no scenario is selected and none is owed |
+| DC §4 trigger evaluation | All four `business-process-led` criteria re-evaluated against the declared scope, not accepted on the ProcessEngineer's assertion | **All four NOT FIRED — classification CONFIRMED** |
+| BUC completeness test | Every BUC actor-initiated, value-delivering, end-to-end | **N/A** — no BUC exists and none is required |
+| BUC realization adequacy | N of M significant BUCs with complete realizations | **N/A** — no BUC to realize; Inception would not require full realizations in any case |
+| Derivation bridge | Worker automation dispositions; entity→analysis-class annotations | **N/A** — no business worker or entity exists; system UCs derive directly from declared FR-NNN |
+| Resource planning compliance | Each worker/entity implemented by one resource type | **N/A** — no worker or entity exists |
+| Same modeling technique at business level | Business-domain stereotypes (`<<business actor>>`, `<<business worker>>`, `<<business entity>>`, `<<business use case>>`) | **N/A** — no business-level model exists; the system model correctly uses system-level actors |
+| Stakeholder representation coverage | All significant organizational parts represented | **N/A to this lens** — organizational coverage is expressed through STK-001..STK-004 at the Vision level, reviewed by the technical lens |
+| Business rules as formal constraints | ID + source + worker/entity attachment + testable condition | **N/A** — the declared business rules are CON-NNN constraints, already carrying ID, source and testable condition; no `BR-NNN` family exists |
+| Diagram coverage | Inventory of diagrams present / absent / defective | **N/A** — no business diagram is owed; the coverage map below records the zero count as correct, not as a gap |
+| UML richness of this review | Coverage map + trigger-evaluation diagram as the primary evidence | **Pass** — two validated PlantUML diagrams carry the verdict; prose supplements only what they cannot express |
+
+**Entry criteria for this lens.** The Development Case exists and carries a §4 classification; the Use-Case Model, Vision and Glossary were each read to search for business-level content; the classification was independently re-derived rather than accepted. No review was abandoned mid-way.
 
 ## Findings
 13 findings recorded via `record_artifact_finding`. Every finding carries severity, location, remediation and a verdict from this lens. No finding is Critical: **no LCO gate blocker was found.**
