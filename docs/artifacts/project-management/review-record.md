@@ -85,7 +85,7 @@ Entry criteria | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS
 **Entry criteria for this lens.** The Development Case exists and carries a §4 classification; the Use-Case Model, Vision and Glossary were each read to search for business-level content; the classification was independently re-derived rather than accepted. No review was abandoned mid-way.
 
 ## Findings
-13 findings recorded via `record_artifact_finding`. Every finding carries severity, location, remediation and a verdict from this lens. No finding is Critical: **no LCO gate blocker was found.**
+14 findings recorded via `record_artifact_finding` — 13 from the technical lens, 1 from the Business Reviewer (Vision F1). Every finding carries severity, location, remediation and a verdict from its lens. No finding is Critical: **no LCO gate blocker was found.**
 
 ### Defect distribution — severity × artifact
 
@@ -112,8 +112,8 @@ package "Requirements" as P_REQ {
   class "Vision" as VIS {
     Critical : 0
     Major : 0
-    Minor : 0
-    Total : 0
+    Minor : 1
+    Total : 1
   }
 }
 
@@ -160,11 +160,14 @@ package "Test" as P_TEST {
 }
 
 note bottom of P_REQ
-  Totals: Critical 0, Major 9, Minor 4 = 13 findings.
+  Totals: Critical 0, Major 9, Minor 5 = 14 findings.
   No Critical finding: no LCO gate blocker.
   The dominant defect class is the trace graph
   (unregistered edges + suspect edges), not the
   artifact content.
+  Vision F1 (Minor) is the Business Reviewer's
+  measurability finding: the stale BG-001
+  assumption, now answered by the stakeholder.
 end note
 @enduml
 ```
@@ -179,7 +182,7 @@ skinparam componentStyle rectangle
 skinparam packageStyle rectangle
 
 package "Requirements" as REQ {
-  component "Vision\nno findings" as VIS
+  component "Vision\nF1 Minor: stale BG-001 assumption\n(measurement basis now declared)" as VIS
   component "Use-Case Model\nF1 Major: UC-001 declares ACT-003 AD\nF2 Minor: FR-013 absent from UC-002\nF3 Major: 14 suspect edges" as UCM
   component "Supplementary Specification\nF1 Major: NFR-002 unregistered\nF2 Major: 8 suspect edges" as SS
 }
@@ -205,6 +208,7 @@ UCM --> SAD : F1: AD actor in UC-001\ncontradicts token-only identity
 SS --> SAD : F1: NFR-002 edge missing\non both ends
 DC --> SAD : F1: latest pin leaves\nNpgsql 10.0.3 unanchored
 RL --> TES : F1: R002 unreachable\nfrom the adoption obligation
+VIS --> TES : F1: BG-001 baseline now declared\n(14 h/month -> 7 h/month or less)
 
 note bottom of AD
   The SAD carries the most findings (3 Major) and is
@@ -234,12 +238,13 @@ end note
 | 11 | Supplementary Specification | F2 | **Major** | Inbound trace edges | 8 edges SUSPECT at phase close: CON-004→SS-DC-04, CON-005→SS-SEC-01, CON-018→SS-BR-05, AC-003→SS-USA-04, FR-012→SS-REL-02, NFR-001→SS-PER-01, NFR-003→SS-REL-01, R001→SS-IF-02. | Re-read each changed element against its upstream and clear with `model_clear_suspect` or evolve and re-trace. |
 | 12 | Software Architecture Document | F3 | **Major** | Inbound trace edges | 6 edges SUSPECT at phase close: CON-005, CON-006, CON-018, CON-020, NFR-004 and Supplementary Specification → Software Architecture Document. | Re-read each changed element against its upstream and clear or re-trace. |
 | 13 | Use-Case Model | F3 | **Major** | Inbound trace edges | 14 edges SUSPECT at phase close: FR-001..FR-014 → UC-001/UC-002/UC-003. Requirement-to-use-case coverage is unverified at the gate. | Clear or re-trace; resolve finding 4 first, since it changes UC-001's actor set. |
+| 14 | Vision | F1 | Minor | Assumptions and Dependencies A1 + BG-001 row | **Business Reviewer finding.** A1 and the BG-001 row still assert that the measurement basis for BG-001's 50% reduction in HR management time is not declared and that no baseline is asserted. The stakeholder has since answered: the baseline is **14 hours per month** of HR administration measured over one full calendar month before go-live (4 h consolidating the three offices' Excel sheets at month end, 7 h chasing and correcting forgotten clock-outs at ~120 cases/month and ~3.5 min each, 3 h sending news by mass email and keeping the phone-list PDF current), and BG-001 means **7 hours per month or less** measured the same way over a full calendar month in the third month after go-live, owned by STK-001. The assumption has survived its own answer, so the Vision states as open a question that is closed — every later role reading it would re-ask. The Vision's original handling was correct (it flagged the gap rather than fabricating a figure); the defect is staleness, not fabrication. | Replace A1 with the declared measurement basis and update the BG-001 row to state the target as 7 hours per month or less, measured the same way over a full calendar month in the third month after go-live, with STK-001 named as the measurement owner. Remove the "not declared / no baseline is asserted" wording, and update the Traceability row so BG-001 no longer points at an open question. |
 
 **Findings deliberately NOT recorded.** The Iteration Assessment is absent — correctly. The ProjectManager authors it in the Assess touchpoint that runs *after* this review, so at review time it cannot yet describe the iteration being reviewed. Its absence is not a finding and not a gate condition. Likewise, no finding is recorded for the absence of code, test execution, a Design Model or an Implementation Model: Inception produces none of them, and judging these artifacts against an Elaboration or Construction checklist would be applying the wrong lens.
 
-### Business Modeling lens — Business Reviewer: **[BR-OK-INACTIVE]**, zero findings
+### Business Modeling lens — Business Reviewer: **[BR-OK-INACTIVE]**, zero findings against the discipline
 
-**Verdict: [BR-OK-INACTIVE] — Discipline NOT APPLICABLE per DC §4.** This lens emits **0** findings and issues **no** gate condition. The technical-lens register above is preserved verbatim; nothing in this subsection alters it.
+**Verdict: [BR-OK-INACTIVE] — Discipline NOT APPLICABLE per DC §4.** This lens emits **0** findings against the Business Modeling discipline and issues **no** gate condition. The technical-lens register above is preserved verbatim; nothing in this subsection alters it. Finding 14 (Vision F1) is a Vision-measurability finding raised by this lens under its Inception review criteria — it is **not** a Business Modeling finding, and the discipline remains INACTIVE.
 
 #### Coverage map — business-level elements vs. system-level elements
 
@@ -375,9 +380,9 @@ The derivation that *does* exist is registered and readable: the Use-Case Model'
 
 DC §4 trigger evaluation: the project does not exhibit business-process-led characteristics. No ERP / BPM / workflow-redesign / M&A signals found in the Vision. No Business Use Cases / Workers / Entities sections present in the Use-Case Model. No business-domain specialist terms in the Glossary.
 
-**BPA and BR are correctly INACTIVE for this engagement. No findings, no recommendations.** Downstream reviewers (MR, RC) may treat the Business Modeling discipline as out-of-scope for the LCO milestone. This lens records **zero** findings and issues **no** gate condition — the LCO gate is unaffected by the Business Modeling discipline, and nothing in this subsection blocks or advances it.
+**BPA and BR are correctly INACTIVE for this engagement. No findings against the Business Modeling discipline, no recommendations.** Downstream reviewers (MR, RC) may treat the Business Modeling discipline as out-of-scope for the LCO milestone. This lens issues **no** gate condition — the LCO gate is unaffected by the Business Modeling discipline, and nothing in this subsection blocks or advances it.
 
-**Scope guard.** No `[SCOPE_QUESTION]`, no `[DERIVED]` marker and no `[RECOMMENDATION — requires CR]` is emitted by this lens: it produces no element that could carry one. No question is put to the stakeholder, and no answered question is re-opened.
+**Scope guard.** No `[SCOPE_QUESTION]` remains open on this lens's account: the one it raised (BG-001's measurement basis) was answered by the stakeholder on 2026-09-18 and its marker is retired. No `[DERIVED]` marker and no `[RECOMMENDATION — requires CR]` is emitted by this lens. No answered question is re-opened.
 
 ## Resolutions and Actions
 **Prior findings of this lens: none.** `read_artifact_findings` was called for all 8 artifacts; every call returned an empty array. This is iteration 1 and this lens has emitted no prior finding, so `S_RECONCILE_PRIOR_FINDINGS` exited with zero `resolve_artifact_finding` calls and `[PLAN] ... TOTAL: 0`. No closure is claimed and none is owed.
