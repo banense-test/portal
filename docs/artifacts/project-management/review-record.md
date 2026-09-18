@@ -261,7 +261,6 @@ end note
 **Escalation — one question deliberately NOT re-asked.** Finding 6 (the PostgreSQL `latest` pin) is **not** put back to the stakeholder. The question was asked and answered on 2026-09-17, and re-opening an answered question is forbidden. The answer conflicts with sound engineering practice (a moving target is not a version, and the build is not reproducible), so the conflict is stated explicitly and an alternative is proposed — a concrete PostgreSQL major version — and routed as a **Change Request** through the ChangeControlManager. The pin is recorded and work can proceed; what is missing is reproducibility, not a decision.
 
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | Review Record | Development Case, Vision, Use-Case Model, Supplementary Specification | Derives | Iteration Assessment |
@@ -274,7 +273,7 @@ end note
 | Supplementary Specification#F1 | NFR-002, SS-PER-02 | Derives | Design Model |
 | Supplementary Specification#F2 | CON-004, CON-005, CON-018, AC-003, FR-012, NFR-001, NFR-003, R001 | Derives | Design Model |
 | Software Architecture Document#F1 | COMP-001, COMP-002, COMP-003, COMP-004, COMP-005, COMP-006, COMP-007, COMP-008, COMP-009, COMP-010, COMP-011 | Derives | Design Model |
-| Software Architecture Document#F2 | CON-005, CON-007, CON-008 | Derives | Deployment Model |
+| Software Architecture Document#F2 | CON-005, CON-007, CON-008; stakeholder decision 2026-09-18 (Keycloak runs inside the corporate network) | Derives | Deployment Model |
 | Software Architecture Document#F3 | CON-005, CON-006, CON-018, CON-020, NFR-004 | Derives | Design Model |
 | Development Case#F1 | CON-004 | Derives | Software Architecture Document |
 | Development Case#F2 | CON-011 | Derives | Iteration Plan |
@@ -283,3 +282,6 @@ end note
 | Test Evaluation Summary#F1 | AC-004 | Derives | Iteration Assessment |
 
 **Reading the table.** The Review Record itself derives from all eight reviewed artifacts and from the declared acceptance criteria and risks, and it feeds the Iteration Assessment — which the ProjectManager authors after this review, given this verdict. Each finding row traces to the elements the finding concerns, so a downstream role can follow a defect from this record into the artifact and element it names. Finding identifiers are `<artifact>#<key>` as minted by `record_artifact_finding`; no action identifier is minted, because a remediation is the finding's Recommendation and its status is that finding's Resolution.
+
+**The SAD F2 row carries a settled decision, not an open question.** The stakeholder answered on 2026-09-18 that Keycloak runs inside the corporate network — the company's internal identity provider, deployed on the internal estate and operated by STK-003 alongside Active Directory. The row therefore cites the decision as the authority for the correction, and the SoftwareArchitect redraws the Deployment View against it. No marker remains open on this question, and no later role should re-ask it.
+
