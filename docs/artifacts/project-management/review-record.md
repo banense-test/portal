@@ -659,6 +659,46 @@ end note
 
 **No marker remains open on this lens's account.** The `[SCOPE_QUESTION]` on BG-001's measurement basis is retired by the stakeholder's answer above. No other marker is open, and no answered question is re-opened — the two escalations recorded earlier (the Keycloak placement, answered 2026-09-18; the PostgreSQL pin, answered 2026-09-17 and routed as a Change Request) belong to the technical lens and are not re-asked here.
 
+### Management lens — resolutions and actions (Management Reviewer)
+
+**Prior findings of this lens: none — and none is owed.** `read_artifact_findings` was called for all 8 artifacts at the start of this review pass. Every call returned an empty array: the ledger carries findings from the Reviewer lens and the Business Reviewer lens only, and **no finding carries `reviewerRole == ManagementReviewer`**. This is iteration 1, so this lens has no prior finding to reconcile. `S_RECONCILE_PRIOR_FINDINGS` therefore exited with zero `resolve_artifact_finding` calls, `[PLAN] ... TOTAL: 0`, and `[EXIT] closed=0, deferred=0, rejected=0, left-open=0`. No closure is claimed and none is owed.
+
+**Ownership invariant respected.** The 14 findings already on the ledger belong to the Reviewer lens (13) and the Business Reviewer lens (1). This lens did **not** attempt to resolve any of them: only the lens that emitted a finding may close it, and a cross-lens close attempt is rejected by the actor handler. Those findings remain open and are the responsibility of their own lenses.
+
+**Actions required by the management lens — the three conditions of the sanction.** The stakeholder granted the sanction on 2026-09-18 subject to three conditions, to be closed in **Elaboration Iteration 1 before the architecture baseline is committed**. They are recorded here as the verdict's conditions, not as defects the team must manufacture.
+
+| Condition | What must be true | Owner | Finding it closes |
+|---|---|---|---|
+| **1** | UC-001 must drop Active Directory as a supporting actor — identity comes from the OIDC token; AD supports UC-003 only | SystemAnalyst | UCM F1 |
+| **2** | The Supplementary Specification must either register the 24 CON-NNN sources it claims to cover, or correct the coverage claim to what is actually registered | SystemAnalyst | SS F1 |
+| **3** | The Deployment View redraw already agreed — Keycloak as an internal node inside the corporate network, the OIDC redirect as an intra-network call | SoftwareArchitect | SAD F2 |
+
+**The remaining trace-registration findings are carried as Elaboration entry work.** The stakeholder's instruction is explicit: the trace-registration findings other than condition 2 are **entry work for Elaboration**, and **no SUSPECT edge survives the LCA**. That is a stated obligation on the LCA gate, and it is recorded here so the LCA review has something concrete to check against.
+
+| Carried to Elaboration as entry work | Owner | Finding |
+|---|---|---|
+| Register the COMP→requirement edges the SAD's table declares | SoftwareArchitect | SAD F1 |
+| Register R002 → Test Evaluation Summary, R005 → Iteration Plan, and the artifact-level edges | ProjectManager | RL F1 |
+| Clear or re-trace the 28 SUSPECT edges — **none may survive the LCA** | SystemAnalyst, SoftwareArchitect | SS F2, SAD F3, UCM F3 |
+| Add FR-013 to UC-002's Source field and trace row | SystemAnalyst | UCM F2 |
+| Resolve the PostgreSQL `latest` pin via Change Request | ProcessEngineer → STK-001 | DC F1 |
+| Re-verify the Development Case environment checkpoint against the SCM | ProcessEngineer | DC F2 |
+| Name the review lenses and reconcile with the DC's engaged-role set | ProjectManager | IP F1 |
+| Cite the CI run identifier without the "latest" qualifier | TestManager | TES F1 |
+| Retire the stale BG-001 assumption in the Vision | SystemAnalyst | Vision F1 |
+
+**Management-lens findings carried into Elaboration.** The five findings this lens recorded are not gate blockers — none is Critical — and each is an obligation on the next phase rather than a defect in the current baseline:
+
+| Finding | Carried obligation | Owner |
+|---|---|---|
+| Iteration Plan F1 (Major) | Close the budget box: budget the Management Reviewer's review pass and account for the Iteration Assessment | ProjectManager |
+| Iteration Plan F2 (Minor) | Name the Management Reviewer in the critical chain and link exit criterion X5 to the work item that produces it | ProjectManager |
+| Risk List F1 (Major) | Add a trend column and a retirement status per risk; **R001 must show a decreasing trend at LCA backed by the PoC's measured figures** | ProjectManager |
+| Development Case F1 (Minor) | Extend the measurement policy with the decision a missed milestone enables | ProcessEngineer |
+| Software Architecture Document F1 (Major) | State which decisions are settled and which are conditional on the PoC's measured result; state the LCA entry condition | SoftwareArchitect |
+
+**No management-lens finding is a gate blocker.** The LCO gate is not blocked by any of them: the milestone's exit criteria are met on substance, the sanction has been granted, and the three conditions are Elaboration Iteration 1 work. What the findings do is make the next phase's obligations explicit and checkable, so that the LCA review can verify them rather than rediscover them.
+
 ## Disposition
 **Overall LCO disposition: APPROVED WITH CHANGES.**
 
