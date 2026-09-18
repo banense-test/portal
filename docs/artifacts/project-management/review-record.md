@@ -215,6 +215,148 @@ end note
 
 **Findings deliberately NOT recorded.** The Iteration Assessment is absent — correctly. The ProjectManager authors it in the Assess touchpoint that runs *after* this review, so at review time it cannot yet describe the iteration being reviewed. Its absence is not a finding and not a gate condition. Likewise, no finding is recorded for the absence of code, test execution, a Design Model or an Implementation Model: Inception produces none of them, and judging these artifacts against an Elaboration or Construction checklist would be applying the wrong lens.
 
+### Business Modeling lens — Business Reviewer: **[BR-OK-INACTIVE]**, zero findings
+
+**Verdict: [BR-OK-INACTIVE] — Discipline NOT APPLICABLE per DC §4.** This lens emits **0** findings and issues **no** gate condition. The technical-lens register above is preserved verbatim; nothing in this subsection alters it.
+
+#### Coverage map — business-level elements vs. system-level elements
+
+```plantuml
+@startuml
+title Portal — Business Modeling Artifact Coverage (Inception, Iteration 1)
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Business Modeling surface — expected ONLY when BM is ACTIVE" as BM {
+  class "Business Use-Case Model\nBUC-001..BUC-n" as BUC {
+    present : 0
+    status : N/A
+  }
+  class "Business Actors\n<<business actor>>" as BA {
+    present : 0
+    status : N/A
+  }
+  class "Business Workers\n<<business worker>>" as BW {
+    present : 0
+    status : N/A
+  }
+  class "Business Entities\n<<business entity>>" as BE {
+    present : 0
+    status : N/A
+  }
+  class "Business Rules\nBR-001..BR-n" as BR {
+    present : 0
+    status : N/A
+  }
+  class "BUC Realizations\ncollaboration / sequence" as REAL {
+    present : 0
+    status : N/A
+  }
+}
+
+package "System level — PRESENT (Requirements discipline, NOT Business Modeling)" as SYS {
+  class "Use-Case Model\nUC-001 Clocking\nUC-002 News\nUC-003 Directory" as UCM {
+    level : system
+    owner : SystemAnalyst
+  }
+  class "System Actors\nACT-001 Employee\nACT-002 HR Administrator\nACT-003 Active Directory\nACT-004 Keycloak" as ACT {
+    level : system
+    owner : SystemAnalyst
+  }
+}
+
+note bottom of BM
+  Zero business-level elements exist in any artifact.
+  No <<business actor>>, <<business worker>>,
+  <<business entity>> or <<business use case>>
+  stereotype appears anywhere. No BUC, no BR-NNN,
+  no realization diagram.
+  This is CORRECT, not a defect: DC §4 records
+  business-process-led = false.
+end note
+
+note bottom of SYS
+  ACT-001..ACT-004 are SYSTEM actors of the system
+  Use-Case Model — not business actors. They sit at
+  the system abstraction level and are NOT evidence
+  of a business model. No BM section exists in the
+  Use-Case Model, the Vision or the Glossary.
+end note
+@enduml
+```
+
+#### DC §4 trigger evaluation — independently verified, not accepted on assertion
+
+```plantuml
+@startuml
+title Portal — DC §4 business-process-led trigger evaluation (independently verified)
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+class "Criterion 1\nAutomates or reengineers an end-to-end\nbusiness process spanning multiple\nbusiness actors" as C1 {
+  verdict : NOT FIRED
+  basis : 3 discrete system UCs for one class of internal user
+}
+class "Criterion 2\nBusiness rules must be modelled and\nvalidated with business stakeholders" as C2 {
+  verdict : NOT FIRED
+  basis : CON-016/017/018/019/021/022/023 already fixed as system constraints
+}
+class "Criterion 3\nOrganizational roles or responsibilities\nchange as part of the project" as C3 {
+  verdict : NOT FIRED
+  basis : CON-010 AD untouched; CON-011 existing operating practice
+}
+class "Criterion 4\nDomain vocabulary requires\nstakeholder-validated definitions" as C4 {
+  verdict : NOT FIRED
+  basis : CON-023 fixes the only closed value set to 4 values
+}
+class "DC §4 classification\nbusiness-process-led" as DC {
+  value : false
+  consequence : Business Modeling INACTIVE
+}
+
+C1 --> DC
+C2 --> DC
+C3 --> DC
+C4 --> DC
+
+note bottom of DC
+  Independently verified against the declared scope.
+  All four criteria NOT FIRED. The Vision's root-cause
+  statement agrees: the three processes are broken in
+  their MEDIUM (spreadsheet, email, PDF), not in their
+  logic — so no process model is needed to understand
+  the problem. Classification CONFIRMED.
+end note
+@enduml
+```
+
+#### Evidence table — what was searched for, and what was found
+
+| BM element class | Expected when BM ACTIVE | Found | Evidence / search basis |
+|---|---|---|---|
+| Business Use Cases (`BUC-NNN`) | ≥1, actor-initiated, end-to-end | **0** | Use-Case Model defines exactly UC-001/002/003 — system use cases, `Source:` = FR-NNN, not BUC-NNN |
+| Business Actors (`<<business actor>>`) | ≥1, external to the organization | **0** | ACT-001..ACT-004 are system actors; ACT-003/ACT-004 are external *systems*, not business actors |
+| Business Workers (`<<business worker>>`) | ≥1, internal role | **0** | No worker stereotype anywhere; no automation-disposition annotation exists or is owed |
+| Business Entities (`<<business entity>>`) | ≥1, business object | **0** | No business entity; the worker-category link (CON-020) is a system data element, not a business entity |
+| Business Rules (`BR-NNN`) | ≥1, ID + source + attachment + testable condition | **0** | The declared business rules are CON-012/015/016/017/018/019/021/022/023/024 — declared *constraints*, already carrying ID, source and testable condition; no BR-NNN family exists and none is owed |
+| BUC realizations (collaboration / sequence) | N of M significant BUCs | **0** | No BUC exists, so no realization is owed. Inception would not require full realizations in any case |
+| Business-domain specialist terms (Glossary) | when specialist vocabulary applies | **0** | Glossary does not exist — trigger NOT FIRED. The only closed value set (worker category) is fixed by CON-023 |
+| BPL signal in Vision prose (ERP / BPM / workflow redesign / M&A) | present when process-led | **none** | Vision states the root cause is the *medium*, not the process logic; no process-reengineering intent anywhere |
+
+#### Derivation-readiness assessment (the Business-to-System gate)
+
+The Business-to-System Derivation Readiness Gate is **not applicable** on this engagement, and its absence is not a defect. The gate exists to test whether a *business* model is a sound foundation for deriving *system* use cases. Here the system use cases were derived directly from the stakeholder's declared functional requirements — `FR-001..FR-014` → `UC-001/UC-002/UC-003` — with no business model in the chain. There is no worker→system-actor mapping to verify because no business worker exists; the automation-disposition annotations the gate would demand have no subject.
+
+The derivation that *does* exist is registered and readable: the Use-Case Model's `Source:` fields and traceability table cite the declared `FR-NNN` identifiers, and the three use cases map 1:1 onto the three declared `UC01`/`UC02`/`UC03`. That is the Requirements discipline's derivation, reviewed by the technical lens — not this one.
+
+#### Conclusion
+
+DC §4 trigger evaluation: the project does not exhibit business-process-led characteristics. No ERP / BPM / workflow-redesign / M&A signals found in the Vision. No Business Use Cases / Workers / Entities sections present in the Use-Case Model. No business-domain specialist terms in the Glossary.
+
+**BPA and BR are correctly INACTIVE for this engagement. No findings, no recommendations.** Downstream reviewers (MR, RC) may treat the Business Modeling discipline as out-of-scope for the LCO milestone. This lens records **zero** findings and issues **no** gate condition — the LCO gate is unaffected by the Business Modeling discipline, and nothing in this subsection blocks or advances it.
+
+**Scope guard.** No `[SCOPE_QUESTION]`, no `[DERIVED]` marker and no `[RECOMMENDATION — requires CR]` is emitted by this lens: it produces no element that could carry one. No question is put to the stakeholder, and no answered question is re-opened.
+
 ## Resolutions and Actions
 **Prior findings of this lens: none.** `read_artifact_findings` was called for all 8 artifacts; every call returned an empty array. This is iteration 1 and this lens has emitted no prior finding, so `S_RECONCILE_PRIOR_FINDINGS` exited with zero `resolve_artifact_finding` calls and `[PLAN] ... TOTAL: 0`. No closure is claimed and none is owed.
 
