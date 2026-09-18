@@ -403,6 +403,23 @@ DC §4 trigger evaluation: the project does not exhibit business-process-led cha
 
 **Escalation — one question deliberately NOT re-asked.** Finding 6 (the PostgreSQL `latest` pin) is **not** put back to the stakeholder. The question was asked and answered on 2026-09-17, and re-opening an answered question is forbidden. The answer conflicts with sound engineering practice (a moving target is not a version, and the build is not reproducible), so the conflict is stated explicitly and an alternative is proposed — a concrete PostgreSQL major version — and routed as a **Change Request** through the ChangeControlManager. The pin is recorded and work can proceed; what is missing is reproducibility, not a decision.
 
+### Business Modeling lens — Business Reviewer: **[BR-OK-INACTIVE]**
+
+| Dimension | Verdict | Basis |
+|---|---|---|
+| DC §4 classification `business-process-led` | **false — CONFIRMED** | All four criteria independently re-evaluated against the declared scope; all NOT FIRED |
+| Business Modeling discipline activation | **Correctly INACTIVE** | No BPL signal in the Vision; zero business-level elements in any artifact |
+| Business Use-Case Model | **N/A — not owed** | No BUC exists and none is required; the 3 use cases are system use cases sourced from FR-NNN |
+| Business actors / workers / entities | **N/A — not owed** | No business-level stereotype appears anywhere; ACT-001..ACT-004 are system actors |
+| Business rules (`BR-NNN`) | **N/A — not owed** | The declared business rules are CON-NNN constraints, already carrying ID, source and testable condition |
+| BUC realization coverage | **N/A — not owed** | No BUC to realize; Inception would not require full realizations in any case |
+| Business-to-System Derivation Readiness Gate | **N/A — not applicable** | System UCs derive directly from declared FR-NNN; no business model in the derivation chain |
+| Glossary (business-domain specialist terms) | **N/A — trigger NOT FIRED** | The only closed value set (worker category) is fixed by CON-023 |
+| Findings emitted by this lens | **0** | No defect exists to record; a `[BR-OK-INACTIVE]` verdict is the absence of a defect |
+| Gate effect | **None** | This lens neither blocks nor advances the LCO gate |
+
+**Business Modeling disposition: NOT APPLICABLE — no findings, no recommendations, no gate condition.** The Business Modeling discipline is correctly inactive for this engagement per DC §4, and the BusinessProcessAnalyst / BusinessReviewer roles are correctly not engaged. The technical lens's `APPROVED WITH CHANGES` disposition above is unaffected by this subsection: this lens adds no finding, no action and no blocker. Downstream reviewers (MR, RC) may treat the Business Modeling discipline as out-of-scope for the LCO milestone.
+
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
