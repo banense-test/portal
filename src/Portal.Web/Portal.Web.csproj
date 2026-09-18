@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <!-- CON-001: backend .NET 10. CON-003: Razor Pages, no SPA. -->
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Portal.Web</RootNamespace>
+    <AssemblyName>Portal.Web</AssemblyName>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,198 @@
+# =============================================================================
+# Portal — CI/CD baseline pipeline
+#
+# Owner: Integrator (co-owned with the Implementer). The Development Case
+# records the CI workflow as an environment gap with owner "Implementer /
+# Integrator" and target "verified before the first Construction iteration".
+# This file closes that gap.
+#
+# Stack — inferred from the Vision, anchored by the declared Constraints:
+#   CON-001  backend .NET 10
+#   CON-002  backend exposes a REST API
+#   CON-003  frontend Razor Pages (no SPA, no client-side framework/router)
+#   CON-004  database PostgreSQL (version policy: latest)
+#   CON-009  current Chrome and Edge (browser target, not a CI concern)
+#
+# -----------------------------------------------------------------------------
+# Subsystem dependency hierarchy (Software Architecture Document, Logical View).
+# Integration order is bottom-up over this graph: leaves first, then upward.
+# Sketched here so the pipeline's job order and the Integrator's merge order are
+# read from one place.
+#
+# ```plantuml
+# @startuml
+# title Portal — Subsystem dependency hierarchy (integration order, bottom-up)
+# skinparam componentStyle rectangle
+#
+# component "COMP-001\nClocking" as CLK
+# component "COMP-002\nNews" as NEWS
+# component "COMP-003\nEmployee Directory" as DIR
+# component "COMP-004\nIdentity / Authorization\n(OIDC client, AD group claims)" as ID
+# component "COMP-005\nPersistence\n(PostgreSQL)" as DB
+# component "COMP-006\nWeb Host / Razor Pages\n+ REST API surface" as WEB
+#
+# component "Active Directory\n<<external, read-only LDAP>>" as AD
+# component "Keycloak\n<<external, OIDC>>" as KC
+#
+# CLK --> ID
+# NEWS --> ID
+# DIR --> ID
+# CLK --> DB
+# NEWS --> DB
+# DIR --> DB
+# WEB --> CLK
+# WEB --> NEWS
+# WEB --> DIR
+# ID --> KC
+# DIR --> AD
+#
+# note bottom of AD
+#   CON-006, CON-010: read-only over LDAP.
+#   The portal never writes to Active Directory.
+# end note
+# note bottom of KC
+#   CON-005: external, already running, NOT project work.
+# end note
+# note right of DB
+#   CON-020: the worker category is a two-column link
+#   (AD user id -> category), never a copy of the employee.
+# end note
+# @enduml
+# ```
+#
+# Integration order derived from the graph above (leaves first):
+#   COMP-005 Persistence -> COMP-004 Identity -> COMP-001/002/003 capability
+#   subsystems -> COMP-006 Web Host.
+#
+# -----------------------------------------------------------------------------
+# Target build frequency: at least one CI-green build per day toward the end of
+# an iteration, one per week minimum. Every merge into iteration/Cn is followed
+# by a build-status check; a red post-merge build halts the pipeline and is
+# tracked by an integration-regression Issue.
+# =============================================================================
+
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'iteration/**'
+      - 'chore/**'
+      - 'feature/**'
+      - 'hotfix/**'
+  pull_request:
+    branches:
+      - main
+      - 'iteration/**'
+      - 'chore/**'
+      - 'feature/**'
+      - 'hotfix/**'
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_VERSION: '10.0.x'
+  DOTNET_NOLOGO: 'true'
+  DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
+  CONFIGURATION: Release
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      # The solution manifest enumerates projects explicitly, so it can drift out
+      # of sync with the merged code: a stale manifest silently compiles nothing
+      # of the Implementer's work and a green check becomes a lie. Regenerate it
+      # from the src/ + tests/ tree on every run so it can never drift.
+      - name: Sync solution manifest with the src/ and tests/ tree
+        run: |
+          set -euo pipefail
+          rm -f Portal.sln Portal.slnx
+          dotnet new sln -n Portal
+          SLN="$(ls Portal.sln Portal.slnx 2>/dev/null | head -n1)"
+          if [ -z "$SLN" ]; then echo "::error::no solution file was created"; exit 1; fi
+          find src tests -name '*.csproj' -print0 | sort -z | xargs -0 -r -n1 dotnet sln "$SLN" add
+          echo "Manifest regenerated: $SLN"
+          dotnet sln "$SLN" list
+          echo "SLN=$SLN" >> "$GITHUB_ENV"
+
+      - name: Restore
+        run: dotnet restore "$SLN"
+
+      - name: Build
+        run: dotnet build "$SLN" --configuration "$CONFIGURATION" --no-restore
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: build
+    services:
+      # CON-004: PostgreSQL. Version policy pins "latest". Present from the
+      # baseline so the first persistence test needs no CI change.
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: portal
+          POSTGRES_PASSWORD: portal
+          POSTGRES_DB: portal_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U portal -d portal_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      PORTAL_TEST_CONNECTIONSTRING: "Host=localhost;Port=5432;Database=portal_test;Username=portal;Password=portal"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Sync solution manifest with the src/ and tests/ tree
+        run: |
+          set -euo pipefail
+          rm -f Portal.sln Portal.slnx
+          dotnet new sln -n Portal
+          SLN="$(ls Portal.sln Portal.slnx 2>/dev/null | head -n1)"
+          if [ -z "$SLN" ]; then echo "::error::no solution file was created"; exit 1; fi
+          find src tests -name '*.csproj' -print0 | sort -z | xargs -0 -r -n1 dotnet sln "$SLN" add
+          echo "Manifest regenerated: $SLN"
+          dotnet sln "$SLN" list
+          echo "SLN=$SLN" >> "$GITHUB_ENV"
+
+      - name: Restore
+        run: dotnet restore "$SLN"
+
+      - name: Test
+        run: >
+          dotnet test "$SLN"
+          --configuration "$CONFIGURATION"
+          --no-restore
+          --logger "trx;LogFileName=test-results.trx"
+          --results-directory ./TestResults
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ./TestResults
+          if-no-files-found: ignore

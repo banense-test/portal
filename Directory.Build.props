@@ -1,0 +1,19 @@
+<Project>
+
+  <!--
+    Portal — repository-wide build defaults.
+
+    Deliberately minimal: this file sets only what every project in the tree
+    must agree on. TreatWarningsAsErrors is intentionally NOT set, so a warning
+    never turns the pipeline red on its own.
+  -->
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+</Project>
