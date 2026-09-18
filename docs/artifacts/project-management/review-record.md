@@ -1,5 +1,4 @@
 ## Document Control
-
 | Field | Value |
 |---|---|
 | Artifact | Review Record — Portal (Employee Portal, Cuba Corp) |
@@ -7,13 +6,14 @@
 | Status | Draft — review executed; milestone NOT YET ACHIEVED |
 | Milestone Target | End-of-Inception (LCO) — **not marked complete by this artifact** |
 | Iteration / Cycle | 1 / 1 |
-| Owner | Reviewer (technical lens) |
+| Owner | Reviewer (technical lens) + Business Reviewer (business modeling lens) |
 | Date | 2026-09-18 |
-| Review type | Technical review against the LCO exit criteria — feasibility lens |
+| Review type | Technical review against the LCO exit criteria — feasibility lens; plus the Business Modeling lens (DC §4 applicability) |
 | Review point | Lifecycle Milestone (LCO) — exit criteria, not completion |
 | Artifacts reviewed | 8 of 8 persisted artifacts |
-| Findings this iteration | 13 (Critical 0, Major 9, Minor 4) |
-| Prior findings of this lens | 0 — iteration 1, nothing to reconcile |
+| Findings this iteration | 13 (Critical 0, Major 9, Minor 4) — all from the technical lens. Business Modeling lens: **0 findings** (`[BR-OK-INACTIVE]`) |
+| Prior findings of this lens | 0 — iteration 1, nothing to reconcile (both lenses) |
+| Business Modeling discipline | **INACTIVE** per DC §4 (`business-process-led = false`) — BusinessProcessAnalyst / BusinessReviewer not engaged |
 
 ## Review Scope and Criteria
 
