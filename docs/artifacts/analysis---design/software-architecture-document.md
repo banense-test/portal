@@ -86,7 +86,6 @@ Seven decisions are recorded. Each states context, the decision, the alternative
 *Consequences.* No audit screen, no auditor actor, no audit use case. The audit is queryable directly in the database.
 
 ## Architectural Goals and Constraints
-
 ### Architecturally significant requirements
 
 | Requirement | Why it is architecturally significant | Architectural response |
@@ -112,6 +111,26 @@ Priority is expressed by **architectural significance**, not by MoSCoW: the decl
 | 3 | **UC-002 News** | **Medium** — carries a declared system invariant that must hold under concurrency | **R004** (exposure 4) | Elaboration Iter 2 — the invariant is enforced in one place and backed by a database constraint |
 
 **Why UC-003 ranks first.** It is the only use case whose correctness depends on data the project does not control and cannot repair. UC-001's risk is bounded by design (a 5-minute window and a unique key); UC-002's is bounded by a constraint. UC-003's is bounded by nothing — if AD is incomplete, the directory is incomplete, and the declared scope forbids every remedy (no local copy, no sync, no fallback value).
+
+### Proof-of-Concept plan — risk retirement strategy
+
+The Development Case fired the Architectural Proof-of-Concept trigger (delta D2) on R001 and schedules production in **Elaboration**, not Inception. What Inception owes is the *plan*: which risk, what scope, what success criterion, and which mode. Each disposition below is recorded machine-readably via `record_poc_decision` so the Implementer knows what to build and the Integrator knows what to integrate.
+
+| Risk | Mode | PoC scope | Success criterion | Why this mode |
+|---|---|---|---|---|
+| **R001** (exposure 9, High) | **single-mechanism** | Build the real LDAP read against the **real** Active Directory from the internal Windows Server estate, using the .NET 10 stack. Read the five displayed attributes — job title, department, office, email, extension — for the employees in scope across all 3 offices, and confirm the AD user id used for the CON-020 link is present and stable. | The .NET 10 stack binds and reads AD over LDAP; the **measured** population rate of each of the five attributes across all 3 offices is reported as a figure, not an estimate; the AD user id is present and stable for every employee in scope; the observed rates are recorded in the Architectural Proof-of-Concept artifact so the directory's attribute mapping is designed against observed data. | This is the one risk that **cannot be settled by design reasoning**. Whether AD is populated is a fact about the organization's data, not about the architecture. A reasoned answer would be a guess dressed as a finding — which is exactly the ivory-tower failure. The mechanism is built for real, in `src/`, because the LDAP reader is an evolutionary component the product keeps. |
+| **R003** (exposure 4, Moderate) | **analysis-only** | No prototype. The Design Model of UC-001 must state where the accepted timestamp is validated and what the accepted window is. | The Design Model states the validation point and the 5-minute bound; the duplicate and window cases are in the test set. | The exposure is already bounded by three design decisions that exist independently of any prototype: the 5-minute window (FR-012), the unique idempotency key (ADR-003), and the audited additive correction path (CON-017). Building a prototype would demonstrate what the design already guarantees. |
+| **R004** (exposure 4, Moderate) | **analysis-only** | No prototype. The Design Model of UC-002 must state the enforcement point and the partial unique index definition. | The Design Model states the single enforcement point and the index; the concurrent-feature case is in the test set. | CON-018 declares the invariant a **system invariant**, and ADR-003 backs it with a database constraint. The concurrency case is settled by the constraint, not by an experiment — a prototype would test PostgreSQL's unique-index semantics, which are not in doubt. |
+
+**Risks deliberately NOT prototyped, and why.**
+
+| Risk | Disposition | Reason |
+|---|---|---|
+| R002 (adoption, exposure 6) | Not a PoC candidate | The mechanism is employee habit, not a technical unknown. The remedy is communication by HR (STK-001), and the declared scope forbids every feature-shaped remedy (no push notifications, no reminders). Confronted in Transition, measured by BG-003 and AC-004. |
+| R005 (gate queue time, exposure 4) | Not a PoC candidate | The mechanism is human waiting, not a technical unknown. Bounded by the Development Case's 14-day ceiling and monitored every iteration. |
+| R006 (design vs scope, exposure 4) | Not a PoC candidate | The mechanism is a document conflict, resolved by reading the supplied design against the declared scope in Elaboration. A prototype would not resolve it; a Change Request would. |
+
+**What the PoC must NOT become.** It is not a spike to be thrown away, and it is not a demo. R001's PoC builds the **real** LDAP reader — the evolutionary component the product keeps — so that the effort spent retiring the risk is not discarded. It must not grow into a partial implementation of UC-003: the directory's search, filtering and category join are designed in Elaboration against the observed attribute data, not built here.
 
 ### Constraints on the architecture
 
