@@ -120,7 +120,7 @@ Entry criteria | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS
 **What this lens deliberately did NOT do.** It did not re-record the technical lens's 13 findings or the business lens's 1 finding — those are their lenses' and are preserved verbatim above. It did not treat the Iteration Assessment's absence as a finding: the ProjectManager authors it in the Assess touchpoint that runs *after* this review, so at review time it cannot yet describe the iteration being reviewed. It did not demand a signature from any named person: the stakeholder's answer to the sanction question **is** the documented acceptance.
 
 ## Findings
-14 findings recorded via `record_artifact_finding` — 13 from the technical lens, 1 from the Business Reviewer (Vision F1). Every finding carries severity, location, remediation and a verdict from its lens. No finding is Critical: **no LCO gate blocker was found.**
+19 findings recorded via `record_artifact_finding` — 13 from the technical lens, 1 from the Business Reviewer (Vision F1), **5 from the Management Reviewer**. Every finding carries severity, location, remediation and a verdict from its lens. No finding is Critical: **no LCO gate blocker was found.**
 
 ### Defect distribution — severity × artifact
 
@@ -418,6 +418,193 @@ DC §4 trigger evaluation: the project does not exhibit business-process-led cha
 **BPA and BR are correctly INACTIVE for this engagement. No findings against the Business Modeling discipline, no recommendations.** Downstream reviewers (MR, RC) may treat the Business Modeling discipline as out-of-scope for the LCO milestone. This lens issues **no** gate condition — the LCO gate is unaffected by the Business Modeling discipline, and nothing in this subsection blocks or advances it.
 
 **Scope guard.** No `[SCOPE_QUESTION]` remains open on this lens's account: the one it raised (BG-001's measurement basis) was answered by the stakeholder on 2026-09-18 and its marker is retired. No `[DERIVED]` marker and no `[RECOMMENDATION — requires CR]` is emitted by this lens. No answered question is re-opened.
+
+### Management lens — Management Reviewer: 5 findings, LCO verdict **Conditional Go**
+
+**Scope of this register.** The management artifacts and the LCO exit criteria. These five findings are **new** this iteration and are recorded under this lens's own keys; they do not duplicate, replace or re-open any technical-lens or business-lens finding. The technical lens's 13 findings and the Business Reviewer's 1 finding stand unaltered above.
+
+#### Defect distribution by lens and severity
+
+```plantuml
+@startuml
+title Portal — LCO Review: Defect Distribution by Lens and Severity
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Technical lens (Reviewer) — 13 findings" as TECH {
+  class "Use-Case Model" as UCM {
+    Critical : 0
+    Major : 2
+    Minor : 1
+  }
+  class "Supplementary Specification" as SS {
+    Critical : 0
+    Major : 2
+    Minor : 0
+  }
+  class "Software Architecture Document" as SAD {
+    Critical : 0
+    Major : 3
+    Minor : 0
+  }
+  class "Development Case" as DC {
+    Critical : 0
+    Major : 1
+    Minor : 1
+  }
+  class "Risk List" as RL {
+    Critical : 0
+    Major : 1
+    Minor : 0
+  }
+  class "Iteration Plan" as IP {
+    Critical : 0
+    Major : 0
+    Minor : 1
+  }
+  class "Test Evaluation Summary" as TES {
+    Critical : 0
+    Major : 0
+    Minor : 1
+  }
+}
+
+package "Business lens (Business Reviewer) — 1 finding" as BIZ {
+  class "Vision" as VIS {
+    Critical : 0
+    Major : 0
+    Minor : 1
+  }
+}
+
+package "Management lens (Management Reviewer) — 5 findings" as MGMT {
+  class "Iteration Plan" as IP2 {
+    Critical : 0
+    Major : 1
+    Minor : 1
+  }
+  class "Risk List" as RL2 {
+    Critical : 0
+    Major : 1
+    Minor : 0
+  }
+  class "Development Case" as DC2 {
+    Critical : 0
+    Major : 0
+    Minor : 1
+  }
+  class "Software Architecture Document" as SAD2 {
+    Critical : 0
+    Major : 1
+    Minor : 0
+  }
+}
+
+note bottom of MGMT
+  TOTALS across all three lenses:
+  Critical 0, Major 12, Minor 7 = 19 findings.
+  No Critical finding exists, so no LCO gate
+  blocker was found and the sanction could be
+  granted. The dominant defect class is the
+  trace graph, not the artifact content.
+end note
+
+note right of TECH
+  The SAD carries the most findings (3 Major)
+  and is the artifact two other lenses' findings
+  point at: the UCM's AD actor and the DC's
+  unpinned database version both land on the
+  architecture.
+end note
+@enduml
+```
+
+#### Management-lens finding register
+
+| # | Artifact | Key | Sev | Location | Defect | Remediation |
+|---|---|---|---|---|---|---|
+| 15 | Iteration Plan | F1 | **Major** | Fine plan / budget box / agent role profile | The iteration's budget box is not closed: the fine plan commits 1,000,000 tokens across 8 work items, but the Management Reviewer's own review pass and the Iteration Assessment are absent from the work-item table and from the agent role profile. WI-7 budgets 180,000 tokens for "Reviewer" and WI-8 70,000 for "ReviewCoordinator", yet the Development Case's contributor diagram names ManagementReviewer as a contributor to the Review Record, and the plan's own exit criterion X5 requires the reviewers to have ruled. A cost-boxed iteration whose box omits a role that must execute inside it is not a closed box: the iteration cannot be shown to have stayed within its budget, because part of the work it required was never budgeted. | Add the Management Reviewer's review pass as a named work item with its own token budget, and either add the Iteration Assessment as a work item or state explicitly that it is produced outside the box at iteration close with the reason. Reconcile the agent role profile and the "Total committed" row so the work items sum to the box and the box covers every role that executes inside the iteration. |
+| 16 | Iteration Plan | F2 | Minor | Exit criterion X5 + critical chain | The plan's exit criterion X5 states that the reviewers have ruled and the ReviewCoordinator has issued the LCO verdict, and the critical chain ends with the ReviewCoordinator partition. Neither the plan nor its critical chain names the Management Reviewer, whose LCO milestone review is a distinct activity from the technical and business lenses and is the one that carries the milestone verdict's exit-criteria assessment. The chain therefore under-describes the review stretch it budgets, and X5 cannot be traced to a work item that produces it. | Name the Management Reviewer in the critical chain alongside the other review lenses, and link exit criterion X5 to the work item that produces the LCO exit-criteria assessment, so the plan's stated exit criterion is traceable to planned work. |
+| 17 | Risk List | F1 | **Major** | Risk Register — trend and retirement status | The register carries no trend data and no retirement evidence, and it cannot: this is iteration 1, so no prior review exists against which a trend could be read. The consequence for the LCO gate is that the register is a classification, not a risk-retirement record — every one of the six risks is OPEN, including R001 (High, exposure 9), the project's dominant risk and the reason the Architectural Proof-of-Concept trigger fired. The register states the mitigation and the iteration that confronts each risk, which is the correct posture at LCO, but it provides no evidence that any risk has been retired or is being retired. | Carry the register into Elaboration with an explicit trend column (better / stable / worse since the previous review) and a retirement status per risk, so the LCA review can read whether R001's exposure is actually decreasing rather than merely documented. At LCA, R001 must show a decreasing trend backed by the Proof-of-Concept's measured attribute-population figures; a register that still carries R001 at High with no trend evidence at LCA is a Conditional or No-Go. |
+| 18 | Development Case | F1 | Minor | Measurement policy | The measurement policy states that the decision each measured quantity enables must be nameable, and that a metric whose decision cannot be named does not enter the policy. The policy names three quantities — tokens, elapsed agent time, elapsed human queue time — and the decision each enables, but it does not state the decision that a **missed milestone** enables. The LCO gate is the first point at which the policy's own logic ("a role that eats the budget without passing the milestone IS the classic schedule slip") becomes actionable, and the policy is silent on what is recorded and what decision follows when an iteration spends its box and the milestone is not achieved. This iteration is exactly that case: the box is committed in full and the milestone is not yet achieved. | Extend the measurement policy with the decision a missed milestone enables — what is recorded, who reads it, and what follows (scope reduction into the next iteration, or escalation to the sponsor) — so that the first iteration that spends its box without passing its milestone is governed by a stated rule rather than by improvisation. |
+| 19 | Software Architecture Document | F1 | **Major** | Document Control + ADR-004 + PoC plan | The document is a candidate architecture, not a baseline, and it says so — but it carries no statement of what must be true for it to **become** the baseline at LCA, and no statement of which of its own decisions are provisional. The LCA exit criterion requires the architecture to be baselined and R001 to be confronted empirically, yet ADR-004 (direct LDAP read, no local copy, no cache) is a decision taken **before** the Proof-of-Concept has measured whether the AD attributes are populated across the 3 offices. If the PoC finds the attributes materially unpopulated, ADR-004's accepted trade-off ("a gap in AD is a gap in the directory, with no fallback") is the decision that must be revisited — and the document does not mark it as conditional on the PoC's result. A reviewer at LCA cannot tell which decisions are settled and which are awaiting evidence. | Add an explicit baseline-readiness statement to the SAD naming (a) the decisions that are settled and (b) the decisions that are conditional on the Architectural Proof-of-Concept's measured result — at minimum ADR-004 and the directory attribute mapping in COMP-005. State the LCA entry condition: the architecture becomes the baseline once the PoC's measured attribute-population figures are recorded and ADR-004 is either confirmed or revised against them. |
+
+#### Risk retirement trend chart
+
+```plantuml
+@startuml
+title Portal — Risk Retirement Trend Chart at LCO (exposure at iteration 1; no prior review exists)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+class "R001 AD/LDAP attribute completeness" as R1 {
+  exposure at LCO : 9
+  magnitude : High
+  trend : NOT READABLE — iteration 1
+  status : OPEN
+  confronted in : Elaboration (Proof-of-Concept)
+  must show at LCA : DECREASING, backed by measured figures
+}
+
+class "R002 digital clocking adoption" as R2 {
+  exposure at LCO : 6
+  magnitude : Significant
+  trend : NOT READABLE — iteration 1
+  status : OPEN
+  confronted in : Transition (BG-003, AC-004)
+  must show at LCA : STABLE is acceptable
+}
+
+class "R003 client-timestamp trust boundary" as R3 {
+  exposure at LCO : 4
+  magnitude : Moderate
+  trend : NOT READABLE — iteration 1
+  status : OPEN
+  confronted in : Elaboration (UC-001 Design Model)
+  must show at LCA : DISCHARGED
+}
+
+class "R004 featured invariant under concurrency" as R4 {
+  exposure at LCO : 4
+  magnitude : Moderate
+  trend : NOT READABLE — iteration 1
+  status : OPEN
+  confronted in : Elaboration (UC-002 Design Model)
+  must show at LCA : DISCHARGED
+}
+
+class "R005 human gate queue time" as R5 {
+  exposure at LCO : 4
+  magnitude : Moderate
+  trend : NOT READABLE — iteration 1
+  status : OPEN
+  confronted in : every iteration, ceiling 14 days
+  must show at LCA : MONITORED, no breach
+}
+
+class "R006 mandatory design vs closed scope" as R6 {
+  exposure at LCO : 4
+  magnitude : Moderate
+  trend : NOT READABLE — iteration 1
+  status : OPEN
+  confronted in : Elaboration, before implementation
+  must show at LCA : DISCHARGED
+}
+
+note bottom of R1
+  A register that still carries R001 at High with
+  no trend evidence at LCA is a Conditional or
+  No-Go. At LCO the correct posture is that the
+  risk is classified and scheduled — which it is.
+  No risk has been retired and none is claimed to
+  have been.
+end note
+@enduml
+```
+
+**Why no risk-retirement finding is Critical.** At iteration 1 there is no prior review, so a trend line cannot exist and its absence is not a defect — it is the arithmetic of a first iteration. The finding is Major because the register must acquire trend data before LCA, and because R001 is the project's dominant risk and the one whose retirement the whole Elaboration phase is sequenced around. Recording it now means the LCA review has a stated obligation to check against, rather than discovering the gap at the gate.
 
 ## Resolutions and Actions
 **Prior findings of this lens: none.** `read_artifact_findings` was called for all 8 artifacts; every call returned an empty array. This is iteration 1 and this lens has emitted no prior finding, so `S_RECONCILE_PRIOR_FINDINGS` exited with zero `resolve_artifact_finding` calls and `[PLAN] ... TOTAL: 0`. No closure is claimed and none is owed.
