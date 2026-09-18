@@ -399,6 +399,14 @@ DC §4 trigger evaluation: the project does not exhibit business-process-led cha
 
 **Action 5 is no longer a proposal.** It was raised as an open integration-boundary question and the stakeholder answered it on 2026-09-18: Keycloak runs inside the corporate network, is the company's internal identity provider deployed on the internal estate, and is operated by STK-003 alongside Active Directory. The stakeholder stated that the Software Architecture Document is wrong and must be corrected — the Deployment View places Keycloak in a cloud node outside the corporate network, which no declared input supports and which CON-007 and CON-008 contradict. The SoftwareArchitect corrects the artifact against that decision; the question is closed and must not be re-asked.
 
+### Business Modeling lens — resolutions and actions (Business Reviewer)
+
+**Prior findings of this lens: none — and none is owed.** `read_artifact_findings` was called for the artifacts this lens reviews; every call returned an empty array. This is iteration 1, and the Business Modeling discipline is INACTIVE per DC §4, so the BusinessProcessAnalyst produced no business artifact and this lens has no prior finding to reconcile. `S_RECONCILE_PRIOR_FINDINGS` is not on this lens's execution path at all: it is the `business-process-led = true` branch, and the classification is `false`. No `resolve_artifact_finding` call was emitted, no closure is claimed, and none is owed.
+
+**Actions required by this lens: none.** The Business Modeling discipline contributes **zero** rows to the action table above. It adds no owner, no remediation and no gate condition. The nine actions are the technical lens's, and this lens neither extends nor reorders them.
+
+**No marker is open on this lens's account.** No `[SCOPE_QUESTION]`, no `[DERIVED — awaiting stakeholder confirmation]` and no `[ASSUMPTION]` is emitted by the Business Modeling lens, because it produces no element that could carry one. No question is put to the stakeholder this round, and no answered question is re-opened — the two escalations recorded above (the Keycloak placement, answered 2026-09-18; the PostgreSQL pin, answered 2026-09-17 and routed as a Change Request) belong to the technical lens and are not re-asked here.
+
 ## Disposition
 **Overall LCO disposition: APPROVED WITH CHANGES.**
 
