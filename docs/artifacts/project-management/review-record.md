@@ -394,8 +394,9 @@ DC §4 trigger evaluation: the project does not exhibit business-process-led cha
 | 7 | Add FR-013 to UC-002's Source field and trace row | SystemAnalyst | UCM F2 |
 | 8 | Name the four review lenses and reconcile with the DC's engaged-role set | ProjectManager | IP F1 |
 | 9 | Cite the CI run identifier without the "latest" qualifier | TestManager | TES F1 |
+| 10 | **Retire the stale BG-001 assumption in the Vision** — A1 and the BG-001 row still assert the measurement basis is undeclared, which the stakeholder has now answered. Replace with the declared baseline and target | SystemAnalyst | Vision F1 |
 
-**No action is deferred to a later phase.** All nine are correctable within Inception Iteration 1 or at its close; none requires Elaboration work. Findings 1–3 are the ones that must close before the gate, because they are the ones that make the baseline unreadable to the roles that consume it next.
+**No action is deferred to a later phase.** All ten are correctable within Inception Iteration 1 or at its close; none requires Elaboration work. Findings 1–3 are the ones that must close before the gate, because they are the ones that make the baseline unreadable to the roles that consume it next.
 
 **Action 5 is no longer a proposal.** It was raised as an open integration-boundary question and the stakeholder answered it on 2026-09-18: Keycloak runs inside the corporate network, is the company's internal identity provider deployed on the internal estate, and is operated by STK-003 alongside Active Directory. The stakeholder stated that the Software Architecture Document is wrong and must be corrected — the Deployment View places Keycloak in a cloud node outside the corporate network, which no declared input supports and which CON-007 and CON-008 contradict. The SoftwareArchitect corrects the artifact against that decision; the question is closed and must not be re-asked.
 
@@ -403,22 +404,32 @@ DC §4 trigger evaluation: the project does not exhibit business-process-led cha
 
 **Prior findings of this lens: none — and none is owed.** `read_artifact_findings` was called for the artifacts this lens reviews; every call returned an empty array. This is iteration 1, and the Business Modeling discipline is INACTIVE per DC §4, so the BusinessProcessAnalyst produced no business artifact and this lens has no prior finding to reconcile. `S_RECONCILE_PRIOR_FINDINGS` is not on this lens's execution path at all: it is the `business-process-led = true` branch, and the classification is `false`. No `resolve_artifact_finding` call was emitted, no closure is claimed, and none is owed.
 
-**Actions required by the Business Modeling discipline: none.** The Business Modeling discipline contributes **zero** rows to the action table above. It adds no owner, no remediation and no gate condition. The nine actions are the technical lens's, and this lens neither extends nor reorders them.
+**Actions required by the Business Modeling discipline: none.** The Business Modeling discipline contributes **zero** rows to the action table above. It adds no owner, no remediation and no gate condition. The ten actions are the technical lens's and the Vision-measurability item below; this lens neither extends nor reorders them.
 
-### Vision business-goal measurability — Business Reviewer: one open question
+### Vision business-goal measurability — Business Reviewer: **ANSWERED, marker retired**
 
 **This is a separate matter from the Business Modeling applicability verdict above, and it is raised by this lens because Vision business-goal measurability is explicitly within its Inception review criteria** ("Vision Measurability: are business goals expressed with measurable success criteria?"). It is not a Business Modeling finding — the discipline remains INACTIVE — and it does not alter the `[BR-OK-INACTIVE]` verdict.
 
-| Item | Observation | Basis |
-|---|---|---|
-| BG-001 | Declares a **50% reduction in HR management time** but names **no baseline** — no current figure, no unit, no period. The goal therefore cannot be verified as stated. | BG-001 as declared; Vision *Assumptions and Dependencies* A1 |
-| Vision handling | The Vision **correctly refused to invent** a baseline: A1 records that the measurement basis is not declared and that no baseline is asserted, with the consequence stated ("BG-001 cannot be verified as stated; a baseline must be declared before the benefit is claimed"). | Vision A1 |
-| Why this is not a finding against the Vision | The Vision did the right thing — it flagged the gap rather than fabricating a figure. The incompleteness is in the **declared input**, not in the artifact. No `record_artifact_finding` call is emitted for it. | Reviewer base competency: unsourced quantitative claims are a defect; a *flagged* gap is not |
-| Why it is raised anyway | BG-001 is a declared business goal and a stated project benefit. A benefit that cannot be measured cannot be claimed at any milestone, and the measurement basis is a business decision only the stakeholder can supply. | Inception review criteria — Vision measurability |
+**The question was asked and answered. The marker is retired; it must not be re-asked.** BG-001 declared a 50% reduction in HR management time with no baseline, so the goal could not be verified as stated. The Vision correctly refused to invent a figure and recorded the gap as assumption A1. The measurement basis was put to the stakeholder, who answered in their own words:
 
-**Marker: `[SCOPE_QUESTION — BG-001 measurement basis not declared: the 50% reduction in HR management time has no baseline, so the declared business goal cannot be verified as stated. Not derivable from any declared input; consequential for benefit verification.]`**
+> The baseline is 14 hours per month of HR administration, measured over one full calendar month before go-live and made up of: 4 h consolidating the three offices' Excel sheets at month end, 7 h chasing and correcting forgotten clock-outs (about 120 cases a month at roughly 3.5 minutes each), and 3 h sending news by mass email and keeping the phone-list PDF up to date.
+>
+> BG-001 therefore means 7 hours per month or less, measured the same way over a full calendar month, in the third month after go-live — the same window as the 80% adoption objective. Laura Gómez (STK-001) owns the measurement.
 
-This marker is **asked in this same turn** via `REQUIRES_USER_INPUT` — a marker left visible in a document is not a question, and an unread marker retires itself by attrition. It is **not** a Business Modeling gate condition and does **not** block the LCO gate; it blocks only the claim that BG-001 is measurable. No other marker is open on this lens's account, and no answered question is re-opened — the two escalations recorded above (the Keycloak placement, answered 2026-09-18; the PostgreSQL pin, answered 2026-09-17 and routed as a Change Request) belong to the technical lens and are not re-asked here.
+**The declared measurement basis, restated as the decision it now is.**
+
+| Element | Declared value |
+|---|---|
+| Baseline | **14 hours per month** of HR administration |
+| Measurement window (baseline) | One full calendar month **before go-live** |
+| Baseline composition | 4 h consolidating the three offices' Excel sheets at month end; 7 h chasing and correcting forgotten clock-outs (~120 cases/month at ~3.5 min each); 3 h sending news by mass email and keeping the phone-list PDF up to date |
+| BG-001 target | **7 hours per month or less** |
+| Measurement window (target) | A full calendar month, in the **third month after go-live** — the same window as BG-003's 80% adoption objective |
+| Measurement owner | **STK-001** Laura Gómez |
+
+**Consequence for the Vision — recorded as a finding, not left as prose.** The Vision's assumption A1 and its BG-001 row still assert that the measurement basis is not declared and that no baseline is asserted. That statement is now false: the stakeholder has declared the baseline, the target, the window and the owner. An assumption that survives its own answer is a defect — every later role reading the Vision would re-ask a question that has been answered. The finding is recorded against the Vision as **Vision F1 (Minor)**, with the remediation being to replace A1 and the BG-001 row with the declared basis above. The Vision's original handling was correct — it flagged the gap rather than fabricating a figure — so the defect is staleness, not fabrication.
+
+**No marker remains open on this lens's account.** The `[SCOPE_QUESTION]` on BG-001's measurement basis is retired by the stakeholder's answer above. No other marker is open, and no answered question is re-opened — the two escalations recorded earlier (the Keycloak placement, answered 2026-09-18; the PostgreSQL pin, answered 2026-09-17 and routed as a Change Request) belong to the technical lens and are not re-asked here.
 
 ## Disposition
 **Overall LCO disposition: APPROVED WITH CHANGES.**
