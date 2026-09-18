@@ -216,7 +216,6 @@ end note
 **Findings deliberately NOT recorded.** The Iteration Assessment is absent — correctly. The ProjectManager authors it in the Assess touchpoint that runs *after* this review, so at review time it cannot yet describe the iteration being reviewed. Its absence is not a finding and not a gate condition. Likewise, no finding is recorded for the absence of code, test execution, a Design Model or an Implementation Model: Inception produces none of them, and judging these artifacts against an Elaboration or Construction checklist would be applying the wrong lens.
 
 ## Resolutions and Actions
-
 **Prior findings of this lens: none.** `read_artifact_findings` was called for all 8 artifacts; every call returned an empty array. This is iteration 1 and this lens has emitted no prior finding, so `S_RECONCILE_PRIOR_FINDINGS` exited with zero `resolve_artifact_finding` calls and `[PLAN] ... TOTAL: 0`. No closure is claimed and none is owed.
 
 **Actions required before the LCO gate can close.** Ordered by what unblocks the most downstream work:
@@ -227,13 +226,15 @@ end note
 | 2 | Register the missing trace edges (NFR-002, R002, R005, the COMP→requirement edges, the remaining CON-NNN) so the registered graph matches every declared traceability table | SystemAnalyst, SoftwareArchitect, ProjectManager | SS F1, RL F1, SAD F1 |
 | 3 | Clear or re-trace the 28 SUSPECT edges across the three artifacts | SystemAnalyst, SoftwareArchitect | SS F2, SAD F3, UCM F3 |
 | 4 | Resolve the PostgreSQL `latest` pin — via Change Request to the stakeholder, since the pin is theirs | ProcessEngineer → STK-001 | DC F1 |
-| 5 | Resolve Keycloak's network placement in the Deployment View | SoftwareArchitect | SAD F2 |
+| 5 | **Redraw the Deployment View with Keycloak as an internal node inside the corporate network, and the OIDC redirect as an intra-network call.** The stakeholder has confirmed the current cloud placement is wrong (2026-09-18); the correction is now authoritative, not proposed | SoftwareArchitect | SAD F2 |
 | 6 | Re-verify the Development Case environment checkpoint against the SCM and close the CI gap | ProcessEngineer | DC F2 |
 | 7 | Add FR-013 to UC-002's Source field and trace row | SystemAnalyst | UCM F2 |
 | 8 | Name the four review lenses and reconcile with the DC's engaged-role set | ProjectManager | IP F1 |
 | 9 | Cite the CI run identifier without the "latest" qualifier | TestManager | TES F1 |
 
 **No action is deferred to a later phase.** All nine are correctable within Inception Iteration 1 or at its close; none requires Elaboration work. Findings 1–3 are the ones that must close before the gate, because they are the ones that make the baseline unreadable to the roles that consume it next.
+
+**Action 5 is no longer a proposal.** It was raised as an open integration-boundary question and the stakeholder answered it on 2026-09-18: Keycloak runs inside the corporate network, is the company's internal identity provider deployed on the internal estate, and is operated by STK-003 alongside Active Directory. The stakeholder stated that the Software Architecture Document is wrong and must be corrected — the Deployment View places Keycloak in a cloud node outside the corporate network, which no declared input supports and which CON-007 and CON-008 contradict. The SoftwareArchitect corrects the artifact against that decision; the question is closed and must not be re-asked.
 
 ## Disposition
 **Overall LCO disposition: APPROVED WITH CHANGES.**
