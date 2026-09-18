@@ -117,13 +117,19 @@ jobs:
       # of sync with the merged code: a stale manifest silently compiles nothing
       # of the Implementer's work and a green check becomes a lie. Regenerate it
       # from the src/ + tests/ tree on every run so it can never drift.
+      #
+      # The locator uses `find -print -quit`, not `ls`: `ls` exits non-zero when
+      # any operand is missing, which under `set -euo pipefail` aborts the step.
       - name: Sync solution manifest with the src/ and tests/ tree
         run: |
           set -euo pipefail
           rm -f Portal.sln Portal.slnx
           dotnet new sln -n Portal
-          SLN="$(ls Portal.sln Portal.slnx 2>/dev/null | head -n1)"
-          if [ -z "$SLN" ]; then echo "::error::no solution file was created"; exit 1; fi
+          SLN="$(find . -maxdepth 1 -type f \( -name 'Portal.sln' -o -name 'Portal.slnx' \) -print -quit)"
+          if [ -z "$SLN" ]; then
+            echo "::error::no solution file was created"
+            exit 1
+          fi
           find src tests -name '*.csproj' -print0 | sort -z | xargs -0 -r -n1 dotnet sln "$SLN" add
           echo "Manifest regenerated: $SLN"
           dotnet sln "$SLN" list
@@ -171,8 +177,11 @@ jobs:
           set -euo pipefail
           rm -f Portal.sln Portal.slnx
           dotnet new sln -n Portal
-          SLN="$(ls Portal.sln Portal.slnx 2>/dev/null | head -n1)"
-          if [ -z "$SLN" ]; then echo "::error::no solution file was created"; exit 1; fi
+          SLN="$(find . -maxdepth 1 -type f \( -name 'Portal.sln' -o -name 'Portal.slnx' \) -print -quit)"
+          if [ -z "$SLN" ]; then
+            echo "::error::no solution file was created"
+            exit 1
+          fi
           find src tests -name '*.csproj' -print0 | sort -z | xargs -0 -r -n1 dotnet sln "$SLN" add
           echo "Manifest regenerated: $SLN"
           dotnet sln "$SLN" list
