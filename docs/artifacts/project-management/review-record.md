@@ -87,6 +87,38 @@ Entry criteria | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS
 
 **Entry criteria for this lens.** The Development Case exists and carries a §4 classification; the Use-Case Model, Vision and Glossary were each read to search for business-level content; the classification was independently re-derived rather than accepted. No review was abandoned mid-way.
 
+### Management lens — scope and criteria (Management Reviewer)
+
+**Scope of this lens.** The **LCO milestone exit criteria** and the project's management artifacts — the Iteration Plan, the Risk List, the Development Case and the Software Architecture Document's baseline-readiness posture. This lens does **not** re-review the requirements content, the architecture's technical decisions or the test strategy: those are the technical lens's and the business lens's, and their findings stand unaltered. What this lens adds is the question no technical lens asks: **do these artifacts collectively satisfy the conditions for phase transition, and is the project healthy on all four axes?**
+
+**Checklist applied — the LCO exit criteria, each with a pass/fail determination.**
+
+| # | LCO exit criterion | Verdict | Evidence |
+|---|---|---|---|
+| C1 | Stakeholders agree on what is in and out of scope | **MET** | Vision reproduces every declared exclusion and adds the stakeholder's audit-view answer; Use-Case Model defines exactly 3 UCs against the 3 declared `UC01`/`UC02`/`UC03`; no creep. **Stakeholder sanction GRANTED 2026-09-18** |
+| C2 | The project is viable | **MET** | Stack fixed and available (CON-001/003/004); OIDC client already registered with credentials in hand (CON-005); AD read-only and operated by STK-003 (CON-006/010); single internal node (CON-007); no migration (CON-012); no backup design (CON-014); no Keycloak work (CON-005) |
+| C3 | Initial risks identified and classified | **MET** | Risk List: R001–R006 each carry probability, impact, exposure, magnitude, strategy, mitigation, contingency, owner and warning sign. R001 (High, 9) is scheduled into the iteration that confronts it — correct sequencing, not a defect |
+| C4 | The declared scope is placed in the requirements baseline | **MET** | Vision + Use-Case Model + Supplementary Specification place all 14 FR, 4 NFR, 24 CON, 4 STK, 3 BG and 5 AC |
+| C5 | The coarse roadmap and the fine plan both exist, and the fine plan sums within the iteration's budget box | **PARTIALLY MET** | Iteration Plan carries LCO→LCA→IOC→PR, 6 iterations, and 8 work items summing to 1,000,000 tokens. The box omits the Management Reviewer's own review pass and the Iteration Assessment — **Iteration Plan#F1 (management lens)** |
+| C6 | The Project Approval Review was conducted | **MET** | The LCO milestone review is being conducted: technical lens 13 findings, business lens 1 finding, management lens 5 findings. This review supplies the gate verdict |
+| C7 | Risk-retirement trend is decreasing | **NOT ASSESSABLE** | Iteration 1 has no prior review, so no trend line can be read. Every risk is OPEN. R001 must show a decreasing trend at LCA — **Risk List#F1 (management lens)** |
+| C8 | Traceability integrity | **NOT MET** | 4 artifacts carry declared edges that are not registered; 28 SUSPECT edges open at phase close. **Condition 2 of the stakeholder's sanction** |
+| C9 | Cross-artifact consistency | **NOT MET** | Use-Case Model#F1 (UC-001 declares AD a supporting actor the architecture forbids) and Software Architecture Document#F2 (Keycloak placed outside the corporate network boundary). **Conditions 1 and 3 of the stakeholder's sanction** |
+| C10 | SCM state | **MET** | No open pull request, no open issue of any kind, green build on `main` |
+
+**Four-axis project health.** A project is not green because three axes are green.
+
+| Axis | Rating | Basis |
+|---|---|---|
+| **Scope** | **GREEN** | The declared scope is a closed set and every artifact respects it. Zero scope creep: exactly 3 use cases against 3 declared, no cross-cutting mechanism promoted to a UC, no per-actor split, no undeclared screen or subsystem. Every declared exclusion reproduced |
+| **Schedule** | **GREEN** | Iterations are cost-boxed, not time-boxed. No calendar date is asserted anywhere — the Gantt is explicitly unanchored and the unit is one relative iteration. Human gates are bounded at a 14-day ceiling and carried as R005. The LCO gate was answered on the day it was asked |
+| **Cost** | **GREEN** | The iteration box is stated as an `[ASSUMPTION]` with its basis named, not as a measured actual. Two currencies (tokens; elapsed agent time vs human queue time) are reported side by side and never summed. No velocity is quoted and no per-iteration figure is recorded as a trend. No person-week, person-month or story-point unit appears anywhere |
+| **Quality** | **AMBER** | No execution — correct for Inception, and testability is established for every declared requirement. But the trace graph is not clean at phase close, and two artifacts carry confirmed defects (UCM#F1, SAD#F2). The quality axis is the one that is not green, and it is the axis the three conditions address |
+
+**Entry criteria for this lens.** All 8 artifacts present and non-placeholder; the Vision, Iteration Plan and Risk List read in full; the Development Case read for the measurement policy and the optional-trigger verdicts; the Software Architecture Document read for baseline readiness. No review was abandoned mid-way.
+
+**What this lens deliberately did NOT do.** It did not re-record the technical lens's 13 findings or the business lens's 1 finding — those are their lenses' and are preserved verbatim above. It did not treat the Iteration Assessment's absence as a finding: the ProjectManager authors it in the Assess touchpoint that runs *after* this review, so at review time it cannot yet describe the iteration being reviewed. It did not demand a signature from any named person: the stakeholder's answer to the sanction question **is** the documented acceptance.
+
 ## Findings
 14 findings recorded via `record_artifact_finding` — 13 from the technical lens, 1 from the Business Reviewer (Vision F1). Every finding carries severity, location, remediation and a verdict from its lens. No finding is Critical: **no LCO gate blocker was found.**
 
