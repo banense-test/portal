@@ -235,7 +235,6 @@ end note
 **No action is deferred to a later phase.** All nine are correctable within Inception Iteration 1 or at its close; none requires Elaboration work. Findings 1–3 are the ones that must close before the gate, because they are the ones that make the baseline unreadable to the roles that consume it next.
 
 ## Disposition
-
 **Overall LCO disposition: APPROVED WITH CHANGES.**
 
 | Dimension | Verdict | Basis |
@@ -256,7 +255,9 @@ end note
 
 **Milestone status.** The end-of-Inception milestone is **NOT YET ACHIEVED** and is not marked complete by this artifact. This review supplies the findings; the LCO verdict is the ReviewCoordinator's, and the gate decision is STK-001's.
 
-**Escalation.** No Critical finding was recorded, so no `REQUIRES_USER_INPUT` escalation is raised by this lens. Finding 6 (the PostgreSQL `latest` pin) is a stakeholder decision and is routed as a Change Request through the ChangeControlManager rather than as a blocking question — the pin is recorded and work can proceed; what is missing is reproducibility, not a decision.
+**Escalation — one consequential question raised this round.** Finding 8 (SAD F2) is escalated to the stakeholder: the network placement of Keycloak. It is an **integration-boundary** decision — whether the portal's OIDC redirect crosses the corporate network boundary — that no declared input settles, and it changes the deployment topology. Only STK-003 (which operates Keycloak) and STK-001 can answer it. No Critical finding was recorded, so no Critical escalation is raised; this one is raised because the question is consequential and the answer is not derivable from the declared scope.
+
+**Escalation — one question deliberately NOT re-asked.** Finding 6 (the PostgreSQL `latest` pin) is **not** put back to the stakeholder. The question was asked and answered on 2026-09-17, and re-opening an answered question is forbidden. The answer conflicts with sound engineering practice (a moving target is not a version, and the build is not reproducible), so the conflict is stated explicitly and an alternative is proposed — a concrete PostgreSQL major version — and routed as a **Change Request** through the ChangeControlManager. The pin is recorded and work can proceed; what is missing is reproducibility, not a decision.
 
 ## Traceability
 
