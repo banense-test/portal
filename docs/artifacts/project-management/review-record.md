@@ -440,8 +440,15 @@ DC §4 trigger evaluation: the project does not exhibit business-process-led cha
 | Risk List#F1 | R002, R005 | Derives | Iteration Plan |
 | Iteration Plan#F1 | R005 | Derives | Iteration Assessment |
 | Test Evaluation Summary#F1 | AC-004 | Derives | Iteration Assessment |
+| Review Record — Business Modeling lens | Development Case (DC §4 classification, `business-process-led = false`) | Derives | Iteration Assessment |
+| Review Record — Business Modeling lens | Use-Case Model (UC-001, UC-002, UC-003; ACT-001, ACT-002, ACT-003, ACT-004) | Derives | Iteration Assessment |
+| Review Record — Business Modeling lens | Vision (root-cause statement; no BPL signal) | Derives | Iteration Assessment |
+| Review Record — Business Modeling lens | CON-010, CON-011, CON-016, CON-017, CON-018, CON-019, CON-021, CON-022, CON-023 | Derives | Iteration Assessment |
+| Review Record — Business Modeling lens | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014 | Derives | Iteration Assessment |
 
 **Reading the table.** The Review Record itself derives from all eight reviewed artifacts and from the declared acceptance criteria and risks, and it feeds the Iteration Assessment — which the ProjectManager authors after this review, given this verdict. Each finding row traces to the elements the finding concerns, so a downstream role can follow a defect from this record into the artifact and element it names. Finding identifiers are `<artifact>#<key>` as minted by `record_artifact_finding`; no action identifier is minted, because a remediation is the finding's Recommendation and its status is that finding's Resolution.
 
 **The SAD F2 row carries a settled decision, not an open question.** The stakeholder answered on 2026-09-18 that Keycloak runs inside the corporate network — the company's internal identity provider, deployed on the internal estate and operated by STK-003 alongside Active Directory. The row therefore cites the decision as the authority for the correction, and the SoftwareArchitect redraws the Deployment View against it. No marker remains open on this question, and no later role should re-ask it.
+
+**The Business Modeling lens rows cite no finding identifier.** That lens emitted zero findings — a `[BR-OK-INACTIVE]` verdict is the absence of a defect, and an absent defect has no key to cite. Its rows trace the section to the Development Case's §4 classification and to the three artifacts searched for business-level content, and they feed the same Iteration Assessment.
 
