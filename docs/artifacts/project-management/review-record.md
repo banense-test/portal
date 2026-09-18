@@ -403,9 +403,22 @@ DC §4 trigger evaluation: the project does not exhibit business-process-led cha
 
 **Prior findings of this lens: none — and none is owed.** `read_artifact_findings` was called for the artifacts this lens reviews; every call returned an empty array. This is iteration 1, and the Business Modeling discipline is INACTIVE per DC §4, so the BusinessProcessAnalyst produced no business artifact and this lens has no prior finding to reconcile. `S_RECONCILE_PRIOR_FINDINGS` is not on this lens's execution path at all: it is the `business-process-led = true` branch, and the classification is `false`. No `resolve_artifact_finding` call was emitted, no closure is claimed, and none is owed.
 
-**Actions required by this lens: none.** The Business Modeling discipline contributes **zero** rows to the action table above. It adds no owner, no remediation and no gate condition. The nine actions are the technical lens's, and this lens neither extends nor reorders them.
+**Actions required by the Business Modeling discipline: none.** The Business Modeling discipline contributes **zero** rows to the action table above. It adds no owner, no remediation and no gate condition. The nine actions are the technical lens's, and this lens neither extends nor reorders them.
 
-**No marker is open on this lens's account.** No `[SCOPE_QUESTION]`, no `[DERIVED — awaiting stakeholder confirmation]` and no `[ASSUMPTION]` is emitted by the Business Modeling lens, because it produces no element that could carry one. No question is put to the stakeholder this round, and no answered question is re-opened — the two escalations recorded above (the Keycloak placement, answered 2026-09-18; the PostgreSQL pin, answered 2026-09-17 and routed as a Change Request) belong to the technical lens and are not re-asked here.
+### Vision business-goal measurability — Business Reviewer: one open question
+
+**This is a separate matter from the Business Modeling applicability verdict above, and it is raised by this lens because Vision business-goal measurability is explicitly within its Inception review criteria** ("Vision Measurability: are business goals expressed with measurable success criteria?"). It is not a Business Modeling finding — the discipline remains INACTIVE — and it does not alter the `[BR-OK-INACTIVE]` verdict.
+
+| Item | Observation | Basis |
+|---|---|---|
+| BG-001 | Declares a **50% reduction in HR management time** but names **no baseline** — no current figure, no unit, no period. The goal therefore cannot be verified as stated. | BG-001 as declared; Vision *Assumptions and Dependencies* A1 |
+| Vision handling | The Vision **correctly refused to invent** a baseline: A1 records that the measurement basis is not declared and that no baseline is asserted, with the consequence stated ("BG-001 cannot be verified as stated; a baseline must be declared before the benefit is claimed"). | Vision A1 |
+| Why this is not a finding against the Vision | The Vision did the right thing — it flagged the gap rather than fabricating a figure. The incompleteness is in the **declared input**, not in the artifact. No `record_artifact_finding` call is emitted for it. | Reviewer base competency: unsourced quantitative claims are a defect; a *flagged* gap is not |
+| Why it is raised anyway | BG-001 is a declared business goal and a stated project benefit. A benefit that cannot be measured cannot be claimed at any milestone, and the measurement basis is a business decision only the stakeholder can supply. | Inception review criteria — Vision measurability |
+
+**Marker: `[SCOPE_QUESTION — BG-001 measurement basis not declared: the 50% reduction in HR management time has no baseline, so the declared business goal cannot be verified as stated. Not derivable from any declared input; consequential for benefit verification.]`**
+
+This marker is **asked in this same turn** via `REQUIRES_USER_INPUT` — a marker left visible in a document is not a question, and an unread marker retires itself by attrition. It is **not** a Business Modeling gate condition and does **not** block the LCO gate; it blocks only the claim that BG-001 is measurable. No other marker is open on this lens's account, and no answered question is re-opened — the two escalations recorded above (the Keycloak placement, answered 2026-09-18; the PostgreSQL pin, answered 2026-09-17 and routed as a Change Request) belong to the technical lens and are not re-asked here.
 
 ## Disposition
 **Overall LCO disposition: APPROVED WITH CHANGES.**
