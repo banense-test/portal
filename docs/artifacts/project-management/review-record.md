@@ -700,7 +700,203 @@ end note
 **No management-lens finding is a gate blocker.** The LCO gate is not blocked by any of them: the milestone's exit criteria are met on substance, the sanction has been granted, and the three conditions are Elaboration Iteration 1 work. What the findings do is make the next phase's obligations explicit and checkable, so that the LCA review can verify them rather than rediscover them.
 
 ## Disposition
-**Overall LCO disposition: APPROVED WITH CHANGES.**
+**Stakeholder sanction: GRANTED** (2026-09-18).
+
+**Stakeholder acceptance:** *"Yes — I sanction advancing past the LCO. The scope and objectives are agreed and no finding challenges them. Three conditions, to be closed in Elaboration I1 before the architecture baseline is committed: (1) UC-001 must drop Active Directory as a supporting actor — identity comes from the OIDC token; AD supports UC03 only; (2) the Supplementary Specification must either register the 24 CON-NNN sources it claims to cover or correct the coverage claim to what is actually registered; (3) the Deployment View redraw already agreed. The remaining trace-registration findings are carried as Elaboration entry work, and no SUSPECT edge survives the LCA."* — STK-001, 2026-09-18. Their answer **is** the documented acceptance; no signature is required from any named person.
+
+### LCO milestone compliance table — exit criterion × status × evidence
+
+```plantuml
+@startuml
+title Portal — LCO Milestone Compliance Table (exit criterion x status x evidence)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "MET" as MET {
+  class "C1 Stakeholders agree on scope" as C1 {
+    status : MET
+    evidence : Vision reproduces every declared exclusion
+    evidence : UCM defines exactly 3 UCs vs 3 declared
+    evidence : stakeholder sanction GRANTED 2026-09-18
+  }
+  class "C2 Project is viable" as C2 {
+    status : MET
+    evidence : stack fixed and available (CON-001/003/004)
+    evidence : OIDC client already registered (CON-005)
+    evidence : AD read-only (CON-006/010); single internal node (CON-007)
+    evidence : no migration (CON-012); no backup design (CON-014)
+  }
+  class "C3 Initial risks identified and classified" as C3 {
+    status : MET
+    evidence : R001..R006 carry P, I, exposure, magnitude, strategy
+    evidence : mitigation, contingency, owner, warning sign present
+    evidence : R001 High (9) scheduled into Elaboration
+  }
+  class "C4 Scope placed in the baseline" as C4 {
+    status : MET
+    evidence : 14 FR, 4 NFR, 24 CON, 4 STK, 3 BG, 5 AC all placed
+  }
+  class "C6 Project Approval Review conducted" as C6 {
+    status : MET
+    evidence : technical lens 13 findings; business lens 1 finding
+    evidence : this review supplies the gate verdict
+  }
+  class "C10 SCM state" as C10 {
+    status : MET
+    evidence : no open PR; no open issue; green build on main
+  }
+}
+
+package "PARTIALLY MET" as PART {
+  class "C5 Coarse roadmap and fine plan" as C5 {
+    status : PARTIALLY MET
+    evidence : LCO to LCA to IOC to PR; 6 iterations; 8 work items
+    evidence : box omits the ManagementReviewer and the Iteration Assessment
+    finding : Iteration Plan#F1 (management lens)
+  }
+}
+
+package "NOT MET" as NOTMET {
+  class "C8 Traceability integrity" as C8 {
+    status : NOT MET
+    evidence : 4 artifacts with unregistered declared edges
+    evidence : 28 SUSPECT edges open at phase close
+    finding : SS#F1, SS#F2, SAD#F1, SAD#F3, UCM#F3, RL#F1
+  }
+  class "C9 Cross-artifact consistency" as C9 {
+    status : NOT MET
+    evidence : UCM#F1 UC-001 declares AD a supporting actor
+    evidence : SAD#F2 Keycloak placed outside the corporate boundary
+  }
+}
+
+package "NOT ASSESSABLE" as NA {
+  class "C7 Risk-retirement trend" as C7 {
+    status : NOT ASSESSABLE
+    evidence : iteration 1 has no prior review, so no trend exists
+    evidence : R001 must show a decreasing trend at LCA
+  }
+}
+
+note bottom of NOTMET
+  No criterion is NOT MET on substance.
+  C8 and C9 are the two conditions the
+  stakeholder attached to the sanction.
+  C5 is the management lens's own finding.
+end note
+@enduml
+```
+
+### Project health state machine
+
+```plantuml
+@startuml
+title Portal — Project Health State Machine (LCO, Inception Iteration 1)
+
+[*] --> Healthy : iteration start — environment READY
+Healthy --> AtRisk : trace graph not clean at phase close
+AtRisk --> ConditionalGo : 0 Critical findings; 9 Major open; stakeholder sanction GRANTED 2026-09-18
+ConditionalGo --> Healthy : 3 conditions closed in Elaboration I1 before the architecture baseline
+ConditionalGo --> NoGo : a condition fails to close before the baseline
+Healthy --> NoGo : a Critical finding is raised
+NoGo --> [*] : milestone refused
+Healthy --> [*] : LCA exit criteria met
+
+note right of ConditionalGo
+  CURRENT STATE at LCO.
+  The milestone is NOT marked complete:
+  closure is the ReviewCoordinator's verdict.
+  Conditions: (1) UC-001 drops AD as a
+  supporting actor; (2) SS registers the
+  24 CON-NNN sources or corrects the
+  coverage claim; (3) the Deployment View
+  redraw already agreed.
+end note
+
+note bottom of AtRisk
+  Health is assessed on four axes:
+  scope GREEN, schedule GREEN, cost GREEN,
+  quality AMBER. A project green on three
+  axes and amber on one is not a green project.
+end note
+@enduml
+```
+
+### Milestone gates — planned sequence and status
+
+```plantuml
+@startgantt
+title Portal — Milestone Gates: Planned Sequence and Status at LCO (unanchored: relative iterations, no calendar dates)
+
+[Inception Iter 1] lasts 1 day
+[LCO gate] happens at [Inception Iter 1]'s end
+
+[Elaboration Iter 1] lasts 1 day
+[Elaboration Iter 1] starts at [Inception Iter 1]'s end
+[Elaboration Iter 2] lasts 1 day
+[Elaboration Iter 2] starts at [Elaboration Iter 1]'s end
+[LCA gate] happens at [Elaboration Iter 2]'s end
+
+[Construction Iter 1] lasts 1 day
+[Construction Iter 1] starts at [Elaboration Iter 2]'s end
+[Construction Iter 2] lasts 1 day
+[Construction Iter 2] starts at [Construction Iter 1]'s end
+[IOC gate] happens at [Construction Iter 2]'s end
+
+[Transition Iter 1] lasts 1 day
+[Transition Iter 1] starts at [Construction Iter 2]'s end
+[PR gate] happens at [Transition Iter 1]'s end
+
+[LCO gate] is colored in Orange
+[LCA gate] is colored in Salmon
+[IOC gate] is colored in Salmon
+[PR gate] is colored in Salmon
+
+[Inception Iter 1] is colored in LightBlue
+[Elaboration Iter 1] is colored in LightGreen
+[Elaboration Iter 2] is colored in LightGreen
+[Construction Iter 1] is colored in LightYellow
+[Construction Iter 2] is colored in LightYellow
+[Transition Iter 1] is colored in LightGray
+@endgantt
+```
+
+**Why this Gantt is unanchored.** No project start date and no calendar date appears in it. A date computed from an estimate reads downstream as an observation, and nothing here has been measured. The unit is one relative iteration. Human gates are quoted in days of queue time, separately from agent work, and the two are never summed.
+
+### Review workflow and stakeholder sign-off sequence
+
+```plantuml
+@startuml
+title Portal — LCO Review Workflow and Stakeholder Sign-off Sequence
+
+actor "STK-001\nLaura Gomez" as STK
+participant "Reviewer\n(technical lens)" as REV
+participant "Business Reviewer\n(business lens)" as BR
+participant "Management Reviewer\n(management lens)" as MR
+participant "ReviewCoordinator" as RC
+
+REV -> REV : read all 8 persisted artifacts
+REV -> REV : record 13 findings (0 Critical, 9 Major, 4 Minor)
+BR -> BR : re-evaluate DC section 4 business-process-led
+BR -> BR : 0 findings against Business Modeling
+BR -> BR : record 1 Vision measurability finding
+MR -> MR : S_RECONCILE — 0 prior management-lens findings
+MR -> MR : assess LCO exit criteria C1..C10
+MR -> STK : REQUIRES_USER_INPUT — verdict and 9 open Major defects
+STK --> MR : sanction GRANTED, 3 conditions
+MR -> MR : record 3 management-lens findings
+MR -> RC : Review Record — Conditional Go
+RC -> STK : LCO milestone verdict
+note right of STK
+  The milestone is NOT marked complete
+  by this review. Closure is the
+  ReviewCoordinator's verdict.
+end note
+@enduml
+```
+
+### Overall LCO disposition (management lens): **CONDITIONAL GO**
 
 | Dimension | Verdict | Basis |
 |---|---|---|
@@ -709,21 +905,40 @@ end note
 | LCO exit criteria — Vision measurability | **Pass with one correction** | BG-001's measurement basis was undeclared; the stakeholder has now declared it (baseline 14 h/month, target 7 h/month or less, third month after go-live, owner STK-001). The Vision's stale assumption A1 must be retired (Vision F1) |
 | LCO exit criteria — initial risk identification | **Pass** | 6 risks classified with P × I = exposure, magnitude, strategy, mitigation, contingency; the High risk is scheduled into the iteration that confronts it |
 | LCO exit criteria — use-case survey level | **Pass** | 3 UCs identified; UC-001 and UC-003 detailed, UC-002 surveyed with scenarios; ATM test applied to each |
-| LCO exit criteria — stakeholder agreement on scope and feasibility | **Not this lens's to give** | The LCO gate is STK-001's decision. This review supplies the findings it decides on |
+| LCO exit criteria — stakeholder agreement on scope and feasibility | **GRANTED** | STK-001 sanctioned advancing past the LCO on 2026-09-18, subject to three conditions. The scope and objectives are agreed and no finding challenges them |
 | Development Case conformance | **Pass with one exception** | Roster, CORE catalog, ownership, optional triggers and intensity all conform; the `latest` version pin is the exception (DC F1) |
 | Traceability integrity | **Fail** | 4 artifacts with unregistered declared edges; 28 SUSPECT edges open at phase close |
 | Cross-artifact consistency | **Fail** | One substantive contradiction (UCM F1) and one confirmed deployment-topology defect (SAD F2) |
 | SCM state | **Pass** | No open PR, no open issue, green build on `main` |
+| **Four-axis health** | **Scope GREEN · Schedule GREEN · Cost GREEN · Quality AMBER** | The quality axis is the one that is not green, and it is the axis the three conditions address |
 
-**Why Approved with Changes and not Rejected.** No Critical finding exists. Every artifact is substantively sound: the scope is faithfully bounded, the risk register is complete and correctly sequenced, the architecture's decomposition is justified by area of change with the reasoning recorded, and the requirements baseline places every declared input. The defects are of three kinds — a trace graph that under-reports what the artifacts declare, two genuine cross-artifact defects, and one stale assumption whose question has since been answered — and all are correctable without reworking the substance of any artifact. Rejecting would discard a sound baseline over bookkeeping, one actor-list correction, one deployment-diagram correction and one assumption refresh.
+**Why Conditional Go and not Go.** No LCO exit criterion is missed on substance: the scope is agreed and faithfully bounded, the risk register is complete and correctly sequenced, the architecture's decomposition is justified by area of change with the reasoning recorded, and the requirements baseline places every declared input. But two criteria are **NOT MET** — traceability integrity and cross-artifact consistency — and the quality axis is therefore amber. A project that is green on three axes and amber on one is not a green project, and the amber axis is the one that makes the baseline unreadable to the roles that consume it next. The sanction is granted subject to three conditions, which is exactly what a Conditional Go is for.
 
-**Why not Approved.** The trace graph is the mechanism by which every downstream role finds what it must satisfy. With NFR-002, R002 and R005 unreachable and 28 edges suspect, the baseline is not yet readable by the roles that consume it next — and the UC-001/AD contradiction would propagate a dependency the architecture forbids into the Design Model. Approving now would carry both defects into Elaboration.
+**Why not No-Go.** No Critical finding exists. Every artifact is substantively sound, and the defects are of three kinds — a trace graph that under-reports what the artifacts declare, two genuine cross-artifact defects, and one stale assumption whose question has since been answered. All are correctable without reworking the substance of any artifact. Refusing the milestone would discard a sound baseline over bookkeeping, one actor-list correction, one deployment-diagram correction and one assumption refresh.
 
-**Milestone status.** The end-of-Inception milestone is **NOT YET ACHIEVED** and is not marked complete by this artifact. This review supplies the findings; the LCO verdict is the ReviewCoordinator's, and the gate decision is STK-001's.
+**Why not Go.** The trace graph is the mechanism by which every downstream role finds what it must satisfy. With NFR-002, R002 and R005 unreachable and 28 edges suspect, the baseline is not yet readable by the roles that consume it next — and the UC-001/AD contradiction would propagate a dependency the architecture forbids into the Design Model. Approving unconditionally would carry both defects into Elaboration.
+
+### The three conditions of the sanction
+
+| # | Condition | Owner | Closes | Deadline |
+|---|---|---|---|---|
+| 1 | UC-001 must drop Active Directory as a supporting actor — identity comes from the OIDC token; AD supports UC-003 only | SystemAnalyst | UCM F1 | Elaboration Iteration 1, before the architecture baseline is committed |
+| 2 | The Supplementary Specification must either register the 24 CON-NNN sources it claims to cover, or correct the coverage claim to what is actually registered | SystemAnalyst | SS F1 | Elaboration Iteration 1, before the architecture baseline is committed |
+| 3 | The Deployment View redraw already agreed — Keycloak as an internal node inside the corporate network, the OIDC redirect as an intra-network call | SoftwareArchitect | SAD F2 | Elaboration Iteration 1, before the architecture baseline is committed |
+
+**Carried as Elaboration entry work, per the stakeholder's instruction.** The remaining trace-registration findings (SAD F1, RL F1, SS F2, SAD F3, UCM F3, UCM F2) are entry work for Elaboration, and **no SUSPECT edge survives the LCA**. That is a stated obligation on the LCA gate.
+
+**Conditional-verdict enforcement.** This is the first Conditional Go of the project, so there is no prior condition set to verify. The three conditions above become the LCA review's first check: the LCA review must explicitly verify that all three were closed before the architecture baseline was committed, and must verify that no SUSPECT edge survives. A condition dropped silently at LCA is a Major finding against the LCA review.
+
+### Milestone status
+
+The end-of-Inception milestone is **NOT YET ACHIEVED** and is **not marked complete by this artifact**. This review supplies the findings and the management lens's exit-criteria assessment; the LCO verdict is the ReviewCoordinator's, and the gate decision is STK-001's — and STK-001 has given it, subject to the three conditions.
 
 **Escalation — ANSWERED this round; the marker is retired.** Finding 8 (SAD F2) was escalated to the stakeholder as an integration-boundary question: the network placement of Keycloak. The stakeholder answered on 2026-09-18, in their own words: *"Keycloak runs inside the corporate network. It is the company's internal identity provider, deployed on the internal estate and reachable by the internal applications — Infrastructure (STK-003) operates it alongside Active Directory, exactly as the stakeholder input says."* The stakeholder further stated that the Software Architecture Document is wrong and must be corrected: its Deployment View places Keycloak in a cloud node outside the corporate network, which no declared input supports and which CON-007 (internal Windows Server, no cloud) and CON-008 (no access from outside the corporate network) contradict. The required correction, in the stakeholder's terms: redraw the deployment diagram with Keycloak as an **internal node**, and the portal's OIDC redirect as an **intra-network call** — nothing about login crosses the corporate boundary, and login keeps working with no internet link. The question is closed; the finding's remediation is now authoritative rather than proposed, and the SoftwareArchitect corrects the artifact against this decision.
 
 **Escalation — ANSWERED this round; the marker is retired.** Finding 14 (Vision F1) was escalated to the stakeholder as a business-goal measurability question: BG-001 declared a 50% reduction in HR management time with no baseline, so the goal could not be verified as stated. The stakeholder answered on 2026-09-18, in their own words: *"The baseline is 14 hours per month of HR administration, measured over one full calendar month before go-live and made up of: 4 h consolidating the three offices' Excel sheets at month end, 7 h chasing and correcting forgotten clock-outs (about 120 cases a month at roughly 3.5 minutes each), and 3 h sending news by mass email and keeping the phone-list PDF up to date. BG-001 therefore means 7 hours per month or less, measured the same way over a full calendar month, in the third month after go-live — the same window as the 80% adoption objective. Laura Gómez (STK-001) owns the measurement."* The question is closed; the SystemAnalyst retires the Vision's stale assumption A1 against this decision, and no later role should re-ask it.
+
+**Escalation — ANSWERED this round; the marker is retired.** The LCO sanction question was put to the stakeholder with the management lens's verdict and every open Major defect inside it. The stakeholder answered **Yes** on 2026-09-18, granting the sanction subject to the three conditions above. The sanction is captured, not flagged: it is recorded as the token line at the head of this section and as the verbatim acceptance above. No finding is recorded for "acceptance undocumented" — acceptance was mine to ask for, and I asked.
 
 **Escalation — one question deliberately NOT re-asked.** Finding 6 (the PostgreSQL `latest` pin) is **not** put back to the stakeholder. The question was asked and answered on 2026-09-17, and re-opening an answered question is forbidden. The answer conflicts with sound engineering practice (a moving target is not a version, and the build is not reproducible), so the conflict is stated explicitly and an alternative is proposed — a concrete PostgreSQL major version — and routed as a **Change Request** through the ChangeControlManager. The pin is recorded and work can proceed; what is missing is reproducibility, not a decision.
 
@@ -747,6 +962,24 @@ end note
 **Business Modeling disposition: NOT APPLICABLE — no findings against the discipline, no recommendations, no gate condition.** The Business Modeling discipline is correctly inactive for this engagement per DC §4, and the BusinessProcessAnalyst / BusinessReviewer roles are correctly not engaged. The technical lens's `APPROVED WITH CHANGES` disposition above is unaffected by this subsection: this lens adds no Business Modeling finding, no Business Modeling action and no blocker. Its single finding (Vision F1) is a measurability correction to the Vision, already reflected in the action table and in the disposition row above. Downstream reviewers (MR, RC) may treat the Business Modeling discipline as out-of-scope for the LCO milestone.
 
 **No marker remains open on this lens's account.** The `[SCOPE_QUESTION]` on BG-001's measurement basis was answered by the stakeholder on 2026-09-18 and is retired. No other marker is open, and no answered question is re-opened.
+
+### Management lens — Management Reviewer: **CONDITIONAL GO**
+
+| Dimension | Verdict | Basis |
+|---|---|---|
+| LCO exit criteria C1–C4, C6, C10 | **MET** | Scope agreed and sanctioned; project viable; risks classified; scope placed; Project Approval Review conducted; SCM state clean |
+| LCO exit criterion C5 (roadmap + fine plan within the box) | **PARTIALLY MET** | Roadmap and fine plan exist and the work items sum to the box, but the box omits the Management Reviewer's review pass and the Iteration Assessment — Iteration Plan#F1 |
+| LCO exit criterion C7 (risk-retirement trend) | **NOT ASSESSABLE** | Iteration 1 has no prior review, so no trend exists. R001 must show a decreasing trend at LCA — Risk List#F1 |
+| LCO exit criterion C8 (traceability integrity) | **NOT MET** | 4 artifacts with unregistered declared edges; 28 SUSPECT edges open — **condition 2** |
+| LCO exit criterion C9 (cross-artifact consistency) | **NOT MET** | UCM#F1 and SAD#F2 — **conditions 1 and 3** |
+| Four-axis health | **Scope GREEN · Schedule GREEN · Cost GREEN · Quality AMBER** | The amber axis is the one the three conditions address |
+| Stakeholder sanction | **GRANTED 2026-09-18** | Subject to three conditions, to be closed in Elaboration Iteration 1 before the architecture baseline is committed |
+| Findings recorded by this lens | **5** (3 Major, 2 Minor) | Iteration Plan F1/F2, Risk List F1, Development Case F1, Software Architecture Document F1 |
+| Gate effect | **Conditional** | The milestone advances subject to the three conditions; no Critical finding blocks it |
+
+**Management disposition: CONDITIONAL GO — the milestone advances subject to three conditions.** No LCO exit criterion is missed on substance and no Critical finding exists, so the gate is not blocked. Two criteria are NOT MET and the quality axis is amber, so the gate is not unconditionally open either. The stakeholder has sanctioned the advance and named the three conditions; the LCA review must verify that all three were closed before the architecture baseline was committed, and that no SUSPECT edge survives.
+
+**No marker remains open on this lens's account.** The LCO sanction question was asked and answered on 2026-09-18; the answer is recorded as the token line and the verbatim acceptance at the head of this section. No `[SCOPE_QUESTION]` is open, no `[ASSUMPTION]` on a consequential decision is open, and no answered question is re-opened.
 
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
