@@ -5,7 +5,6 @@
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 
 ## Functionality
-
 ### NFR-004 Audit Trail
 
 Mandatory traceability. The audit is written for compliance and read directly from the database by whoever needs it; there is no in-portal audit view screen (CON-018).
@@ -73,7 +72,7 @@ These mechanisms are not use cases — they deliver no observable value to an ac
 |---|---|---|
 | OIDC login against Keycloak, federated to Active Directory | UC-001..UC-009 | CON-002, CON-025 |
 | Authorization: two levels from AD group membership | UC-001..UC-009 | NFR-005 |
-| LDAP read of the six read-only directory fields | UC-008, UC-009 | CON-005 |
+| LDAP read of the six read-only directory fields | UC-002 (FullName at export time), UC-008, UC-009 | CON-005, CON-016 |
 | Audit write | UC-002, UC-003, UC-005, UC-006, UC-007, UC-009 | NFR-004 |
 | Clocking retry with client timestamp and idempotency key | UC-001 | AC-006 |
 
