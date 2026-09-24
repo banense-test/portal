@@ -945,7 +945,6 @@ The Development Case records the Data Model optional artifact as **not triggered
 **No measured figure exists yet.** Nothing in this project has been built or measured, so this section states the declared targets and the tactics chosen to meet them, and no performance number is asserted. The first measurement of the full page load and the clocking response is taken in Elaboration, against the stand-in environment, and reported as a measured value at that point.
 
 ## Quality
-
 Each declared quality attribute is mapped to the architectural tactics that address it. A quality attribute with no tactic would be a gap; there is none below.
 
 | Quality attribute | Requirement | Architectural tactic | Component |
@@ -974,6 +973,21 @@ Each declared quality attribute is mapped to the architectural tactics that addr
 | R009 — the CI pipeline and guideline files are not in place | The build cannot be verified | Avoided: the ConfigurationManager and Implementer author them in iteration 1 |
 
 **No architectural proof-of-concept is required.** The Development Case evaluated the Architectural Proof-of-Concept trigger and found it not fired: no technical risk requires empirical validation. R001 and R002 are dependency and data-quality risks owned by Infrastructure and HR, not technical unknowns, and CON-021 accepts them in advance; CON-028 removes the only candidate by fixing the stand-in approach; CON-003 confirms the OIDC client is already registered so login is testable from day one. The two risks with a technical mechanism — R002's empty-attribute behaviour and R006's skew bound — are retired by design decisions and by the stand-in test, not by a prototype. Their dispositions are recorded as analysis-only.
+
+### Proof-of-Concept Disposition
+
+The Development Case evaluated the Architectural Proof-of-Concept optional artifact against its §5.2 trigger and found it **not fired**: no technical risk requires empirical validation. R001 and R002 are dependency and data-quality risks owned by Infrastructure and HR, not technical unknowns, and CON-021 accepts them in advance; CON-028 removes the only candidate by fixing the stand-in approach; CON-003 confirms the OIDC client is already registered so login is testable from day one.
+
+Two risks nevertheless have a technical mechanism, and both are retired by a design decision plus the CON-028 stand-in test rather than by a prototype. Their dispositions are recorded as **analysis-only** — no code is built for them, and the Implementer builds nothing on their account.
+
+| Risk | Mode | What retires it | Acceptance criterion | Where it is exercised |
+|---|---|---|---|---|
+| R002 — LDAP attributes inconsistently filled across the 3 offices | analysis-only | COMP-006 is the single LDAP boundary; an empty job title or extension renders as blank without removing the entry, and no default value is invented (CON-015) | The stand-in directory, carrying entries with empty job title and extension, returns those entries with the attribute blank in both UC-008 (directory) and UC-002 (FullName column of the CSV) | The stand-in directory (CON-028), from iteration 1 |
+| R006 — a skewed client clock records a timestamp that did not happen | analysis-only | COMP-003 bounds the accepted client-clock skew, and the idempotency key is verified server-side by a unique constraint so a retry cannot create a second record | A clocking POST carrying a skewed client timestamp outside the bound is rejected rather than recorded, and a repeated POST carrying the same idempotency key creates no second record | The stand-in test (CON-028), from iteration 1 |
+
+**The remedy path for both is the same and is already declared.** A clocking rejected by the skew bound is reported by the employee to HR, who corrects it through UC-003 with a full audit entry (NFR-004). An attribute that is empty in AD renders blank; HR fills it in AD, which is the single home of employee data (CON-016).
+
+**No prototype is planned for Elaboration either.** The two mechanisms above are validated by the stand-in environment, which is iteration-1 construction work owned by the Implementer and Integrator, not by a proof-of-concept. If a later iteration finds a technical unknown that the stand-in cannot exercise, the disposition is revised then, with the risk it retires named.
 
 ## Traceability
 
