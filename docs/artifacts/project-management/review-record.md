@@ -211,7 +211,6 @@ end note
 **Scope of this lens.** This is the Business Reviewer lens — the business-modeling quality gate. The generic Reviewer's technical lens and the Management Reviewer's lens are separate blocks in this same Review Record and are not written here.
 
 ## Findings
-
 ### Reviewer lens
 
 **Summary.** 11 findings: 0 Critical, 1 Major, 10 Minor. One artifact — the Use-Case Model — is clean and carries no finding. No Critical finding was recorded, so no finding of this lens escalates to the stakeholder.
@@ -472,6 +471,65 @@ end note
 **Scope-adherence result.** No scope creep was found. Nine use cases, one per declared `FR-001`..`FR-009`; every use case carries a `Source: FR-NNN` line citing a declared requirement; no phantom use case; no cross-cutting mechanism modelled as a use case — OIDC login, authorization, LDAP read, audit write and the clocking retry are all Supplementary Specification entries with `<<include>>` from their dependent use cases. No `[DERIVED]` marker was found in any artifact, so no silent derivation promotion exists to flag. No unsourced quantitative claim was found: the artifacts state declared targets and explicitly record that no measurement exists yet.
 
 **DC baseline conformance result.** The Development Case does not redefine the 25-role roster, does not reassign CORE ownership, does not omit a CORE artifact, does not list an artifact outside the CORE + OPTIONAL universe, and does not merge two roles. Business Modeling is declared INACTIVE with the correct trigger condition (`business-process-led = false`). All six OPTIONAL triggers were audited against their §5.2 conditions and none was found over-triggered — each NOT-FIRED verdict holds against the project's real facts. The two findings against this artifact are a stale environment record and an intensity-row wording defect, not a baseline violation.
+
+### Business Reviewer lens
+
+**Summary.** **0 findings: 0 Critical, 0 Major, 0 Minor.** No business-model artifact exists to carry a defect, and none is required by the Development Case. No finding of this lens escalates to the stakeholder.
+
+**Compliance matrix.** Every Business Modeling checklist item evaluated and recorded Pass or N/A. N/A is the correct verdict for an item whose subject does not exist and is not required — it is not a Fail, and it is not a finding.
+
+```plantuml
+@startuml BR_ComplianceMatrix
+title Business Reviewer compliance matrix - LCO, Inception iteration 1
+skinparam classAttributeIconSize 0
+
+class "Business Modeling checklist" as BM <<checklist>> {
+  Scenario selection explicit : N/A - BM inactive
+  BUC completeness test : N/A - no BUC
+  BUC realization adequacy : N/A - no BUC
+  Derivation bridge (worker to system actor) : N/A - no worker
+  Resource planning compliance : N/A - no worker or entity
+  Business-level UML stereotypes : N/A - no business model
+  Diagram coverage at business level : N/A - no business model
+  Stakeholder representation coverage : Pass - STK-001..STK-004
+  Business rules as formal constraints : Pass - CON-009..CON-019
+  Business goals measurable : Pass - BG-001..BG-003
+}
+
+class "Verdict" as VD <<verdict>> {
+  Findings recorded : 0
+  Critical : 0
+  Escalation to stakeholder : none
+  Disposition : BR-OK-INACTIVE
+}
+
+BM --> VD
+
+note bottom of BM
+  N/A is not a defect: the DC-4 classification records
+  business-process-led = FALSE, so no business-model
+  artifact is required of the BPA this phase. A finding
+  against an artifact the Development Case does not
+  require would be a false defect.
+end note
+@enduml
+```
+
+**Checklist detail — the three items that are NOT N/A.** Three Business Modeling checklist items have a subject that exists in this project even though the discipline is inactive. Each was evaluated on its merits and each passes.
+
+| Checklist item | Verdict | Evidence |
+|---|---|---|
+| Stakeholder representation coverage | **Pass** | All four declared stakeholders are represented in the Vision's Stakeholder Summary with role, interest, influence and the needs the product must satisfy: `STK-001` Laura Gómez (HR Director, sponsor), `STK-002` Miguel Torres (Software Engineer), `STK-003` Infrastructure Team (operates AD and Keycloak), `STK-004` Cuba Corp Employees (200 people, 3 offices). No significant organisational part relevant to the declared scope is unrepresented. The Infrastructure Team is correctly modelled as a stakeholder and not as a use-case actor — it operates the portal in production (`CON-029`) and performs no in-portal administration. |
+| Business rules as formal constraints | **Pass** | `CON-009`..`CON-019` are declared as `[BusinessRule]` constraints and each is attached to the element it constrains: `CON-009` to the news feature set (`FR-005`, `FR-006`, `FR-007`), `CON-010`/`CON-011`/`CON-012` to clocking (`FR-001`, `FR-002`, `FR-003`), `CON-013`/`CON-014`/`CON-015`/`CON-016` to the worker category (`FR-008`, `FR-009`), `CON-017` to news retention (`FR-007`), `CON-018`/`CON-019` to the audit (`NFR-004`). Each is testable and each carries its source. They are system invariants, not business-process definitions — which is precisely why they do not trigger Business Modeling. |
+| Business goals measurable | **Pass** | `BG-001` (50% reduction in HR management time, measured against the current manual processes), `BG-002` (100% of new clockings out of Excel), `BG-003` (80% of 200 employees within 3 months) each carry a numeric target and a stated basis of measurement. |
+
+**Derivation-readiness assessment (the Business-to-System Derivation Readiness Gate).** The gate is **not applicable, and correctly so** — it is not "failed". The gate asks whether a business model is a sound foundation for the System Analyst to derive system use cases from. Here the derivation never passes through a business model: the stakeholder declared the system use cases directly (`UC01` Clock In/Out, `UC02` Read News, `UC03` Employee Directory) alongside `FR-001`..`FR-009`, and the Use-Case Model realises them one-for-one. There is no business worker whose automation disposition must be annotated, because no business worker exists; there is no business entity needing a candidate analysis-class annotation, because no business entity exists. The bridge is not broken — it is not needed.
+
+**Traceability compliance.** The traceability tree was projected from the Business level and used as the completeness instrument. Result: **no `SUSPECT` edge and no `UNKNOWN LABEL`**; no `«LEAF»` at Business level — every declared requirement and acceptance criterion reaches at least one downstream element. No business-level element (`BUC-NNN`, `BR-NNN`, `OBJ-NNN`) appears in the graph, which is the expected shape for a project with Business Modeling inactive. The defects the generic Reviewer lens found are in the artifacts' own traceability *tables* (`Vision#F1`, `Supplementary Specification#F1`), not in the graph, and they are that lens's findings to close — not mine.
+
+**Scope-adherence result.** No scope creep was found in the business dimension. Nine use cases, one per declared `FR-001`..`FR-009`; no phantom use case; no cross-cutting mechanism modelled as a use case — OIDC login, authorization, LDAP read, audit write and the clocking retry are all Supplementary Specification entries with `<<include>>` from their dependent use cases. No `[DERIVED]` marker was found in any artifact, so no silent derivation promotion exists to flag. No unsourced quantitative claim was found: the artifacts state declared targets and explicitly record that no measurement exists yet.
+
+**Prior findings of this lens.** None. This is the first review pass of the Business Reviewer lens on this project: `read_artifact_findings` returned an empty list for the Use-Case Model and no finding with `reviewerRole: BusinessReviewer` on any artifact. The three findings that do exist — `Vision#F1`, `Vision#F2`, `Supplementary Specification#F1` — carry `reviewerRole: Reviewer` and belong to that lens; the ownership invariant forbids me from closing them, and no `resolve_artifact_finding` call was emitted this pass.
 
 ## Resolutions and Actions
 
