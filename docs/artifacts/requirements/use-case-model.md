@@ -5,12 +5,11 @@
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 
 ## Use-Case Diagram
-
 The system boundary is the Employee Portal application. Actors sit ON the boundary line: the two human roles outside it, and the two external systems the portal depends on. Everything inside the rectangle is built by this project; everything outside it is not.
 
 ```plantuml
-@startuml Portal_Vision_UC
-title Portal - system boundary, actors and candidate use cases (Inception iteration 1)
+@startuml Portal_UC_Model
+title Portal - system boundary, actors and use cases (Inception iteration 1)
 left to right direction
 skinparam packageStyle rectangle
 
@@ -34,28 +33,41 @@ rectangle "Employee Portal\n(.NET 10 + Razor Pages + PostgreSQL 18)" {
 EMP --> UC001
 EMP --> UC004
 EMP --> UC008
+HR --> UC001 : views all clockings
 HR --> UC002
 HR --> UC003
 HR --> UC005
 HR --> UC006
 HR --> UC007
 HR --> UC009
-HR --> UC001 : views all clockings
 KC --> UC001
+KC --> UC002
+KC --> UC003
+KC --> UC004
+KC --> UC005
+KC --> UC006
+KC --> UC007
+KC --> UC008
+KC --> UC009
+AD --> UC002 : FullName
 AD --> UC008
 AD --> UC009
 
 note right of KC
-  Every use case is reached through OIDC login.
-  Login is a cross-cutting mechanism, NOT a use case:
-  it is a Supplementary Specification entry included
-  by each dependent use case (CON-002, NFR-005).
+  Keycloak authenticates every session, so it
+  participates in all nine use cases through the
+  OIDC login mechanism. Login is a cross-cutting
+  mechanism, NOT a use case: it is a Supplementary
+  Specification entry included by each dependent
+  use case (CON-002, CON-025, NFR-005).
 end note
 
 note bottom of AD
   Directory fields are read over LDAP and are read-only
-  (CON-005). UC-009 stores only a link: AD user id -> category
-  (CON-016). Active Directory is never written to (CON-004).
+  (CON-005). UC-002 reads FullName at export time because
+  the portal holds no copy of the employee (CON-016).
+  UC-009 stores only a link: AD user id -> category.
+  Active Directory is never written to (CON-004).
 end note
 
 note bottom of UC002
@@ -74,7 +86,7 @@ These are technical mechanisms every use case depends on. They are Supplementary
 |---|---|---|
 | OIDC login against Keycloak, federated to Active Directory (CON-002, CON-025) | UC-001..UC-009 | Supplementary Specification — Functionality |
 | Authorization: two levels from AD group membership (NFR-005) | UC-001..UC-009 | Supplementary Specification — Functionality |
-| LDAP read of the six read-only directory fields (CON-005) | UC-008, UC-009 | Supplementary Specification — Interfaces |
+| LDAP read of the six read-only directory fields (CON-005) | UC-002, UC-008, UC-009 | Supplementary Specification — Interfaces |
 | Audit write (NFR-004) | UC-002, UC-003, UC-005, UC-006, UC-007, UC-009 | Supplementary Specification — Functionality |
 | Clocking retry with client timestamp and idempotency key (AC-006) | UC-001 | Supplementary Specification — Reliability |
 
