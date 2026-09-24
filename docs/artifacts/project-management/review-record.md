@@ -532,7 +532,6 @@ end note
 **Prior findings of this lens.** None. This is the first review pass of the Business Reviewer lens on this project: `read_artifact_findings` returned an empty list for the Use-Case Model and no finding with `reviewerRole: BusinessReviewer` on any artifact. The three findings that do exist — `Vision#F1`, `Vision#F2`, `Supplementary Specification#F1` — carry `reviewerRole: Reviewer` and belong to that lens; the ownership invariant forbids me from closing them, and no `resolve_artifact_finding` call was emitted this pass.
 
 ## Resolutions and Actions
-
 ### Reviewer lens
 
 **Prior findings of this lens.** None. This is the first review pass of the Reviewer lens on this project: `read_artifact_findings` returned an empty list for all eight artifacts, so no prior finding of this lens exists to close, defer or reject. No `resolve_artifact_finding` call was emitted this pass.
@@ -554,6 +553,34 @@ end note
 | `Software Architecture Document#F2` | SoftwareArchitect | State the clocking time fields as immutable and name the export's correction-resolution rule | No |
 
 **Carry-over.** No finding of this lens is deferred and none is rejected. All 11 remain open for the next iteration of this Reviewer, which will reconcile them in its closure state before recording new defects.
+
+### Business Reviewer lens
+
+**Prior findings of this lens.** None. This is the first review pass of the Business Reviewer lens on this project. `read_artifact_findings` returned an empty list for the Use-Case Model, and no finding on any artifact carries `reviewerRole: BusinessReviewer`. No `resolve_artifact_finding` call was emitted this pass, and none was due.
+
+**Cross-lens findings left untouched.** Three findings exist on artifacts I read. All three carry `reviewerRole: Reviewer` and are that lens's to close. The ownership invariant rejects a cross-lens close attempt, so none was attempted.
+
+| Finding | Lens | Severity | Status | Why this lens does not act |
+|---|---|---|---|---|
+| `Vision#F1` | Reviewer | Minor | Open | Traceability-table defect in the technical lens's checklist. Not a business-modeling defect. |
+| `Vision#F2` | Reviewer | Minor | Open | Boundary-diagram consistency between two system-level diagrams. Not a business-modeling defect. |
+| `Supplementary Specification#F1` | Reviewer | Minor | Open | Traceability-table defect in the technical lens's checklist. Not a business-modeling defect. |
+
+**Actions arising from this pass.** None. Zero findings were recorded, so no action, owner or remediation exists to carry forward. No action identifier is minted — a remediation is the finding's Recommendation, and there is no finding.
+
+**Carry-over.** Nothing is deferred and nothing is rejected. The Business Reviewer lens has no open finding and no outstanding action entering the next iteration.
+
+**Condition that would re-activate this lens.** The lens re-activates if any of the following becomes true, and the Process Engineer's DC §4 classification is the trigger to watch:
+
+| Condition | Effect |
+|---|---|
+| A Change Request introduces a business process to be re-engineered or automated | DC §4(a) fires; Business Modeling becomes ACTIVE; a Business Use-Case Model and its realizations become reviewable artifacts |
+| A business actor or business worker is declared in scope | DC §4(b) fires; the BUC completeness test and the derivation bridge become applicable |
+| A Business Use-Case Model becomes an input or an output of the work | DC §4(c) fires; the BUC-realization coverage gate becomes applicable |
+| The stakeholder declares business processes rather than system requirements | DC §4(d) fires; the full Business Modeling checklist applies at Elaboration depth |
+| A Glossary is triggered by specialist business-domain vocabulary | The business-terms review becomes applicable |
+
+Until one of these holds, the Business Reviewer lens has no artifact surface and produces no finding.
 
 ## Disposition
 
