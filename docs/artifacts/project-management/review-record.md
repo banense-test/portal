@@ -648,3 +648,23 @@ Conclusion: BPA + BR are correctly INACTIVE for this engagement. No findings, no
 
 `Development Case` and `Iteration Plan` are the two reviewed artifacts that are trace-graph elements; the remaining six are named in the Review Scope and Criteria block and carry no element identifier of their own. `Issue #1` and `run 36050339100` are observed SCM facts, cited as returned by the `scm_*` tools. The findings of this lens are cited by their `<artifact>#<key>` handles in the Findings block; a finding is not an element and no edge is registered on one.
 
+### Business Reviewer lens
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| Business Reviewer lens — scenario assessment | DC §4 classification (`business-process-led = false`) | Refines | LCO |
+| Business Reviewer lens — DC §4 re-verification | DC §4 classification, Vision, Use-Case Model, Supplementary Specification | Refines | LCO |
+| Business Reviewer lens — BM artifact inventory | Use-Case Model, Supplementary Specification | Refines | LCO |
+| Business Reviewer lens — compliance matrix | Vision, Use-Case Model, Supplementary Specification | Refines | LCO |
+| Business Reviewer lens — stakeholder coverage check | STK-001, STK-002, STK-003, STK-004 | Refines | LCO |
+| Business Reviewer lens — business-rule audit | CON-009, CON-010, CON-011, CON-012, CON-013, CON-014, CON-015, CON-016, CON-017, CON-018, CON-019 | Refines | LCO |
+| Business Reviewer lens — business-goal measurability check | BG-001, BG-002, BG-003 | Refines | LCO |
+| Business Reviewer lens — derivation-readiness assessment | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009 | Refines | LCO |
+| Business Reviewer lens — disposition | CON-028 | Refines | LCO |
+
+**Trace endpoints.** `STK-001`..`STK-004`, `FR-001`..`FR-009`, `CON-009`..`CON-019`, `CON-028`, `BG-001`..`BG-003` and `AC-001`..`AC-006` are declared identifiers, copied exactly from the work order. `LCO` is the milestone this review serves. No `BUC-NNN`, `BR-NNN` or `OBJ-NNN` appears: those are the Business Process Analyst's element families, and no element of any of them exists on this project — which is the substance of the `BR-OK-INACTIVE` verdict, not an omission.
+
+**Findings of this lens.** None. No `<artifact>#<key>` handle is cited because no finding was recorded. The three findings named in the Findings block — `Vision#F1`, `Vision#F2`, `Supplementary Specification#F1` — are the generic Reviewer lens's, cited there for the record of what this lens deliberately did not touch.
+
+**Observed SCM facts.** None cited by this lens. The Business Modeling discipline produces no code, no build and no pull request, so no `scm_*` observation bears on this verdict. The SCM evidence in the Reviewer lens's block is that lens's instrument.
+
