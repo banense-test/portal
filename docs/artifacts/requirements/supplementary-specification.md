@@ -230,8 +230,8 @@ title Supplementary Specification - runtime boundary and cross-cutting mechanism
 
 package "Corporate network (CON-007: reachable only from here)" {
   package "Internal Windows Server estate (CON-001, operated by Infrastructure)" {
-    component "Employee Portal\n.NET 10 + Razor Pages + REST API" as PORTAL <<COMP-001>>
-    database "PostgreSQL 18\nclockings, news, category link, audit" as DB <<COMP-002>>
+    component "Employee Portal\n.NET 10 + Razor Pages + REST API" as PORTAL
+    database "PostgreSQL 18\nclockings, news, category link, audit" as DB
   }
   component "Keycloak\nOIDC provider, federated to AD\n(CON-002, CON-025 - not ours to deploy)" as KC <<external>>
   component "Active Directory\nLDAP read-only (CON-004, CON-005)" as AD <<external>>
