@@ -385,7 +385,6 @@ end note
 ```
 
 ## Guidelines and Procedures
-
 ### Measurement policy
 
 The baseline measures two quantities and only two: tokens consumed, and elapsed time split into agent
@@ -500,6 +499,25 @@ The Process Engineer integrates tailoring input from the discipline experts and 
 technical guidance. Coding standards, UI patterns and test conventions live in `CONTRIBUTING.md` and
 the lint configuration, owned by the SoftwareArchitect, Implementer and TestManager respectively.
 This Development Case references those files; it does not duplicate their content.
+
+### Environment readiness verification — Inception iteration 1
+
+Verified before the iteration starts. A gap is recorded with its owner; none is left as a developer's
+private arrangement.
+
+| Check | Result | Owner of the gap |
+|---|---|---|
+| SCM repository reachable | Ready | — |
+| Mandatory UI design input present and authoritative (CON-031) | Ready — `docs/inputs/employee-portal-design.html` | — |
+| CI pipeline builds and tests (CON-026) | **Not ready** — no `.github/workflows` file exists | ConfigurationManager + Implementer |
+| `CONTRIBUTING.md` and lint configuration | **Not ready** — absent | SoftwareArchitect, Implementer, TestManager |
+| Stand-in OIDC issuer and stand-in directory (CON-028) | **Not ready** — to be built this iteration, including entries with empty job title and extension | Implementer + Integrator |
+| Version policy recorded | Ready — .NET 10, PostgreSQL 18 | — |
+| DC classification and optional triggers recorded | Ready — business-process-led = false; no optional trigger fired | — |
+
+The three gaps are iteration-1 environment work, not blockers to process configuration. The stand-in
+environment is the one that gates development: no use case can be built or tested against the real
+Keycloak or the real AD (CON-028), so the stand-ins are the first construction item of the iteration.
 
 ## Traceability
 
