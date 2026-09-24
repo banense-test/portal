@@ -230,17 +230,14 @@ Every AC-NNN in the declared scope is listed. None is absent. This iteration ver
 **LCO readiness.** Criteria 1, 3 and 4 are met by the artifacts this iteration produces. Criterion 2 is met by the declared constraints. Criteria 5 and 6 are iteration-1 environment work and are the two items that can still fail this iteration. The LCO verdict is the ReviewCoordinator's and the ManagementReviewer's; this plan does not pre-empt it.
 
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| Iteration 1 objectives | FR-001..FR-009, NFR-001..NFR-005, CON-009..CON-019 | Refines | UC-001, UC-002, UC-008 |
-| Coarse roadmap (6 iterations, [1,2,2,1]) | CON-027, CON-021 | Refines | LCO, LCA, IOC, PR |
-| Human validation gate (14-day ceiling) | CON-021, CON-028 | DependsOn | R005 |
-| Fine plan work item 1 (requirements baseline) | FR-001..FR-009 | Refines | UC-001, UC-002, UC-008 |
-| Fine plan work item 3 (Risk List) | CON-020, CON-021 | Refines | R001, R002, R003, R004, R005, R006, R007, R009 |
-| Fine plan work item 5 (architecture sketch) | CON-022, CON-023, CON-024, CON-025 | Refines | UC-001, UC-002, UC-008 |
-| Fine plan work item 6 (stand-in environment) | CON-028 | DependsOn | R004 |
-| Fine plan work item 7 (CI pipeline) | CON-026 | DependsOn | R009 |
-| Evaluation criteria layer (a) | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | Iter-4, Iter-5, Iter-6 |
-| Evaluation criteria layer (b) | CON-003, CON-026, CON-028 | Refines | LCO |
-| Agent role profile | CON-027 | Refines | Iter-1, Iter-2, Iter-3, Iter-4, Iter-5, Iter-6 |
+| Iteration Plan | FR-001, FR-003, FR-008 | Refines | UC-001, UC-002, UC-008 |
+| Iteration Plan | CON-027 | DependsOn | R007 |
+| Iteration Plan | CON-021, CON-028 | DependsOn | R005 |
+| Iteration Plan | CON-028 | DependsOn | R004 |
+| Iteration Plan | AC-006 | Refines | UC-001 |
+| Iteration Plan | Development Case | Refines | LCO |
+
+The Development Case governs this plan: it fixes the active disciplines, the CORE artifact set, the agent role profile and the measurement policy. The declared acceptance criteria AC-001..AC-005 are accounted for in Evaluation Criteria layer (a) and deferred to the iterations named there; AC-006 is carried by UC-001, which this plan scopes into Iteration 1 as a full specification.
+
