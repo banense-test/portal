@@ -10,7 +10,6 @@
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 
 ## Review Scope and Criteria
-
 ### Reviewer lens
 
 **Review type.** Technical review (peer-led, checklist-driven, findings documented). Not a formal Fagan inspection: no reader paraphrase step and no separate recorder role.
@@ -48,6 +47,168 @@
 **Pull-request disposition.** Zero open pull requests and zero branches awaiting review, so no PR reached a terminal disposition this pass. This is consistent with Inception scope: RUP Ch.4 places no implementation activity in Inception, and no scaffolding PR was raised either. No productive code, no scope-ahead branch, and no defective diff was found to dispose.
 
 **Scope of this lens.** This is the generic Reviewer lens — the technical review of the artifacts produced this iteration. The Management Reviewer's lens and the Business Reviewer's lens are separate blocks in this same Review Record and are not written here.
+
+### Business Reviewer lens
+
+**Review type.** Business Modeling quality gate — scenario-appropriateness assessment and derivation-readiness check. Not a Fagan inspection: no reader paraphrase step and no separate recorder role.
+
+**Review point.** Lifecycle milestone — LCO. The evaluative lens is **exit criteria**: does the Business Modeling discipline's contribution satisfy the conditions for phase transition? The Business Modeling discipline is INACTIVE on this project, so the lens applied is the **inactivity justification** lens, not the artifact-quality lens.
+
+**Scenario assessment (Heuristic 1 — assessed FIRST, before any artifact was read).** The six RUP business modeling scenarios were evaluated against the declared scope. **None applies.** The project builds one web application for one organisation against declared system requirements (`FR-001`..`FR-009`); no business process is modelled, re-engineered or reused. No scenario-appropriate standard can therefore be applied to a business-model artifact, because no such artifact is required. Applying New Business or Revamp standards here would manufacture false defects — the anti-pattern the discipline's own heuristics warn against.
+
+```plantuml
+@startuml BR_ScenarioSelection
+title Business Modeling scenario selection - six scenarios evaluated, LCO Inception iteration 1
+skinparam classAttributeIconSize 0
+
+class "Which BM scenario applies?" as Q <<decision>>
+
+class "1. Organization Chart" as S1 <<scenario>> {
+  condition : org structure is the deliverable
+  verdict : NOT APPLICABLE
+}
+class "2. Domain Modeling" as S2 <<scenario>> {
+  condition : business entities modelled for a system
+  verdict : NOT APPLICABLE
+}
+class "3. One Business Many Systems" as S3 <<scenario>> {
+  condition : one business model feeds several systems
+  verdict : NOT APPLICABLE
+}
+class "4. Generic Business Model" as S4 <<scenario>> {
+  condition : reusable model across organisations
+  verdict : NOT APPLICABLE
+}
+class "5. New Business" as S5 <<scenario>> {
+  condition : a new business is being created
+  verdict : NOT APPLICABLE
+}
+class "6. Revamp" as S6 <<scenario>> {
+  condition : existing business processes re-engineered
+  verdict : NOT APPLICABLE
+}
+
+class "No scenario applies" as NONE <<verdict>> {
+  basis : DC-4 business-process-led = FALSE
+  consequence : BM discipline INACTIVE
+}
+
+Q --> S1
+Q --> S2
+Q --> S3
+Q --> S4
+Q --> S5
+Q --> S6
+S1 --> NONE
+S2 --> NONE
+S3 --> NONE
+S4 --> NONE
+S5 --> NONE
+S6 --> NONE
+
+note bottom of NONE
+  The project builds one web application for one
+  organisation against declared system requirements
+  (FR-001..FR-009). No business process is modelled,
+  re-engineered or reused, so no scenario's condition
+  holds and no scenario-appropriate standard can be
+  applied to an artifact that does not exist.
+  Applying New Business or Revamp standards here
+  would manufacture false defects.
+end note
+@enduml
+```
+
+**DC §4 classification, independently re-verified.** `get_dc_classification` returned `isBusinessProcessLed: false`, classified 2026-09-24, with all four criteria evaluated and none fired. I re-verified each criterion against the declared scope rather than accepting the verdict:
+
+| DC §4 criterion | Recorded verdict | Independent re-verification |
+|---|---|---|
+| (a) project re-engineers or automates a business process | NOT FIRED | Confirmed. The portal replaces three manual artefacts (Excel clocking sheets, mass emails, PDF phone list) with a web application. No HR process is re-engineered and no process model is produced. |
+| (b) business actors and business workers are modelled | NOT FIRED | Confirmed. The declared scope names system actors (Employee, HR Administrator) and external systems (AD, Keycloak). No business actor and no business worker is declared anywhere. |
+| (c) a Business Use-Case Model is an input or an output | NOT FIRED | Confirmed. The declared scope supplies system use cases `UC01`/`UC02`/`UC03` and `FR-001`..`FR-009` directly. No BUC is declared or required. |
+| (d) the stakeholder declared business processes rather than system requirements | NOT FIRED | Confirmed. The stakeholder declared system requirements, system invariants (`CON-009`..`CON-019`) and acceptance criteria (`AC-001`..`AC-006`), all system-level. |
+
+**Business Modeling artifact inventory — the evidence for the inactivity verdict.** The gate is not the classification alone; it is the classification *plus* the observed absence of every business-model artifact. Both hold.
+
+```plantuml
+@startuml BR_DC4Gate
+title DC-4 business-process-led gate and Business Modeling artifact inventory - LCO, Inception iteration 1
+skinparam classAttributeIconSize 0
+
+class "DC-4 classification" as DC4 <<decision>> {
+  business-process-led : FALSE
+  classifiedAtUtc : 2026-09-24
+}
+
+class "4(a) re-engineers or automates a business process" as C1 <<criterion>> {
+  verdict : NOT FIRED
+}
+class "4(b) business actors and business workers modelled" as C2 <<criterion>> {
+  verdict : NOT FIRED
+}
+class "4(c) a Business Use-Case Model is input or output" as C3 <<criterion>> {
+  verdict : NOT FIRED
+}
+class "4(d) stakeholder declared business processes" as C4 <<criterion>> {
+  verdict : NOT FIRED
+}
+
+class "Business Use-Case Model" as BUC <<artifact>> {
+  expected : NO
+  present : NO
+}
+class "Business Object Model (workers, entities)" as BOM <<artifact>> {
+  expected : NO
+  present : NO
+}
+class "Business rules section" as BR <<artifact>> {
+  expected : NO
+  present : NO
+}
+class "Glossary (business-domain terms)" as GL <<artifact>> {
+  expected : NO
+  present : NO
+}
+
+class "Vision" as V <<artifact>> {
+  BPL signal in prose : NONE
+}
+class "Use-Case Model" as UCM <<artifact>> {
+  BUC / worker / entity sections : 0
+}
+class "Supplementary Specification" as SS <<artifact>> {
+  business-domain specialist terms : 0
+}
+
+DC4 --> C1
+DC4 --> C2
+DC4 --> C3
+DC4 --> C4
+C1 --> BUC
+C2 --> BOM
+C3 --> BUC
+C4 --> BR
+V --> DC4
+UCM --> DC4
+SS --> DC4
+
+note bottom of BUC
+  Zero BM artifacts expected, zero present.
+  The Business Reviewer lens has nothing to review:
+  no BUC, no business actor, no business worker,
+  no business entity, no business-rule section,
+  no business-domain glossary term.
+end note
+@enduml
+```
+
+**Artifacts read in full before any finding was recorded (upstream consumption).** Vision, Use-Case Model, Supplementary Specification, Review Record (existing Reviewer lens blocks), plus the DC §4 classification. The Development Case, Risk List, Iteration Plan, Software Architecture Document and Test Evaluation Summary were not read: none can carry a business-model section, and the Business Modeling discipline's artifact surface is exhausted by the three read.
+
+**Checklists applied.** The Business Modeling checklist (Heuristic 1.2) was applied item by item and every item recorded Pass or N/A. N/A is not a defect: the Development Case does not require a business-model artifact of the BPA this phase, so a finding against a non-required artifact would be a false defect.
+
+**Entry criteria.** The Development Case is present and carries tailoring content, so it governs this review. The DC §4 classification is recorded. No business-model artifact was expected and none was found to be a placeholder mid-review.
+
+**Scope of this lens.** This is the Business Reviewer lens — the business-modeling quality gate. The generic Reviewer's technical lens and the Management Reviewer's lens are separate blocks in this same Review Record and are not written here.
 
 ## Findings
 
