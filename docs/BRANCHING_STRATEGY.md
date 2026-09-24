@@ -316,10 +316,13 @@ end note
 | Labels | `ready-for-review` is the Implementer to Code Reviewer handoff; `severity:*` and `nature:*` classify SCM issues |
 | Dashboards | Query the branch, PR, tag and Issue graph directly. No status report artifact is produced or upserted |
 
-**Open tooling dependency.** The Development Case records that no pipeline definition exists at
-`.github/workflows/ci.yml`. Until it does, the CI gate cannot be evaluated and no baseline tag can
-be written. The gap is owned jointly by ConfigurationManager and Implementer and is tracked in the
-Development Case's environment-readiness table; it is not restated here.
+**CI configuration item.** The pipeline definition is present at `.github/workflows/ci.yml`
+(sha `358f1f826ce016cfc4ff492e6247c8eab232eaec`). It builds and tests on push to `main`,
+`iteration/**`, `chore/**`, `feature/**` and `hotfix/**`, and on pull requests into the same set. It
+syncs `Portal.sln` from the `src/` and `tests/` tree before every build, so a project added by the
+Implementer cannot be silently omitted from the build. It holds no production data or credentials
+and does not deploy (CON-026, CON-029). The pre-tag CI gate is therefore evaluable from this
+iteration onward.
 
 ## Cross-Phase Invariants
 
@@ -343,5 +346,5 @@ authority.
 | Pre-tag gate (APPROVED + CI green) | CON-026 | Refines | Review Record |
 | Change control boundary | CON-020 | Refines | Change Request |
 | Audit procedures | NFR-004, CON-018, CON-019 | Refines | Review Record |
-| Tooling and CI dependency | CON-026 | Refines | Development Case |
+| Tooling and CI configuration item | CON-026 | Refines | Development Case |
 | Cross-phase invariants | CON-004, CON-016 | Refines | Software Architecture Document |
