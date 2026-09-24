@@ -1,0 +1,172 @@
+## Document Control
+
+- **Phase:** Inception
+- **Status:** Draft — iteration 1, not yet reviewed
+- **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
+
+## Risk Classification
+
+Probability and impact are each scored 1–5; exposure is their product. The bands are anchored on the declared risks: R001 (P=3, I=4, exposure=12) is the highest declared exposure and sits at the bottom of the High band. CON-020 fixes this scheme for every risk the team identifies — the same probability, impact, mitigation and contingency as R001 and R002 — so no second scheme is introduced.
+
+| Magnitude | Exposure | Who may decide the strategy |
+|---|---|---|
+| High | 12–25 | Avoid or transfer is the team's. Acceptance is the stakeholder's grant, never the team's |
+| Significant | 8–11 | Avoid or transfer is the team's. Acceptance is the stakeholder's grant, never the team's |
+| Moderate | 5–7 | Avoid or transfer is the team's; acceptance recorded with mitigation and contingency |
+| Minor | 3–4 | Avoid or transfer is the team's |
+| Low | 1–2 | Avoid or transfer is the team's |
+
+```plantuml
+@startuml RiskList_Class
+title Portal - Risk List structure: probability x impact = magnitude, strategy, treatment
+
+class "Risk" as RISK <<entity>> {
+  + id : RNNN
+  + description : String
+  + probability : {Low, Medium, High}
+  + impact : {Low, Medium, High}
+  + exposure : Integer
+  + magnitude : {High, Significant, Moderate, Minor, Low}
+  + strategy : {Avoid, Transfer, Accept, NotApplicable}
+  + owner : Role
+  + status : {Open, Retired, Closed}
+  + mechanismActor : {Agent, Human, ExternalSystem, None}
+}
+
+class "Mitigation" as MIT <<entity>> {
+  + action : String
+  + artifactThatRetiresIt : ArtifactId
+  + iteration : IterationId
+}
+
+class "Contingency" as CONT <<entity>> {
+  + trigger : String
+  + response : String
+}
+
+class "StakeholderAcceptance" as ACC <<entity>> {
+  + grantedBy : STK-NNN
+  + grantedIn : CON-NNN
+  + scopeOfGrant : String
+}
+
+class "RiskClassification" as CLS <<enumeration>> {
+  High
+  Significant
+  Moderate
+  Minor
+  Low
+}
+
+class "RiskStrategy" as STR <<enumeration>> {
+  Avoid
+  Transfer
+  Accept
+  NotApplicable
+}
+
+RISK "1" *-- "0..1" MIT : mitigated by
+RISK "1" *-- "0..1" CONT : contingency for
+RISK "1" *-- "0..1" ACC : acceptance granted by
+RISK --> CLS : classified as
+RISK --> STR : treated by
+
+note right of RISK
+  magnitude = f(probability, impact).
+  A risk whose mechanism names no actor
+  in this project is RETIRED as
+  NotApplicable, with the reason recorded
+  in place of a strategy.
+end note
+
+note bottom of ACC
+  Accept on a HIGH or SIGNIFICANT risk is the
+  stakeholder's grant, never self-issued.
+  CON-021 is STK-001 Laura Gomez's advance
+  grant, in the declared scope, for R001, R002
+  and every team-identified risk whose mechanism
+  is set by the declared constraints or lies
+  outside the team's control and cannot be
+  transferred - provided the treatment never
+  cuts or defers declared scope.
+end note
+@enduml
+```
+
+**Risks retired as not applicable.** A risk whose mechanism names an actor that does not exist in this project is retired, not classified. IARI executes with LLM agents and the stakeholder is the only human: a risk whose mechanism needs a development organization — staffing, onboarding, skills, morale, friction between people — has no actor here. The reason is recorded in place of a strategy, so the retirement is visible rather than silent.
+
+**Acceptance already granted.** CON-021 records the advance grant of STK-001 Laura Gómez, the project sponsor: R001, R002 and every risk the team identifies whose mechanism is set by the declared constraints or lies outside the team's control and cannot be transferred are accepted, provided the treatment never cuts or defers declared scope. Every `accept` below cites that grant. No acceptance in this register is self-issued, and no risk is accepted on the team's own authority.
+
+**Not registered.** CON-021 states that the availability, configuration and ownership of Keycloak and Active Directory are not risks of this project. They are not registered here, and no risk below restates them.
+
+## Risk Register
+
+| ID | Risk | Mechanism actor | P | I | Exposure | Magnitude | Strategy | Owner | Status |
+|---|---|---|---|---|---|---|---|---|---|
+| R001 | A change on Infrastructure's side to Active Directory or Keycloak breaks the portal. | STK-003 Infrastructure | 3 | 4 | 12 | High | Accept (CON-021) | ProjectManager | Open |
+| R002 | The LDAP attributes the directory reads (job title, extension) are not filled consistently across the 3 offices, so the directory shows gaps. | STK-001 HR and the office staff who maintain the AD attributes | 3 | 3 | 9 | Significant | Accept (CON-021) | ProjectManager | Open |
+| R003 | Employees keep recording clockings in Excel out of habit, so BG-002 and BG-003 are not met. | STK-004 Employees | 3 | 2 | 6 | Moderate | Accept (CON-021) | ProjectManager | Open |
+| R004 | The stand-in environment (CON-028) is not ready, so no use case can be built or tested and the iteration produces no verifiable increment. | Implementer + Integrator (the team) | 3 | 3 | 9 | Significant | Avoid | ProjectManager | Open |
+| R005 | The human validation of the real Keycloak and AD by Infrastructure with HR (CON-028) does not return before Elaboration closes, delaying the LCA milestone. | STK-003 Infrastructure + STK-001 HR | 3 | 3 | 9 | Significant | Accept (CON-021) | ProjectManager | Open |
+| R006 | A skewed client clock makes the server record a press timestamp that did not happen, so the audit trail is wrong (AC-006). | STK-004 Employees' client clocks | 2 | 3 | 6 | Moderate | Avoid | ProjectManager | Open |
+| R007 | The coarse roadmap under-counts the iterations the declared scope needs, so the declared scope is not complete at PR. | ProjectManager (the team's own planning) | 2 | 3 | 6 | Moderate | Avoid | ProjectManager | Open |
+| R008 | Developer turnover and knowledge loss. | None — no development organization exists in this project | — | — | — | — | Not applicable — retired | ProjectManager | Retired |
+| R009 | The CI pipeline definition and the guideline files (CON-026, CONTRIBUTING.md, lint config) are not in place, so the first build cannot be verified. | ConfigurationManager + Implementer (the team) | 2 | 2 | 4 | Minor | Avoid | ProjectManager | Open |
+
+R001, R002 and R003 are the business-declared risks, carried with the identifiers and magnitudes the stakeholder declared. R004 onwards are the risks the team identifies, numbered in the same series in the order raised (CON-020).
+
+## Risk Mitigation and Contingency
+
+**R001 — a change on Infrastructure's side breaks the portal (High, accept).**
+Mitigation: the portal's dependency on AD and Keycloak is confined to two configuration-held boundaries — the OIDC client and the LDAP connection (CON-028). The team never works against the real systems, so a change on Infrastructure's side cannot break development, and the real values are substituted at deployment.
+Contingency: Infrastructure operates the portal in production (CON-029) and owns the change. If a change breaks the portal, the remedy is another iteration (CON-021). Declared scope is not cut.
+
+**R002 — LDAP attributes inconsistently filled across the 3 offices (Significant, accept).**
+Mitigation: the stand-in directory carries entries whose job title or extension is empty, so UC-008's gap path (A1) and UC-002's blank-FullName path (A5) are exercised from iteration 1, before the real AD is validated. An empty attribute renders as blank and the entry is still shown.
+Contingency: HR fills the attributes in AD; the portal renders blank meanwhile and no default value is invented (CON-015). If the validation delays a milestone, the remedy is another iteration (CON-021).
+
+**R003 — employees keep using Excel out of habit (Moderate, accept).**
+Mitigation: AC-005 requires 80% of employees to complete a clocking with no prior training, and the UI is the mandatory committed design (CON-031), so no training programme is needed for the clocking path.
+Contingency: HR communication campaign; BG-003 measures adoption at 3 months. The mechanism is HR's, not the team's, and the remedy for a milestone delay is another iteration (CON-021).
+
+**R004 — the stand-in environment is not ready (Significant, avoid).**
+Mitigation: the stand-in environment is the first construction item of iteration 1, before any use case work; the Development Case's iteration preparation checkpoint verifies it, and the Development Case records the gap with its owner.
+Contingency: if it is not ready, the iteration's exit criteria cannot pass and the remedy is another iteration.
+
+**R005 — the human validation gate does not return before Elaboration closes (Significant, accept).**
+Mitigation: the gate is bounded at 14 days of queue time, after which the process suspends (Development Case measurement policy). The team's work does not wait on it — every use case is built and tested against the stand-ins (CON-028).
+Contingency: another iteration (CON-021). The gate is reported in days of queue time, apart from agent time, and the two are never added into one figure.
+
+**R006 — a skewed client clock records a timestamp that did not happen (Moderate, avoid).**
+Mitigation: the design bounds the accepted client-clock skew, and the idempotency key is verified server-side so a retry cannot create a second record; the stand-in test exercises a skewed clock.
+Contingency: HR corrects the clocking through UC-003, which records who, when, the previous value and a reason (NFR-004).
+
+**R007 — the coarse roadmap under-counts the iterations the declared scope needs (Moderate, avoid).**
+Mitigation: the coarse roadmap is re-planned at every iteration from the measured spend and elapsed time of the phases that have closed (CON-027), never from a theoretical capacity, and the fine plan is built only for the current and next iteration.
+Contingency: another iteration to finish the declared scope. Declared scope is never cut or deferred to fit an estimate (CON-027); reducing it is a Change Request the stakeholder decides, not a planning lever.
+
+**R008 — developer turnover and knowledge loss (retired, not applicable).**
+The mechanism names a development organization: staffing, onboarding, skills, morale, friction between people. IARI executes with LLM agents — there is no employment relationship, no onboarding, no morale and no interpersonal friction to manage. No actor exists for this mechanism, so it is not classified and carries no strategy. Recorded here so the retirement is visible rather than silent.
+
+**R009 — the CI pipeline and guideline files are not in place (Minor, avoid).**
+Mitigation: the ConfigurationManager and Implementer author the pipeline definition and the guideline files in iteration 1; the Development Case records the gap with its owner.
+Contingency: the iteration's exit criteria name the pipeline as evidence; if it is not in place, the criterion fails and the remedy is another iteration.
+
+## Traceability
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| R001 | CON-021, STK-003 | DependsOn | UC-001 |
+| R001 | CON-021, STK-003 | DependsOn | UC-008 |
+| R002 | CON-005, CON-028 | DependsOn | UC-008 |
+| R002 | CON-005, CON-028 | DependsOn | UC-002 |
+| R003 | BG-003, AC-005 | DependsOn | UC-001 |
+| R004 | CON-028 | DependsOn | UC-001 |
+| R004 | CON-028 | DependsOn | UC-008 |
+| R005 | CON-021, CON-028 | DependsOn | UC-008 |
+| R005 | CON-021, CON-028 | DependsOn | UC-009 |
+| R006 | AC-006 | DependsOn | UC-001 |
+| R007 | CON-027 | DependsOn | AC-001 |
+| R007 | CON-027 | DependsOn | AC-005 |
+| R009 | CON-026 | DependsOn | UC-001 |
+| R008 | CON-020 | Refines | — (retired as not applicable; threatens no element, carries no trace edge) |
