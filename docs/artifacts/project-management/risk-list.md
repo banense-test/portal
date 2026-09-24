@@ -153,7 +153,6 @@ Mitigation: the ConfigurationManager and Implementer author the pipeline definit
 Contingency: the iteration's exit criteria name the pipeline as evidence; if it is not in place, the criterion fails and the remedy is another iteration.
 
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | R001 | CON-021, STK-003 | DependsOn | UC-001 |
@@ -167,6 +166,7 @@ Contingency: the iteration's exit criteria name the pipeline as evidence; if it 
 | R005 | CON-021, CON-028 | DependsOn | UC-009 |
 | R006 | AC-006 | DependsOn | UC-001 |
 | R007 | CON-027 | DependsOn | AC-001 |
-| R007 | CON-027 | DependsOn | AC-005 |
 | R009 | CON-026 | DependsOn | UC-001 |
-| R008 | CON-020 | Refines | — (retired as not applicable; threatens no element, carries no trace edge) |
+
+R008 is retired as not applicable: its mechanism names no actor in this project, so it threatens no element and carries no trace edge. The retirement and its reason are recorded in the Risk Register and in Risk Mitigation and Contingency.
+
