@@ -520,11 +520,10 @@ end note
 **Business rules applied:** CON-004, CON-013, CON-014, CON-015, CON-016, NFR-004.
 
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | UC-001 Clock In and Clock Out | FR-001, AC-006, CON-010, CON-011 | Derives | Supplementary Specification, Design Model |
-| UC-002 Export Monthly Clocking Report | FR-003, CON-015 | Derives | Supplementary Specification, Design Model |
+| UC-002 Export Monthly Clocking Report | FR-003, CON-005, CON-015, CON-016 | Derives | Supplementary Specification, Design Model |
 | UC-003 Correct or Insert a Clocking | FR-002, CON-012, NFR-004 | Derives | Supplementary Specification, Design Model |
 | UC-004 Read Internal News | FR-004, CON-009, CON-017 | Derives | Supplementary Specification, Design Model |
 | UC-005 Publish News | FR-005, CON-009, NFR-004 | Derives | Supplementary Specification, Design Model |
@@ -534,7 +533,8 @@ end note
 | UC-009 Assign or Clear Worker Category | FR-009, CON-014, CON-015, CON-016 | Derives | Supplementary Specification, Design Model |
 | Actor: Employee | STK-004 | Refines | UC-001, UC-004, UC-008 |
 | Actor: HR Administrator | STK-001, NFR-005 | Refines | UC-002, UC-003, UC-005, UC-006, UC-007, UC-009 |
-| Actor: Keycloak | CON-002, CON-025 | Refines | Supplementary Specification |
-| Actor: Active Directory | CON-004, CON-005 | Refines | UC-008, UC-009 |
+| Actor: Keycloak | CON-002, CON-025 | Refines | UC-001..UC-009 (via the login mechanism) |
+| Actor: Active Directory | CON-004, CON-005, CON-016 | Refines | UC-002, UC-008, UC-009 |
 | Cross-cutting mechanism: OIDC login | CON-002, CON-025, NFR-005 | Refines | Supplementary Specification |
+| Cross-cutting mechanism: LDAP read | CON-004, CON-005, CON-016 | Refines | Supplementary Specification |
 | Cross-cutting mechanism: audit write | NFR-004, CON-018 | Refines | Supplementary Specification |
