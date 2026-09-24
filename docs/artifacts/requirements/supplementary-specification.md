@@ -214,14 +214,15 @@ No maintainability, configurability or portability requirement is declared beyon
 | CON-031 | The custom design at `docs/inputs/employee-portal-design.html` is MANDATORY and authoritative for the UI visual layer, not only for its structure. | CON-031 |
 
 ## Interfaces
+Interface requirements the portal must satisfy. These are requirements, not design interfaces: the Designer owns the `INT-NNN` design-interface identifiers, so the rows below carry the Supplementary Specification's own `IFC-NNN` labels and are not trace-graph elements.
 
 | ID | Interface | Direction | Contract | Source |
 |---|---|---|---|---|
-| INT-001 | Keycloak OIDC | Outbound (portal is the client) | Authorization-code flow. The portal is an OIDC client of the existing Keycloak, which federates AD. The client is already registered; credentials are with the development team. The redirect is intra-network. | CON-002, CON-003, CON-025 |
-| INT-002 | Active Directory over LDAP | Outbound, read-only | Reads name, job title, department, office, email and extension. Never writes. The portal stores only a link (AD user id → category). | CON-004, CON-005, CON-016 |
-| INT-003 | Clocking REST API | Internal (page script → API) | Accepts a clocking POST carrying the client-supplied press timestamp and an idempotency key; rejects duplicates by that key. | AC-006, CON-022 |
-| INT-004 | Monthly CSV export | Outbound (file to HR) | Columns in order: EmployeeId, FullName, WorkerCategory, Date, ClockIn, ClockOut, HoursWorked, Corrected. Date ISO 8601; ClockIn/ClockOut 24-hour HH:mm without seconds; HoursWorked decimal hours with two decimals; Corrected Y/N. Europe/Madrid local time. | FR-003 |
-| INT-005 | Hosted SCM provider CI | Development toolchain | Build and test only. Never holds production data or credentials, never deploys. | CON-026 |
+| IFC-001 | Keycloak OIDC | Outbound (portal is the client) | Authorization-code flow. The portal is an OIDC client of the existing Keycloak, which federates AD. The client is already registered; credentials are with the development team. The redirect is intra-network. | CON-002, CON-003, CON-025 |
+| IFC-002 | Active Directory over LDAP | Outbound, read-only | Reads name, job title, department, office, email and extension. Never writes. The portal stores only a link (AD user id → category). | CON-004, CON-005, CON-016 |
+| IFC-003 | Clocking REST API | Internal (page script → API) | Accepts a clocking POST carrying the client-supplied press timestamp and an idempotency key; rejects duplicates by that key. | AC-006, CON-022 |
+| IFC-004 | Monthly CSV export | Outbound (file to HR) | Columns in order: EmployeeId, FullName, WorkerCategory, Date, ClockIn, ClockOut, HoursWorked, Corrected. Date ISO 8601; ClockIn/ClockOut 24-hour HH:mm without seconds; HoursWorked decimal hours with two decimals; Corrected Y/N. Europe/Madrid local time. | FR-003 |
+| IFC-005 | Hosted SCM provider CI | Development toolchain | Build and test only. Never holds production data or credentials, never deploys. | CON-026 |
 
 ```plantuml
 @startuml SS_RuntimeBoundary
@@ -268,7 +269,6 @@ note bottom of PORTAL
 end note
 @enduml
 ```
-
 ## Applicable Standards
 
 | ID | Standard | Applies to | Source |
