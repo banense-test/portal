@@ -91,16 +91,16 @@ These are technical mechanisms every use case depends on. They are Supplementary
 | Clocking retry with client timestamp and idempotency key (AC-006) | UC-001 | Supplementary Specification — Reliability |
 
 ## Actors
-
 | Actor | Type | Description | Use cases |
 |---|---|---|---|
 | Employee (STK-004) | Human, primary | A Cuba Corp employee — 200 people across 3 offices. Authenticates with corporate credentials. Clocks in and out, reads news, searches the directory. | UC-001 (primary), UC-004, UC-008 |
 | HR Administrator (STK-001) | Human, primary | A member of the HR AD group. Publishes, edits and unpublishes news, manages worker categories, corrects or inserts clockings, views all clockings and exports the monthly CSV. | UC-002, UC-003, UC-005, UC-006, UC-007, UC-009 (primary); UC-001 (secondary) |
 | Keycloak | External system | The company's internal identity provider, federated to Active Directory. Authenticates every session. Not deployed or operated by this project (CON-002, CON-025). | UC-001..UC-009 (via the login mechanism) |
-| Active Directory | External system | The single home of employee data. Read over LDAP for the six directory fields. Never written to (CON-004, CON-005, CON-016). | UC-008, UC-009 |
+| Active Directory | External system | The single home of employee data. Read over LDAP for the six directory fields. Never written to (CON-004, CON-005, CON-016). | UC-002 (FullName at export time), UC-008, UC-009 |
 
 **Actor discovery completeness.** Human actors: Employee, HR Administrator. External systems: Keycloak, Active Directory. Time-triggered actors: none — no scheduled job, batch or report is declared, and the monthly CSV is exported on demand by HR, not on a schedule. Hardware devices: none — no biometric clocking (declared exclusion). Administrative actors: none — the Infrastructure Team (STK-003) operates the portal in production (CON-029) but performs no in-portal administration, and there is no permission administration screen (NFR-005) and no in-portal audit view (CON-018).
 
+**Why Active Directory is an actor of UC-002.** FR-003 requires a FullName column; CON-016 forbids the portal holding any copy of the employee; CON-005 makes the six directory fields AD-read-only. The export therefore reads FullName from Active Directory at export time, and the portal's own store contributes only the clockings and the category link.
 ## Use-Case Survey
 
 Nine use cases, one per declared functional requirement. Priority is MoSCoW; volatility is assessed on two axes — will this change for the same customer over time, and does it differ across customers right now.
