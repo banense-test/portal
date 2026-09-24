@@ -182,7 +182,6 @@ No licensing requirement is declared. The stack is the declared one — .NET 10 
 | PERF-001 | Server response time is the engineering target that makes NFR-001 achievable, not a substitute for it. The acceptance criterion is the full page load as the employee experiences it. | — | AC-001 |
 
 ## Supportability
-
 | ID | Requirement | Source |
 |---|---|---|
 | SUP-001 | The Infrastructure team operates the portal in production once it is live — deployment, monitoring and patching — exactly as they already operate AD and Keycloak. The development team hands over at the end of Transition and does not run it afterwards. | CON-029 |
@@ -191,7 +190,10 @@ No licensing requirement is declared. The stack is the declared one — .NET 10 
 | SUP-004 | The team builds and tests against stand-ins it controls — a test OIDC issuer and a test directory carrying the declared attributes, including entries whose job title or extension is empty. | CON-028 |
 | SUP-005 | There is no data migration. The portal starts empty and records clockings from go-live onwards. The historical Excel sheets stay on the shared drive as a read-only archive and are not imported. | CON-030 |
 | SUP-006 | There is no budget or cap on token spend, and none is to be set by the team. Each iteration's measured spend is recorded and used to forecast the next; declared scope is never cut or deferred to fit an estimate. | CON-027 |
+| SUP-007 | Risk numbering and risk acceptance are project-process constraints, not requirements on the portal: a risk the team identifies is numbered in the same series as the business-declared risks (R003 onwards, in the order raised), and R001, R002 and every risk whose mechanism is set by these constraints or lies outside the team's control and cannot be transferred are accepted in advance, provided the treatment never cuts or defers declared scope. The availability, configuration and ownership of Keycloak and AD are not risks of this project. | CON-020, CON-021 |
+| SUP-008 | Backups are the Infrastructure team's existing server-backup practice, which already covers this PostgreSQL instance in restorable form, confirmed in writing with a verified restore test. No backup design, tooling or restore procedure is part of this project. | CON-032 |
 
+No maintainability, configurability or portability requirement is declared beyond the above. The portal has no configuration screen, no feature flag and no administrative console: the only configurable values are the OIDC and LDAP connection settings of SUP-003, which Infrastructure sets at deployment.
 ## Design Constraints
 
 | ID | Constraint | Source |
