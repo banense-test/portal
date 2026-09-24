@@ -355,7 +355,6 @@ The artifacts are fit to carry the project into Elaboration, subject to the 11 f
 **What this lens does not decide.** The LCO verdict belongs to the ReviewCoordinator and the ManagementReviewer. This block states the technical lens's disposition and the exit-criteria evidence; it does not close the milestone.
 
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | Review Record | Development Case, Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary | Refines | LCO |
@@ -363,3 +362,16 @@ The artifacts are fit to carry the project into Elaboration, subject to the 11 f
 | Reviewer lens — findings | Development Case#F1, Development Case#F2, Vision#F1, Vision#F2, Supplementary Specification#F1, Risk List#F1, Iteration Plan#F1, Iteration Plan#F2, Software Architecture Document#F1, Software Architecture Document#F2, Test Evaluation Summary#F1 | Refines | LCO |
 | Reviewer lens — SCM evidence | Issue #1, run 36050339100 | Refines | LCO |
 | Reviewer lens — disposition | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006, CON-028, CON-026 | Refines | LCO |
+
+### Reviewer lens
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| Review Record | Development Case, Iteration Plan | Refines | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 |
+| Reviewer lens — compliance matrix | Development Case, Iteration Plan | Refines | AC-001, AC-006 |
+| Reviewer lens — findings | Development Case, Iteration Plan | Refines | AC-001, AC-006, CON-026, CON-028 |
+| Reviewer lens — SCM evidence | Issue #1, run 36050339100 | Refines | AC-001, AC-006 |
+| Reviewer lens — disposition | CON-026, CON-028 | Refines | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 |
+
+`Development Case` and `Iteration Plan` are the two reviewed artifacts that are trace-graph elements; the remaining six are named in the Review Scope and Criteria block and carry no element identifier of their own. `Issue #1` and `run 36050339100` are observed SCM facts, cited as returned by the `scm_*` tools. The findings of this lens are cited by their `<artifact>#<key>` handles in the Findings block; a finding is not an element and no edge is registered on one.
+
