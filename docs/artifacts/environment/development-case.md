@@ -508,7 +508,7 @@ private arrangement.
 |---|---|---|
 | SCM repository reachable | Ready | — |
 | Mandatory UI design input present and authoritative (CON-031) | Ready — `docs/inputs/employee-portal-design.html` | — |
-| CI pipeline builds and tests (CON-026) | **Not ready** — no `.github/workflows` file exists | ConfigurationManager + Implementer |
+| CI pipeline builds and tests (CON-026) | **Not ready** — no pipeline definition found at `.github/workflows/ci.yml` | ConfigurationManager + Implementer |
 | `CONTRIBUTING.md` and lint configuration | **Not ready** — absent | SoftwareArchitect, Implementer, TestManager |
 | Stand-in OIDC issuer and stand-in directory (CON-028) | **Not ready** — to be built this iteration, including entries with empty job title and extension | Implementer + Integrator |
 | Version policy recorded | Ready — .NET 10, PostgreSQL 18 | — |
