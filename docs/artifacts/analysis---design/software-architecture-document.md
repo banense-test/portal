@@ -778,12 +778,13 @@ stop
 ```
 
 ## Deployment View
-
 The Development Case records the Deployment Model optional artifact as **not triggered** — the topology is a single application on the existing internal Windows Server estate, so deployment is a section of this document rather than an artifact of its own.
 
 ### Topology
 
 One .NET 10 application and one PostgreSQL 18 instance, both on the internal Windows Server estate Infrastructure already operates (CON-001, CON-024, CON-029). Keycloak and Active Directory are existing corporate systems on the same internal network that the project neither deploys nor operates (CON-002, CON-025). The CI service is outside the runtime boundary entirely (CON-026).
+
+**The physical placement of the application and the database within the estate is Infrastructure's decision, not this project's.** The stakeholder declared one estate (CON-001) and one PostgreSQL instance on it (CON-024); it did not declare how many machines that is. The diagram below therefore shows the application and the database as **logical nodes inside the estate**, not as a claim about the number of physical servers. Nothing in the architecture depends on the answer: the application reaches the database over the estate's own network, and no component is co-located with another for a performance or availability reason.
 
 **CON-025 is load-bearing here.** Keycloak runs **inside** the corporate network. External to this *project* is not the same as external to the *network*: the OIDC redirect is an intra-network call, nothing about login crosses the corporate boundary, and login keeps working with no internet link. A deployment view that placed Keycloak in a cloud node would contradict CON-025 and be wrong.
 
@@ -839,6 +840,14 @@ note bottom of KC
   same as external to the NETWORK. Login keeps
   working with no internet link.
 end note
+
+note bottom of ESTATE
+  CON-001 declares ONE estate, not a number of
+  machines. The application and database nodes
+  above are logical, not a claim about physical
+  servers: their placement is Infrastructure's
+  decision and no component depends on it.
+end note
 @enduml
 ```
 
@@ -847,8 +856,8 @@ end note
 | Node | Operated by | Hosts | Source |
 |---|---|---|---|
 | Employee workstation | The employee | A current Chrome or Edge browser; the clocking page's localStorage retry | CON-006, AC-006 |
-| Application server | Infrastructure (STK-003) | The single .NET 10 deployable — COMP-001..COMP-010 | CON-001, CON-029 |
-| Database server | Infrastructure (STK-003) | PostgreSQL 18 | CON-024, CON-032 |
+| Application server (logical node in the estate) | Infrastructure (STK-003) | The single .NET 10 deployable — COMP-001..COMP-010 | CON-001, CON-029 |
+| Database server (logical node in the estate) | Infrastructure (STK-003) | PostgreSQL 18 | CON-024, CON-032 |
 | Identity server | Infrastructure (STK-003) | Keycloak, inside the corporate network | CON-002, CON-025 |
 | Directory server | Infrastructure (STK-003) | Active Directory, read-only to the portal | CON-004, CON-005 |
 | Hosted SCM provider | The provider | The CI pipeline — build and test only | CON-026 |
