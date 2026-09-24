@@ -5,6 +5,8 @@
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 
 ## Functionality
+Functionality here covers the system-wide functional requirements that no single use case owns: security, licensing, the audit trail and the authorization model. The functional behaviour of the portal itself is specified in the Use-Case Model (UC-001..UC-009).
+
 ### NFR-004 Audit Trail
 
 Mandatory traceability. The audit is written for compliance and read directly from the database by whoever needs it; there is no in-portal audit view screen (CON-018).
@@ -18,6 +20,45 @@ Mandatory traceability. The audit is written for compliance and read directly fr
 | Clocking corrected or inserted by HR | Who, when, previous value, free-text reason | FR-002 |
 
 Employee fields are read-only from AD, so there is nothing to audit there (NFR-004). No external compliance regime applies and no retention period is mandated (CON-019). The original clocking record is never overwritten in place and never deleted (CON-012); a news item is never deleted, only unpublished (CON-017).
+
+```plantuml
+@startuml NFR004_Audit
+title NFR-004 Audit trail - five audited events, append-only, read from the database
+
+start
+:An audited action is performed;
+note right
+  NFR-004: the audit is written for compliance
+  and read directly from the database by whoever
+  needs it. There is no in-portal audit view
+  screen (CON-018).
+end note
+if (which audited event?) then (news published)
+  :Record author + timestamp (FR-005);
+elseif (news edited)
+  :Record who + when, exactly as for the original publication (FR-006);
+elseif (news unpublished)
+  :Record who + when (FR-007);
+elseif (worker category assigned or cleared)
+  :Record who, when, previous value (FR-009);
+else (clocking corrected or inserted by HR)
+  :Record who, when, previous value, free-text reason (FR-002);
+endif
+:Append the audit entry;
+note right
+  CON-012: the original clocking record is never
+  overwritten in place and never deleted.
+  CON-017: a news item is never deleted, only
+  unpublished - deleting would destroy the audit trail.
+end note
+:Entry is read ad hoc from the database by HR or Infrastructure;
+note right
+  CON-019: no external compliance regime applies
+  and no retention period is mandated.
+end note
+stop
+@enduml
+```
 
 ### NFR-005 Authorization Model
 
@@ -91,6 +132,23 @@ These mechanisms are not use cases — they deliver no observable value to an ac
 | CON-017 | News is never deleted, only unpublished. |
 | CON-018 | The audit is read directly from the database; there is no in-portal audit view screen. |
 | CON-019 | No external compliance regime applies to the audit, and no retention period is mandated. |
+
+### Security
+
+| ID | Requirement | Source |
+|---|---|---|
+| SEC-001 | Every request is authenticated. The portal is an OIDC client of the existing Keycloak, which federates Active Directory. There is no local account, no local password and no second credential store. | CON-002, CON-025 |
+| SEC-002 | Authorization is the two-level model of NFR-005, derived from AD group membership. There is no role matrix, no permission screen and no per-category rule. | NFR-005, CON-013 |
+| SEC-003 | The portal never writes to Active Directory. The only write the portal makes about a person is the worker-category link (AD user id → category). | CON-004, CON-016 |
+| SEC-004 | The portal is reachable only from the internal corporate network. | CON-007 |
+| SEC-005 | The directory shows corporate data only — name, job title, department, office, email, extension, worker category. No private personal information is shown. | FR-008 |
+| SEC-006 | Nothing about the directory or the news is cached on the client. Both require the network and show a 'no connection' message when it is unavailable. | AC-006 |
+| SEC-007 | The OIDC client secret and the LDAP bind account are held in configuration, never in code. Infrastructure substitutes the real values at deployment. | CON-028 |
+| SEC-008 | CI never holds production data or credentials and never deploys. | CON-026 |
+
+### Licensing
+
+No licensing requirement is declared. The stack is the declared one — .NET 10 (CON-022), Razor Pages (CON-023), PostgreSQL 18 (CON-024) — and the project introduces no third-party component, licence or subscription. Keycloak and Active Directory are existing corporate systems the project neither deploys nor operates (CON-002, CON-025).
 
 ## Usability
 
