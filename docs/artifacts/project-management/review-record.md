@@ -1,7 +1,12 @@
 ## Document Control
-
 - **Phase:** Inception
 - **Status:** Draft — LCO technical review, iteration 1
+- **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
+
+### Business Reviewer lens
+
+- **Phase:** Inception
+- **Status:** Draft — LCO business review, iteration 1
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 
 ## Review Scope and Criteria
