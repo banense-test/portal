@@ -972,8 +972,6 @@ Each declared quality attribute is mapped to the architectural tactics that addr
 | R007 — the roadmap under-counts the iterations | No architectural exposure | Project Manager's; re-planned from measured actuals each iteration (CON-027) |
 | R009 — the CI pipeline and guideline files are not in place | The build cannot be verified | Avoided: the ConfigurationManager and Implementer author them in iteration 1 |
 
-**No architectural proof-of-concept is required.** The Development Case evaluated the Architectural Proof-of-Concept trigger and found it not fired: no technical risk requires empirical validation. R001 and R002 are dependency and data-quality risks owned by Infrastructure and HR, not technical unknowns, and CON-021 accepts them in advance; CON-028 removes the only candidate by fixing the stand-in approach; CON-003 confirms the OIDC client is already registered so login is testable from day one. The two risks with a technical mechanism — R002's empty-attribute behaviour and R006's skew bound — are retired by design decisions and by the stand-in test, not by a prototype. Their dispositions are recorded as analysis-only.
-
 ### Proof-of-Concept Disposition
 
 The Development Case evaluated the Architectural Proof-of-Concept optional artifact against its §5.2 trigger and found it **not fired**: no technical risk requires empirical validation. R001 and R002 are dependency and data-quality risks owned by Infrastructure and HR, not technical unknowns, and CON-021 accepts them in advance; CON-028 removes the only candidate by fixing the stand-in approach; CON-003 confirms the OIDC client is already registered so login is testable from day one.
