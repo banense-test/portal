@@ -1,0 +1,165 @@
+# Portal - build and test pipeline.
+#
+# CON-026: the repository lives on the hosted SCM provider this workspace is configured
+# with, so build and test run on that provider's hosted CI. 'No cloud' and 'internal
+# network only' govern the portal at runtime - where it is hosted and who can reach it -
+# not the development toolchain. CI never holds production data or credentials, and never
+# deploys: Infrastructure does (CON-029).
+#
+# Stack under test (declared, not inferred):
+#   CON-022  .NET 10 exposing a REST API
+#   CON-023  Razor Pages - no SPA, no client-side framework, no client-side router
+#   CON-024  PostgreSQL 18 (patch floats, major pinned)
+#
+# ---------------------------------------------------------------------------
+# Integration order - the Integrator merges feature branches into iteration/Cn
+# bottom-up over the subsystem dependency graph, leaves first. Merging in the
+# order PRs happen to land produces spurious CI failures that are actually
+# wrong-order symptoms.
+#
+# @startuml
+# title Portal - integration order (bottom-up over the subsystem graph)
+# package "1. Foundation" {
+#   [Configuration + stand-in boundary] as L1
+#   [Persistence] as L2
+# }
+# package "2. Cross-cutting mechanisms" {
+#   [Authentication] as L3
+#   [Authorization] as L4
+#   [Audit trail] as L5
+#   [Directory reader] as L6
+# }
+# package "3. Use-case subsystems" {
+#   [Clocking] as L7
+#   [News] as L8
+#   [Directory + worker category] as L9
+#   [Reporting] as L10
+# }
+# L1 --> L2
+# L2 --> L3
+# L3 --> L4
+# L4 --> L5
+# L5 --> L6
+# L6 --> L7
+# L7 --> L8
+# L8 --> L9
+# L9 --> L10
+# note bottom of L1
+#   Merge order follows this graph, leaves first.
+#   A red post-merge build HALTS the pipeline and is
+#   tracked by an integration-regression Issue.
+# end note
+# @enduml
+#
+# ---------------------------------------------------------------------------
+# Target build frequency: at least one build per day toward an iteration close,
+# one per week minimum. Every merge into iteration/Cn is followed by a build
+# status check; a red post-merge build HALTS the pipeline until the root cause
+# is coordinated between Implementer, CCM and ConfigurationManager - it is never
+# silenced and never worked around.
+# ---------------------------------------------------------------------------
+
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'iteration/**'
+      - 'chore/**'
+      - 'feature/**'
+      - 'hotfix/**'
+  pull_request:
+    branches:
+      - main
+      - 'iteration/**'
+      - 'chore/**'
+      - 'feature/**'
+      - 'hotfix/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: 'true'
+  DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      # The solution is a build manifest, not a source of truth. The Implementer adds
+      # new subsystem projects under src/ every iteration; a stale solution that omits
+      # them would compile nothing of that work and a green check would be a lie. So the
+      # manifest is synced from the src/ + tests/ tree before every build and can never
+      # drift out of sync with the merged code.
+      - name: Sync solution with the src/ and tests/ tree
+        run: |
+          set -euo pipefail
+          projects=$(find src tests -name '*.csproj' -not -path '*/obj/*' -not -path '*/bin/*' | sort)
+          if [ -z "$projects" ]; then
+            echo "No project files found under src/ or tests/." >&2
+            exit 1
+          fi
+          for p in $projects; do
+            echo "Ensuring $p is in Portal.sln"
+            dotnet sln Portal.sln add "$p" || true
+          done
+          echo "Projects in Portal.sln:"
+          dotnet sln Portal.sln list
+
+      - name: Restore
+        run: dotnet restore Portal.sln
+
+      - name: Build
+        run: dotnet build Portal.sln --no-restore --configuration Release
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Sync solution with the src/ and tests/ tree
+        run: |
+          set -euo pipefail
+          projects=$(find src tests -name '*.csproj' -not -path '*/obj/*' -not -path '*/bin/*' | sort)
+          for p in $projects; do
+            dotnet sln Portal.sln add "$p" || true
+          done
+
+      - name: Restore
+        run: dotnet restore Portal.sln
+
+      # Every test project under tests/ is executed. A test project added by the
+      # Implementer is picked up automatically - the job is not bound to a fixed name.
+      - name: Test
+        run: |
+          set -euo pipefail
+          testprojects=$(find tests -name '*.csproj' -not -path '*/obj/*' -not -path '*/bin/*' | sort)
+          if [ -z "$testprojects" ]; then
+            echo "No test project found under tests/." >&2
+            exit 1
+          fi
+          for p in $testprojects; do
+            echo "Testing $p"
+            dotnet test "$p" --no-restore --configuration Release --verbosity normal
+          done
