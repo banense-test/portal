@@ -122,7 +122,6 @@ Nine use cases, one per declared functional requirement. Priority is MoSCoW; vol
 **Architecturally significant use cases (detailed this iteration).** UC-001, UC-002 and UC-008. UC-001 forces the client-timestamp and idempotency decisions (AC-006) and the page-level script (CON-023). UC-008 forces the LDAP read and the merge with the portal-owned category link (CON-005, CON-016) and must survive empty attributes (R002). UC-002 forces the exact export contract of FR-003. The remaining six are outlined; the RequirementsSpecifier details them in Elaboration.
 
 ## Use-Case Specifications
-
 ### UC-001 Clock In and Clock Out
 
 | Field | Value |
@@ -204,6 +203,8 @@ endif
 |---|---|
 | Source | FR-003 |
 | Primary actor | HR Administrator (STK-001) |
+| Secondary actor | Active Directory (external system) — read over LDAP for FullName |
+| Stakeholders and interests | HR: the CSV is the artefact that replaces the Excel sheet, so its columns, order, formats and row rules must match FR-003 exactly. Infrastructure: AD is read, never written (CON-004). |
 | Trigger | HR selects a calendar month and requests the export. |
 | Precondition | The HR Administrator is authenticated and is a member of the HR AD group. |
 | Postcondition | A CSV file covering the selected calendar month has been produced with the declared columns, order, formats and row rules. |
@@ -213,9 +214,11 @@ endif
 **Main flow**
 
 1. HR selects one calendar month (00:00 on the first day to 23:59:59 on the last, Europe/Madrid).
-2. The portal collects every clocking of that month.
-3. The portal writes one row per employee per day that has at least one clocking, with the columns EmployeeId, FullName, WorkerCategory, Date, ClockIn, ClockOut, HoursWorked, Corrected, in that order.
-4. The portal returns the CSV to HR.
+2. The portal collects every clocking of that month from its own store and groups them by employee and calendar date.
+3. The portal reads FullName from Active Directory over LDAP for the employees in the result. The portal holds no copy of the employee (CON-016), so the name is read at export time and never stored.
+4. The portal reads the worker-category links for those AD user ids.
+5. The portal writes one row per employee per day that has at least one clocking, with the columns EmployeeId, FullName, WorkerCategory, Date, ClockIn, ClockOut, HoursWorked, Corrected, in that order.
+6. The portal returns the CSV to HR.
 
 **Alternative flows**
 
@@ -223,18 +226,65 @@ endif
 - **A2 — A day with a missing clock-out.** The row is still exported, with ClockOut and HoursWorked empty — not zero.
 - **A3 — A day HR corrected or inserted.** Corrected is Y for that day; otherwise N.
 - **A4 — An employee with no worker category (CON-015).** The WorkerCategory field is blank. No default value is invented.
+- **A5 — An employee's FullName is empty in Active Directory (R002).** The row is still exported with the FullName field blank. The stand-in directory carries such entries so this path is exercised before the real AD is validated (CON-028).
 
 **Field rules**
 
 | Column | Rule |
 |---|---|
 | EmployeeId | The AD sAMAccountName read from the authenticated session, written as-is. No mapping table. |
-| FullName | From Active Directory. |
+| FullName | Read from Active Directory over LDAP at export time. The portal holds no copy of the employee (CON-016). |
 | WorkerCategory | The portal-owned category link; blank when none (CON-015). |
 | Date | ISO 8601, e.g. 2026-06-22. |
 | ClockIn / ClockOut | 24-hour HH:mm without seconds, Europe/Madrid local time. |
 | HoursWorked | Decimal hours with two decimals, computed from the recorded times — not from the minute-rounded values shown. |
 | Corrected | Y if HR corrected or inserted any clocking of that day, else N. |
+
+```plantuml
+@startuml UC002_Activity
+title UC-002 Export Monthly Clocking Report - DB clockings joined with the AD read for FullName
+
+start
+:HR selects one calendar month;
+note right
+  FR-003: 00:00 on the first day to
+  23:59:59 on the last, Europe/Madrid.
+end note
+:Portal collects every clocking of that month from PostgreSQL;
+:Portal groups the clockings by employee and calendar date;
+:Portal reads the AD user ids of the employees in the result;
+:Portal reads FullName from Active Directory over LDAP;
+note right
+  CON-016: the portal holds no copy of the
+  employee, so FullName is read at export time.
+  CON-005: the AD fields are read-only.
+end note
+:Portal reads the worker-category links for those AD user ids;
+:Portal builds one row per employee per day that has at least one clocking;
+note right
+  Columns in order: EmployeeId, FullName,
+  WorkerCategory, Date, ClockIn, ClockOut,
+  HoursWorked, Corrected.
+end note
+if (day has a missing clock-out?) then (yes)
+  :ClockOut and HoursWorked empty, not zero;
+else (no)
+  :ClockOut and HoursWorked from the recorded times;
+endif
+if (HR corrected or inserted any clocking of that day?) then (yes)
+  :Corrected = Y;
+else (no)
+  :Corrected = N;
+endif
+if (employee has no worker category?) then (yes)
+  :WorkerCategory blank, no default invented;
+else (no)
+  :WorkerCategory from the link;
+endif
+:Portal returns the CSV to HR;
+stop
+@enduml
+```
 
 ### UC-003 Correct or Insert a Clocking
 
