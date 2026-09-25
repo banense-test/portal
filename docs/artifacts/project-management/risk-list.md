@@ -5,16 +5,17 @@
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 
 ## Risk Classification
-
 Probability and impact are each scored 1–5; exposure is their product. CON-020 fixes this scheme for every risk the team identifies — the same probability, impact, mitigation and contingency as R001 and R002 — so no second scheme is introduced.
 
 **The bands are anchored on the business-declared risks.** R002 (P=3, I=3, exposure=9) and R003 (P=3, I=2, exposure=6) are declared by the business with their identifiers and magnitudes, so their exposures are a confirmed basis. The Significant band is anchored on R002's declared exposure of 9; the Moderate band on R003's declared exposure of 6.
 
 **R001's probability and impact are the analyst's estimates, not values the stakeholder stated, and the stakeholder declined to confirm them.** R001's exposure of 12 and the High band's lower boundary are therefore `[ASSUMPTION — requires validation]` and provisional. This changes no acceptance decision: the boundary that decides whether a risk needs the stakeholder's grant is the Significant/Moderate boundary at 8, anchored on R002's declared exposure of 9 — and both the High and the Significant band require the stakeholder's grant in any case, so a risk moving between them changes no strategy.
 
+**R004 was re-assessed at this close and moved from Significant to High.** Its treatment has failed twice: the stand-in environment was not delivered in Iter-1 and was not delivered in Iter-2, so its probability is raised from 3 to 4 on the observed 2-of-2 materialization rate, giving exposure 12. The High band's lower boundary now rests on two figures — R001's unconfirmed exposure and R004's re-assessed exposure — and neither is stakeholder-confirmed. This changes no acceptance decision either: R004's strategy is Avoid, and avoidance is the team's to decide. CON-021's advance grant does not reach R004, because the grant covers risks whose mechanism is set by the declared constraints or lies outside the team's control, and R004's mechanism is the team's own execution.
+
 | Magnitude | Exposure | Anchor | Who may decide the strategy |
 |---|---|---|---|
-| High | 12–25 | Lower boundary provisional — rests on R001's unconfirmed exposure of 12 | Avoid or transfer is the team's. Acceptance is the stakeholder's grant, never the team's |
+| High | 12–25 | Lower boundary provisional — rests on R001's unconfirmed exposure of 12 and R004's re-assessed exposure of 12 | Avoid or transfer is the team's. Acceptance is the stakeholder's grant, never the team's |
 | Significant | 8–11 | R002, declared by the business at exposure 9 | Avoid or transfer is the team's. Acceptance is the stakeholder's grant, never the team's |
 | Moderate | 5–7 | R003, declared by the business at exposure 6 | Avoid or transfer is the team's; acceptance recorded with mitigation and contingency |
 | Minor | 3–4 | — | Avoid or transfer is the team's |
@@ -92,7 +93,11 @@ note bottom of CLS
   the analyst's estimates, not values the
   stakeholder stated, and the stakeholder declined
   to confirm them: R001's exposure and the High
-  band's lower boundary are PROVISIONAL.
+  band's lower boundary are PROVISIONAL. R004 was
+  re-assessed at Iter-2 close and moved Significant
+  to High on the observed 2-of-2 materialization
+  rate, so the High band's lower boundary now rests
+  on two figures, neither stakeholder-confirmed.
 end note
 
 note bottom of ACC
@@ -104,17 +109,18 @@ note bottom of ACC
   is set by the declared constraints or lies
   outside the team's control and cannot be
   transferred - provided the treatment never
-  cuts or defers declared scope.
+  cuts or defers declared scope. R004's mechanism
+  is the team's own execution, so the grant does
+  not reach it.
 end note
 @enduml
 ```
 
 **Risks retired as not applicable.** A risk whose mechanism names an actor that does not exist in this project is retired, not classified. IARI executes with LLM agents and the stakeholder is the only human: a risk whose mechanism needs a development organization — staffing, onboarding, skills, morale, friction between people — has no actor here. The reason is recorded in place of a strategy, so the retirement is visible rather than silent.
 
-**Acceptance already granted.** CON-021 records the advance grant of STK-001 Laura Gómez, the project sponsor: R001, R002 and every risk the team identifies whose mechanism is set by the declared constraints or lies outside the team's control and cannot be transferred are accepted, provided the treatment never cuts or defers declared scope. Every `accept` below cites that grant. No acceptance in this register is self-issued, and no risk is accepted on the team's own authority.
+**Acceptance already granted.** CON-021 records the advance grant of STK-001 Laura Gómez, the project sponsor: R001, R002 and every risk the team identifies whose mechanism is set by the declared constraints or lies outside the team's control and cannot be transferred are accepted, provided the treatment never cuts or defers declared scope. Every `accept` below cites that grant. No acceptance in this register is self-issued, and no risk is accepted on the team's own authority. R004 is not covered by the grant: its mechanism is the team's own execution, so its strategy is Avoid and no acceptance is claimed for it.
 
 **Not registered.** CON-021 states that the availability, configuration and ownership of Keycloak and Active Directory are not risks of this project. They are not registered here, and no risk below restates them.
-
 ## Risk Register
 
 | ID | Risk | Mechanism actor | P | I | Exposure | Magnitude | Strategy | Owner | Status | Treatment state at Iter-1 close |
