@@ -4,14 +4,13 @@
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 
 ## Problem Statement
-
 | Aspect | Statement |
 |---|---|
 | The problem | Cuba Corp records attendance, distributes HR announcements and publishes the corporate phone list through three disconnected manual artefacts: shared Excel clocking sheets, mass emails, and an outdated PDF phone list. |
 | Root cause | There is no single system of record for these three activities. Each is maintained by hand in a different medium, so the data is duplicated, stale and unverifiable — and HR spends its time maintaining the medium instead of the process. |
 | Affected stakeholders | STK-001 Laura Gómez (HR Director) maintains all three artefacts by hand. STK-004 Cuba Corp Employees (200 people, 3 offices) depend on them and cannot trust the directory or find an announcement. STK-003 Infrastructure operates the identity systems the replacement must rely on. |
 | Impact if unsolved | HR management time stays consumed by manual upkeep (BG-001 unachievable); clockings continue to be recorded in Excel (BG-002 unachievable); the directory stays stale and employees keep asking HR for phone numbers (AC-004 unachievable). |
-| Success criteria | BG-001 HR management time reduced by 50% against the current manual processes. BG-002 zero new clockings recorded in Excel after go-live. BG-003 80% of the 200 employees actively using the portal within 3 months. Verified through AC-001..AC-006. |
+| Success criteria | BG-001 HR management time reduced by 50% against the current manual processes — verified through AC-001, AC-002, AC-003, AC-004 and AC-006, the criteria the project's own test effort can close. BG-002 zero new clockings recorded in Excel after go-live — verified through AC-002 and AC-005. BG-003 80% of the 200 employees actively using the portal within 3 months — measured with STK-004 after go-live, outside the project's test effort: no acceptance criterion the team can run closes it, and AC-005 is the adoption measure taken with real employees after launch. |
 
 ## Product Position Statement
 
