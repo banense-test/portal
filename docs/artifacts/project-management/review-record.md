@@ -705,29 +705,18 @@ The artifacts are fit to carry the project into Elaboration, subject to the four
 
 ### Reviewer lens
 
-**Iteration 1 — LCO technical review.**
+**Iteration 3 — LCO technical review.**
 
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| Review Record | Development Case, Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary | Refines | LCO |
+| Reviewer lens — closure ledger | Development Case#F3, Vision#F3, Use-Case Model#F1, Use-Case Model#F2, Supplementary Specification#F2, Test Evaluation Summary#F2 | Refines | LCO |
 | Reviewer lens — compliance matrix | Development Case, Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary | Refines | LCO |
-| Reviewer lens — findings | Development Case#F1, Development Case#F2, Vision#F1, Vision#F2, Supplementary Specification#F1, Risk List#F1, Iteration Plan#F1, Iteration Plan#F2, Software Architecture Document#F1, Software Architecture Document#F2, Test Evaluation Summary#F1 | Refines | LCO |
-| Reviewer lens — SCM evidence | Issue #1, run 36050339100 | Refines | LCO |
-| Reviewer lens — disposition | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006, CON-028, CON-026 | Refines | LCO |
-
-**Iteration 2 — LCO technical review.**
-
-| Element | Traces From | Link Type | Traces To |
-|---|---|---|---|
-| Review Record | Development Case, Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary | Refines | LCO |
-| Reviewer lens — closure ledger | Development Case#F1, Development Case#F2, Vision#F1, Vision#F2, Supplementary Specification#F1, Risk List#F1, Iteration Plan#F1, Iteration Plan#F2, Software Architecture Document#F1, Software Architecture Document#F2, Test Evaluation Summary#F1 | Refines | LCO |
-| Reviewer lens — compliance matrix | Development Case, Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary | Refines | LCO |
-| Reviewer lens — findings | Use-Case Model#F1, Use-Case Model#F2, Vision#F3, Supplementary Specification#F2, Development Case#F3, Test Evaluation Summary#F2 | Refines | LCO |
-| Reviewer lens — traceability compliance | R001, R004, R009, UC-001, UC-008 | Refines | LCO |
-| Reviewer lens — SCM evidence | Issue #1, Issue #2, Issue #3, run 36095051721 | Refines | LCO |
+| Reviewer lens — findings | Use-Case Model#F3, Development Case#F4, Development Case#F5, Test Evaluation Summary#F2 | Refines | LCO |
+| Reviewer lens — traceability compliance | COMP-001, COMP-002, R004, UC-001, UC-002, UC-004, UC-008 | Refines | LCO |
+| Reviewer lens — SCM evidence | Issue #1, Issue #2, Issue #3, Issue #4, run 36111645523 | Refines | LCO |
 | Reviewer lens — disposition | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006, CON-026, CON-028 | Refines | LCO |
 
-**Trace endpoints.** `FR-001`..`FR-009`, `NFR-001`..`NFR-005`, `AC-001`..`AC-006`, `CON-001`..`CON-032`, `BG-001`..`BG-003`, `STK-001`..`STK-004` and `R001`..`R009` are declared identifiers, copied exactly from the work order. `UC-001`..`UC-009` are the System Analyst's use-case identifiers; `COMP-001`..`COMP-010` are the Software Architect's component identifiers. `Issue #1`, `Issue #2`, `Issue #3` and `run 36095051721` are observed SCM facts, cited as returned by the `scm_*` tools. `LCO` is the milestone this review serves. The findings of this lens are cited by their `<artifact>#<key>` handles; a finding is not an element and no edge is registered on one.
+**Trace endpoints.** `FR-001`..`FR-009`, `NFR-001`..`NFR-005`, `AC-001`..`AC-006`, `CON-001`..`CON-032`, `BG-001`..`BG-003`, `STK-001`..`STK-004` and `R001`..`R009` are declared identifiers, copied exactly from the work order. `UC-001`..`UC-009` are the System Analyst's use-case identifiers; `COMP-001`..`COMP-010` are the Software Architect's component identifiers. `Issue #1`, `Issue #2`, `Issue #3`, `Issue #4` and `run 36111645523` are observed SCM facts, cited as returned by the `scm_*` tools. `LCO` is the milestone this review serves. The findings of this lens are cited by their `<artifact>#<key>` handles; a finding is not an element and no edge is registered on one.
 
 **No element of this lens is minted.** The Reviewer produces no `UC-NNN`, `CLS-NNN`, `COMP-NNN`, `TC-NNN` or `INT-NNN`; those families belong to other authorities. The compliance matrix, the defect distribution, the annotated review map, the closure ledger and the disposition are sections of this Review Record, not trace-graph elements, so no edge is registered on them — naming a document section in a Traces To column registers nothing, which is the defect recorded as `Vision#F1` and `Supplementary Specification#F1` in iteration 1.
 
