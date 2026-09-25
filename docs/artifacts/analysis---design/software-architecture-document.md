@@ -1030,6 +1030,8 @@ The Development Case records the Data Model optional artifact as **not triggered
 
 **The absence of an employee table is the architecture's most important data decision.** CON-016 states employee data has exactly one home — Active Directory — and the portal stores only a link. There is therefore no synchronisation, no reconciliation and no conflict to resolve, and no stale copy can exist. The FullName column of the CSV export is read from AD at export time for exactly this reason.
 
+**The category link is read by two use cases, not one.** CON-013 declares the worker category is used as a column of the directory (which it also filters) and as a column of the CSV export. `WorkerCategoryLink` is therefore read by UC-008 as well as written by UC-009, and the directory's category filter is a query on this table joined to the AD result set in memory — the join cannot be pushed into LDAP, because the category is not an AD attribute. An employee with no row in this table has no category: the directory shows the field blank and a category filter does not return them (CON-015). No default row is created and no default value is invented.
+
 ### The correction chain, and the effective value of a day
 
 CON-012 states the original clocking record is never overwritten in place and never deleted. The clocking row is therefore **immutable in its recorded times**: `clockInUtc` and `clockOutUtc` are written once at insert and no code path updates them. A correction is a new `ClockingCorrection` row carrying `previousValue`, `newValue`, `reason`, `correctedBy` and `correctedAtUtc`.
