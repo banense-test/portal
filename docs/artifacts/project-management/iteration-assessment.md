@@ -715,17 +715,21 @@ end note
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| Iteration Assessment | Iteration Plan | Refines | LCO |
-| Iteration Assessment | Review Record | Refines | LCO |
-| Iteration Assessment | Test Evaluation Summary | Refines | LCO |
-| Iteration Assessment | CON-027 | DependsOn | R007 |
+| Iteration Assessment | — | Refines | LCO |
+| Iteration Assessment | AC-002, AC-005, AC-006 | Refines | UC-001 |
+| Iteration Assessment | AC-003 | Refines | UC-005 |
+| Iteration Assessment | AC-004 | Refines | UC-008 |
 | Iteration Assessment | CON-028 | DependsOn | R004 |
-| Iteration Assessment | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | UC-001, UC-005, UC-008 |
-| Iteration Assessment | Issue #1, Issue #2, Issue #3 | DependsOn | R009 |
-| Iteration Assessment | run 36095051721 | DependsOn | R009 |
+| Iteration Assessment | CON-027 | DependsOn | R007 |
+| Iteration Assessment | CON-026 | DependsOn | R009 |
 
-**Trace endpoints.** `FR-001`..`FR-009`, `NFR-001`..`NFR-005`, `AC-001`..`AC-006`, `CON-001`..`CON-032`, `BG-001`..`BG-003`, `STK-001`..`STK-004` and `R001`..`R009` are declared identifiers, copied exactly from the work order. `Issue #1`, `Issue #2`, `Issue #3` and `run 36095051721` are observed SCM facts, cited as returned by the `scm_*` tools. `LCO` is the milestone this iteration works toward. The findings cited above are the reviewers' `<artifact>#<key>` handles; a finding is not an element and no edge is registered on one.
+Every row above is a registered edge. The assessment records the iteration outcome the LCO gate rules on; the three acceptance-criterion rows state which use case carries each criterion the assessment accounts for; the three risk rows state the risks the iteration's variances and measurements bear on.
+
+**Re-read against UC-008's change.** UC-008 now filters the directory by worker category (CON-013). This assessment's end changed: the UC-008 entry in Use Cases and Scenarios Implemented now carries A5, the category filter over the closed list of four, and records that the category link is the one part of UC-008 that cannot be exercised against AD at all. The change is declared in turn.
+
+**Trace endpoints.** `FR-001`..`FR-009`, `NFR-001`..`NFR-005`, `AC-001`..`AC-006`, `CON-001`..`CON-032`, `BG-001`..`BG-003`, `STK-001`..`STK-004` and `R001`..`R009` are declared identifiers, copied exactly from the work order. `UC-001`..`UC-009` are the System Analyst's use-case identifiers. `LCO` is the milestone this iteration works toward. `Issue #1`, `Issue #2`, `Issue #3` and `run 36095051721` are observed SCM facts, cited as returned by the `scm_*` tools; they are cited in Test Results and External Changes, and no edge is registered on them. The findings cited above are the reviewers' `<artifact>#<key>` handles; a finding is not an element and no edge is registered on one.
 
 **No element of this role is minted.** The Project Manager produces no `UC-NNN`, `CLS-NNN`, `COMP-NNN`, `TC-NNN` or `INT-NNN`; those families belong to other authorities. The objectives table, the variance ledger, the metrics table and the rework ledger are sections of this assessment, not trace-graph elements, so no edge is registered on them.
 
-**Milestone not declared.** This assessment records the iteration's outcome given the ReviewCoordinator's verdict. It does not declare the LCO milestone, the iteration or the phase as completed: the verdict is the ReviewCoordinator's and the ManagementReviewer's, and it has been issued as iteration REQUIRED with the stakeholder's sanction refused.
+**Milestone not declared.** This assessment records each iteration's outcome given the ReviewCoordinator's verdict. It does not declare the LCO milestone, the iteration or the phase as completed: the verdict is the ReviewCoordinator's and the ManagementReviewer's, and it has been issued as iteration REQUIRED with the stakeholder's sanction refused.
+
