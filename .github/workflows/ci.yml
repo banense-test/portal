@@ -134,6 +134,26 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     needs: build
+    # CON-024: PostgreSQL 18, major pinned, patch floats. The persistence subsystem
+    # cannot be tested without a database, so the test job carries one from day one.
+    # The credentials below are throwaway CI-only values; CI never holds production
+    # data or credentials (CON-026).
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_DB: portal_test
+          POSTGRES_USER: portal_test
+          POSTGRES_PASSWORD: portal_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U portal_test -d portal_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      ConnectionStrings__Portal: "Host=localhost;Port=5432;Database=portal_test;Username=portal_test;Password=portal_test"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
