@@ -1,6 +1,6 @@
 ## Document Control
 - **Phase:** Inception
-- **Status:** Draft — iteration 2
+- **Status:** Draft — iteration 3
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 ## Functionality
 Functionality here covers the system-wide functional requirements that no single use case owns: security, licensing, the audit trail and the authorization model. The functional behaviour of the portal itself is specified in the Use-Case Model (UC-001..UC-009).
