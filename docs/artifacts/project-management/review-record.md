@@ -2166,7 +2166,9 @@ Until one of these holds, the Business Reviewer lens has no business-model artif
 
 ### Management Reviewer lens
 
-**Prior findings of this lens.** None. This is the first review pass of the Management Reviewer lens on this project: `read_artifact_findings` returned no finding carrying `reviewerRole: ManagementReviewer` on any artifact. No `resolve_artifact_finding` call was emitted this pass, and none was due.
+#### Iteration 1 — actions arising
+
+**Prior findings of this lens.** None. This was the first review pass of the Management Reviewer lens on this project: `read_artifact_findings` returned no finding carrying `reviewerRole: ManagementReviewer` on any artifact. No `resolve_artifact_finding` call was emitted this pass, and none was due.
 
 **Stakeholder directive governing closure.** The stakeholder's answer to the sanction question was **No**, with the directive: *"All findings must be corrected, even if they are minor."* Every finding below is therefore blocking, including the four Minor ones. No finding of this lens is deferred and none is rejected.
 
@@ -2182,25 +2184,48 @@ Until one of these holds, the Business Reviewer lens has no business-model artif
 | `Risk List#F2` | ProjectManager | Record the observed state of `R004`'s treatment at the milestone and adjust its status | **Yes** — per the stakeholder directive |
 | `Vision#F1` | SystemAnalyst | State the business-goal verification path per goal; `BG-003` is measured with `STK-004` after go-live | **Yes** — per the stakeholder directive |
 
-**Cross-lens findings left untouched.** Eleven findings exist on artifacts this lens read. All carry `reviewerRole: Reviewer` and are that lens's to close. The ownership invariant rejects a cross-lens close attempt, so none was attempted. They are recorded here only so the milestone verdict is taken on the complete defect picture.
+**Cross-lens findings left untouched.** Eleven findings existed on artifacts this lens read. All carried `reviewerRole: Reviewer` and were that lens's to close. The ownership invariant rejects a cross-lens close attempt, so none was attempted. They were recorded there only so the milestone verdict was taken on the complete defect picture.
 
-| Finding | Lens | Severity | Status |
+**Carry-over.** All 7 findings of this lens remained open for iteration 2 of this lens, which reconciled them in its closure state before recording new defects.
+
+#### Iteration 2 — closure of prior findings
+
+**Disposition of every prior finding of this lens.** Each was re-read against the corrected artifact content and closed on the evidence cited. Nothing is deferred and nothing is rejected.
+
+| Finding | Severity | Disposition | Evidence read from the corrected artifact |
 |---|---|---|---|
-| `Development Case#F1` | Reviewer | Minor | Open |
-| `Development Case#F2` | Reviewer | Minor | Open |
-| `Vision#F1` | Reviewer | Minor | Open |
-| `Vision#F2` | Reviewer | Minor | Open |
-| `Supplementary Specification#F1` | Reviewer | Minor | Open |
-| `Risk List#F1` | Reviewer | Minor | Open |
-| `Iteration Plan#F1` | Reviewer | Minor | Open |
-| `Iteration Plan#F2` | Reviewer | Minor | Open |
-| `Software Architecture Document#F1` | Reviewer | Minor | Open |
-| `Software Architecture Document#F2` | Reviewer | Minor | Open |
-| `Test Evaluation Summary#F1` | Reviewer | **Major** | Open |
+| `Development Case#F1` | **Major** | **Resolved** | The Development Case now carries "Environment verification at the LCO gate — Inception iteration 2", a post-iteration record stating the observed state of each item at the gate with its evidence, and it states explicitly that LCO exit criterion 5 is not met. The pre-iteration readiness table is retained but labelled a plan and is no longer offered as milestone evidence |
+| `Development Case#F2` | Minor | **Resolved** | The iteration-preparation checkpoint is now a record: a "Checkpoint result — taken before the next iteration starts" table with the observed state and evidence for each of the four items it names, stating that the checkpoint does not pass because the stand-in environment is not confirmed |
+| `Vision#F1` | Minor | **Resolved** | The Problem Statement's Success criteria row states the verification path per goal: `BG-001` through `AC-002`/`AC-003`/`AC-004`/`AC-006`, `BG-002` through `AC-002`/`AC-005`, and `BG-003` measured with `STK-004` after go-live, with the explicit statement that no acceptance criterion the team can run closes it |
+| `Risk List#F1` | **Major** | **Resolved** | `R001`'s probability and impact are marked `[ASSUMPTION — requires validation]` in the Risk Register and the Risk Classification section, and the bands are re-anchored on the business-declared exposures `R002` (9) and `R003` (6). The High band's lower boundary is stated as provisional and the register no longer calls `R001` "the highest declared exposure" |
+| `Risk List#F2` | Minor | **Resolved** | `R004`'s treatment state is recorded at the milestone: Materialized, "Treatment NOT executed at Iter-1 close", contingency executed, treatment re-scoped. Its mitigation now names a control that produces a record — the Development Case's post-iteration environment verification — rather than claiming a verification that did not happen |
+| `Iteration Plan#F1` | **Major** | **Resolved** | Evaluation Criteria layer (b) now carries a verdict of MET or NOT MET per criterion at the point the plan is written, and criterion 5 is recorded as NOT MET with the explicit statement that the LCO gate is not passable until its evidence exists |
+| `Iteration Plan#F2` | Minor | **Resolved** | The "Two currencies, reported apart" section records the measured actuals of the closed phase — 6,918,081 tokens and 8:35:00.7478289 elapsed agent time — with human queue time measured at 0:00:00 and reported apart |
 
-**Total open defect picture at the LCO gate.** 18 findings across the three lenses: 0 Critical, 4 Major, 14 Minor. The stakeholder's directive — all findings corrected, even the minor ones — applies to the whole set, not only to this lens's seven.
+**Closure discipline.** Each closure was materialised by a `resolve_artifact_finding` call before this narrative was written. The tool call transitions the state; this table documents the rationale. The residual defects observed against the Risk List, the Development Case and the Test Evaluation Summary are separate, newly observed defects and are recorded as new findings — `Risk List#F3`, `Risk List#F4`, `Development Case#F3`, `Test Evaluation Summary#F2` — not as a reopening of the closed ones.
 
-**Carry-over.** All 7 findings of this lens remain open for the next iteration of this lens, which will reconcile them in its closure state before recording new defects. The 11 Reviewer-lens findings carry to that lens.
+#### Iteration 2 — actions arising
+
+Each action is the finding's Recommendation; its status is that finding's Resolution. No action identifier is minted.
+
+| Finding | Owner | Action | Blocking? |
+|---|---|---|---|
+| `Risk List#F3` | ProjectManager | Re-assess `R004` at this milestone: record the second failed execution and revisit its magnitude, strategy and mitigation rather than carrying them unchanged. If the stand-in environment cannot be delivered by the team, the treatment must change — different sequencing, a different owner, or escalation to the stakeholder as a decision only they can make | **Yes** — `R004` gates every test and its treatment has now failed twice |
+| `Risk List#F4` | ProjectManager | Re-head the treatment column to the current iteration and refresh each row against observable state at Iter-2 close; for `R009`, record the guideline files as still absent and move the mitigation to the iteration that will author them | No — per the stakeholder directive that all findings are corrected |
+| `Development Case#F3` | ProcessEngineer | Record all three open issues in the "Open SCM issues" row, with their labels, or state the count as three and name the tracker as the authoritative record | No — per the stakeholder directive |
+| `Test Evaluation Summary#F2` | TestManager | Record `Issue #3` alongside `Issue #1` and `Issue #2`, state the defect count as three, and refresh the CI run reference to the run observed at submission | No — per the stakeholder directive |
+
+**Carry-over.** All 4 findings of this lens remain open for the next iteration of this lens, which will reconcile them in its closure state before recording new defects. Nothing is deferred and nothing is rejected. The stakeholder's directive — all findings must be corrected, even if they are minor — governs the whole set.
+
+**Cross-lens findings left untouched.** The findings carrying `reviewerRole: Reviewer` and `reviewerRole: BusinessReviewer` are those lenses' to close. The ownership invariant rejects a cross-lens close attempt, so none was attempted.
+
+| Finding | Lens | Severity | Why this lens does not act |
+|---|---|---|---|
+| `Use-Case Model#F1` | Reviewer | Major | Unreviewed `SUSPECT` risk-to-use-case edges. A trace-graph currency defect in the technical lens's checklist. |
+| `Use-Case Model#F2` | Reviewer | Minor | Realizing-component table stale against the SAD. A trace-table defect. |
+| `Vision#F3` | Reviewer | Minor | `NFR-003` downstream element stale. A trace-table defect. |
+| `Supplementary Specification#F2` | Reviewer | Minor | `NFR-003` downstream element stale. A trace-table defect. |
+| `Use-Case Model#F1` | BusinessReviewer | Minor | `CON-013`'s declared directory filter has no realizing flow in `UC-008`. A business-rule realization defect. |
 
 ### Review Coordinator — consolidated action plan
 
