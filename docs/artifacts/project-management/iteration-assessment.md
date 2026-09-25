@@ -275,12 +275,12 @@ This section accumulates one entry per iteration. Layer (a) carries one line per
 
 | AC | Criterion | Verdict this iteration | Evidence |
 |---|---|---|---|
-| AC-001 | Full page load as the employee experiences it, including the clocking page's script, under 3 seconds | Not addressed this iteration — deferred to Iter-4 | No page exists. The criterion is accounted for in the Iteration Plan and carries a registered trace edge |
-| AC-002 | An employee can clock in and out without help from HR or the development team | Not addressed this iteration — deferred to Iter-4 | No increment exists. The criterion is accounted for in the plan and its trace edge is registered |
-| AC-003 | An HR Administrator can publish a news item without technical assistance | Not addressed this iteration — deferred to Iter-4 | No increment exists. The criterion is accounted for in the plan and its trace edge is registered |
-| AC-004 | Any employee finds a colleague's phone/email in under 10 seconds | Not addressed this iteration — deferred to Iter-5 | No increment exists. The criterion is accounted for in the plan and its trace edge is registered |
-| AC-005 | 80% of employees complete at least one clocking with no prior training | Not addressed this iteration — deferred to Iter-6, and not closable by any test the team runs | An adoption measure taken with real employees after go-live. The Test Evaluation Summary states no test the team runs can close it; the Vision now states the verification path per goal |
-| AC-006 | A clocking made while the corporate network is down for up to 5 minutes is not lost | Not addressed this iteration — deferred to Iter-4 | No increment exists. The criterion is carried by UC-001, which this iteration carried as a full specification |
+| AC-001 | Full page load as the employee experiences it, including the clocking page's script, under 3 seconds | Not addressed this iteration — deferred to Iter-6 | No page exists. The criterion is accounted for in the Iteration Plan and carries a registered trace edge |
+| AC-002 | An employee can clock in and out without help from HR or the development team | Not addressed this iteration — deferred to Iter-6 | No increment exists. The criterion is accounted for in the plan and its trace edge is registered |
+| AC-003 | An HR Administrator can publish a news item without technical assistance | Not addressed this iteration — deferred to Iter-6 | No increment exists. The criterion is accounted for in the plan and its trace edge is registered |
+| AC-004 | Any employee finds a colleague's phone/email in under 10 seconds | Not addressed this iteration — deferred to Iter-7 | No increment exists. The criterion is accounted for in the plan and its trace edge is registered |
+| AC-005 | 80% of employees complete at least one clocking with no prior training | Not addressed this iteration — deferred to Iter-8, and not closable by any test the team runs | An adoption measure taken with real employees after go-live. The Test Evaluation Summary states no test the team runs can close it; the Vision now states the verification path per goal |
+| AC-006 | A clocking made while the corporate network is down for up to 5 minutes is not lost | Not addressed this iteration — deferred to Iter-6 | No increment exists. The criterion is carried by UC-001, which this iteration carried as a full specification |
 
 **No acceptance criterion is verified, and none was expected to be.** Inception produces a baseline, not a running system. All six are accounted for in the Iteration Plan and each is deferred to the iteration whose increment closes it. The four missing trace edges the Reviewer recorded at iteration 1 are now registered.
 
@@ -290,7 +290,7 @@ This section accumulates one entry per iteration. Layer (a) carries one line per
 |---|---|---|---|
 | 1 | Stakeholders agree on the scope | **Met** | Vision and Use-Case Model carry the declared scope with no creep; nine use cases, one per FR-001..FR-009; trace graph 66 roots, 231 nodes, no UNKNOWN LABEL, no leaf at Business level |
 | 2 | The project is viable | **Met** | Stack pinned by CON-022/CON-023/CON-024; the OIDC client is already registered (CON-003); the Architectural Proof-of-Concept NOT-FIRED verdict holds |
-| 3 | Initial risks identified and classified | **Met, with a defective basis** | R001..R009 classified with P, I, magnitude, strategy, owner, mitigation, contingency. The High band's lower boundary rests on R001's unconfirmed estimate and on R004's re-assessed exposure, neither stakeholder-confirmed |
+| 3 | Initial risks identified and classified | **Met, with a defective basis** | R001..R009 classified with P, I, magnitude, strategy, owner, mitigation, contingency. The High band's lower boundary rested on R001's unconfirmed estimate and on R004's re-assessed exposure. The R001 half of that basis is now settled: the stakeholder declined to confirm R001's figures at three consecutive reviews, so no band is anchored on them and the High band's lower boundary rests on R004's observed exposure of 12 |
 | 4 | The process configuration governs the project | **Met** | Development Case conforms to the IARI baseline; Business Modeling INACTIVE on the correct trigger; all six OPTIONAL triggers re-audited, none fired |
 | 5 | The stand-in environment is available (CON-028) | **NOT MET** | No artifact evidences the test OIDC issuer or the test directory. The Development Case's LCO-gate verification records no stand-in configuration. This is the second consecutive iteration in which the criterion has failed |
 | 6 | The build is verifiable (CON-026) | **Met** | The CI pipeline builds and tests on `main`; the build is green (run `36095051721`) |
@@ -396,7 +396,7 @@ end note
 |---|---|---|---|
 | 1 | Stakeholders agree on the scope | **Met** | Vision and Use-Case Model carry the declared scope with no creep; nine use cases, one per FR-001..FR-009; trace graph 47 roots, 150 nodes, no SUSPECT, no UNKNOWN LABEL |
 | 2 | The project is viable | **Met** | Stack pinned by CON-022/CON-023/CON-024; the OIDC client is already registered (CON-003); the Architectural Proof-of-Concept NOT-FIRED verdict holds |
-| 3 | Initial risks identified and classified | **Met, with a defective basis** | R001..R009 classified with P, I, magnitude, strategy, owner, mitigation, contingency. The bands rest on R001's unconfirmed estimate (`Risk List#F1`, Major) |
+| 3 | Initial risks identified and classified | **Met, with a defective basis** | R001..R009 classified with P, I, magnitude, strategy, owner, mitigation, contingency. The bands rested on R001's unconfirmed estimate (`Risk List#F1`, Major) |
 | 4 | The process configuration governs the project | **Met** | Development Case conforms to the IARI baseline; Business Modeling INACTIVE on the correct trigger; all six OPTIONAL triggers audited, none fired |
 | 5 | The stand-in environment is available (CON-028) | **NOT MET** | No artifact evidences the test OIDC issuer or the test directory. The only record is the Development Case's pre-iteration readiness table, which is stale on its own CI row (`Development Case#F1`, Major) |
 | 6 | The build is verifiable (CON-026) | **Met** | The CI pipeline builds and tests on `main`; the build is green. The Development Case's record of this criterion is stale (`Development Case#F1`) |
