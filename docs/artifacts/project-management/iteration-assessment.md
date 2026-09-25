@@ -502,20 +502,7 @@ The two currencies are reported apart and are never summed into one figure and n
 **What the metrics do not support.** Defect density per page or per KLOC is not computable: page counts and lines of code are not measured by this system, and no code exists. Defect removal efficiency is not computable: it compares defects found in review against defects found in test, and no test has executed. Rework effort is not measurable in this system's units: hours are not a unit this system produces, and the corrective obligation is the 18 findings, each with an owner and a deadline. No figure is stated for any of the three.
 
 ## External Changes
-**Stakeholder decisions taken during this iteration.** Each is recorded in the stakeholder's own words and each is already incorporated in the artifacts it governs.
-
-| Decision | Recorded in | Effect |
-|---|---|---|
-| The LCO sanction was refused: the stakeholder does not accept the project scope and objectives and does not sanction advancing past LCO | Review Record, Management Reviewer lens — Disposition | The milestone verdict is No-Go. The refusal is the verdict, not a defect the team must fix |
-| All findings must be corrected, even if they are minor | Review Record, consolidated finding tracker | The directive governs the whole 18-finding ledger. Nothing is deferred and nothing is rejected |
-| R001's probability (3) and impact (4) are not confirmed | Review Record, Management Reviewer lens — Disposition | The magnitude bands are provisional. Recorded as `Risk List#F1` (Major) |
-| Nothing new for the next iteration; iterate again and address the findings | Review Record, Review Coordinator — stakeholder input | No new requirement, no correction and no re-prioritisation. The declared scope is unchanged |
-
-**No element was added to the declared scope.** The stakeholder's answers add no requirement, no use case and no constraint. Nothing in the Vision, the Use-Case Model or the Supplementary Specification changes as a result of them, and no marker remains open: every question asked in this iteration was answered, and each answer is written in the artifact it governs.
-
-**SCM observations.** The build on `main` is green (run `36050451436`). The issue tracker holds `Issue #1`. No pull request was open and no branch awaited review at the gate: RUP places no implementation activity in Inception, and no scaffolding PR was raised. These are observed facts, cited as returned by the `scm_*` tools.
-
-**No external change to the project's inputs.** The custom design at `docs/inputs/employee-portal-design.html` (CON-031) is committed to the repository and is not pending. The OIDC client is already registered (CON-003), so no request is outstanding. The CON-028 human validation of the real Keycloak and AD by Infrastructure with HR is not team work to plan and has not yet been opened; it opens in Elaboration.
+This section accumulates one entry per iteration, recording the stakeholder decisions taken during it and the observed SCM state at its close.
 
 ### Iteration 2 — Inception
 
