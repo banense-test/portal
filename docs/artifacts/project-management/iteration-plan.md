@@ -216,7 +216,6 @@ The two are never summed into one figure and never converted into one another. T
 **What Iter-3 does with them.** No use case is implemented. The three detailed use cases are exercised against the stand-in environment — the test OIDC issuer and the test directory — which is what makes them buildable and testable in Elaboration. That exercise is the delivery of exit criterion 5, not an implementation.
 
 ## Evaluation Criteria
-
 ### Layer (a) — every declared acceptance criterion, accounted for
 
 Every AC-NNN in the declared scope is listed. None is absent. This iteration verifies none of them: Inception produces the baseline, not a running system. Each is deferred to the named iteration whose increment closes it, and each carries a registered trace edge to the use case that carries it.
@@ -238,7 +237,7 @@ Each criterion carries a verdict of MET or NOT MET at the point this plan is wri
 |---|---|---|---|
 | 1 | Stakeholders agree on the scope | **MET** | The Vision's declared scope and the Use-Case Model's nine use cases are the agreed baseline; no element outside the declared scope |
 | 2 | The project is viable | **MET** | The stack is pinned by CON-022/CON-023/CON-024; the OIDC client is already registered (CON-003) so login is testable from day one; no technical unknown requires empirical validation (Development Case: Architectural Proof-of-Concept NOT FIRED) |
-| 3 | Initial risks identified and classified | **MET** | Risk List: R001..R009 with probability, impact, magnitude, strategy, owner, mitigation and contingency. R001's P and I are recorded as unconfirmed estimates and no band is anchored on them; the bands are anchored on R002's and R003's declared exposures |
+| 3 | Initial risks identified and classified | **MET** | Risk List: R001..R009 with probability, impact, magnitude, strategy, owner, mitigation and contingency. R001's P and I are the analyst's estimates and the stakeholder has declined to confirm them at three consecutive reviews — the decision is settled and no band is anchored on them. The Significant and Moderate bands rest on R002's and R003's declared exposures; the High band's lower boundary on R004's observed exposure of 12 |
 | 4 | The process configuration governs the project | **MET** | Development Case: Business Modeling inactive, no OPTIONAL trigger fired, version policy recorded |
 | 5 | The stand-in environment is available (CON-028) | **NOT MET** | No artifact evidences the test OIDC issuer or the test directory. This is the criterion that gates every use case: CON-028 forbids building or testing against the real Keycloak or the real AD, so with no stand-in no use case can be built or tested and R004 remains untreated. It has failed at two consecutive closes and is the first work item of this iteration, under a hard gate |
 | 6 | The build is verifiable (CON-026) | **MET** | The CI pipeline builds and tests on `main`; the build is green (run `36095051721`) |
