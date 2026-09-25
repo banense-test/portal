@@ -685,7 +685,7 @@ Each action is the finding's Recommendation; its status is that finding's Resolu
 
 **Overall disposition: Approved with Changes.**
 
-The artifacts are fit to carry the project into Elaboration, subject to the four findings above. No Critical finding was recorded, so nothing blocks the phase transition and no finding of this lens escalates to the stakeholder. The one Major finding is an unreviewed change on the Use-Case Model, not a defect in the baseline it reports.
+The artifacts are fit to carry the project into Elaboration, subject to the five findings above. No Critical finding was recorded, so nothing blocks the phase transition and no finding of this lens escalates to the stakeholder. The one Major finding is an unreviewed change on the Use-Case Model, not a defect in the baseline it reports. The four Minor findings are all evidence-currency defects — a cited revision, a cited run, a defect count and an unreviewed governance edge — none of which changes a verdict the artifact states.
 
 **LCO exit criteria, assessed against the artifacts and the SCM.**
 
@@ -700,7 +700,7 @@ The artifacts are fit to carry the project into Elaboration, subject to the four
 
 **Reading of the verdict.** Criteria 1, 2, 3, 4 and 6 are met. Criterion 5 is not met: the stand-in environment is the project's principal process control and it does not yet exist. That is a gap in the iteration's own exit criteria, not a defect in any artifact — the Development Case and the Iteration Plan both name it correctly, assign it an owner and record it as NOT MET rather than as an open item. It is recorded here so the milestone verdict is taken on the evidence rather than on the artifacts' self-assessment.
 
-**SCM evidence at this review.** No open pull request, so no PR required a disposition. The build on `main` is green (run `36111645523`). The tracker holds four open issues, all configuration-record defects owned by the ProcessEngineer; none is a product defect, because no use case is implemented and no test has executed.
+**SCM evidence at this review.** No open pull request, so no PR required a disposition. No branch carries the `ready-for-review` label, so no branch is awaiting a review that has not been raised. The build on `main` is green (run `36111645523`). The tracker holds four open issues, all configuration-record defects owned by the ProcessEngineer; none is a product defect, because no use case is implemented and no test has executed.
 
 **What this lens does not decide.** The LCO verdict belongs to the ReviewCoordinator and the ManagementReviewer. This block states the technical lens's disposition and the exit-criteria evidence; it does not close the milestone.
 ## Traceability
