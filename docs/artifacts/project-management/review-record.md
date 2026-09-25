@@ -211,13 +211,13 @@ end note
 
 ### Management Reviewer lens
 
-**Review type.** Lifecycle Milestone Review — the LCO gate. This is a formal gate verdict, not a courtesy read-through: the question is whether the phase's exit criteria are satisfied, and the burden of proof rests on the project team.
+**Review type.** Lifecycle Milestone Review — the LCO gate, Inception iteration 2. This is a formal gate verdict, not a courtesy read-through: the question is whether the phase's exit criteria are satisfied, and the burden of proof rests on the project team.
 
 **Review point.** Lifecycle milestone — LCO, end of Inception. The evaluative lens is **exit criteria**, not completion. Inception produces a baseline, not a running system, so no completion lens is applied and no acceptance criterion is expected to be verified.
 
 **Artifacts reviewed (8 of 8).** Development Case, Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary.
 
-**Upstream consumption.** Every artifact was read in full before any finding was recorded. The trace graph was projected from the Business level (47 roots, 150 nodes) and used as the completeness instrument, never the artifacts' own prose.
+**Upstream consumption.** Every artifact was read in full before any finding was recorded. The trace graph was projected from the Business level (66 roots, 231 nodes) and used as the completeness instrument, never the artifacts' own prose.
 
 **Checklists applied, per artifact type.**
 
@@ -238,8 +238,8 @@ end note
 
 | Evidence | Observed value |
 |---|---|
-| Build on `main` | success — run `36050339100` |
-| Open issues | `Issue #1` |
+| Build on `main` | success — run `36095051721` |
+| Open issues | `Issue #1`, `Issue #2`, `Issue #3` |
 | Open pull requests | none |
 | Branches awaiting review | none |
 
