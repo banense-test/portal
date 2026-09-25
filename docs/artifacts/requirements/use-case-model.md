@@ -425,19 +425,21 @@ stop
 
 **Main flow**
 
-1. The employee enters a search term — a name, a department or an office.
+1. The employee enters a search term — a name, a department, an office, or a worker category.
 2. The portal reads the matching entries from Active Directory over LDAP (name, job title, department, office, email, extension).
 3. The portal reads the category links for the returned AD user ids.
 4. The portal merges the six read-only AD fields with the portal-owned category and renders the entries.
+5. When the search term is a worker category, the portal filters the merged entries by the category link, so only employees carrying that category are returned.
 
 **Alternative flows**
 
 - **A1 — An entry has an empty job title or extension (R002).** The attribute renders as blank and the entry is still shown. The stand-in directory carries such entries so this path is exercised before the real AD is validated (CON-028).
-- **A2 — An employee has no category (CON-015).** The category field is blank. No default value is invented.
+- **A2 — An employee has no category (CON-015).** The category field is blank. No default value is invented. An employee with no category is not returned by a category filter, because no category link exists to match.
 - **A3 — Network unavailable.** The portal shows a 'no connection' message. Nothing is copied locally, so there is nothing to cache (AC-006).
 - **A4 — No match.** The portal shows an empty result. No private personal information is shown — corporate data only.
+- **A5 — The search term is a worker category.** The portal filters the merged entries by the category link. The filter accepts only the closed list of four values — Full-time, Part-time, Contractor, Intern (CON-014) — and is not configurable. The category is descriptive and does not drive access control: it filters the directory and appears as a column of the CSV export, and nowhere else (CON-013).
 
-**Business rules applied:** CON-004, CON-005, CON-013, CON-015, CON-016.
+**Business rules applied:** CON-004, CON-005, CON-013, CON-014, CON-015, CON-016.
 
 ```plantuml
 @startuml UC008_Sequence
@@ -449,7 +451,7 @@ participant "Directory API\n(.NET 10 REST)" as API
 participant "Active Directory\n(LDAP, read-only)" as AD <<external>>
 database "PostgreSQL 18\n(AD user id -> category)" as DB
 
-EMP -> PAGE : enter search term (name / department / office)
+EMP -> PAGE : enter search term (name / department / office / worker category)
 activate PAGE
 PAGE -> API : GET /api/directory?q={term}
 activate API
@@ -469,6 +471,15 @@ note right of API
   CON-015: no category row -> field blank,
   no default invented.
 end note
+alt search term is a worker category
+  API -> API : filter the merged entries by the category link
+  note right of API
+    CON-013: the directory filters by worker
+    category. CON-014: the closed list of four.
+    An employee with no category (CON-015) is
+    not returned by a category filter.
+  end note
+end
 API --> PAGE : entry list
 deactivate API
 PAGE --> EMP : render name, job title, department, office, email, extension, category
