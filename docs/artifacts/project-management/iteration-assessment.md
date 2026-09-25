@@ -515,10 +515,10 @@ This section accumulates one entry per iteration, recording the stakeholder deci
 |---|---|---|
 | The LCO sanction was refused: the stakeholder does not accept the project scope and objectives and does not sanction advancing past LCO | Review Record, Management Reviewer lens — Disposition | The milestone verdict is No-Go. The refusal is the verdict, not a defect the team must fix |
 | All findings must be corrected, including the minor ones | Review Record, Management Reviewer lens — Disposition | The directive governs the whole 9-finding ledger. Nothing is deferred and nothing is rejected |
-| R001's probability (3) and impact (4) are not confirmed | Review Record, Management Reviewer lens — Disposition | The magnitude bands remain provisional. R001's P and I are marked `[ASSUMPTION — requires validation]` in the Risk Register and the Risk Classification section |
+| R001's probability (3) and impact (4) are not confirmed | Review Record, Management Reviewer lens — Disposition | The magnitude bands remain provisional. R001's P and I are recorded as unconfirmed estimates in the Risk Register and the Risk Classification section |
 | Nothing new for this iteration; iterate again and address the findings | Review Record, Review Coordinator — stakeholder input | No new requirement, no correction and no re-prioritisation. The declared scope is unchanged |
 
-**No element was added to the declared scope.** The stakeholder's answers add no requirement, no use case and no constraint. Nothing in the Vision, the Use-Case Model or the Supplementary Specification changes as a result of them, and no marker remains open: every question asked in this iteration was answered, and each answer is written in the artifact it governs.
+**No element was added to the declared scope.** The stakeholder's answers add no requirement, no use case and no constraint. Nothing in the Vision, the Use-Case Model or the Supplementary Specification changes as a result of them.
 
 **SCM observations.** The build on `main` is green (run `36095051721`). The issue tracker holds three open issues — `Issue #1`, `Issue #2` and `Issue #3`, all configuration-record defects owned by the ProcessEngineer. No pull request was open and no branch awaited review at the gate: RUP places no implementation activity in Inception, and no scaffolding PR was raised. These are observed facts, cited as returned by the `scm_*` tools.
 
@@ -535,9 +535,25 @@ This section accumulates one entry per iteration, recording the stakeholder deci
 | R001's probability (3) and impact (4) are not confirmed | Review Record, Management Reviewer lens — Disposition | The magnitude bands are provisional. Recorded as `Risk List#F1` (Major) |
 | Nothing new for the next iteration; iterate again and address the findings | Review Record, Review Coordinator — stakeholder input | No new requirement, no correction and no re-prioritisation. The declared scope is unchanged |
 
-**No element was added to the declared scope.** The stakeholder's answers add no requirement, no use case and no constraint. Nothing in the Vision, the Use-Case Model or the Supplementary Specification changes as a result of them, and no marker remains open: every question asked in this iteration was answered, and each answer is written in the artifact it governs.
+**No element was added to the declared scope.** The stakeholder's answers add no requirement, no use case and no constraint. Nothing in the Vision, the Use-Case Model or the Supplementary Specification changes as a result of them.
 
 **SCM observations.** The build on `main` is green (run `36050451436`). The issue tracker holds `Issue #1`. No pull request was open and no branch awaited review at the gate: RUP places no implementation activity in Inception, and no scaffolding PR was raised. These are observed facts, cited as returned by the `scm_*` tools.
+
+**No external change to the project's inputs.** The custom design at `docs/inputs/employee-portal-design.html` (CON-031) is committed to the repository and is not pending. The OIDC client is already registered (CON-003), so no request is outstanding. The CON-028 human validation of the real Keycloak and AD by Infrastructure with HR is not team work to plan and has not yet been opened; it opens in Elaboration.
+
+### Iteration 3 — Inception
+
+**Stakeholder decisions taken during this iteration.** Each is recorded in the stakeholder's own words and each is already incorporated in the artifacts it governs.
+
+| Decision | Recorded in | Effect |
+|---|---|---|
+| R001's probability (3) and impact (4) are **not** confirmed — the third consecutive refusal, after the same question at the iteration-1 and iteration-2 reviews | Risk List, Risk Classification and Risk Register | The question is settled and is not asked again. R001's probability and impact stand as the analyst's unconfirmed estimates, recorded as such in the register. No magnitude band is anchored on them: the Significant and Moderate bands rest on R002's and R003's declared exposures, and the High band's lower boundary on R004's observed exposure of 12. R001's acceptance is granted by CON-021 independently of its magnitude, so no strategy changes |
+
+**The marker is retired.** R001's probability and impact were previously carried as an open question requiring validation. The stakeholder has now declined three times, which is a decision, not a pending item. The register states the decision in place of the marker, and no artifact in the set carries an open question about R001's figures. No later role re-asks it.
+
+**No element was added to the declared scope.** The stakeholder's answer adds no requirement, no use case and no constraint. Nothing in the Vision, the Use-Case Model or the Supplementary Specification changes as a result of it.
+
+**SCM observations.** The build on `main` is green (run `36095051721`). The issue tracker holds three open issues — `Issue #1`, `Issue #2` and `Issue #3`, all configuration-record defects owned by the ProcessEngineer. No pull request was open and no branch awaited review at the gate: RUP places no implementation activity in Inception, and no scaffolding PR was raised. These are observed facts, cited as returned by the `scm_*` tools.
 
 **No external change to the project's inputs.** The custom design at `docs/inputs/employee-portal-design.html` (CON-031) is committed to the repository and is not pending. The OIDC client is already registered (CON-003), so no request is outstanding. The CON-028 human validation of the real Keycloak and AD by Infrastructure with HR is not team work to plan and has not yet been opened; it opens in Elaboration.
 
