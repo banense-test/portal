@@ -84,6 +84,7 @@ KC --> UC006
 KC --> UC007
 KC --> UC008
 KC --> UC009
+AD --> UC002 : FullName
 AD --> UC008
 AD --> UC009
 
@@ -96,7 +97,9 @@ end note
 
 note bottom of AD
   Directory fields are read over LDAP and are read-only
-  (CON-005). UC-009 stores only a link: AD user id -> category
+  (CON-005). UC-002 reads FullName at export time because
+  the portal holds no copy of the employee (CON-016).
+  UC-009 stores only a link: AD user id -> category
   (CON-016). Active Directory is never written to (CON-004).
 end note
 
