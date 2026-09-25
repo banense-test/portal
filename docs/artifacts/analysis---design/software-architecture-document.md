@@ -913,15 +913,14 @@ The repository layout is the one already in place; this architecture does not fo
 **Dependency rule.** Presentation depends on the Application boundary; the Application boundary depends on domain interfaces; domain components depend on each other only through interfaces; mechanisms are depended upon, never depending. No component reaches across a layer boundary, and no component depends on a concrete type of another component.
 
 ## Data View
-
 The Development Case records the Data Model optional artifact as **not triggered** — the portal owns well under ten entities and CON-030 states there is no data migration — so the data view is a section of this document and the data lives inline in the Design Model.
 
 ### What the portal stores, and what it does not
 
 | Stored | Entity | Invariant enforced in the schema | Source |
 |---|---|---|---|
-| Yes | Clocking | Unique (ad_user_id, work_date); unique idempotency key; never updated in place, never deleted | CON-011, CON-012, AC-006 |
-| Yes | ClockingCorrection | Append-only; carries previous value, reason, actor and timestamp | CON-012, NFR-004 |
+| Yes | Clocking | Unique (ad_user_id, work_date); unique idempotency key; the recorded times are set once at insert and never updated in place, never deleted | CON-011, CON-012, AC-006 |
+| Yes | ClockingCorrection | Append-only; carries previous value, new value, reason, actor and timestamp | CON-012, NFR-004 |
 | Yes | NewsItem | Never deleted, only unpublished; at most one featured (partial unique index) | CON-017, CON-009 |
 | Yes | WorkerCategoryLink | Keyed by AD user id; at most one row per user; category from the closed list of four | CON-014, CON-015, CON-016 |
 | Yes | AuditEntry | Append-only; written in the same transaction as the change it records | NFR-004 |
@@ -930,7 +929,21 @@ The Development Case records the Data Model optional artifact as **not triggered
 
 **The absence of an employee table is the architecture's most important data decision.** CON-016 states employee data has exactly one home — Active Directory — and the portal stores only a link. There is therefore no synchronisation, no reconciliation and no conflict to resolve, and no stale copy can exist. The FullName column of the CSV export is read from AD at export time for exactly this reason.
 
-**Time.** Clockings are stored in UTC and displayed in Europe/Madrid (CON-008). All three offices are in the same timezone, so there is no normalisation to design. The `workDate` of a clocking is the Europe/Madrid calendar date, which is what makes CON-010 and CON-011 expressible as constraints.
+### The correction chain, and the effective value of a day
+
+CON-012 states the original clocking record is never overwritten in place and never deleted. The clocking row is therefore **immutable in its recorded times**: `clockInUtc` and `clockOutUtc` are written once at insert and no code path updates them. A correction is a new `ClockingCorrection` row carrying `previousValue`, `newValue`, `reason`, `correctedBy` and `correctedAtUtc`.
+
+**Resolution rule — the effective value of a day.** The effective ClockIn and effective ClockOut of a day are the `newValue` of the **most recent correction record for that day, ordered by `correctedAtUtc` descending**; when no correction record exists for that day, the effective value is the value recorded on the clocking row. A correction that inserts a missing clock-out produces a correction record whose `previousValue` is empty and whose `newValue` is the inserted time. A correction that changes an existing time produces a record whose `previousValue` is the time it replaced.
+
+**This rule is what FR-003's ClockIn and ClockOut columns read.** The export resolves the effective value per day through this rule and never reads the clocking row's recorded times directly when a correction exists. `Corrected` is `Y` when at least one correction record exists for that day, else `N` — it is derived from the correction chain, not stored as a flag on the clocking row, so it cannot drift from the chain it reports.
+
+**HoursWorked is computed from the effective times**, not from the minute-rounded values the screen shows (FR-003). A day whose effective ClockOut is empty exports ClockOut and HoursWorked empty, not zero.
+
+**The audit and the correction chain are two records of one event, and both are kept.** The `ClockingCorrection` row is the domain record the export reads; the `AuditEntry` row is the compliance record NFR-004 requires. They are written in the same transaction as each other, so neither can exist without the other.
+
+### Time
+
+Clockings are stored in UTC and displayed in Europe/Madrid (CON-008). All three offices are in the same timezone, so there is no normalisation to design. The `workDate` of a clocking is the Europe/Madrid calendar date, which is what makes CON-010 and CON-011 expressible as constraints.
 
 ## Size and Performance
 
