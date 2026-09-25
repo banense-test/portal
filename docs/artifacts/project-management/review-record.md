@@ -9,6 +9,12 @@
 - **Status:** Draft — LCO business review, iteration 1
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 
+### Management Reviewer lens
+
+- **Phase:** Inception
+- **Status:** LCO milestone review — verdict recorded, iteration 1
+- **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
+
 ## Review Scope and Criteria
 ### Reviewer lens
 
