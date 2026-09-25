@@ -631,6 +631,19 @@ The stand-in environment is the one item that gates development: no use case can
 against the real Keycloak or the real AD (CON-028), so the stand-ins are the first construction item
 of the iteration.
 
+### Process improvement actions for the next iteration
+
+Assessment-driven improvement, from the Review Record findings against this artifact and the observed
+environment state at the LCO gate. Each action names the decision it enables.
+
+| Observed problem | Root cause | Action | Owner |
+|---|---|---|---|
+| The environment-readiness record was stale on its own CI row and was offered as milestone evidence | The record was a pre-iteration plan presented as a post-iteration fact | The LCO-gate record above states the observed state of each item with its evidence; the readiness table is labelled a plan | ProcessEngineer |
+| The Environment intensity row stated a recurrence pattern where the canonical matrix states a level | The activity-cluster narrative was written into the intensity table | The intensity table states the canonical level per phase; the cluster narrative lives in the Environment discipline section | ProcessEngineer |
+| No iteration-preparation checkpoint result was recorded | The checkpoint was stated as an intention, not exercised as a record | The checkpoint result above records the observed state of each item it names | ProcessEngineer |
+| The stand-in environment (CON-028) does not exist, so no use case is buildable and R004's treatment is not executed | Environment work not yet delivered | The stand-in environment is the first construction item of the iteration; the checkpoint is re-taken before the iteration after it | Implementer + Integrator |
+| `CONTRIBUTING.md` and the lint configuration are absent | Guideline content is Elaboration work owned by the discipline experts | Authored during Elaboration; referenced from this Development Case, not duplicated in it | SoftwareArchitect, Implementer, TestManager |
+
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
