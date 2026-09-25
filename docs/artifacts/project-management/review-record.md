@@ -1,26 +1,7 @@
 ## Document Control
 - **Phase:** Inception
-- **Status:** Consolidated — LCO milestone review, iteration 1. Verdict: No-Go (stakeholder sanction REFUSED).
+- **Status:** Consolidated — LCO milestone review, iteration 2. Verdict: No-Go (stakeholder sanction REFUSED).
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
-
-### Business Reviewer lens
-
-- **Phase:** Inception
-- **Status:** Draft — LCO business review, iteration 2
-- **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
-
-### Management Reviewer lens
-
-- **Phase:** Inception
-- **Status:** LCO milestone review — verdict recorded, iteration 2
-- **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
-
-### Reviewer lens
-
-- **Phase:** Inception
-- **Status:** Draft — LCO technical review, iteration 2
-- **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
-
 ## Review Scope and Criteria
 ### Reviewer lens
 
