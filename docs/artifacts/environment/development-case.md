@@ -709,6 +709,23 @@ The two deficiencies are the same two items the LCO-gate record marks not ready.
 selection problem: the tools are chosen and adequate, and what is missing is configuration the
 project owes itself. No tool change is proposed, and no tool is replaced mid-project.
 
+### Process support during the iteration
+
+Support is a first-class Environment activity, continuous across every iteration, not an Inception
+afterthought. The Process Engineer is the process help desk while the iteration runs.
+
+| Support request | Response | Escalation |
+|---|---|---|
+| A producing role asks which artifact or template applies | Answered from this Development Case within the iteration; if the Development Case is silent, the gap is a defect in this document and is corrected in place | None — answered in-iteration |
+| A producing role reports a tool malfunction or a configuration problem | Logged with an improvement action in the tool evaluation below; a problem that blocks a use case is escalated immediately | ProjectManager, same iteration |
+| A template proves ambiguous or a section skeleton does not fit the artifact | The Development Case section is revised; the change is recorded as a process improvement action | None — corrected in-iteration |
+| A role believes the process is too heavy or too light for the work | Evaluated against the iteration's observed facts and the canonical intensity matrix; a deviation is never self-granted | Stakeholder, via `REQUIRES_USER_INPUT`, if a deviation is proposed |
+| A Change Request would change the process configuration | The Development Case is re-evaluated and the affected sections are revised | ChangeControlManager |
+
+A blocking process question is never left to the next iteration. A non-blocking one is answered in
+the iteration it is raised, and the answer is written into this document rather than into a
+conversation, so the next role to ask reads it instead of asking again.
+
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
