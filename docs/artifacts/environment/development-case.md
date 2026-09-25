@@ -653,6 +653,22 @@ environment state at the LCO gate. Each action names the decision it enables.
 | The stand-in environment (CON-028) does not exist, so no use case is buildable and R004's treatment is not executed | Environment work not yet delivered | The stand-in environment is the first construction item of the iteration; the checkpoint is re-taken before the iteration after it | Implementer + Integrator |
 | `CONTRIBUTING.md` and the lint configuration are absent | Guideline content is Elaboration work owned by the discipline experts | Authored during Elaboration; referenced from this Development Case, not duplicated in it | SoftwareArchitect, Implementer, TestManager |
 
+### Environment delta required before the next iteration starts
+
+The readiness criteria above are re-taken before each iteration. Against the LCO-gate record, three
+items must change state before the next iteration starts, and one must not regress.
+
+| Item | State at the LCO gate | Required before the next iteration starts | Owner |
+|---|---|---|---|
+| Stand-in OIDC issuer and stand-in directory (CON-028) | Not ready | Ready — including entries with empty job title and extension | Implementer + Integrator |
+| `CONTRIBUTING.md` | Not ready | Ready | SoftwareArchitect + Implementer |
+| Lint / formatter configuration | Not ready | Ready | Implementer |
+| CI pipeline (CON-026) | Ready, green on `main` | Must not regress | ConfigurationManager + Implementer |
+
+The stand-in environment is the item that gates every use case. Until it exists no use case is
+buildable and R004's treatment is not executed, so it is the first construction item of the iteration
+and the checkpoint is re-taken before the iteration after it.
+
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
