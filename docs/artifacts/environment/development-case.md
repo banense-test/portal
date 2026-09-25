@@ -459,6 +459,8 @@ end note
 ```
 
 ## Guidelines and Procedures
+This section states the project's measurement policy, the Environment discipline's activity clusters, the version policy, the stand-in boundary, the iteration-preparation checkpoint and its result, the environment readiness criteria, the LCO-gate verification, the tool evaluation, the process improvement actions, guideline ownership and process support.
+
 ### Measurement policy
 
 The baseline measures two quantities and only two: tokens consumed, and elapsed time split into agent
