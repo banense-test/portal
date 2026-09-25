@@ -1044,7 +1044,7 @@ end note
 
 #### Iteration 2 — LCO business review
 
-**Summary.** **0 findings: 0 Critical, 0 Major, 0 Minor.** The Business Modeling discipline remains INACTIVE on the correct trigger, no business-model artifact exists to carry a defect, and none is required by the Development Case. No finding of this lens escalates to the stakeholder.
+**Summary.** **1 finding: 0 Critical, 0 Major, 1 Minor.** The Business Modeling discipline remains INACTIVE on the correct trigger and no business-model artifact is required by the Development Case. The one finding is a declared business rule with no realizing flow in the use case that claims it. No finding of this lens escalates to the stakeholder.
 
 **Business Modeling artifact coverage map.** The primary evidence of this review: which business-model artifacts the Development Case requires, which exist, and the verdict on each. Five artifacts, none required, none present — and the three checklist items whose subject does exist, all passing.
 
@@ -1095,7 +1095,7 @@ class "Live checklist item 3\nBusiness goals measurable" as C3 <<checklist>> {
 
 class "Verdict" as V <<verdict>> {
   disposition : BR-OK-INACTIVE
-  findings : 0
+  findings : 1
   Critical : 0
   escalation : none
 }
@@ -1172,7 +1172,7 @@ end note
 @enduml
 ```
 
-**Business-rule audit — the four formal-constraint properties, per rule.** Each of the eleven declared business rules was audited against the four properties a formal constraint must carry: a unique identifier, a source, an explicit attachment to the element it constrains, and a testable condition. **Eleven audited, zero defective.**
+**Business-rule audit — the four formal-constraint properties, per rule.** Each of the eleven declared business rules was audited against the four properties a formal constraint must carry: a unique identifier, a source, an explicit attachment to the element it constrains, and a testable condition. **Eleven audited, zero structurally defective.** The audit also checked whether each rule's declared effect is realized by a flow in the use case that claims it — and that check found the one defect of this pass, recorded below.
 
 ```plantuml
 @startuml BR2_BusinessRuleAudit
@@ -1209,6 +1209,7 @@ class "CON-013 category does not drive access" as R13 <<rule>> {
   source : Pass - declared BusinessRule
   attachment : Pass - COMP-007, UC-008/009
   testable : Pass
+  realized by a flow : FAIL - filter half has no flow
 }
 class "CON-014 closed list of four" as R14 <<rule>> {
   identifier : Pass
@@ -1249,7 +1250,8 @@ class "CON-019 no compliance regime" as R19 <<rule>> {
 
 class "Audit result" as A <<ledger>> {
   rules audited : 11
-  defective : 0
+  structurally defective : 0
+  unrealized declared effect : 1
 }
 
 R9 --> A
@@ -1270,7 +1272,91 @@ note bottom of A
   (stated once, in the Supplementary Specification's
   Traceability table and the Use-Case Model's
   constraints-and-risks table), and a testable condition.
-  No rule is defective.
+  No rule is structurally defective. One rule - CON-013 -
+  declares an effect (the directory filters by worker
+  category) that no flow in UC-008 realizes.
+end note
+@enduml
+```
+
+**Findings.**
+
+| Key | Artifact | Severity | Finding | Recommendation |
+|---|---|---|---|---|
+| `Use-Case Model#F1` | Use-Case Model | Minor | `CON-013` declares the worker category is used as "a column of the directory (which it also filters)". `UC-008` Search Employee Directory — the use case that owns the directory — enumerates its search inputs as a name, a department or an office in main flow step 1, and no main or alternative flow filters the directory by worker category. The use case cites `CON-013` among its applied business rules, so it claims the rule while realizing only its column half. The declared rule's filter half therefore has no realizing flow anywhere in the model, and a reader implementing `UC-008` would not build the category filter. | Add the worker-category filter to `UC-008`: extend main flow step 1, or add an alternative flow, so the employee can filter the directory by worker category, since `CON-013` declares the directory filters by it. If the filter is not intended, the conflict between `FR-008`'s declared search dimensions (name, department, office) and `CON-013`'s declared filter must be resolved by the stakeholder rather than left implicit in the model. |
+
+**Defect distribution.**
+
+```plantuml
+@startuml BR2_DefectDistribution
+title Defect distribution - Business Reviewer lens, LCO Inception iteration 2
+skinparam classAttributeIconSize 0
+
+class "Use-Case Model" as UCM <<artifact>> {
+  Critical : 0
+  Major : 0
+  Minor : 1
+}
+class "Vision" as V <<artifact>> {
+  Critical : 0
+  Major : 0
+  Minor : 0
+}
+class "Supplementary Specification" as SS <<artifact>> {
+  Critical : 0
+  Major : 0
+  Minor : 0
+}
+class "Development Case" as DC <<artifact>> {
+  Critical : 0
+  Major : 0
+  Minor : 0
+}
+class "Risk List" as RL <<artifact>> {
+  Critical : 0
+  Major : 0
+  Minor : 0
+}
+class "Iteration Plan" as IP <<artifact>> {
+  Critical : 0
+  Major : 0
+  Minor : 0
+}
+class "Software Architecture Document" as SAD <<artifact>> {
+  Critical : 0
+  Major : 0
+  Minor : 0
+}
+class "Test Evaluation Summary" as TES <<artifact>> {
+  Critical : 0
+  Major : 0
+  Minor : 0
+}
+
+class "Totals" as T <<ledger>> {
+  findings : 1
+  Critical : 0
+  Major : 0
+  Minor : 1
+  closed this pass : 0
+}
+
+UCM --> T
+V --> T
+SS --> T
+DC --> T
+RL --> T
+IP --> T
+SAD --> T
+TES --> T
+
+note bottom of T
+  One finding, on the one artifact that carries a declared
+  business rule with no realizing flow. No Critical finding:
+  no scope creep, no phantom use case, no baseline
+  redefinition, no missing required artifact, no fabricated
+  figure, no unsourced quantitative claim.
+  No prior finding of this lens existed to close.
 end note
 @enduml
 ```
@@ -1373,15 +1459,15 @@ end note
 @enduml
 ```
 
-**Checklist detail — the three items that are NOT N/A.** Three Business Modeling checklist items have a subject that exists in this project even though the discipline is inactive. Each was evaluated on its merits and each passes.
+**Checklist detail — the three items that are NOT N/A.** Three Business Modeling checklist items have a subject that exists in this project even though the discipline is inactive. Each was evaluated on its merits.
 
 | Checklist item | Verdict | Evidence |
 |---|---|---|
 | Stakeholder representation coverage | **Pass** | All four declared stakeholders are represented in the Vision's Stakeholder Summary with role, interest, influence and the needs the product must satisfy: `STK-001` Laura Gómez (HR Director, sponsor), `STK-002` Miguel Torres (Software Engineer), `STK-003` Infrastructure Team (operates AD and Keycloak), `STK-004` Cuba Corp Employees (200 people, 3 offices). No significant organisational part relevant to the declared scope is unrepresented. The Infrastructure Team is correctly modelled as a stakeholder and not as a use-case actor — it operates the portal in production (`CON-029`) and performs no in-portal administration. No compliance function is declared (`CON-019`), so none is missing. |
-| Business rules as formal constraints | **Pass** | `CON-009`..`CON-019` are declared as `[BusinessRule]` constraints and each is attached to the element it constrains: `CON-009` to the news feature set (`FR-005`, `FR-006`, `FR-007`), `CON-010`/`CON-011`/`CON-012` to clocking (`FR-001`, `FR-002`, `FR-003`), `CON-013`/`CON-014`/`CON-015`/`CON-016` to the worker category (`FR-008`, `FR-009`), `CON-017` to news retention (`FR-007`), `CON-018`/`CON-019` to the audit (`NFR-004`). Each is testable and each carries its source. They are system invariants, not business-process definitions — which is precisely why they do not trigger Business Modeling. |
+| Business rules as formal constraints | **Pass, with one realization defect** | `CON-009`..`CON-019` are declared as `[BusinessRule]` constraints and each is attached to the element it constrains: `CON-009` to the news feature set (`FR-005`, `FR-006`, `FR-007`), `CON-010`/`CON-011`/`CON-012` to clocking (`FR-001`, `FR-002`, `FR-003`), `CON-013`/`CON-014`/`CON-015`/`CON-016` to the worker category (`FR-008`, `FR-009`), `CON-017` to news retention (`FR-007`), `CON-018`/`CON-019` to the audit (`NFR-004`). Each is testable and each carries its source. All eleven are structurally sound; one — `CON-013` — declares an effect no flow realizes, which is `Use-Case Model#F1`. |
 | Business goals measurable | **Pass** | `BG-001` (50% reduction in HR management time, measured against the current manual processes), `BG-002` (100% of new clockings out of Excel), `BG-003` (80% of 200 employees within 3 months) each carry a numeric target and a stated basis of measurement. `BG-003`'s verification path is now stated per goal in the Vision: it is measured with `STK-004` after go-live, outside the project's test effort, and no acceptance criterion the team can run closes it. |
 
-**Traceability compliance (iteration 2).** The traceability tree was projected from the Business level and used as the completeness instrument. Result: 66 roots, 231 nodes, **no `UNKNOWN LABEL`** — every identifier in the graph belongs to a declared family. No `«LEAF»` at Business level: every declared requirement and acceptance criterion reaches at least one downstream element. No business-level element (`BUC-NNN`, `BR-NNN`, `OBJ-NNN`) appears in the graph, which is the expected shape for a project with Business Modeling inactive. The six `SUSPECT` edges the generic Reviewer lens records (`R001` → `UC-001`, `R001` → `UC-008`, `R004` → `UC-001`, `R004` → `UC-008`, `R009` → `UC-001`) are risk-to-use-case edges at the Business level and are that lens's finding (`Use-Case Model#F1`) — they are not business-modeling defects and I record no finding on them.
+**Traceability compliance (iteration 2).** The traceability tree was projected from the Business level and used as the completeness instrument. Result: 66 roots, 231 nodes, **no `UNKNOWN LABEL`** — every identifier in the graph belongs to a declared family. No `«LEAF»` at Business level: every declared requirement and acceptance criterion reaches at least one downstream element. No business-level element (`BUC-NNN`, `BR-NNN`, `OBJ-NNN`) appears in the graph, which is the expected shape for a project with Business Modeling inactive. The six `SUSPECT` edges the generic Reviewer lens records (`R001` → `UC-001`, `R001` → `UC-008`, `R004` → `UC-001`, `R004` → `UC-008`, `R009` → `UC-001`) are risk-to-use-case edges at the Business level and are that lens's finding (`Use-Case Model#F1` of the Reviewer lens) — they are not business-modeling defects and I record no finding on them.
 
 **Scope-adherence result (iteration 2).** No scope creep was found in the business dimension. Nine use cases, one per declared `FR-001`..`FR-009`; every use case carries a `Source: FR-NNN` line citing a declared requirement; no phantom use case; no cross-cutting mechanism modelled as a use case — OIDC login, authorization, LDAP read, audit write and the clocking retry are all Supplementary Specification entries with `<<include>>` from their dependent use cases. No `[DERIVED]` marker survives in any artifact, so no silent derivation promotion exists to flag. No unsourced quantitative claim was found: the artifacts state declared targets and explicitly record that no measurement exists yet. No financial figure appears anywhere in the artifact set.
 
