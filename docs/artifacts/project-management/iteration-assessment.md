@@ -539,7 +539,6 @@ end note
 **Five of six met; criterion 5 is not met.** Criterion 5 is the criterion that gates every use case, and it is the one the ManagementReviewer records as NOT MET. The ReviewCoordinator's verdict — iteration REQUIRED, scope incomplete — is grounded in it, together with the four open Major findings and the stakeholder's refusal.
 
 ## Test Results
-
 **No test was executed this iteration.** No use case is implemented, no Test Case has been authored and no stand-in environment exists, so no acceptance criterion is verifiable. The Test Evaluation Summary states this and it holds.
 
 | Evidence | Source | Value |
@@ -551,6 +550,104 @@ end note
 | Executed test results | — | none — no use case is implemented |
 
 **Variance against the Test Evaluation Summary.** The artifact asserts in three places that the SCM issue tracker holds no issues. The tracker holds `Issue #1`, labelled `severity:minor`, `nature:defect`, `configuration-record`. The claim is false against observable SCM state and is recorded as `Test Evaluation Summary#F1` (Major). The artifact's evidence block also cites CI run `36049582928` while the build observed at this close is run `36050451436`; both are corrected by the same remediation.
+
+**Measured spend and elapsed time — the iteration's actuals.** These are the two quantities this system measures, and they are the input to the iteration 2 plan. No forecast is invented from a theoretical capacity, and no token budget is set: CON-027 declares none and none is to be set.
+
+| Currency | Measured this iteration | Basis |
+|---|---|---|
+| Agent work — tokens | 6,918,081 | Measured token spend for Inception iteration 1 |
+| Agent work — elapsed time | 8:35:00.7478289 | Elapsed agent time measured by the system |
+| Human gate — queue time | 0:00:00 | Days of queue time waiting for a person. This excludes the end-of-iteration approval gate, which is not measured |
+
+The two currencies are reported apart and are never summed into one figure and never converted into one another. The human-gate figure is queue time, not work.
+
+**Metrics, each with the decision it enables.** Every metric below is included because a decision depends on it; none is included because it is available.
+
+```plantuml
+@startsalt
+{#
+  Metric goal | Metric | Primitive measure | This iteration
+  Control the plan: are the iteration exit criteria met? | Iteration exit criteria met | Count of layer (b) criteria verified against evidence | 5 of 6
+  Control the plan: are the declared acceptance criteria covered? | Acceptance criteria accounted for | Count of AC-001..AC-006 with a named closing iteration | 6 of 6 accounted, 0 verified
+  Control quality: is the baseline fit to carry forward? | Open findings by severity | Count of findings recorded by the three review lenses | 18 - 0 Critical, 4 Major, 14 Minor
+  Control quality: is the defect record current? | Open defects | Count of issues in the SCM tracker | 1 - Issue #1
+  Forecast the next iteration: replace assumed shares with measured actuals | Agent work spend | Tokens consumed, measured | 6918081
+  Forecast the next iteration: replace assumed shares with measured actuals | Agent elapsed time | Elapsed time measured by the system | 8:35:00.7478289
+  Bound the human gate: is the gate on the team's path? | Human queue time | Days of queue time waiting for a person | 0:00:00 measured, excluding the end-of-iteration approval gate, which is not measured
+  Control the process: is the process configuration exercised? | Agent invocations | Count of agent invocations | 11
+  Control the process: is the stakeholder engaged? | Stakeholder interactions | Count of stakeholder interactions | 11
+  Control the process: is the artifact set complete? | Artifacts produced | Count of artifacts in the project | 9
+  Control quality: is the artifact set fit to carry forward? | Average artifact quality | Mean quality score recorded by the review | 10.0
+}
+@endsalt
+```
+
+**What the metrics do not support.** Defect density per page or per KLOC is not computable: page counts and lines of code are not measured by this system, and no code exists. Defect removal efficiency is not computable: it compares defects found in review against defects found in test, and no test has executed. Rework effort is not measurable in this system's units: hours are not a unit this system produces, and the corrective obligation is the 18 findings, each with an owner and a deadline. No figure is stated for any of the three.
+
+### Iteration 2 — Inception
+
+**No test was executed this iteration.** No use case is implemented, no Test Case has been authored and no stand-in environment exists, so no acceptance criterion is verifiable. The Test Evaluation Summary states this and it holds.
+
+| Evidence | Source | Value |
+|---|---|---|
+| CI build on `main` | `scm_get_build_status` | success — run `36095051721`, 2026-09-25 |
+| Open defects | SCM issue tracker | 3 — `Issue #1`, `Issue #2`, `Issue #3` |
+| Test Cases authored | Test Case artifact | none — the artifact is not yet produced |
+| Stand-in OIDC issuer and stand-in directory | CON-028 | not built — R004's treatment failed for the second consecutive iteration |
+| Executed test results | — | none — no use case is implemented |
+
+**Variance against the Test Evaluation Summary.** The artifact's evidence block records two open defects (`Issue #1`, `Issue #2`) and cites CI run `36094575395`, while the tracker holds three and the build observed at this close is run `36095051721`. The Reviewer records this as `Test Evaluation Summary#F2` (Minor). The three places that carry the count — the Test Summary evidence table, the Defects and Incidents section and the Conclusions table — must agree with the tracker.
+
+**Measured spend and elapsed time — the iteration's actuals.** These are the two quantities this system measures, and they are the input to the iteration 3 plan. No forecast is invented from a theoretical capacity, and no token budget is set: CON-027 declares none and none is to be set.
+
+| Currency | Measured this iteration | Basis |
+|---|---|---|
+| Agent work — tokens | 12,066,256 | Measured token spend for Inception iteration 2 |
+| Agent work — elapsed time | 2:03:51.5597976 | Elapsed agent time measured by the system |
+| Human gate — queue time | 0:00:00 | Days of queue time waiting for a person. This excludes the end-of-iteration approval gate, which is not measured |
+
+The two currencies are reported apart and are never summed into one figure and never converted into one another. The human-gate figure is queue time, not work.
+
+**The measured shape, against the assumed one.** Iteration 2 spent 12,066,256 tokens against iteration 1's 6,918,081 — 1.74 times the spend — while its elapsed agent time fell from 8:35:00.7478289 to 2:03:51.5597976. The spend rose because the iteration read the accumulated artifact surface and re-read it to close 18 findings; the elapsed time fell because the work was corrective rather than generative. This is the measured shape, and it replaces every assumed share in the forecast for iteration 3. It does not resemble the rubber profile's assumed distribution, and the measured shape wins.
+
+**Metrics, each with the decision it enables.** Every metric below is included because a decision depends on it; none is included because it is available.
+
+```plantuml
+@startsalt
+{#
+  Metric goal | Metric | Primitive measure | This iteration
+  Control the plan: are the iteration exit criteria met? | Iteration exit criteria met | Count of layer (b) criteria verified against evidence | 5 of 6
+  Control the plan: is the criterion that gates every use case met? | Stand-in environment available | Count of artifacts evidencing the test OIDC issuer and test directory | 0 - second consecutive iteration
+  Control the plan: are the declared acceptance criteria covered? | Acceptance criteria accounted for | Count of AC-001..AC-006 with a named closing iteration | 6 of 6 accounted, 0 verified
+  Control quality: is the baseline fit to carry forward? | Open findings by severity | Count of findings recorded by the four review lenses | 9 - 0 Critical, 2 Major, 7 Minor
+  Control quality: did the corrective pass work? | Prior findings closed | Count of iteration-1 findings closed by their originating lens | 18 of 18
+  Control quality: is the defect record current? | Open defects | Count of issues in the SCM tracker | 3 - Issue #1, Issue #2, Issue #3
+  Forecast the next iteration: replace assumed shares with measured actuals | Agent work spend | Tokens consumed, measured | 12066256
+  Forecast the next iteration: replace assumed shares with measured actuals | Agent elapsed time | Elapsed time measured by the system | 2:03:51.5597976
+  Bound the human gate: is the gate on the team's path? | Human queue time | Days of queue time waiting for a person | 0:00:00 measured, excluding the end-of-iteration approval gate, which is not measured
+  Control the process: is the process configuration exercised? | Agent invocations | Count of agent invocations | 11
+  Control the process: is the stakeholder engaged? | Stakeholder interactions | Count of stakeholder interactions | 11
+  Control the process: is the artifact set complete? | Artifacts produced | Count of artifacts in the project | 10
+  Control quality: is the artifact set fit to carry forward? | Average artifact quality | Mean quality score recorded by the review | 9.9
+}
+@endsalt
+```
+
+**What the metrics do not support.** Defect density per page or per KLOC is not computable: page counts and lines of code are not measured by this system, and no code exists. Defect removal efficiency is not computable: it compares defects found in review against defects found in test, and no test has executed. Rework effort is not measurable in this system's units: hours are not a unit this system produces, and the corrective obligation is the 9 findings, each with an owner and a deadline. No figure is stated for any of the three.
+
+### Iteration 1 — Inception
+
+**No test was executed this iteration.** No use case is implemented, no Test Case has been authored and no stand-in environment exists, so no acceptance criterion is verifiable. The Test Evaluation Summary states this and it holds.
+
+| Evidence | Source | Value |
+|---|---|---|
+| CI build on `main` | `scm_get_build_status` | success — run `36050451436`, 2026-09-24 |
+| Open defects | SCM issue tracker | 1 — `Issue #1` |
+| Test Cases authored | Test Case artifact | none — the artifact is not yet produced |
+| Stand-in OIDC issuer and stand-in directory | CON-028 | not built — R004's treatment unexecuted |
+| Executed test results | — | none — no use case is implemented |
+
+**Variance against the Test Evaluation Summary.** The artifact asserted in three places that the SCM issue tracker holds no issues. The tracker holds `Issue #1`, labelled `severity:minor`, `nature:defect`, `configuration-record`. The claim is false against observable SCM state and is recorded as `Test Evaluation Summary#F1` (Major). The artifact's evidence block also cites CI run `36049582928` while the build observed at this close is run `36050451436`; both are corrected by the same remediation.
 
 **Measured spend and elapsed time — the iteration's actuals.** These are the two quantities this system measures, and they are the input to the iteration 2 plan. No forecast is invented from a theoretical capacity, and no token budget is set: CON-027 declares none and none is to be set.
 
