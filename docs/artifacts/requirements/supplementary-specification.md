@@ -288,7 +288,7 @@ Every row below ends in a trace-graph element identifier, never a document secti
 |---|---|---|---|
 | NFR-001 Page Load Performance | AC-001 | Derives | COMP-001 |
 | NFR-002 Clock In/Out Response Time | FR-001 | Derives | COMP-004 |
-| NFR-003 Availability Window | CON-007 | Derives | — not yet minted |
+| NFR-003 Availability Window | CON-007 | Derives | COMP-002 |
 | NFR-004 Audit Trail | FR-002, FR-005, FR-006, FR-007, FR-009, CON-012, CON-017, CON-018, CON-019 | Derives | COMP-009 |
 | NFR-005 Authorization Model | CON-002, CON-013, STK-001 | Derives | COMP-010 |
 | CON-001 | — | DependsOn | COMP-002 |
@@ -310,10 +310,10 @@ Every row below ends in a trace-graph element identifier, never a document secti
 | AC-001 | — | Derives | COMP-001 |
 | AC-006 | — | Derives | COMP-003 |
 
-**NFR-003 — downstream element not yet minted.** The Software Architect's component view assigns no component to the availability window, and the Test Designer's `TC-NNN` do not exist. No element-level edge is claimed for it; the edge is registered when that element is minted. The graph carries an artifact-level edge `NFR-003 → Supplementary Specification`, which records that this artifact elaborates the requirement — containment, not a design or test element, and not claimed as a trace endpoint here.
+**NFR-003's downstream element.** The availability window is a property of the single deployable's application boundary, so the Software Architect registers `NFR-003 → COMP-002`. No separate availability component exists: NFR-003 requires 07:00–19:00 Monday–Friday with fault tolerance inside the corporate network, not 24/7, and a single deployable on the estate Infrastructure operates (CON-029) is the whole of the design that requirement needs.
 
 **AC-001 and AC-006.** `AC-006 → COMP-003` is registered. `AC-001 → COMP-001` is registered on the Software Architect's own declaration that COMP-001's server-rendered, script-minimal pages are the tactic for NFR-001/AC-001. The `TC-NNN` that verify both criteria are the Test Designer's to mint; those edges are registered then.
 
 **Constraints carrying no design element.** CON-006, CON-007, CON-008, CON-019, CON-020, CON-021, CON-027, CON-029, CON-030 and CON-032 impose no element of the design of their own: they are satisfied by the declared environment, by the operating arrangement or by project process. They carry no row and no edge.
 
-**Label scope.** `NFR-001..NFR-005`, `FR-001..FR-009`, `AC-001..AC-006`, `CON-001..CON-032`, `STK-001..STK-004`, `BG-001..BG-003` and `R001..R003` are declared identifiers, copied exactly. `USA-`, `REL-`, `PERF-`, `SUP-`, `SEC-`, `IFC-` and `STD-` are document-local labels of this Supplementary Specification; they are not trace-graph elements and no trace is registered on them. The same rule governs the Traces To column: every entry there is a trace-graph element identifier (`COMP-NNN`) or an explicit not-yet-minted statement — no document section, no artifact name and no document-local label appears in it. The Designer owns `INT-NNN` and `CLS-NNN`, the Software Architect owns `COMP-NNN`, the Test Designer owns `TC-NNN` — none is minted here.
+**Label scope.** `NFR-001..NFR-005`, `FR-001..FR-009`, `AC-001..AC-006`, `CON-001..CON-032`, `STK-001..STK-004`, `BG-001..BG-003` and `R001..R003` are declared identifiers, copied exactly. `USA-`, `REL-`, `PERF-`, `SUP-`, `SEC-`, `IFC-` and `STD-` are document-local labels of this Supplementary Specification; they are not trace-graph elements and no trace is registered on them. The same rule governs the Traces To column: every entry there is a trace-graph element identifier (`COMP-NNN`) — no document section, no artifact name and no document-local label appears in it. The Designer owns `INT-NNN` and `CLS-NNN`, the Software Architect owns `COMP-NNN`, the Test Designer owns `TC-NNN` — none is minted here.
