@@ -399,9 +399,9 @@ endif
 ## Findings
 ### Reviewer lens
 
-**Summary.** 11 findings: 0 Critical, 1 Major, 10 Minor. One artifact — the Use-Case Model — is clean and carries no finding. No Critical finding was recorded, so no finding of this lens escalates to the stakeholder.
+#### Iteration 1 — LCO technical review
 
-**Compliance matrix.** Every checklist item evaluated, recorded Pass or Fail. A Fail is a finding.
+**Summary.** 11 findings: 0 Critical, 1 Major, 10 Minor. One artifact — the Use-Case Model — was clean and carried no finding. No Critical finding was recorded, so no finding of this lens escalated to the stakeholder.
 
 ```plantuml
 @startuml RR_ComplianceMatrix
@@ -499,8 +499,6 @@ end note
 @enduml
 ```
 
-**Defect distribution.**
-
 ```plantuml
 @startuml RR_DefectDistribution
 title Defect distribution - severity x artifact (LCO technical review, Inception iteration 1)
@@ -563,8 +561,6 @@ note bottom of TES
 end note
 @enduml
 ```
-
-**Annotated review map.** Where each finding sits, and which LCO exit criterion the artifact evidences.
 
 ```plantuml
 @startuml RR_AnnotatedMap
@@ -652,11 +648,338 @@ end note
 | `Software Architecture Document#F2` | Software Architecture Document | Minor | The key-abstractions class diagram gives `Clocking` mutable `clockInUtc` and `clockOutUtc` fields plus a `corrected` flag, while the Data View states the clocking row is never updated in place (CON-012). The model does not state which value FR-003's ClockIn and ClockOut columns read when a correction exists, so the export contract is ambiguous against the correction model. | State that `Clocking`'s time fields are immutable and that the effective value is resolved from the correction chain, and name the resolution rule the export applies when a day carries one or more corrections. |
 | `Test Evaluation Summary#F1` | Test Evaluation Summary | **Major** | The artifact asserts that the SCM issue tracker holds no issues and reports no defect — in the Test Summary evidence table, the Defects and Incidents section and the Conclusions table. The tracker holds `Issue #1`, labelled `severity:minor`, `nature:defect`, `configuration-record`. The claim is false against observable SCM state and would let the milestone verdict conclude that no defect exists. | Correct the three places to record `Issue #1` as the open defect and state the defect count as one. The artifact's own rule — a defect is an SCM issue and its identifier is the issue number — already supports this; the evidence block was not refreshed. |
 
-**Traceability compliance.** The traceability tree was projected from the Business level and used as the completeness instrument. Result: 47 roots, 150 nodes, **no `SUSPECT` edge and no `UNKNOWN LABEL`**. No `«LEAF»` at Business level — every declared requirement and acceptance criterion reaches at least one downstream element, so no requirement is unrealized. The defects found are in the artifacts' own traceability *tables*, which declare edges the graph does not carry (`Vision#F1`, `Supplementary Specification#F1`, `Software Architecture Document#F1`) or omit edges the graph should carry (`Iteration Plan#F2`). The graph itself is sound; the tables are not reconciled with it.
+**Traceability compliance (iteration 1).** The traceability tree was projected from the Business level and used as the completeness instrument. Result: 47 roots, 150 nodes, no `SUSPECT` edge and no `UNKNOWN LABEL`. No `«LEAF»` at Business level — every declared requirement and acceptance criterion reached at least one downstream element. The defects found were in the artifacts' own traceability *tables*, which declared edges the graph did not carry (`Vision#F1`, `Supplementary Specification#F1`, `Software Architecture Document#F1`) or omitted edges the graph should carry (`Iteration Plan#F2`). The graph itself was sound; the tables were not reconciled with it.
 
-**Scope-adherence result.** No scope creep was found. Nine use cases, one per declared `FR-001`..`FR-009`; every use case carries a `Source: FR-NNN` line citing a declared requirement; no phantom use case; no cross-cutting mechanism modelled as a use case — OIDC login, authorization, LDAP read, audit write and the clocking retry are all Supplementary Specification entries with `<<include>>` from their dependent use cases. No `[DERIVED]` marker was found in any artifact, so no silent derivation promotion exists to flag. No unsourced quantitative claim was found: the artifacts state declared targets and explicitly record that no measurement exists yet.
+**Scope-adherence result (iteration 1).** No scope creep. Nine use cases, one per declared `FR-001`..`FR-009`; every use case carries a `Source: FR-NNN` line citing a declared requirement; no phantom use case; no cross-cutting mechanism modelled as a use case — OIDC login, authorization, LDAP read, audit write and the clocking retry are all Supplementary Specification entries with `<<include>>` from their dependent use cases. No `[DERIVED]` marker was found in any artifact, so no silent derivation promotion existed to flag. No unsourced quantitative claim was found.
 
-**DC baseline conformance result.** The Development Case does not redefine the 25-role roster, does not reassign CORE ownership, does not omit a CORE artifact, does not list an artifact outside the CORE + OPTIONAL universe, and does not merge two roles. Business Modeling is declared INACTIVE with the correct trigger condition (`business-process-led = false`). All six OPTIONAL triggers were audited against their §5.2 conditions and none was found over-triggered — each NOT-FIRED verdict holds against the project's real facts. The two findings against this artifact are a stale environment record and an intensity-row wording defect, not a baseline violation.
+**DC baseline conformance result (iteration 1).** The Development Case did not redefine the 25-role roster, did not reassign CORE ownership, did not omit a CORE artifact, did not list an artifact outside the CORE + OPTIONAL universe, and did not merge two roles. Business Modeling was declared INACTIVE with the correct trigger condition (`business-process-led = false`). All six OPTIONAL triggers were audited against their §5.2 conditions and none was found over-triggered. The two findings against this artifact were a stale environment record and an intensity-row wording defect, not a baseline violation.
+
+#### Iteration 2 — LCO technical review
+
+**Summary.** 6 findings: 0 Critical, 1 Major, 5 Minor. No Critical finding was recorded, so no finding of this lens escalates to the stakeholder on severity grounds. All 11 prior findings of this lens are closed — see Resolutions and Actions.
+
+**Closure ledger.** Every prior finding of this lens, with its disposition.
+
+```plantuml
+@startuml RR2_ClosureLedger
+title Closure ledger - 11 prior findings of the Reviewer lens, disposed at Inception iteration 2
+skinparam classAttributeIconSize 0
+
+class "Development Case" as DC <<artifact>> {
+  F1 Minor : Resolved - CI row refreshed in all three places
+  F2 Minor : Resolved - Environment row states the canonical level
+}
+class "Vision" as V <<artifact>> {
+  F1 Minor : Resolved - Traces To names element identifiers
+  F2 Minor : Resolved - boundary diagram draws Keycloak to all nine
+}
+class "Supplementary Specification" as SS <<artifact>> {
+  F1 Minor : Resolved - Traces To names element identifiers
+}
+class "Risk List" as RL <<artifact>> {
+  F1 Minor : Resolved - R009 restated; CI half retired
+}
+class "Iteration Plan" as IP <<artifact>> {
+  F1 Minor : Resolved - gate drawn in parallel
+  F2 Minor : Resolved - AC-002 to AC-005 edges registered
+}
+class "Software Architecture Document" as SAD <<artifact>> {
+  F1 Minor : Resolved - table reconciled with the graph
+  F2 Minor : Resolved - times immutable; resolution rule named
+}
+class "Test Evaluation Summary" as TES <<artifact>> {
+  F1 Major : Resolved - the three places record open defects
+}
+
+class "Disposition" as D <<ledger>> {
+  closed : 11
+  deferred : 0
+  rejected : 0
+  left open : 0
+}
+
+DC --> D
+V --> D
+SS --> D
+RL --> D
+IP --> D
+SAD --> D
+TES --> D
+
+note bottom of D
+  Every prior finding of this lens is closed on evidence
+  read from the corrected artifact. Nothing is deferred
+  and nothing is rejected.
+end note
+@enduml
+```
+
+**Compliance matrix.** Every checklist item evaluated, recorded Pass or Fail. A Fail is a finding.
+
+```plantuml
+@startuml RR2_ComplianceMatrix
+title Compliance matrix - LCO technical review, Inception iteration 2
+skinparam classAttributeIconSize 0
+skinparam classFontSize 11
+
+class "Vision" as V <<artifact>> {
+  Scope adherence, no creep : Pass
+  FR-001 to FR-009 one per feature : Pass
+  NFR, AC, BG, CON coverage : Pass
+  Unsourced figures : none
+  UML present : Pass
+  Trace endpoints are elements : Pass
+  Boundary diagram consistency : Pass
+  Downstream element currency : Fail
+}
+
+class "Use-Case Model" as UCM <<artifact>> {
+  UC-001 to UC-009 one per FR : Pass
+  Source FR-NNN per use case : Pass
+  No cross-cutting mechanism as UC : Pass
+  Multi-actor process is one UC : Pass
+  UML present : Pass
+  Trace edges registered : Pass
+  Suspect edges reviewed : Fail
+  Realizing-component table current : Fail
+}
+
+class "Supplementary Specification" as SS <<artifact>> {
+  NFR-001 to NFR-005 covered : Pass
+  CON-009 to CON-019 as rules : Pass
+  Cross-cutting mechanisms as entries : Pass
+  UML present : Pass
+  Trace endpoints are elements : Pass
+  Downstream element currency : Fail
+}
+
+class "Development Case" as DC <<artifact>> {
+  Roster of 25 unchanged : Pass
+  CORE ownership unchanged : Pass
+  CORE 16 complete : Pass
+  No artifact outside the universe : Pass
+  Optional triggers audited : Pass
+  Intensity per canonical matrix : Pass
+  Environment record current : Pass
+  SCM issue record current : Fail
+}
+
+class "Risk List" as RL <<artifact>> {
+  R001 to R003 preserved : Pass
+  Team risks numbered per CON-020 : Pass
+  Acceptance cites CON-021 : Pass
+  Mitigation and contingency present : Pass
+  Premise current : Pass
+  Unconfirmed basis flagged : Pass
+}
+
+class "Iteration Plan" as IP <<artifact>> {
+  AC-001 to AC-006 accounted : Pass
+  No fabricated duration : Pass
+  Human gate bounded at 14 days : Pass
+  Gate off the team path : Pass
+  AC trace edges registered : Pass
+  Measured actuals recorded : Pass
+  Exit criteria carry a verdict : Pass
+}
+
+class "Software Architecture Document" as SAD <<artifact>> {
+  High-volatility UC to component : Pass
+  No layer or feature naming : Pass
+  CON-025 Keycloak in-network : Pass
+  No fabricated measurement : Pass
+  Invariants enforced in schema : Pass
+  Correction model complete : Pass
+  Trace table matches graph : Pass
+}
+
+class "Test Evaluation Summary" as TES <<artifact>> {
+  AC verification plan : Pass
+  Stand-in boundary stated : Pass
+  No fabricated results : Pass
+  SCM evidence current : Fail
+}
+
+V --> UCM
+UCM --> SS
+SS --> SAD
+DC --> IP
+RL --> IP
+SAD --> TES
+IP --> TES
+
+note bottom of V
+  Pass = the checklist item is satisfied.
+  Fail = a finding is recorded against this artifact.
+  No Critical finding was recorded in this review.
+end note
+@enduml
+```
+
+**Defect distribution.**
+
+```plantuml
+@startuml RR2_DefectDistribution
+title Defect distribution - severity x artifact (LCO technical review, Inception iteration 2)
+skinparam classAttributeIconSize 0
+
+class "Use-Case Model" as UCM <<artifact>> {
+  Critical : 0
+  Major : 1
+  Minor : 1
+}
+class "Vision" as V <<artifact>> {
+  Critical : 0
+  Major : 0
+  Minor : 1
+}
+class "Supplementary Specification" as SS <<artifact>> {
+  Critical : 0
+  Major : 0
+  Minor : 1
+}
+class "Development Case" as DC <<artifact>> {
+  Critical : 0
+  Major : 0
+  Minor : 1
+}
+class "Test Evaluation Summary" as TES <<artifact>> {
+  Critical : 0
+  Major : 0
+  Minor : 1
+}
+class "Risk List" as RL <<artifact>> {
+  Critical : 0
+  Major : 0
+  Minor : 0
+}
+class "Iteration Plan" as IP <<artifact>> {
+  Critical : 0
+  Major : 0
+  Minor : 0
+}
+class "Software Architecture Document" as SAD <<artifact>> {
+  Critical : 0
+  Major : 0
+  Minor : 0
+}
+
+class "Totals" as T <<ledger>> {
+  findings : 6
+  Critical : 0
+  Major : 1
+  Minor : 5
+  closed this pass : 11
+}
+
+UCM --> T
+V --> T
+SS --> T
+DC --> T
+TES --> T
+RL --> T
+IP --> T
+SAD --> T
+
+note bottom of T
+  No Critical finding: no scope creep, no phantom use case,
+  no baseline redefinition, no missing required artifact,
+  no fabricated figure.
+  The one Major is the unreviewed SUSPECT edges on the
+  Use-Case Model.
+end note
+@enduml
+```
+
+**Annotated review map.** Where each finding sits, and which LCO exit criterion the artifact evidences.
+
+```plantuml
+@startuml RR2_AnnotatedMap
+title Annotated review map - artifacts, findings and the LCO exit criteria they evidence (Inception iteration 2)
+skinparam classAttributeIconSize 0
+
+class "Vision" as V <<artifact>>
+class "Use-Case Model" as UCM <<artifact>>
+class "Supplementary Specification" as SS <<artifact>>
+class "Development Case" as DC <<artifact>>
+class "Risk List" as RL <<artifact>>
+class "Iteration Plan" as IP <<artifact>>
+class "Software Architecture Document" as SAD <<artifact>>
+class "Test Evaluation Summary" as TES <<artifact>>
+
+class "C1 Scope agreed" as C1 <<criterion>>
+class "C2 Project viable" as C2 <<criterion>>
+class "C3 Risks identified" as C3 <<criterion>>
+class "C4 Process governs" as C4 <<criterion>>
+class "C5 Stand-in environment" as C5 <<criterion>>
+class "C6 Build verifiable" as C6 <<criterion>>
+
+V --> C1
+UCM --> C1
+SS --> C1
+SAD --> C2
+DC --> C4
+RL --> C3
+IP --> C3
+IP --> C5
+IP --> C6
+TES --> C6
+
+note right of UCM
+  1 Major, 1 Minor
+  - six SUSPECT edges unreviewed
+  - realizing-component table stale
+end note
+
+note right of V
+  1 Minor
+  - NFR-003 downstream element stale
+end note
+
+note right of SS
+  1 Minor
+  - NFR-003 downstream element stale
+end note
+
+note right of DC
+  1 Minor
+  - open SCM issue set under-reported
+end note
+
+note right of TES
+  1 Minor
+  - defect count and CI run stale
+end note
+
+note bottom of C5
+  C5 is still not evidenced by any artifact: the
+  Development Case records the stand-in environment
+  as not ready at the LCO gate. C6 is met by the
+  green build on main.
+end note
+@enduml
+```
+
+**Findings.**
+
+| Key | Artifact | Severity | Finding | Recommendation |
+|---|---|---|---|---|
+| `Use-Case Model#F1` | Use-Case Model | **Major** | The trace graph flags six `SUSPECT` edges into this artifact's use cases — `R001` → `UC-001`, `R001` → `UC-008`, `R004` → `UC-001`, `R004` → `UC-008`, `R009` → `UC-001` — and the artifact has not reviewed them. A `SUSPECT` edge means the owner of the other end declared a change and this artifact's end has not been re-read against it. The Risk List changed under this artifact: `R004` is now recorded as materialized, `R001`'s probability and impact are now marked `[ASSUMPTION — requires validation]`, and `R009` is restated to the guideline files only. The artifact's constraints-and-risks table still binds `UC-001` to `R001, R003, R004, R006, R009` and `UC-008` to `R001, R002, R004, R005` without recording any of it. | Re-read the Risk List's current `R001`, `R004` and `R009` entries and update the constraints-and-risks table: record `R004` as materialized, record `R001`'s probability and impact as `[ASSUMPTION — requires validation]`, and record `R009`'s remaining scope as the guideline files only. Then declare the change in turn so the `SUSPECT` edges clear. |
+| `Use-Case Model#F2` | Use-Case Model | Minor | The "Realizing components" table is stale against the Software Architecture Document's registered edges. It records `COMP-001` realizing `UC-004` only, while the SAD registers `COMP-001` → `UC-001`, `UC-002`, `UC-004`, `UC-008`; it records `COMP-002` realizing `UC-001` only, while the SAD registers `COMP-002` → `UC-001`, `UC-002`, `UC-008`; and it omits `COMP-009` and `COMP-010` entirely, both of which the SAD registers as realizing use cases. | Reconcile the table with the SAD's registered edges: `COMP-001` → `UC-001`, `UC-002`, `UC-004`, `UC-008`; `COMP-002` → `UC-001`, `UC-002`, `UC-008`; add `COMP-009` and `COMP-010` with their registered use cases. The table references the Software Architect's elements, so it must state what the graph carries. |
+| `Vision#F3` | Vision | Minor | The Traceability table's `NFR-003` row still reads "`NFR-003` Availability Window \| `CON-007` \| Derives \| — not yet minted", and the note beneath it states that the Software Architect's component view assigns no component to the availability window. The Software Architecture Document now registers `NFR-003` → `COMP-002`. The two artifacts disagree about the same requirement's downstream element. | Replace the `NFR-003` row's Traces To with `COMP-002` and delete the "not yet minted" note for that row. |
+| `Supplementary Specification#F2` | Supplementary Specification | Minor | The Traceability table's `NFR-003` row still reads "`NFR-003` Availability Window \| `CON-007` \| Derives \| — not yet minted", and the note beneath it repeats that the Software Architect's component view assigns no component to the availability window. The Software Architecture Document now registers `NFR-003` → `COMP-002`. | Replace the `NFR-003` row's Traces To with `COMP-002` and delete the "not yet minted" note for that row. |
+| `Development Case#F3` | Development Case | Minor | The Organization and tool assessment table's "Open SCM issues" row records a single issue — "`Issue #1` — the environment-readiness record for the CI pipeline was stale" — and states it was corrected. The tracker holds three open issues: `Issue #1`, `Issue #2` (`docs/BRANCHING_STRATEGY.md` cites a superseded blob sha for the CI configuration item) and `Issue #3` (`.github/workflows/README.md` records `Issue #2` as outstanding after its correction). The row is the artifact's own record of the open issue set and it under-reports it by two. | Record all three open issues, with their labels and the fact that all three are configuration-record defects owned by the ProcessEngineer, or state the count as three and name the tracker as the authoritative record. |
+| `Test Evaluation Summary#F2` | Test Evaluation Summary | Minor | The evidence block is stale on both of its observable values. The Test Summary table and the Defects and Incidents section record two open defects (`Issue #1`, `Issue #2`), while the tracker holds three — `Issue #3` is not recorded. The CI run cited is `36094575395`, while the build observed on `main` at this review is run `36095051721`. | Record `Issue #3` alongside `Issue #1` and `Issue #2`, state the defect count as three, and refresh the CI run reference. The three places that carry the count — the Test Summary evidence table, the Defects and Incidents section and the Conclusions table — must agree with the tracker. |
+
+**Traceability compliance (iteration 2).** The traceability tree was projected from the Business level and used as the completeness instrument. Result: 66 roots, 231 nodes. No `UNKNOWN LABEL` — every identifier in the graph belongs to a declared family. No `«LEAF»` at Business level: every declared requirement and acceptance criterion reaches at least one downstream element, so no requirement is unrealized. The iteration-1 table defects are corrected: the Vision, the Supplementary Specification and the Software Architecture Document now name element identifiers, and the four missing acceptance-criterion edges are registered (`AC-002` → `UC-001`, `AC-003` → `UC-005`, `AC-004` → `UC-008`, `AC-005` → `UC-001`).
+
+**Six `SUSPECT` edges remain, all into the Use-Case Model.** `R001` → `UC-001`, `R001` → `UC-008`, `R004` → `UC-001`, `R004` → `UC-008`, `R009` → `UC-001`. Each is a change the Risk List's owner declared against a use case whose owner has not re-read it. They are recorded as `Use-Case Model#F1` (Major). A `SUSPECT` edge left open at phase close is a Major finding against the artifact owning the unreviewed end, and that is this artifact.
+
+**Scope-adherence result (iteration 2).** No scope creep. Nine use cases, one per declared `FR-001`..`FR-009`; every use case carries a `Source: FR-NNN` line citing a declared requirement; no phantom use case; no cross-cutting mechanism modelled as a use case — OIDC login, authorization, LDAP read, audit write and the clocking retry are all Supplementary Specification entries with `<<include>>` from their dependent use cases. No `[DERIVED]` marker survives in any artifact, so no silent derivation promotion exists to flag. No unsourced quantitative claim was found: the artifacts state declared targets and explicitly record that no measurement exists yet. No financial figure appears anywhere in the artifact set.
+
+**DC baseline conformance result (iteration 2).** The Development Case does not redefine the 25-role roster, does not reassign CORE ownership, does not omit a CORE artifact, does not list an artifact outside the CORE + OPTIONAL universe, and does not merge two roles. Business Modeling is declared INACTIVE with the correct trigger condition (`business-process-led = false`). All six OPTIONAL triggers were re-audited against their §5.2 conditions and none was found over-triggered — each NOT-FIRED verdict holds against the project's real facts. The Environment intensity row now states the canonical level per phase. The one finding against this artifact is a stale SCM issue record, not a baseline violation.
+
+**Optional trigger justification (iteration 2).** Every NOT-FIRED verdict was checked against its §5.2 condition. Glossary: the domain vocabulary is ordinary HR and intranet language and the one closed list is fixed by `CON-014` — condition does not hold. Architectural Proof-of-Concept: no technical risk requires empirical validation, and `CON-028` removes the only candidate — condition does not hold. Data Model: the portal owns three entities, well under ten, and `CON-030` states there is no data migration — condition does not hold. Deployment Model: one application and one database on one estate, reachable only from the internal network — condition does not hold. User-Interface Prototype: `CON-031` makes the design already decided and authoritative — condition does not hold. Test Plan: `CON-019` states no external compliance regime applies and there is no contractual test reporting — condition does not hold. No over-triggering found.
 
 ### Business Reviewer lens
 
