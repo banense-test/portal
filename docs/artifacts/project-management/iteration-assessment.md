@@ -378,7 +378,6 @@ The plan's critical chain ran in the order it was written. Two of its nine work 
 **The consequence of the unmet exit criterion.** UC-001, UC-002 and UC-008 are the three architecturally significant use cases and the three the plan scoped into iteration 1 as full specifications. CON-028 forbids building or testing against the real Keycloak or the real AD, so with no stand-in environment none of the three can be built or tested, and R004 — the risk the register itself calls the one that gates all testing — remains untreated. The specification work is complete; the environment that would let it be exercised does not exist.
 
 ## Results Relative to Evaluation Criteria
-
 ### Layer (a) — every declared acceptance criterion, one line each
 
 | AC | Criterion | Verdict this iteration | Evidence |
@@ -393,6 +392,140 @@ The plan's critical chain ran in the order it was written. Two of its nine work 
 **No acceptance criterion is verified, and none was expected to be.** Inception produces a baseline, not a running system. All six are accounted for in the Iteration Plan and each is deferred to the iteration whose increment closes it.
 
 ### Layer (b) — this iteration's own exit criteria, one line each
+
+| # | Exit criterion | Verdict | Evidence |
+|---|---|---|---|
+| 1 | Stakeholders agree on the scope | **Met** | Vision and Use-Case Model carry the declared scope with no creep; nine use cases, one per FR-001..FR-009; trace graph 47 roots, 150 nodes, no SUSPECT, no UNKNOWN LABEL |
+| 2 | The project is viable | **Met** | Stack pinned by CON-022/CON-023/CON-024; the OIDC client is already registered (CON-003); the Architectural Proof-of-Concept NOT-FIRED verdict holds |
+| 3 | Initial risks identified and classified | **Met, with a defective basis** | R001..R009 classified with P, I, magnitude, strategy, owner, mitigation, contingency. The bands rest on R001's unconfirmed estimate (`Risk List#F1`, Major) |
+| 4 | The process configuration governs the project | **Met** | Development Case conforms to the IARI baseline; Business Modeling INACTIVE on the correct trigger; all six OPTIONAL triggers audited, none fired |
+| 5 | The stand-in environment is available (CON-028) | **NOT MET** | No artifact evidences the test OIDC issuer or the test directory. The only record is the Development Case's pre-iteration readiness table, which is stale on its own CI row (`Development Case#F1`, Major) |
+| 6 | The build is verifiable (CON-026) | **Met** | The CI pipeline builds and tests on `main`; the build is green. The Development Case's record of this criterion is stale (`Development Case#F1`) |
+
+**Five of six met; criterion 5 is not met.** Criterion 5 is the criterion that gates every use case, and it is the one the ManagementReviewer records as NOT MET. The ReviewCoordinator's verdict — iteration REQUIRED, scope incomplete — is grounded in it, together with the four open Major findings and the stakeholder's refusal.
+
+### Iteration 2 — Inception
+
+#### Layer (a) — every declared acceptance criterion, one line each
+
+| AC | Criterion | Verdict this iteration | Evidence |
+|---|---|---|---|
+| AC-001 | Full page load as the employee experiences it, including the clocking page's script, under 3 seconds | Not addressed this iteration — deferred to Iter-4 | No page exists. The criterion is accounted for in the Iteration Plan and carries a registered trace edge |
+| AC-002 | An employee can clock in and out without help from HR or the development team | Not addressed this iteration — deferred to Iter-4 | No increment exists. The criterion is accounted for in the plan and its trace edge is registered |
+| AC-003 | An HR Administrator can publish a news item without technical assistance | Not addressed this iteration — deferred to Iter-4 | No increment exists. The criterion is accounted for in the plan and its trace edge is registered |
+| AC-004 | Any employee finds a colleague's phone/email in under 10 seconds | Not addressed this iteration — deferred to Iter-5 | No increment exists. The criterion is accounted for in the plan and its trace edge is registered |
+| AC-005 | 80% of employees complete at least one clocking with no prior training | Not addressed this iteration — deferred to Iter-6, and not closable by any test the team runs | An adoption measure taken with real employees after go-live. The Test Evaluation Summary states no test the team runs can close it; the Vision now states the verification path per goal |
+| AC-006 | A clocking made while the corporate network is down for up to 5 minutes is not lost | Not addressed this iteration — deferred to Iter-4 | No increment exists. The criterion is carried by UC-001, which this iteration carried as a full specification |
+
+**No acceptance criterion is verified, and none was expected to be.** Inception produces a baseline, not a running system. All six are accounted for in the Iteration Plan and each is deferred to the iteration whose increment closes it. The four missing trace edges the Reviewer recorded at iteration 1 are now registered.
+
+#### Layer (b) — this iteration's own exit criteria, one line each
+
+| # | Exit criterion | Verdict | Evidence |
+|---|---|---|---|
+| 1 | Stakeholders agree on the scope | **Met** | Vision and Use-Case Model carry the declared scope with no creep; nine use cases, one per FR-001..FR-009; trace graph 66 roots, 231 nodes, no UNKNOWN LABEL, no leaf at Business level |
+| 2 | The project is viable | **Met** | Stack pinned by CON-022/CON-023/CON-024; the OIDC client is already registered (CON-003); the Architectural Proof-of-Concept NOT-FIRED verdict holds |
+| 3 | Initial risks identified and classified | **Met, with a defective basis** | R001..R009 classified with P, I, magnitude, strategy, owner, mitigation, contingency. The High band's lower boundary rests on R001's unconfirmed estimate and on R004's re-assessed exposure, neither stakeholder-confirmed |
+| 4 | The process configuration governs the project | **Met** | Development Case conforms to the IARI baseline; Business Modeling INACTIVE on the correct trigger; all six OPTIONAL triggers re-audited, none fired |
+| 5 | The stand-in environment is available (CON-028) | **NOT MET** | No artifact evidences the test OIDC issuer or the test directory. The Development Case's LCO-gate verification records no stand-in configuration. This is the second consecutive iteration in which the criterion has failed |
+| 6 | The build is verifiable (CON-026) | **Met** | The CI pipeline builds and tests on `main`; the build is green (run `36095051721`) |
+
+**Five of six met; criterion 5 is not met, for the second consecutive iteration.** Criterion 5 is the criterion that gates every use case, and it is the one the ManagementReviewer records as NOT MET. The ReviewCoordinator's verdict — iteration REQUIRED, scope incomplete — is grounded in it, together with the two open Major findings and the stakeholder's refusal.
+
+```plantuml
+@startuml IA_Iter2_ExitCriteria
+title Portal - Inception iteration 2: exit criteria and phase objectives, verdict at close
+skinparam classAttributeIconSize 0
+
+class "C1 Stakeholders agree on the scope" as C1 <<criterion>> {
+  verdict : MET
+  evidence : Vision, Use-Case Model, Supplementary Specification
+}
+class "C2 The project is viable" as C2 <<criterion>> {
+  verdict : MET
+  evidence : stack pinned CON-022/023/024; OIDC client registered CON-003
+}
+class "C3 Initial risks identified and classified" as C3 <<criterion>> {
+  verdict : MET
+  evidence : R001..R009 with P, I, magnitude, strategy, owner
+}
+class "C4 The process configuration governs" as C4 <<criterion>> {
+  verdict : MET
+  evidence : Development Case conforms; BM inactive; 6 OPTIONAL triggers audited
+}
+class "C5 Stand-in environment available (CON-028)" as C5 <<criterion>> {
+  verdict : NOT MET
+  evidence : no artifact evidences the test OIDC issuer or test directory
+}
+class "C6 The build is verifiable (CON-026)" as C6 <<criterion>> {
+  verdict : MET
+  evidence : run 36095051721 on main is green
+}
+
+class "Phase objective 1 Define Project Scope" as O1 <<objective>> {
+  verdict : MET
+}
+class "Phase objective 2 Identify Critical Risks" as O2 <<objective>> {
+  verdict : MET, with a defective basis
+}
+class "Phase objective 3 Tailor Development Process" as O3 <<objective>> {
+  verdict : MET
+}
+class "Phase objective 4 Establish Feasibility" as O4 <<objective>> {
+  verdict : MET, with the exercisable-environment gap
+}
+
+class "Iteration outcome" as OUT <<verdict>> {
+  verdict : iteration REQUIRED (scope incomplete)
+  sanction : REFUSED by the stakeholder
+  exit criteria met : 5 of 6
+  open findings : 9 - 0 Critical, 2 Major, 7 Minor
+  prior findings closed : 18 of 18
+}
+
+C1 --> OUT
+C2 --> OUT
+C3 --> OUT
+C4 --> OUT
+C5 --> OUT
+C6 --> OUT
+O1 --> OUT
+O2 --> OUT
+O3 --> OUT
+O4 --> OUT
+
+note bottom of C5
+  C5 is the one criterion not met, for the second
+  consecutive iteration. It is the criterion that gates
+  every use case: CON-028 forbids building or testing
+  against the real Keycloak or the real AD, so with no
+  stand-in no use case can be built or tested.
+end note
+note bottom of OUT
+  The verdict is the ReviewCoordinator's and the
+  ManagementReviewer's, and it has been issued. This
+  assessment records the outcome given it; it does not
+  declare the milestone.
+end note
+@enduml
+```
+
+### Iteration 1 — Inception
+
+#### Layer (a) — every declared acceptance criterion, one line each
+
+| AC | Criterion | Verdict this iteration | Evidence |
+|---|---|---|---|
+| AC-001 | Full page load as the employee experiences it, including the clocking page's script, under 3 seconds | Not addressed this iteration — deferred to Iter-4 | No page exists. The criterion is accounted for in the Iteration Plan and carries a registered trace edge |
+| AC-002 | An employee can clock in and out without help from HR or the development team | Not addressed this iteration — deferred to Iter-4 | No increment exists. The criterion is accounted for in the plan; its trace edge is not registered (`Iteration Plan#F2`) |
+| AC-003 | An HR Administrator can publish a news item without technical assistance | Not addressed this iteration — deferred to Iter-4 | No increment exists. The criterion is accounted for in the plan; its trace edge is not registered (`Iteration Plan#F2`) |
+| AC-004 | Any employee finds a colleague's phone/email in under 10 seconds | Not addressed this iteration — deferred to Iter-5 | No increment exists. The criterion is accounted for in the plan; its trace edge is not registered (`Iteration Plan#F2`) |
+| AC-005 | 80% of employees complete at least one clocking with no prior training | Not addressed this iteration — deferred to Iter-6, and not closable by any test the team runs | An adoption measure taken with real employees after go-live. The Test Evaluation Summary states no test the team runs can close it; the Vision's assertion that AC-001..AC-006 verify it is `Vision#F1` |
+| AC-006 | A clocking made while the corporate network is down for up to 5 minutes is not lost | Not addressed this iteration — deferred to Iter-4 | No increment exists. The criterion is carried by UC-001, which this iteration specified in full |
+
+**No acceptance criterion is verified, and none was expected to be.** Inception produces a baseline, not a running system. All six are accounted for in the Iteration Plan and each is deferred to the iteration whose increment closes it.
+
+#### Layer (b) — this iteration's own exit criteria, one line each
 
 | # | Exit criterion | Verdict | Evidence |
 |---|---|---|---|
