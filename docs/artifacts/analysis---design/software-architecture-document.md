@@ -852,7 +852,20 @@ partition "Concurrency - the two contended invariants" {
 }
 
 partition "Read path - no cache, no local copy" {
-  :Read from PostgreSQL, or project from LDAP at request time;
+  if (directory search?) then (yes)
+    :COMP-006 projects the six AD fields from LDAP at request time;
+    :COMP-007 supplies the category links for those AD user ids;
+    :COMP-002 merges the two and applies the category filter;
+    note right
+      CON-013: the category is a column AND a filter.
+      CON-016: the category is not an AD attribute, so
+      the filter runs on the merged entry, not in the
+      LDAP query. CON-015: an entry with no link is
+      not returned by a category filter.
+    end note
+  else (no)
+    :Read from PostgreSQL;
+  endif
   note right
     CON-016: no local copy of the employee.
     AC-006: nothing is cached on the client for the
@@ -865,6 +878,10 @@ partition "Read path - no cache, no local copy" {
 stop
 @enduml
 ```
+
+### The directory read is a merge, not a query
+
+The directory search is the one read path that touches two sources, and it is the only place the portal's own data and Active Directory meet. COMP-006 projects the six read-only AD fields; COMP-007 supplies the category links for the returned AD user ids; COMP-002 merges the two and applies the category filter to the merged entry. The filter cannot be pushed into the LDAP query because the category is not an AD attribute (CON-016), and it is not applied inside COMP-006 because that would make the gateway depend on the portal's own store and the CON-028 stand-in seam would stop being a seam on AD alone. An entry with no category link is not returned by a category filter (CON-015).
 
 ## Deployment View
 The Development Case records the Deployment Model optional artifact as **not triggered** — the topology is a single application on the existing internal Windows Server estate, so deployment is a section of this document rather than an artifact of its own.
