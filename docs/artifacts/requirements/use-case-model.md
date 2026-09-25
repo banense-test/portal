@@ -565,3 +565,10 @@ Every row ends in a trace-graph element, never a document section. One edge is r
 | R009 | UC-001 |
 
 **Downstream endpoint.** `Supplementary Specification` is the registered artifact element each use case derives into; the RequirementsSpecifier elaborates the per-use-case flows and the quantified NFR thresholds there. The design elements this model feeds are the `COMP-NNN` components listed above, owned by the Software Architect — there is no separate Design Model artifact in this project.
+
+### Label scope
+
+`UC-001..UC-009`, `FR-001..FR-009`, `NFR-001..NFR-005`, `AC-001..AC-006`, `CON-001..CON-032`, `STK-001..STK-004` and `R001..R009` are trace-graph elements; the edges above are registered on them. `COMP-NNN` is owned by the Software Architect and is referenced, never minted here.
+
+The actor rows and the cross-cutting-mechanism rows are diagram associations and document-local labels, not trace-graph elements: an actor is drawn on the boundary, and a cross-cutting mechanism is a Supplementary Specification entry. No edge is registered on them, and none is claimed. The registered edges of this model are the `FR-NNN → UC-NNN` derivations and the `UC-NNN → Supplementary Specification` derivations.
+
