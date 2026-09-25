@@ -222,31 +222,38 @@ end note
 @enduml
 ```
 ## Risk Mitigation and Contingency
-
 **R001 — a change on Infrastructure's side breaks the portal (High provisional, accept).**
 Mitigation: the portal's dependency on AD and Keycloak is confined to two configuration-held boundaries — the OIDC client and the LDAP connection (CON-028). The team never works against the real systems, so a change on Infrastructure's side cannot break development, and the real values are substituted at deployment.
 Contingency: Infrastructure operates the portal in production (CON-029) and owns the change. If a change breaks the portal, the remedy is another iteration (CON-021). Declared scope is not cut.
 Basis: R001's probability and impact are the analyst's estimates and the stakeholder declined to confirm them, so its exposure and the High band's lower boundary are `[ASSUMPTION — requires validation]`. The strategy is unaffected: CON-021 grants acceptance for R001 in advance, and the boundary that decides whether a risk needs a grant is anchored on R002's declared exposure.
 
 **R002 — LDAP attributes inconsistently filled across the 3 offices (Significant, accept).**
-Mitigation: the stand-in directory carries entries whose job title or extension is empty, so UC-008's gap path (A1) and UC-002's blank-FullName path (A5) are exercised before the real AD is validated. An empty attribute renders as blank and the entry is still shown.
+Mitigation: the stand-in directory carries entries whose job title or extension is empty, so UC-008's gap path (A1) and UC-002's blank-FullName path (A5) are exercised before the real AD is validated. An empty attribute renders as blank and the entry is still shown. The mitigation is not executed: the stand-in environment was not delivered at Iter-2 close (R004), so the gap path remains unexercised.
 Contingency: HR fills the attributes in AD; the portal renders blank meanwhile and no default value is invented (CON-015). If the validation delays a milestone, the remedy is another iteration (CON-021).
 
 **R003 — employees keep using Excel out of habit (Moderate, accept).**
 Mitigation: AC-005 requires 80% of employees to complete a clocking with no prior training, and the UI is the mandatory committed design (CON-031), so no training programme is needed for the clocking path.
 Contingency: HR communication campaign; BG-003 measures adoption at 3 months. The mechanism is HR's, not the team's, and the remedy for a milestone delay is another iteration (CON-021).
 
-**R004 — the stand-in environment is not ready (Significant, avoid, materialized).**
-The risk materialized at Iter-1 close: the stand-in environment was not delivered, so no use case could be built or tested and the iteration produced no verifiable increment. The contingency was executed — another iteration.
-Mitigation for Iter-2: the stand-in environment is the first work item of Iter-2, before any use case work. Its delivery is evidenced in the artifact that owns it — the Development Case's post-iteration environment verification, a record taken at the gate against observable state — and the control that produces that record is the Development Case's iteration-preparation checkpoint. The mitigation names a control that produces a record, not a stated intention.
-Contingency: if it is not ready again, the iteration's exit criteria cannot pass and the remedy is another iteration.
+**R004 — the stand-in environment is not ready (High, avoid, materialized, treatment replaced).**
+The risk materialized twice. The stand-in environment was not delivered at Iter-1 close and was not delivered at Iter-2 close; the Development Case's LCO-gate verification records no stand-in configuration. Two consecutive executions of the same treatment have failed, so the treatment is not working and is replaced rather than repeated.
+
+Re-assessment at this close, on the observed evidence:
+- **Probability raised from 3 to 4.** The observed materialization rate is 2 of 2 attempts. The prior probability of 3 was an estimate; the observed rate is evidence, and it is higher.
+- **Magnitude raised from Significant to High** (exposure 9 → 12). This changes no acceptance decision: the strategy is Avoid, and avoidance is the team's to decide.
+- **Strategy unchanged — Avoid, and not the team's to change.** CON-021's advance grant covers risks whose mechanism is set by the declared constraints or lies outside the team's control. R004's mechanism is the team's own execution, so the grant does not reach it and acceptance is not available. The strategy stays Avoid.
+- **Owner changed.** The Integrator is accountable for the delivery, not the Implementer and Integrator jointly. A shared owner is what allowed the item to be sequenced first and executed by nobody.
+- **Treatment replaced by a hard gate.** No other work item of the next iteration starts until the stand-in environment is delivered and recorded. The prior treatment — "the first work item of the iteration" — was a sequencing statement, and sequencing alone has now failed twice.
+- **Control named.** The ProcessEngineer's iteration-preparation checkpoint is the control that produces the record; the Development Case's post-iteration environment verification is the artifact that carries it. The mitigation names a control that produces a record, not a stated intention.
+
+Contingency: if the hard gate is not cleared, no other work item starts and the iteration's exit criteria cannot pass. The remedy is another iteration (CON-021). Declared scope is not cut and no agent role is added: the lever is the iteration, not the parallelism.
 
 **R005 — the human validation gate does not return before Elaboration closes (Significant, accept).**
 Mitigation: the gate is bounded at 14 days of queue time, after which the process suspends (Development Case measurement policy). The team's work does not wait on it — every use case is built and tested against the stand-ins (CON-028).
 Contingency: another iteration (CON-021). The gate is reported in days of queue time, apart from agent time, and the two are never added into one figure.
 
 **R006 — a skewed client clock records a timestamp that did not happen (Moderate, avoid).**
-Mitigation: the design bounds the accepted client-clock skew, and the idempotency key is verified server-side so a retry cannot create a second record; the stand-in test exercises a skewed clock.
+Mitigation: the design bounds the accepted client-clock skew, and the idempotency key is verified server-side so a retry cannot create a second record; the stand-in test exercises a skewed clock. The test is not built, because the stand-in environment is not delivered (R004).
 Contingency: HR corrects the clocking through UC-003, which records who, when, the previous value and a reason (NFR-004).
 
 **R007 — the coarse roadmap under-counts the iterations the declared scope needs (Moderate, avoid).**
@@ -257,10 +264,114 @@ Contingency: another iteration to finish the declared scope. Declared scope is n
 The mechanism names a development organization: staffing, onboarding, skills, morale, friction between people. IARI executes with LLM agents — there is no employment relationship, no onboarding, no morale and no interpersonal friction to manage. No actor exists for this mechanism, so it is not classified and carries no strategy. Recorded here so the retirement is visible rather than silent.
 
 **R009 — the guideline files are not in place (Minor, avoid).**
-The CI half of this risk is retired against observable state: the pipeline definition exists and builds green on `main` (run `36050451436`), so the first build is verifiable and the risk as originally stated no longer holds. What remains is the guideline files.
-Mitigation: the ConfigurationManager and Implementer author `CONTRIBUTING.md` and the lint configuration in Iter-2; the Development Case's post-iteration environment verification records their state at the gate.
+The CI half of this risk is retired against observable state: the pipeline definition exists and builds green on `main` (run `36095051721`), so the first build is verifiable and the risk as originally stated no longer holds. What remains is the guideline files.
+Mitigation: the ConfigurationManager and Implementer author `CONTRIBUTING.md` and the lint configuration. The files are still absent at Iter-2 close, so the mitigation moves to the iteration that will author them; this register no longer claims Iter-2 did. The Development Case's post-iteration environment verification records their state at the gate.
 Contingency: the iteration's exit criteria name the guideline files as evidence; if they are not in place, the criterion fails and the remedy is another iteration.
 
+```plantuml
+@startuml R004_Reassessment
+title Portal - R004 re-assessment at Inception iteration 2 close: the treatment changes, the strategy does not
+skinparam classAttributeIconSize 0
+
+class "R004 as carried into Iter-2" as OLD <<risk>> {
+  probability : 3
+  impact : 3
+  exposure : 9
+  band : Significant
+  strategy : Avoid
+  owner : Implementer + Integrator
+  treatment : first work item of Iter-2
+  executions : 0
+}
+
+class "Observed at Iter-2 close" as OBS <<observation>> {
+  executions attempted : 2
+  executions succeeded : 0
+  materializations : 2
+  evidence : Development Case LCO-gate verification records no stand-in configuration
+}
+
+class "R004 re-assessed" as NEW <<risk>> {
+  probability : 4 - raised on the observed 2-of-2 materialization rate
+  impact : 3 - unchanged
+  exposure : 12
+  band : High
+  strategy : Avoid - unchanged, and not the team's to change
+  owner : Integrator, accountable
+  treatment : hard gate - no other work item starts until the stand-in is delivered and recorded
+  control : ProcessEngineer's iteration-preparation checkpoint
+}
+
+class "Why the strategy does not become Accept" as WHY <<decision>> {
+  CON-021 grant covers : risks whose mechanism is set by the declared constraints or lies outside the team's control
+  R004's mechanism : the team's own execution
+  consequence : acceptance is not granted and is not the team's to grant
+  so : the treatment changes, not the strategy
+}
+
+OLD --> OBS
+OBS --> NEW
+NEW --> WHY
+
+note bottom of NEW
+  A risk that materialized twice and whose treatment failed
+  twice is evidence the treatment is not working. The
+  probability is raised on the observed rate; the treatment
+  is replaced by a hard gate with a single accountable owner
+  and a control that produces a record. The magnitude moves
+  Significant -> High, which changes no acceptance decision:
+  the strategy is Avoid, and avoidance is the team's.
+end note
+@enduml
+```
+
+```plantuml
+@startuml RiskTreatmentState_Iter2
+title Portal - treatment state of every risk at Inception iteration 2 close
+skinparam classAttributeIconSize 0
+
+class "Executed" as EX <<state>> {
+  R007 - roadmap re-planned from measured actuals
+}
+class "Specified, not executed" as SP <<state>> {
+  R002 - stand-in directory with empty attributes
+  R006 - skew bound + server-side idempotency check
+}
+class "Failed twice" as FA <<state>> {
+  R004 - stand-in environment
+}
+class "Not the team's to execute" as NT <<state>> {
+  R001 - acceptance is the strategy
+  R003 - HR's communication campaign
+  R005 - Infrastructure's validation gate
+}
+class "Retired" as RE <<state>> {
+  R008 - no actor for the mechanism
+  R009 - CI half retired against the observed run
+}
+class "Still absent" as SA <<state>> {
+  R009 - CONTRIBUTING.md and lint configuration
+}
+
+EX --> SP
+SP --> FA
+FA --> NT
+NT --> RE
+RE --> SA
+
+note bottom of FA
+  R004 is the only risk whose treatment this project has
+  attempted and failed. Its treatment is replaced at this
+  close: a hard gate, one accountable owner, and a control
+  that produces a record.
+end note
+note bottom of SA
+  R009's remaining scope is the guideline files. The
+  mitigation moves to the iteration that will author them;
+  the register no longer claims Iter-2 did.
+end note
+@enduml
+```
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
