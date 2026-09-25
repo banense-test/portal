@@ -1474,22 +1474,43 @@ Until one of these holds, the Business Reviewer lens has no artifact surface and
 ## Disposition
 ### Reviewer lens
 
+#### Iteration 1 — disposition
+
 **Overall disposition: Approved with Changes.**
 
-The artifacts are fit to carry the project into Elaboration, subject to the 11 findings above. No Critical finding was recorded, so nothing blocks the phase transition and no finding of this lens escalates to the stakeholder. The single Major finding is a factual error in one evidence block, not a defect in the baseline it reports.
+The artifacts were fit to carry the project into Elaboration, subject to the 11 findings above. No Critical finding was recorded, so nothing blocked the phase transition and no finding of this lens escalated to the stakeholder. The single Major finding was a factual error in one evidence block, not a defect in the baseline it reported.
+
+| # | Exit criterion | Verdict | Basis |
+|---|---|---|---|
+| 1 | Stakeholders agree on the scope | Met | Vision and Use-Case Model carry the declared scope with no creep: nine use cases, one per declared `FR-001`..`FR-009`, each citing its source requirement |
+| 2 | The project is viable | Met | The stack is pinned by CON-022/CON-023/CON-024; the OIDC client is already registered (CON-003) so login is testable from day one; the Architectural Proof-of-Concept NOT-FIRED verdict holds |
+| 3 | Initial risks identified and classified | Met | Risk List carries `R001`..`R009` with probability, impact, magnitude, strategy, owner, mitigation and contingency |
+| 4 | The process configuration governs the project | Met | Development Case conforms to the IARI baseline: roster unchanged, CORE ownership unchanged, no artifact outside the universe, Business Modeling INACTIVE on the correct trigger, all six OPTIONAL triggers audited |
+| 5 | The stand-in environment is available (CON-028) | **Not met** | The Development Case recorded the stand-in OIDC issuer and stand-in directory as not ready, and no artifact evidenced them |
+| 6 | The build is verifiable (CON-026) | Met | Run `36050339100` on `main` was green |
+
+**What that lens did not decide.** The LCO verdict belongs to the ReviewCoordinator and the ManagementReviewer. That block stated the technical lens's disposition and the exit-criteria evidence; it did not close the milestone.
+
+#### Iteration 2 — disposition
+
+**Overall disposition: Approved with Changes.**
+
+The artifacts are fit to carry the project into Elaboration, subject to the six findings above. No Critical finding was recorded, so nothing blocks the phase transition and no finding of this lens escalates to the stakeholder. The one Major finding is an unreviewed change on the Use-Case Model, not a defect in the baseline it reports.
 
 **LCO exit criteria, assessed against the artifacts and the SCM.**
 
 | # | Exit criterion | Verdict | Basis |
 |---|---|---|---|
-| 1 | Stakeholders agree on the scope | Met | Vision and Use-Case Model carry the declared scope with no creep: nine use cases, one per declared `FR-001`..`FR-009`, each citing its source requirement. No element outside the declared scope. |
-| 2 | The project is viable | Met | The stack is pinned by CON-022/CON-023/CON-024; the OIDC client is already registered (CON-003) so login is testable from day one; the Development Case's Architectural Proof-of-Concept NOT-FIRED verdict holds — no technical risk requires empirical validation. |
-| 3 | Initial risks identified and classified | Met | Risk List carries `R001`..`R009` with probability, impact, magnitude, strategy, owner, mitigation and contingency. `R001`..`R003` preserved with the declared identifiers and magnitudes; team risks numbered per CON-020; every acceptance cites CON-021. |
-| 4 | The process configuration governs the project | Met | Development Case conforms to the IARI baseline: roster unchanged, CORE ownership unchanged, no artifact outside the universe, Business Modeling INACTIVE on the correct trigger, all six OPTIONAL triggers audited and none over-triggered. |
-| 5 | The stand-in environment is available (CON-028) | **Not met** | The Development Case records the stand-in OIDC issuer and stand-in directory as not ready, and no artifact evidences them. This is the criterion that gates every use case, and it is iteration-1 environment work still outstanding. |
-| 6 | The build is verifiable (CON-026) | Met | Run `36050339100` on `main` is green. The Development Case's record of this criterion is stale (`Development Case#F1`), but the criterion itself is satisfied by the observed build. |
+| 1 | Stakeholders agree on the scope | Met | Vision and Use-Case Model carry the declared scope with no creep: nine use cases, one per declared `FR-001`..`FR-009`, each citing its source requirement. Trace graph: 66 roots, 231 nodes, no `UNKNOWN LABEL`, no `«LEAF»` at Business level |
+| 2 | The project is viable | Met | The stack is pinned by CON-022/CON-023/CON-024; the OIDC client is already registered (CON-003) so login is testable from day one; the Architectural Proof-of-Concept NOT-FIRED verdict holds — no technical risk requires empirical validation |
+| 3 | Initial risks identified and classified | Met | Risk List carries `R001`..`R009` with probability, impact, magnitude, strategy, owner, mitigation and contingency. `R001`'s probability and impact are now marked `[ASSUMPTION — requires validation]` and the bands are stated as provisional, so the classification no longer rests on an unconfirmed figure |
+| 4 | The process configuration governs the project | Met | Development Case conforms to the IARI baseline: roster unchanged, CORE ownership unchanged, no artifact outside the universe, Business Modeling INACTIVE on the correct trigger, all six OPTIONAL triggers re-audited and none over-triggered |
+| 5 | The stand-in environment is available (CON-028) | **Not met** | The Development Case's LCO-gate verification records the stand-in OIDC issuer and stand-in directory as "Not ready — no stand-in configuration in the repository", and no artifact evidences them. This is the criterion that gates every use case |
+| 6 | The build is verifiable (CON-026) | Met | Run `36095051721` on `main` is green |
 
-**Reading of the verdict.** Criteria 1, 2, 3, 4 and 6 are met. Criterion 5 is not met: the stand-in environment is the project's principal process control and it does not yet exist. That is a gap in the iteration's own exit criteria, not a defect in any artifact — the Development Case and the Iteration Plan both name it correctly and assign it an owner. It is recorded here so the milestone verdict is taken on the evidence rather than on the artifacts' self-assessment.
+**Reading of the verdict.** Criteria 1, 2, 3, 4 and 6 are met. Criterion 5 is not met: the stand-in environment is the project's principal process control and it does not yet exist. That is a gap in the iteration's own exit criteria, not a defect in any artifact — the Development Case and the Iteration Plan both name it correctly, assign it an owner and record it as NOT MET rather than as an open item. It is recorded here so the milestone verdict is taken on the evidence rather than on the artifacts' self-assessment.
+
+**SCM evidence at this review.** No open pull request, so no PR required a disposition. The build on `main` is green (run `36095051721`). The tracker holds three open issues, all configuration-record defects owned by the ProcessEngineer; none is a product defect, because no use case is implemented and no test has executed.
 
 **What this lens does not decide.** The LCO verdict belongs to the ReviewCoordinator and the ManagementReviewer. This block states the technical lens's disposition and the exit-criteria evidence; it does not close the milestone.
 
