@@ -906,6 +906,104 @@ end note
 
 **Prior findings of this lens.** None. This is the first review pass of the Management Reviewer lens on this project: `read_artifact_findings` returned no finding carrying `reviewerRole: ManagementReviewer` on any artifact, so no prior finding of this lens exists to close, defer or reject. No `resolve_artifact_finding` call was emitted this pass.
 
+### Review Coordinator — consolidated finding tracker
+
+**Consolidated ledger.** 18 findings across the three lenses: 0 Critical, 4 Major, 14 Minor. A finding key is scoped per artifact AND per reviewer lens, so `Development Case#F1` from the Reviewer lens and `Development Case#F1` from the Management Reviewer lens are two distinct findings and are listed separately.
+
+**Deadline basis.** No calendar date is projected. The deadline for every finding is the **next iteration of the lens that emitted it** — the phase auto-iterates, so that boundary is a real event, not an estimated span. The stakeholder's directive is that all findings are corrected, including the minor ones, so no finding is deferred and none is rejected.
+
+| # | Finding | Lens | Severity | Owner | Deadline | Status |
+|---|---|---|---|---|---|---|
+| 1 | `Test Evaluation Summary#F1` — asserts the tracker holds no issues; `Issue #1` is open | Reviewer | **Major** | TestManager | Next iteration of the Reviewer lens | Open |
+| 2 | `Iteration Plan#F1` — LCO exit criterion 5 (stand-in environment, CON-028) not evidenced | Management Reviewer | **Major** | ProjectManager | Next iteration of the Management Reviewer lens | Open |
+| 3 | `Development Case#F1` — the readiness table is not milestone evidence for C5 and is stale on its own CI row | Management Reviewer | **Major** | ProcessEngineer | Next iteration of the Management Reviewer lens | Open |
+| 4 | `Risk List#F1` — R001's P and I are unconfirmed estimates yet anchor every magnitude band | Management Reviewer | **Major** | ProjectManager | Next iteration of the Management Reviewer lens | Open |
+| 5 | `Development Case#F1` — Environment readiness record stale on the CI row | Reviewer | Minor | ProcessEngineer | Next iteration of the Reviewer lens | Open |
+| 6 | `Development Case#F2` — Environment intensity row states a recurrence pattern where the matrix states a level | Reviewer | Minor | ProcessEngineer | Next iteration of the Reviewer lens | Open |
+| 7 | `Vision#F1` — Traces To names document sections, not elements | Reviewer | Minor | SystemAnalyst | Next iteration of the Reviewer lens | Open |
+| 8 | `Vision#F2` — boundary diagram draws Keycloak to UC-001 only; the Use-Case Model draws all nine | Reviewer | Minor | SystemAnalyst | Next iteration of the Reviewer lens | Open |
+| 9 | `Supplementary Specification#F1` — Traces To names document sections, not elements | Reviewer | Minor | RequirementsSpecifier | Next iteration of the Reviewer lens | Open |
+| 10 | `Risk List#F1` — R009's premise is partly retired; the CI half is done | Reviewer | Minor | ProjectManager | Next iteration of the Reviewer lens | Open |
+| 11 | `Iteration Plan#F1` — the gantt serializes the human gate onto the critical path | Reviewer | Minor | ProjectManager | Next iteration of the Reviewer lens | Open |
+| 12 | `Iteration Plan#F2` — AC-002..AC-005 carry no registered trace edge | Reviewer | Minor | ProjectManager | Next iteration of the Reviewer lens | Open |
+| 13 | `Software Architecture Document#F1` — trace table declares unregistered edges; UC-001 on both sides of the COMP-003 row | Reviewer | Minor | SoftwareArchitect | Next iteration of the Reviewer lens | Open |
+| 14 | `Software Architecture Document#F2` — Clocking time fields mutable against CON-012; export correction-resolution rule unnamed | Reviewer | Minor | SoftwareArchitect | Next iteration of the Reviewer lens | Open |
+| 15 | `Iteration Plan#F2` — no measured spend or elapsed time recorded for the iteration | Management Reviewer | Minor | ProjectManager | Next iteration of the Management Reviewer lens | Open |
+| 16 | `Development Case#F2` — no iteration-preparation checkpoint result recorded | Management Reviewer | Minor | ProcessEngineer | Next iteration of the Management Reviewer lens | Open |
+| 17 | `Risk List#F2` — R004's treatment unverified at the milestone; its mitigation claims a verification that did not happen | Management Reviewer | Minor | ProjectManager | Next iteration of the Management Reviewer lens | Open |
+| 18 | `Vision#F1` — BG-003's verification path asserted as AC-001..AC-006; no criterion closes it | Management Reviewer | Minor | SystemAnalyst | Next iteration of the Management Reviewer lens | Open |
+
+**Defect distribution by artifact and severity.**
+
+| Artifact | Critical | Major | Minor | Total |
+|---|---|---|---|---|
+| Development Case | 0 | 1 | 3 | 4 |
+| Vision | 0 | 0 | 3 | 3 |
+| Use-Case Model | 0 | 0 | 0 | 0 |
+| Supplementary Specification | 0 | 0 | 1 | 1 |
+| Risk List | 0 | 1 | 2 | 3 |
+| Iteration Plan | 0 | 1 | 3 | 4 |
+| Software Architecture Document | 0 | 0 | 2 | 2 |
+| Test Evaluation Summary | 0 | 1 | 0 | 1 |
+| **Total** | **0** | **4** | **14** | **18** |
+
+The Use-Case Model is the one artifact carrying no finding from any lens.
+
+**Conflict resolution between lenses.** Four pairs of findings sit on the same artifact and required a ruling on which governs.
+
+| Conflict | Ruling |
+|---|---|
+| `Development Case#F1` (Reviewer, Minor: refresh the stale CI row) vs `Development Case#F1` (Management Reviewer, Major: the readiness table cannot serve as C5 evidence at all) | The Management Reviewer's finding governs. Refreshing one row leaves the table a pre-iteration snapshot, which is what disqualifies it as milestone evidence. The remediation is the post-iteration environment verification the Management Reviewer names; it refreshes the CI row as a by-product, so the Reviewer's finding is satisfied by the same action. |
+| `Risk List#F1` (Reviewer, Minor: R009's premise partly retired) vs `Risk List#F1` (Management Reviewer, Major: R001's unconfirmed P and I anchor every band) | No conflict — two distinct defects on one artifact. Both stand and both are corrected. The Major governs the order of work. |
+| `Iteration Plan#F1` (Reviewer, Minor: the gantt serializes the gate) vs `Iteration Plan#F1` (Management Reviewer, Major: C5 not evidenced) | No conflict — a diagram defect and an unevidenced exit criterion. Both stand. The Major governs the order of work. |
+| Reviewer lens disposition "Approved with Changes" vs Management Reviewer lens disposition "No-Go" | Not contradictory — the lenses answer different questions. The technical lens rules on whether the artifacts are fit to carry the project forward; the Management Reviewer rules on the phase gate. A technical "Approved with Changes" does not open the gate. The milestone disposition is **No-Go**, grounded in the stakeholder's refusal. |
+
+**Cross-lens observation folded into an existing finding.** The Test Evaluation Summary's evidence block cites CI run `36049582928` (2026-09-24) while the Reviewer and Management Reviewer lenses both observed run `36050339100` on `main`. The artifact's evidence block is therefore stale on its run reference as well as on its defect count. Both are corrected by the remediation of `Test Evaluation Summary#F1`; no separate finding is minted, because the defect is one stale evidence block.
+
+**Finding lifecycle.**
+
+```plantuml
+@startuml RC_FindingLifecycle
+title Portal - finding lifecycle: Open -> Assigned -> In-Progress -> Resolved -> Verified -> Closed
+[*] --> Open : record_artifact_finding by the lens that found it
+Open --> Assigned : owner named (the artifact's producing role)
+Assigned --> InProgress : owner begins the corrective action
+InProgress --> Resolved : owner confirms the corrective action is complete
+Resolved --> Verified : the SAME lens re-reads the artifact and confirms adequacy
+Verified --> Closed : resolve_artifact_finding by the originating lens
+Verified --> Reopened : the re-read finds the defect still present
+Reopened --> Assigned : owner re-named
+Open --> Overdue : resolution deadline missed
+Assigned --> Overdue : resolution deadline missed
+Overdue --> Escalated : escalation notice to the ProjectManager within 1 business day
+Escalated --> InProgress : PM re-prioritises the corrective action
+Closed --> [*]
+
+note right of Open
+  Every finding carries owner + severity + deadline
+  at review close. A finding without an owner drifts;
+  a finding without a deadline is never prioritised.
+end note
+note bottom of Closed
+  Ownership invariant: only the lens that emitted a
+  finding may close it. A cross-lens close is rejected.
+  Writing "Resolved" in the Review Record without a
+  successful resolve_artifact_finding leaves the state
+  inconsistent and the milestone gate keeps counting
+  the finding as open.
+end note
+note bottom of Escalated
+  Review debt - open findings past their deadline - is
+  a risk item escalated to the ProjectManager. The
+  ReviewCoordinator surfaces it; it does not resolve it.
+end note
+@enduml
+```
+
+**Escalation status.** No finding is overdue: this is the first review event, so no deadline has yet passed and no escalation notice is due. No Critical finding was recorded by any lens, so no Critical escalation to the stakeholder is triggered on severity grounds. The stakeholder was nevertheless consulted — the sanction is theirs alone — and refused it; that refusal is recorded in the Disposition, not as a finding.
+
+**Review debt.** 18 open findings, 0 overdue. Review debt is 0% of the ledger at this point. The ledger is not a burial ground: every finding carries an owner, a severity and a deadline, and the phase auto-iterates so the deadlines are live.
+
 ## Resolutions and Actions
 ### Reviewer lens
 
