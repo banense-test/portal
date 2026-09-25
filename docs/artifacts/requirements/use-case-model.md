@@ -1,9 +1,7 @@
 ## Document Control
-
 - **Phase:** Inception
-- **Status:** Draft — iteration 1, not yet reviewed
+- **Status:** Draft — iteration 2
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
-
 ## Use-Case Diagram
 The system boundary is the Employee Portal application. Actors sit ON the boundary line: the two human roles outside it, and the two external systems the portal depends on. Everything inside the rectangle is built by this project; everything outside it is not.
 
