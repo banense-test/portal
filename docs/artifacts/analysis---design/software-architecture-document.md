@@ -482,7 +482,7 @@ No component depends on another component's concrete type. COMP-002 depends only
 
 ```plantuml
 @startuml Portal_Interfaces
-title Portal - subsystem boundaries defined by interfaces (candidate, Inception iteration 1)
+title Portal - subsystem boundaries defined by interfaces (candidate, Inception iteration 2)
 skinparam componentStyle rectangle
 
 component "COMP-001\nPortal Web UI" as C001
@@ -540,7 +540,9 @@ end note
 note right of IDIR
   The only boundary to Active Directory. The CON-028
   stand-in seam sits behind this interface, so the team
-  never works against the real AD.
+  never works against the real AD. R004 materialized
+  because the stand-in behind this seam was not
+  delivered; it is the first work item of iteration 2.
 end note
 
 note bottom of IAUD
