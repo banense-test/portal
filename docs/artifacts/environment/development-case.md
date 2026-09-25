@@ -609,12 +609,17 @@ present and green, so criterion 6 is met.
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| Development Case | CON-001, CON-022, CON-023, CON-024, CON-026, CON-027, CON-028, CON-031 | Derives | UC-001, UC-002, UC-003 |
-| Business Modeling INACTIVE | FR-001, FR-004, FR-008 | Derives | UC-001, UC-004, UC-008 |
-| Optional Artifact Triggers (none fired) | CON-014, CON-016, CON-019, CON-030, CON-031, CON-032 | Derives | NFR-004 |
-| Version policy (.NET 10, PostgreSQL 18) | CON-022, CON-024 | Derives | NFR-001 |
-| Stand-in boundary procedure | CON-028, R002 | Derives | UC-008 |
-| Measurement policy | CON-027 | Derives | AC-001 |
-| Human validation gate | CON-021, CON-028 | Derives | R001 |
-| Environment verification at the LCO gate | CON-026, CON-028 | Derives | AC-006 |
+| Development Case | CON-001, CON-022, CON-023, CON-024, CON-026, CON-027, CON-028, CON-031 | Refines | UC-001, UC-002, UC-003 |
+| Business Modeling INACTIVE | FR-001, FR-004, FR-008 | Refines | UC-001, UC-004, UC-008 |
+| Optional Artifact Triggers (none fired) | CON-014, CON-016, CON-019, CON-030, CON-031, CON-032 | Refines | NFR-004 |
+| Version policy (.NET 10, PostgreSQL 18) | CON-022, CON-024 | Refines | NFR-001 |
+| Stand-in boundary procedure | CON-028, R002 | Refines | UC-008 |
+| Measurement policy | CON-027 | Refines | AC-001 |
+| Human validation gate | CON-021, CON-028 | Refines | R001 |
+| Environment verification at the LCO gate | CON-026, CON-028 | Refines | AC-006 |
+
+Every endpoint above is an element identifier, not a document section: the constraints and risks the
+process configuration tailors to, and the use cases, requirements and acceptance criteria whose
+production it sanctions. The Development Case is a process artifact and governs no system element of
+its own, so it carries no edge to an artifact name.
 
