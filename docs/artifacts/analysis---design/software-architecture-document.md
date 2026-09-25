@@ -1002,16 +1002,18 @@ The repository layout is the one already in place; this architecture does not fo
 | Layer | Repository location | Contents | Source |
 |---|---|---|---|
 | Presentation | `src/` | Razor Pages, the committed design's markup and styles, the clocking page's page-level script | CON-023, CON-031 |
-| Application boundary | `src/` | The REST API controllers and the request/response contracts | CON-022 |
+| Application boundary | `src/` | The REST API controllers, the request/response contracts, and the merge of the AD fields with the category link | CON-022, CON-013 |
 | Domain | `src/` | COMP-003..COMP-008, one namespace per component | This document |
 | Mechanisms | `src/` | COMP-009 Audit Trail, COMP-010 Identity and Access | NFR-004, NFR-005 |
-| Tests | `tests/` | Unit and integration tests, including the stand-in directory with empty-attribute entries | CON-028, R002 |
+| Tests | `tests/` | Unit and integration tests, including the stand-in directory with empty-attribute entries and the worker-category link | CON-028, R002, CON-013 |
 | CI | `.github/workflows/` | The build and test pipeline | CON-026 |
 | Documentation | `docs/artifacts/`, `docs/inputs/` | The RUP artifacts and the authoritative UI design | CON-031 |
 
 **Build structure.** One solution, one deployable artefact. The CI pipeline exists and builds green on `main`; this architecture requires only that it builds and tests the single artefact and never deploys (CON-026). The guideline files the Development Case records as absent (`CONTRIBUTING.md`, lint configuration) are the ConfigurationManager's and Implementer's work and do not change the build structure.
 
 **Dependency rule.** Presentation depends on the Application boundary; the Application boundary depends on domain interfaces; domain components depend on each other only through interfaces; mechanisms are depended upon, never depending. No component reaches across a layer boundary, and no component depends on a concrete type of another component.
+
+**The stand-in directory is a test asset, not a production component.** It lives under `tests/` and is reached only through `IDirectoryGateway` and the OIDC client configuration (CON-028). It must carry the declared AD attributes including entries whose job title or extension is empty, and the worker-category link, because the category filter is the one part of UC-008 that cannot be exercised against Active Directory at all (CON-013, CON-016).
 
 ## Data View
 The Development Case records the Data Model optional artifact as **not triggered** — the portal owns well under ten entities and CON-030 states there is no data migration — so the data view is a section of this document and the data lives inline in the Design Model.
