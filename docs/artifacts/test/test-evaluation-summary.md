@@ -175,13 +175,14 @@ This artifact mints no element of its own, so it registers no new trace edge. Th
 | AC-003 | UC-005 | SystemAnalyst |
 | AC-004 | UC-008 | SystemAnalyst |
 | AC-006 | UC-001 | SystemAnalyst |
-| NFR-001, NFR-002 | COMP-001 | SoftwareArchitect |
-| NFR-003 | COMP-001 | SoftwareArchitect |
+| NFR-001 | COMP-001 | SoftwareArchitect |
+| NFR-002 | COMP-004 | SoftwareArchitect |
+| NFR-003 | COMP-002 | SoftwareArchitect |
 | NFR-004 | COMP-009 | SoftwareArchitect |
-| NFR-005 | COMP-002 | SoftwareArchitect |
+| NFR-005 | COMP-010 | SoftwareArchitect |
 | CON-009 | COMP-005 | SoftwareArchitect |
-| CON-010, CON-011, CON-012 | COMP-003 | SoftwareArchitect |
-| CON-013, CON-014, CON-015, CON-016 | COMP-006 | SoftwareArchitect |
+| CON-010, CON-011, CON-012 | COMP-004 | SoftwareArchitect |
+| CON-013, CON-014, CON-015, CON-016 | COMP-007 | SoftwareArchitect |
 | CON-017 | COMP-005 | SoftwareArchitect |
 | CON-028 | COMP-006 | SoftwareArchitect |
 | R002 | UC-002, UC-008, COMP-006 | ProjectManager |
