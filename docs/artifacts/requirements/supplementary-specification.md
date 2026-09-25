@@ -284,41 +284,36 @@ end note
 No external compliance regime applies to the audit and no retention period is mandated (CON-019), so no regulatory standard is listed.
 
 ## Traceability
+Every row below ends in a trace-graph element, never a document section. One edge is registered per row.
+
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| NFR-001 Page Load Performance | AC-001 | Derives | Test Case |
-| NFR-002 Clock In/Out Response Time | FR-001 | Derives | Test Case |
-| NFR-003 Availability Window | CON-007 | Derives | Test Case |
-| NFR-004 Audit Trail | FR-002, FR-005, FR-006, FR-007, FR-009, CON-012, CON-017, CON-018, CON-019 | Derives | Design Model |
-| NFR-005 Authorization Model | CON-002, CON-013, STK-001 | Derives | Design Model |
-| SEC-001..SEC-008 | CON-002, CON-004, CON-005, CON-007, CON-016, CON-025, CON-026, CON-028, AC-006, FR-008, NFR-005 | Derives | Software Architecture Document |
-| Licensing (none declared) | CON-022, CON-023, CON-024 | Derives | Software Architecture Document |
-| Cross-cutting mechanism: OIDC login | CON-002, CON-025 | Derives | Design Model |
-| Cross-cutting mechanism: authorization | NFR-005, CON-013 | Derives | Design Model |
-| Cross-cutting mechanism: LDAP read | CON-004, CON-005, CON-016 | Derives | Design Model |
-| Cross-cutting mechanism: audit write | NFR-004, CON-018 | Derives | Design Model |
-| Cross-cutting mechanism: clocking retry | AC-006, CON-023 | Derives | Design Model |
-| Business rules CON-009..CON-019 | FR-002, FR-004, FR-005, FR-006, FR-007, FR-009 | Derives | Design Model |
-| USA-001..USA-004 | AC-002, AC-003, AC-004, AC-005 | Derives | Test Case |
-| USA-005 | CON-031 | Derives | Design Model |
-| USA-006, USA-007 | CON-006 | Derives | Design Model |
-| REL-001..REL-003 | AC-006 | Derives | Test Case |
-| REL-004 | CON-008 | Derives | Design Model |
-| REL-005 | CON-032 | Derives | Software Architecture Document |
-| PERF-001 | AC-001 | Derives | Test Case |
-| SUP-001 | CON-029 | Derives | Release Notes |
-| SUP-002 | CON-001 | Derives | Software Architecture Document |
-| SUP-003, SUP-004 | CON-028 | Derives | Software Architecture Document |
-| SUP-005 | CON-030 | Derives | Software Architecture Document |
-| SUP-006 | CON-027 | Derives | Iteration Assessment |
-| SUP-007 | CON-020, CON-021 | Derives | Risk List |
-| SUP-008 | CON-032 | Derives | Software Architecture Document |
-| CON-001..CON-008, CON-022..CON-026, CON-031 | Declared constraints | Derives | Software Architecture Document |
-| IFC-001 | CON-002, CON-003, CON-025 | Derives | Design Model |
-| IFC-002 | CON-004, CON-005, CON-016 | Derives | Design Model |
-| IFC-003 | AC-006, CON-022 | Derives | Design Model |
-| IFC-004 | FR-003 | Derives | Design Model |
-| IFC-005 | CON-026 | Derives | Software Architecture Document |
-| STD-001..STD-007 | CON-002, CON-005, CON-006, CON-008, FR-003 | Derives | Design Model |
+| NFR-001 Page Load Performance | AC-001 | Derives | COMP-001 |
+| NFR-002 Clock In/Out Response Time | FR-001 | Derives | COMP-004 |
+| NFR-003 Availability Window | CON-007 | Derives | Supplementary Specification |
+| NFR-004 Audit Trail | FR-002, FR-005, FR-006, FR-007, FR-009, CON-012, CON-017, CON-018, CON-019 | Derives | COMP-009 |
+| NFR-005 Authorization Model | CON-002, CON-013, STK-001 | Derives | COMP-010 |
+| CON-001 | — | DependsOn | COMP-002 |
+| CON-002 | — | Derives | COMP-010 |
+| CON-004 | — | Derives | COMP-006 |
+| CON-005 | — | Derives | COMP-006 |
+| CON-009 | — | Derives | COMP-005 |
+| CON-010, CON-011, CON-012 | — | Derives | COMP-004 |
+| CON-013, CON-014, CON-015, CON-016 | — | Derives | COMP-007 |
+| CON-017 | — | Derives | COMP-005 |
+| CON-018 | — | Derives | COMP-009 |
+| CON-022 | — | Derives | COMP-002 |
+| CON-023 | — | Derives | COMP-001 |
+| CON-024 | — | DependsOn | COMP-009 |
+| CON-025 | — | Derives | COMP-010 |
+| CON-026 | — | DependsOn | COMP-001 |
+| CON-028 | — | Derives | COMP-006 |
+| CON-031 | — | Derives | COMP-001 |
+| AC-001 | — | Derives | Supplementary Specification |
+| AC-006 | — | Derives | COMP-003, Supplementary Specification |
+
+**NFR-003's endpoint.** Its registered downstream endpoint is this artifact, which elaborates it in the Reliability category. No finer-grained element is minted for it yet; the edge is registered against the artifact.
+
+**Downstream elements not yet minted.** The test cases that verify these requirements are `TC-NNN`, owned by the Test Designer, and the design elements are `INT-NNN` / `CLS-NNN`, owned by the Designer. Neither exists yet, so no edge is claimed to them. The edges are registered when those roles mint their elements.
 
 **Label scope.** `NFR-001..NFR-005`, `FR-001..FR-009`, `AC-001..AC-006`, `CON-001..CON-032`, `STK-001..STK-004`, `BG-001..BG-003` and `R001..R003` are declared identifiers, copied exactly. `USA-`, `REL-`, `PERF-`, `SUP-`, `SEC-`, `IFC-` and `STD-` are document-local labels of this Supplementary Specification; they are not trace-graph elements and no trace is registered on them. The Designer owns `INT-NNN` and `CLS-NNN`, the Software Architect owns `COMP-NNN`, the Test Designer owns `TC-NNN` — none is minted here.
