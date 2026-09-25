@@ -1861,15 +1861,33 @@ end note
 
 ### Reviewer lens
 
+**Iteration 1 — LCO technical review.**
+
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| Review Record | Development Case, Iteration Plan | Refines | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 |
-| Reviewer lens — compliance matrix | Development Case, Iteration Plan | Refines | AC-001, AC-006 |
-| Reviewer lens — findings | Development Case, Iteration Plan | Refines | AC-001, AC-006, CON-026, CON-028 |
-| Reviewer lens — SCM evidence | Issue #1, run 36050339100 | Refines | AC-001, AC-006 |
-| Reviewer lens — disposition | CON-026, CON-028 | Refines | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 |
+| Review Record | Development Case, Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary | Refines | LCO |
+| Reviewer lens — compliance matrix | Development Case, Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary | Refines | LCO |
+| Reviewer lens — findings | Development Case#F1, Development Case#F2, Vision#F1, Vision#F2, Supplementary Specification#F1, Risk List#F1, Iteration Plan#F1, Iteration Plan#F2, Software Architecture Document#F1, Software Architecture Document#F2, Test Evaluation Summary#F1 | Refines | LCO |
+| Reviewer lens — SCM evidence | Issue #1, run 36050339100 | Refines | LCO |
+| Reviewer lens — disposition | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006, CON-028, CON-026 | Refines | LCO |
 
-`Development Case` and `Iteration Plan` are the two reviewed artifacts that are trace-graph elements; the remaining six are named in the Review Scope and Criteria block and carry no element identifier of their own. `Issue #1` and `run 36050339100` are observed SCM facts, cited as returned by the `scm_*` tools. The findings of this lens are cited by their `<artifact>#<key>` handles in the Findings block; a finding is not an element and no edge is registered on one.
+**Iteration 2 — LCO technical review.**
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| Review Record | Development Case, Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary | Refines | LCO |
+| Reviewer lens — closure ledger | Development Case#F1, Development Case#F2, Vision#F1, Vision#F2, Supplementary Specification#F1, Risk List#F1, Iteration Plan#F1, Iteration Plan#F2, Software Architecture Document#F1, Software Architecture Document#F2, Test Evaluation Summary#F1 | Refines | LCO |
+| Reviewer lens — compliance matrix | Development Case, Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary | Refines | LCO |
+| Reviewer lens — findings | Use-Case Model#F1, Use-Case Model#F2, Vision#F3, Supplementary Specification#F2, Development Case#F3, Test Evaluation Summary#F2 | Refines | LCO |
+| Reviewer lens — traceability compliance | R001, R004, R009, UC-001, UC-008 | Refines | LCO |
+| Reviewer lens — SCM evidence | Issue #1, Issue #2, Issue #3, run 36095051721 | Refines | LCO |
+| Reviewer lens — disposition | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006, CON-026, CON-028 | Refines | LCO |
+
+**Trace endpoints.** `FR-001`..`FR-009`, `NFR-001`..`NFR-005`, `AC-001`..`AC-006`, `CON-001`..`CON-032`, `BG-001`..`BG-003`, `STK-001`..`STK-004` and `R001`..`R009` are declared identifiers, copied exactly from the work order. `UC-001`..`UC-009` are the System Analyst's use-case identifiers; `COMP-001`..`COMP-010` are the Software Architect's component identifiers. `Issue #1`, `Issue #2`, `Issue #3` and `run 36095051721` are observed SCM facts, cited as returned by the `scm_*` tools. `LCO` is the milestone this review serves. The findings of this lens are cited by their `<artifact>#<key>` handles; a finding is not an element and no edge is registered on one.
+
+**No element of this lens is minted.** The Reviewer produces no `UC-NNN`, `CLS-NNN`, `COMP-NNN`, `TC-NNN` or `INT-NNN`; those families belong to other authorities. The compliance matrix, the defect distribution, the annotated review map, the closure ledger and the disposition are sections of this Review Record, not trace-graph elements, so no edge is registered on them — naming a document section in a Traces To column registers nothing, which is the defect recorded as `Vision#F1` and `Supplementary Specification#F1` in iteration 1.
+
+**Lens blocks preserved.** The Business Reviewer and Management Reviewer blocks in this section are those lenses' own output and are preserved as written. This block adds the Reviewer lens's rows and does not rewrite theirs.
 
 ### Business Reviewer lens
 
