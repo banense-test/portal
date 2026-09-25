@@ -401,6 +401,8 @@ end note
 ```
 
 ## Guidelines and Procedures
+This section states the project's measurement policy, the Environment discipline's activity clusters, the version policy, the stand-in boundary, the iteration-preparation checkpoint and its result, guideline ownership, and the environment verification at the LCO gate.
+
 ### Measurement policy
 
 The baseline measures two quantities and only two: tokens consumed, and elapsed time split into agent
@@ -517,7 +519,7 @@ iteration, the CI pipeline builds and tests, the stand-in environment is availab
 triggers have been re-evaluated. A configuration problem found on day 1 of an iteration is a process
 defect, not a developer's bad luck.
 
-**Checkpoint result — Inception iteration 2, taken before the next iteration starts.**
+**Checkpoint result — taken before the next iteration starts.**
 
 | Checked item | Observed state | Evidence |
 |---|---|---|
@@ -609,7 +611,7 @@ present and green, so criterion 6 is met.
 ### Environment readiness plan — pre-iteration (Inception iteration 3)
 
 This is the plan the iteration-preparation checkpoint verifies against before the next iteration
-starts. It is a plan, not milestone evidence: the milestone evidence is the LCO-gate record below,
+starts. It is a plan, not milestone evidence: the milestone evidence is the LCO-gate record above,
 which states the observed state of each item.
 
 | Check | Required state before the iteration starts | Owner of the gap |
