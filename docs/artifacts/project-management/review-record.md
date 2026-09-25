@@ -1317,9 +1317,11 @@ end note
 ## Resolutions and Actions
 ### Reviewer lens
 
-**Prior findings of this lens.** None. This is the first review pass of the Reviewer lens on this project: `read_artifact_findings` returned an empty list for all eight artifacts, so no prior finding of this lens exists to close, defer or reject. No `resolve_artifact_finding` call was emitted this pass.
+#### Iteration 1 — actions arising
 
-**Actions arising from this pass.** Each action is the finding's Recommendation; its status is that finding's Resolution. No action identifier is minted.
+**Prior findings of this lens.** None. This was the first review pass of the Reviewer lens on this project: `read_artifact_findings` returned an empty list for all eight artifacts, so no prior finding of this lens existed to close, defer or reject. No `resolve_artifact_finding` call was emitted that pass.
+
+**Actions arising from that pass.** Each action is the finding's Recommendation; its status is that finding's Resolution. No action identifier is minted.
 
 | Finding | Owner | Action | Blocking? |
 |---|---|---|---|
@@ -1335,7 +1337,44 @@ end note
 | `Software Architecture Document#F1` | SoftwareArchitect | Reconcile the traceability table with the registered edges | No |
 | `Software Architecture Document#F2` | SoftwareArchitect | State the clocking time fields as immutable and name the export's correction-resolution rule | No |
 
-**Carry-over.** No finding of this lens is deferred and none is rejected. All 11 remain open for the next iteration of this Reviewer, which will reconcile them in its closure state before recording new defects.
+**Carry-over from iteration 1.** No finding of this lens was deferred and none was rejected. All 11 carried to iteration 2 of this lens, which reconciled them in its closure state before recording new defects.
+
+#### Iteration 2 — closure of prior findings
+
+**Disposition of every prior finding of this lens.** Each was re-read against the corrected artifact content and closed on the evidence cited. Nothing is deferred and nothing is rejected.
+
+| Finding | Severity | Disposition | Evidence read from the corrected artifact |
+|---|---|---|---|
+| `Development Case#F1` | Minor | **Resolved** | The Organization and tool assessment table now records the CI workflow as "Present — `.github/workflows/ci.yml` at `358f1f8`, build and test jobs, green on `main`"; the Environment readiness criteria table records it as "Ready"; the LCO-gate verification records it as "Ready". The gap is kept open only for the genuinely absent items |
+| `Development Case#F2` | Minor | **Resolved** | The Environment row now reads "Per canonical matrix — High (Inception), Medium (Elaboration), not scheduled in Construction or Transition"; the one-time/recurring activity-cluster narrative is stated in the Environment discipline section |
+| `Vision#F1` | Minor | **Resolved** | The Traces To column names element identifiers on every row — `UC-NNN` for the FR rows, `COMP-NNN` for the NFR rows — and the not-yet-minted case is stated explicitly |
+| `Vision#F2` | Minor | **Resolved** | The Product Overview diagram draws Keycloak to all nine use cases, matching the Use-Case Model's diagram of the same boundary |
+| `Supplementary Specification#F1` | Minor | **Resolved** | The Traces To column names `COMP-NNN` on every row; the label-scope note is extended to the Traces To column |
+| `Risk List#F1` | Minor | **Resolved** | `R009` is restated to the guideline files only, and the CI half is recorded as retired against the observed run |
+| `Iteration Plan#F1` | Minor | **Resolved** | The roadmap gantt draws the human validation gate in parallel with Iter-2 and Iter-3, with the note that the team's work does not wait on it |
+| `Iteration Plan#F2` | Minor | **Resolved** | The four missing edges are registered — `AC-002` and `AC-005` to `UC-001`, `AC-003` to `UC-005`, `AC-004` to `UC-008` — and the trace chain confirms each |
+| `Software Architecture Document#F1` | Minor | **Resolved** | The traceability table is reconciled with the graph: `UC-001` is dropped from the Traces From side of the `COMP-003` row, and the `COMP-001` row matches the registered edges |
+| `Software Architecture Document#F2` | Minor | **Resolved** | The model states the clocking's recorded times are immutable, the `corrected` flag is derived from the correction chain, and the Data View names the resolution rule the export applies |
+| `Test Evaluation Summary#F1` | **Major** | **Resolved** | The three places that asserted the tracker holds no issues now record open defects, with `Issue #1` and `Issue #2` listed and the Conclusions table answering "Yes — two open" |
+
+**Closure discipline.** Each closure was materialised by a `resolve_artifact_finding` call before this narrative was written. The tool call transitions the state; this table documents the rationale. The residual undercounts against the tracker's current three open issues are separate, newly observed defects and are recorded as new findings — `Development Case#F3` and `Test Evaluation Summary#F2` — not as a reopening of the closed ones.
+
+#### Iteration 2 — actions arising
+
+Each action is the finding's Recommendation; its status is that finding's Resolution. No action identifier is minted.
+
+| Finding | Owner | Action | Blocking? |
+|---|---|---|---|
+| `Use-Case Model#F1` | SystemAnalyst | Re-read the Risk List's current `R001`, `R004` and `R009` entries and update the constraints-and-risks table: record `R004` as materialized, `R001`'s probability and impact as `[ASSUMPTION — requires validation]`, and `R009`'s remaining scope as the guideline files only. Then declare the change in turn so the six `SUSPECT` edges clear | **Yes** — a `SUSPECT` edge left open at phase close is a Major finding against the artifact owning the unreviewed end |
+| `Use-Case Model#F2` | SystemAnalyst | Reconcile the realizing-component table with the SAD's registered edges: `COMP-001` → `UC-001`, `UC-002`, `UC-004`, `UC-008`; `COMP-002` → `UC-001`, `UC-002`, `UC-008`; add `COMP-009` and `COMP-010` | No |
+| `Vision#F3` | SystemAnalyst | Replace the `NFR-003` row's Traces To with `COMP-002` and delete the "not yet minted" note for that row | No |
+| `Supplementary Specification#F2` | RequirementsSpecifier | Replace the `NFR-003` row's Traces To with `COMP-002` and delete the "not yet minted" note for that row | No |
+| `Development Case#F3` | ProcessEngineer | Record all three open issues in the "Open SCM issues" row, with their labels, or state the count as three and name the tracker as the authoritative record | No |
+| `Test Evaluation Summary#F2` | TestManager | Record `Issue #3` alongside `Issue #1` and `Issue #2`, state the defect count as three, and refresh the CI run reference to the run observed at submission | No |
+
+**Carry-over.** No finding of this lens is deferred and none is rejected. All six remain open for the next iteration of this lens, which will reconcile them in its closure state before recording new defects. The stakeholder's directive — all findings must be corrected, even if they are minor — governs the whole set.
+
+**Cross-lens findings left untouched.** The findings carrying `reviewerRole: ManagementReviewer` and `reviewerRole: BusinessReviewer` are those lenses' to close. The ownership invariant rejects a cross-lens close attempt, so none was attempted.
 
 ### Business Reviewer lens
 
