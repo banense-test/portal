@@ -5,7 +5,6 @@
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 
 ## Iteration Objectives
-
 Iteration 3 is the third Inception iteration. It is a mini-project, not a requirements phase: it delivers the one increment Inception still owes — the stand-in environment that gates every use case — and it corrects the nine findings the LCO review recorded, including the minor ones. It is closed by the LCO gate.
 
 | # | Objective | Evidence that closes it |
@@ -16,6 +15,8 @@ Iteration 3 is the third Inception iteration. It is a mini-project, not a requir
 | 4 | Carry R004's re-assessment into the plan as a hard gate | The stand-in environment is the first work item, the Integrator is the single accountable owner, and no work item that exercises a use case against the stand-in starts before it is delivered |
 | 5 | Re-plan the coarse roadmap from the measured actuals of both closed Inception iterations | The roadmap in this plan is derived from Iter-1's and Iter-2's measured token spend and elapsed time, not from a theoretical capacity |
 | 6 | Make the plan's exit-criteria verdicts honest at the point of writing | Every layer (b) criterion carries a verdict of MET or NOT MET, never an open item |
+
+**R001's magnitude basis is settled, not pending.** The stakeholder was asked to confirm R001's probability and impact at three consecutive reviews and declined each time. The register therefore records them as the analyst's unconfirmed estimates and anchors no magnitude band on them: the Significant and Moderate bands rest on R002's and R003's declared exposures, and the High band's lower boundary on R004's observed exposure of 12. R001's acceptance is granted by CON-021 independently of its magnitude, so no strategy changes. No artifact in the set carries an open question about R001's figures.
 
 **What this iteration does NOT do.** It does not implement a use case, does not verify an acceptance criterion, and does not close a milestone. The LCO verdict belongs to the ReviewCoordinator and the ManagementReviewer; this plan produces the evidence they rule on.
 
