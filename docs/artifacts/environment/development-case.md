@@ -418,8 +418,10 @@ produced by this system and are not used to plan.
 
 ### Environment discipline: three activity clusters
 
-Environment is one-time at project start and recurring thereafter. It is not an Inception-only
-activity, and the Process Engineer does not disappear after Inception.
+Environment is High in Inception and Medium in Elaboration per the canonical matrix. Within those
+levels it runs three activity clusters: one-time project preparation, recurring iteration
+preparation, and continuous support during the iteration. The Process Engineer does not disappear
+after Inception.
 
 ```plantuml
 @startuml DC_EnvIteration
@@ -434,7 +436,6 @@ partition "One-time: Prepare Environment for Project (Inception)" {
   :Verify tool environment;
   note right
     GAPS found at Inception:
-    - no .github/workflows CI file (CON-026)
     - no CONTRIBUTING.md, no lint config
     Both are owned by discipline experts;
     the DC references them, does not author them.
@@ -446,6 +447,13 @@ repeat
     :Re-evaluate DC classification and optional triggers;
     :Re-record version policy if the stakeholder revised it;
     :Verify CI, build, test and stand-in environment ready;
+    note right
+      Canonical intensity, Environment: High in
+      Inception, Medium in Elaboration, not scheduled
+      in Construction or Transition. The one-time /
+      recurring split is the activity cluster, not
+      the intensity level.
+    end note
     if (environment ready?) then (yes)
       :Iteration starts;
     else (no)
@@ -509,6 +517,21 @@ iteration, the CI pipeline builds and tests, the stand-in environment is availab
 triggers have been re-evaluated. A configuration problem found on day 1 of an iteration is a process
 defect, not a developer's bad luck.
 
+**Checkpoint result — Inception iteration 2, taken before the next iteration starts.**
+
+| Checked item | Observed state | Evidence |
+|---|---|---|
+| Development Case current for the iteration | Confirmed | This document, updated this iteration |
+| CI pipeline builds and tests | Confirmed | `.github/workflows/ci.yml` at `358f1f8`; build and test jobs; green on `main` |
+| Stand-in environment available (CON-028) | **Not confirmed** | No stand-in OIDC issuer and no stand-in directory exist in the repository |
+| Optional triggers re-evaluated | Confirmed | None fired; re-recorded this iteration |
+
+The checkpoint does not pass. Three of the four items are confirmed; the stand-in environment is not.
+The consequence is stated rather than deferred: no use case can be built or tested against the real
+Keycloak or the real AD (CON-028), so until the stand-ins exist no use case is buildable and R004's
+treatment is not executed. The stand-in environment is the first construction item of the iteration,
+and the checkpoint is re-taken before the iteration after it.
+
 ### Guideline ownership
 
 The Process Engineer integrates tailoring input from the discipline experts and does not author
@@ -534,6 +557,54 @@ private arrangement.
 The three gaps are iteration-1 environment work, not blockers to process configuration. The stand-in
 environment is the one that gates development: no use case can be built or tested against the real
 Keycloak or the real AD (CON-028), so the stand-ins are the first construction item of the iteration.
+
+### Environment verification at the LCO gate — Inception iteration 2
+
+This is the post-iteration record of the actual state of each environment item at the LCO gate, with
+the observed evidence for each. It is not a pre-iteration plan, and it is not offered as evidence
+that LCO exit criterion 5 is met — it records that the criterion is not met.
+
+| Check | Observed state at the gate | Evidence | Owner of the gap |
+|---|---|---|---|
+| SCM repository reachable | Ready | Repository `portal`, default branch | — |
+| CI pipeline builds and tests (CON-026) | Ready | `.github/workflows/ci.yml` at `358f1f8`; build and test jobs; green on `main` | — |
+| `CONTRIBUTING.md` | **Not ready** | File absent from the repository | SoftwareArchitect + Implementer |
+| Lint / formatter configuration | **Not ready** | No `.editorconfig` and no `Directory.Build.props` in the repository | Implementer |
+| Stand-in OIDC issuer and stand-in directory (CON-028) | **Not ready** | No stand-in configuration in the repository | Implementer + Integrator |
+| Mandatory UI design input (CON-031) | Ready | `docs/inputs/employee-portal-design.html` | — |
+| Version policy recorded | Ready | .NET 10, PostgreSQL 18 | — |
+| DC classification and optional triggers recorded | Ready | business-process-led = false; no optional trigger fired | — |
+
+```plantuml
+@startuml DC_LCOGate
+title Portal - environment verification at the LCO gate (Inception iteration 2)
+
+start
+:Verify SCM repository reachable;
+:Verify CI pipeline (CON-026);
+:Verify CONTRIBUTING.md and lint configuration;
+:Verify stand-in OIDC issuer and stand-in directory (CON-028);
+:Verify mandatory UI design input (CON-031);
+:Verify version policy, DC classification, optional triggers;
+if (stand-in environment available?) then (yes)
+  :Every use case buildable and testable against the stand-ins;
+else (no)
+  :Stand-in environment is the first construction item;
+  note right
+    CON-028: never the real Keycloak or the real AD.
+    Until the stand-ins exist no use case can be
+    built or tested, and R004's treatment is not
+    executed.
+  end note
+endif
+stop
+@enduml
+```
+
+**LCO exit criterion 5 is not met.** The stand-in environment is the one item that gates every use
+case, and it does not exist. The two guideline gaps — `CONTRIBUTING.md` and the lint configuration —
+are Elaboration work owned by the discipline experts and do not gate a use case. The CI pipeline is
+present and green, so criterion 6 is met.
 
 ## Traceability
 
