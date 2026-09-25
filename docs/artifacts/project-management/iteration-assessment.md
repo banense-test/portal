@@ -3,27 +3,7 @@
 - **Status:** Draft — iteration 2 close, written after the reviewers ruled
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 ## Iteration Objectives Reached
-The ReviewCoordinator's verdict for this iteration is **iteration REQUIRED (scope incomplete)**, and the stakeholder refused the sanction to advance past LCO. This assessment records the iteration's outcome given that verdict. It does not declare the milestone: the LCO verdict is the ReviewCoordinator's and the ManagementReviewer's, and it has been issued.
-
-| # | Planned objective | Verdict | Basis |
-|---|---|---|---|
-| 1 | Define Project Scope | **Met** | Vision, Use-Case Model and Supplementary Specification carry the declared scope with no creep: nine use cases, one per declared FR-001..FR-009, each citing its source requirement. The trace graph projects 47 roots and 150 nodes with no SUSPECT edge and no UNKNOWN LABEL. The Use-Case Model is the one artifact carrying no finding from any lens. |
-| 2 | Identify Critical Risks | **Met, with a defective basis** | Risk List carries R001..R009 with probability, impact, magnitude, strategy, owner, mitigation and contingency. R001..R003 are preserved with the declared identifiers and magnitudes; team risks are numbered per CON-020; every acceptance cites CON-021. The classification's *basis* is defective: R001's probability and impact are the analyst's estimates, the stakeholder declined to confirm them, and every magnitude band is derived from them (`Risk List#F1`, Major). |
-| 3 | Tailor Development Process | **Met** | Development Case conforms to the IARI baseline: the 25-role roster is unchanged, CORE ownership is unchanged, no artifact outside the CORE + OPTIONAL universe, no role merged. Business Modeling is INACTIVE on the correct trigger (business-process-led = false, all four DC §4 criteria evaluated and none fired). All six OPTIONAL triggers were audited against their §5.2 conditions and none fired. |
-| 4 | Establish Feasibility | **Met** | The stack is pinned by CON-022/CON-023/CON-024; the OIDC client is already registered (CON-003) so login is testable from day one; the Development Case's Architectural Proof-of-Concept NOT-FIRED verdict holds — no technical unknown requires empirical validation. |
-
-**The iteration's own six objectives, as the Iteration Plan decomposed them.** The four phase objectives above are the assessment frame; the plan carried six finer objectives. Four are met, one is met with a defective basis, and one is not met.
-
-| Plan objective | Verdict | Basis |
-|---|---|---|
-| 1 — Agreed scope as a named set of use cases | Met | UC-001..UC-009, one per FR-001..FR-009; UC-001, UC-002, UC-008 detailed, the remaining six outlined |
-| 2 — Non-functional and business-rule baseline | Met | Supplementary Specification carries NFR-001..NFR-005 and CON-009..CON-019 |
-| 3 — Process configuration | Met | Development Case: Business Modeling inactive, no OPTIONAL trigger fired, version policy .NET 10 / PostgreSQL 18 |
-| 4 — Initial risks identified and classified | Met, with a defective basis | R001..R009 classified; the magnitude bands rest on an unconfirmed estimate (`Risk List#F1`) |
-| 5 — Stand-in environment real (CON-028) | **Not met** | No artifact evidences the test OIDC issuer or the test directory. This is LCO exit criterion 5 and the one criterion the ManagementReviewer records as NOT MET |
-| 6 — Build verifiable (CON-026) | Met | The CI pipeline builds and tests on `main`; the build is green. The Development Case's record of it is stale (`Development Case#F1`) |
-
-**What the iteration did not do, as planned.** It did not implement a use case, did not verify an acceptance criterion, and did not close a milestone. That was the plan's own statement and it held: zero acceptance criteria are verified, and the LCO gate did not open.
+This assessment accumulates one entry per iteration. Each entry records the iteration's outcome given the ReviewCoordinator's verdict for that iteration; it does not declare the milestone.
 
 ### Iteration 2 — Inception
 
