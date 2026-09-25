@@ -459,7 +459,6 @@ end note
 ```
 
 ## Guidelines and Procedures
-
 ### Measurement policy
 
 The baseline measures two quantities and only two: tokens consumed, and elapsed time split into agent
@@ -581,7 +580,7 @@ defect, not a developer's bad luck.
 | Checked item | Observed state | Evidence |
 |---|---|---|
 | Development Case current for the iteration | Confirmed | This document, updated this iteration |
-| CI pipeline builds and tests | Confirmed | `.github/workflows/ci.yml` at `358f1f8`; build and test jobs; green on `main` |
+| CI pipeline builds and tests | Confirmed | `.github/workflows/ci.yml` at `a9890724`; build and test jobs; green on `main` |
 | Stand-in environment available (CON-028) | **Not confirmed** | No stand-in OIDC issuer and no stand-in directory exist in the repository |
 | Optional triggers re-evaluated | Confirmed | None fired; re-recorded this iteration |
 
@@ -705,6 +704,7 @@ environment state at the LCO gate. Each action names the decision it enables.
 | The environment-readiness record was stale on its own CI row and was offered as milestone evidence | The record was a pre-iteration plan presented as a post-iteration fact | The LCO-gate record states the observed state of each item with its evidence; the readiness table is labelled a plan | ProcessEngineer |
 | The Environment intensity row stated a recurrence pattern where the canonical matrix states a level | The activity-cluster narrative was written into the intensity table | The intensity table states the canonical level per phase; the cluster narrative lives in the Environment discipline section | ProcessEngineer |
 | No iteration-preparation checkpoint result was recorded | The checkpoint was stated as an intention, not exercised as a record | The checkpoint result records the observed state of each item it names | ProcessEngineer |
+| The open SCM issue set was under-reported — one issue recorded where the tracker held three | The row was written from the issue this artifact had raised, not from the tracker | The row records the open issue set as observed, with the count, the labels and each issue cited by its identifier; the tracker is named as the authoritative record | ProcessEngineer |
 | The stand-in environment (CON-028) does not exist, so no use case is buildable and R004's treatment is not executed | Environment work not yet delivered | The stand-in environment is the first construction item of the iteration; the checkpoint is re-taken before the iteration after it | Implementer + Integrator |
 | `CONTRIBUTING.md` and the lint configuration are absent | Guideline content is Elaboration work owned by the discipline experts | Authored during Elaboration; referenced from this Development Case, not duplicated in it | SoftwareArchitect, Implementer, TestManager |
 
@@ -731,6 +731,73 @@ afterthought. The Process Engineer is the process help desk while the iteration 
 A blocking process question is never left to the next iteration. A non-blocking one is answered in
 the iteration it is raised, and the answer is written into this document rather than into a
 conversation, so the next role to ask reads it instead of asking again.
+
+### Environment verification at the LCO gate — Inception iteration 3
+
+This is the post-iteration record of the actual state of each environment item at the LCO gate, with
+the observed evidence for each. It is not a pre-iteration plan, and it is not offered as evidence
+that LCO exit criterion 5 is met — it records that the criterion is not met.
+
+| Check | Observed state at the gate | Evidence | Owner of the gap |
+|---|---|---|---|
+| SCM repository reachable | Ready | Repository `portal`, default branch | — |
+| CI pipeline builds and tests (CON-026) | Ready | `.github/workflows/ci.yml` at `a9890724`; build and test jobs; green on `main` | — |
+| `CONTRIBUTING.md` | **Not ready** | File absent from the repository | SoftwareArchitect + Implementer |
+| Lint / formatter configuration | **Not ready** | No `.editorconfig` and no `Directory.Build.props` in the repository | Implementer |
+| Stand-in OIDC issuer and stand-in directory (CON-028) | **Not ready** | No stand-in configuration in the repository | Implementer + Integrator |
+| Mandatory UI design input (CON-031) | Ready | `docs/inputs/employee-portal-design.html` | — |
+| Version policy recorded | Ready | .NET 10, PostgreSQL 18 | — |
+| DC classification and optional triggers recorded | Ready | business-process-led = false; no optional trigger fired | — |
+
+```plantuml
+@startuml DC_LCOGate3
+title Portal - environment verification at the LCO gate (Inception iteration 3)
+
+start
+:Verify SCM repository reachable;
+:Verify CI pipeline (CON-026);
+:Verify CONTRIBUTING.md and lint configuration;
+:Verify stand-in OIDC issuer and stand-in directory (CON-028);
+:Verify mandatory UI design input (CON-031);
+:Verify version policy, DC classification, optional triggers;
+if (stand-in environment available?) then (yes)
+  :Every use case buildable and testable against the stand-ins;
+else (no)
+  :Stand-in environment is the first construction item;
+  note right
+    CON-028: never the real Keycloak or the real AD.
+    Until the stand-ins exist no use case can be
+    built or tested, and R004's treatment is not
+    executed.
+  end note
+endif
+stop
+@enduml
+```
+
+**LCO exit criterion 5 is not met.** The stand-in environment is the one item that gates every use
+case, and it does not exist. The two guideline gaps — `CONTRIBUTING.md` and the lint configuration —
+are Elaboration work owned by the discipline experts and do not gate a use case. The CI pipeline is
+present and green, so criterion 6 is met.
+
+### Tool evaluation — Inception iteration 3
+
+Each tool in the development environment is evaluated after the iteration against what the process
+needs it to do, not against its feature list. A deficiency is logged with an improvement action; a
+deficiency carried silently from iteration to iteration is the failure mode this evaluation exists to
+prevent.
+
+| Tool | Process need it serves | Evaluation | Improvement action |
+|---|---|---|---|
+| Hosted SCM provider (CON-026) | Version control, branch and merge, issue tracking | Adequate — repository reachable, branches and issues in use | None |
+| Hosted CI (`.github/workflows/ci.yml`) | Build and test on every push and pull request (CON-026) | Adequate — build and test jobs, green on `main`; the solution manifest is synced from the `src/` + `tests/` tree so a green check cannot be a stale-manifest lie | None |
+| Lint / formatter configuration | Enforce the coding standards the discipline experts author | **Deficient** — no configuration exists, so no standard is enforced mechanically | Authored during Elaboration by the Implementer; referenced from this Development Case |
+| Stand-in OIDC issuer and stand-in directory (CON-028) | Let every use case be built and tested without the real Keycloak or the real AD | **Deficient** — does not exist, so no use case is buildable and R004's treatment is not executed | First construction item of the iteration; owned by Implementer + Integrator |
+| `docs/inputs/employee-portal-design.html` (CON-031) | Authoritative UI visual layer for the UI Designer and Implementer | Adequate — present and authoritative | None |
+
+The two deficiencies are the same two items the LCO-gate record marks not ready. Neither is a tool
+selection problem: the tools are chosen and adequate, and what is missing is configuration the
+project owes itself. No tool change is proposed, and no tool is replaced mid-project.
 
 ## Traceability
 
