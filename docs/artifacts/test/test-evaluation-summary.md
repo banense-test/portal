@@ -1,9 +1,7 @@
 ## Document Control
-
 - **Phase:** Inception
-- **Status:** Draft — iteration 1, not yet reviewed
+- **Status:** Draft — iteration 2, not yet reviewed
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
-
 ## Test Scope
 
 The test effort verifies the declared acceptance criteria AC-001..AC-006 against the declared use cases UC-001..UC-009, the declared non-functional requirements NFR-001..NFR-005 and the declared business rules CON-009..CON-019. Nothing outside the declared scope is tested, and no criterion is invented.
