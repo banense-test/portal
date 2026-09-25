@@ -980,28 +980,21 @@ Clockings are stored in UTC and displayed in Europe/Madrid (CON-008). All three 
 | R007 — the roadmap under-counts the iterations | No architectural exposure | Project Manager's; re-planned from measured actuals each iteration (CON-027) |
 | R009 — the CI pipeline and guideline files are not in place | The build cannot be verified | The CI half is retired: the pipeline exists and builds green on `main`. The guideline files remain the ConfigurationManager's and Implementer's work |
 ## Traceability
+Every row below is a registered edge in the trace graph. The components are the elements this document mints; the ADRs and the 4+1 views are **sections of this document, not elements**, so they carry no edge of their own — the justification they record is carried by the component rows they govern.
 
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| COMP-001 Portal Web UI | CON-023, CON-031, NFR-001 | Derives | UC-001, UC-002, UC-004, UC-008 |
-| COMP-002 Portal REST API | CON-022, NFR-005 | Derives | UC-001, UC-002, UC-008 |
-| COMP-003 Clocking Capture | UC-001, AC-006, R006 | Realizes | UC-001 |
-| COMP-004 Clocking Ledger | UC-001, CON-010, CON-011, CON-012 | Realizes | UC-001, UC-003 |
-| COMP-005 News Publishing | UC-005, UC-006, UC-007, CON-009, CON-017 | Realizes | UC-005, UC-006, UC-007 |
-| COMP-006 Directory Gateway | UC-008, CON-005, CON-016, R002 | Realizes | UC-008, UC-002 |
-| COMP-007 Worker Category | UC-009, CON-014, CON-015, CON-016 | Realizes | UC-009, UC-008 |
-| COMP-008 Monthly Export | UC-002, FR-003 | Realizes | UC-002 |
-| COMP-009 Audit Trail | NFR-004, CON-018 | Derives | UC-002, UC-003, UC-005, UC-006, UC-007, UC-009 |
-| COMP-010 Identity and Access | NFR-005, CON-002, CON-025, CON-028 | Derives | UC-001, UC-002, UC-003, UC-004, UC-005, UC-006, UC-007, UC-008, UC-009 |
-| ADR-001 Architectural style | CON-001, CON-007, CON-022, CON-029 | Refines | COMP-001, COMP-002, COMP-003, COMP-004, COMP-005, COMP-006, COMP-007, COMP-008, COMP-009, COMP-010 |
-| ADR-002 Persistence | CON-024, CON-009, CON-011, AC-006, CON-032 | Refines | COMP-004, COMP-005, COMP-007, COMP-009 |
-| ADR-003 Identity and directory | CON-002, CON-004, CON-005, CON-016, CON-025, CON-028 | Refines | COMP-006, COMP-010 |
-| ADR-004 Clocking capture | AC-006, CON-023, R006 | Refines | COMP-003 |
-| ADR-005 UI | CON-023, CON-031, AC-001 | Refines | COMP-001 |
-| Deployment view | CON-001, CON-007, CON-024, CON-025, CON-026, CON-029 | Refines | COMP-001, COMP-002, COMP-006, COMP-010 |
-| Process view | NFR-004, CON-009, CON-011, AC-006 | Refines | COMP-003, COMP-004, COMP-005, COMP-009 |
-| Data view | CON-005, CON-014, CON-015, CON-016, CON-017, CON-030 | Refines | COMP-004, COMP-005, COMP-007, COMP-009 |
-| Size and Performance | NFR-001, NFR-002, NFR-003, AC-001 | Refines | COMP-001, COMP-002, COMP-004, COMP-006 |
-| Quality | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005, R001, R002, R003, R004, R005, R006, R007, R009 | Refines | COMP-001, COMP-003, COMP-006, COMP-009, COMP-010 |
-| Technology stack | CON-022, CON-023, CON-024 | Refines | COMP-001, COMP-002 |
-| Use-Case View prioritization | UC-001, UC-002, UC-008, R002, R006 | Refines | Iteration Plan |
+| COMP-001 Portal Web UI | AC-001, NFR-001, CON-023, CON-031, CON-026 | Derives | UC-001, UC-002, UC-004, UC-008 |
+| COMP-002 Portal REST API | CON-001, CON-022 | Derives | UC-001, UC-002, UC-008 |
+| COMP-003 Clocking Capture | AC-006, R006 | Derives | UC-001 |
+| COMP-004 Clocking Ledger | CON-010, CON-011, CON-012, NFR-002 | Derives | UC-001, UC-003 |
+| COMP-005 News Publishing | CON-009, CON-017 | Derives | UC-005, UC-006, UC-007 |
+| COMP-006 Directory Gateway | CON-004, CON-005, CON-028, R002, R004 | Derives | UC-002, UC-008 |
+| COMP-007 Worker Category | CON-013, CON-014, CON-015, CON-016 | Derives | UC-009 |
+| COMP-008 Monthly Export | FR-003 | Derives | UC-002 |
+| COMP-009 Audit Trail | NFR-004, CON-018, CON-024 | Derives | UC-002, UC-003, UC-005, UC-006, UC-007, UC-009 |
+| COMP-010 Identity and Access | NFR-005, CON-002, CON-025, R001 | Derives | UC-001, UC-002, UC-003, UC-004, UC-005, UC-006, UC-007, UC-008, UC-009 |
+
+**Link direction.** A component `Realizes` the use case it fulfils — design to use case. The `Traces From` column carries the constraints, requirements, acceptance criteria and risks that justify the component's existence; the `Traces To` column carries the use cases it realizes. `CON-026` and `CON-001` reach COMP-001 and COMP-002 as `DependsOn` (the artefact is built by the hosted CI and runs on the estate), and `R001`, `R002`, `R004` and `R006` reach their components as `DependsOn` (the component is what the risk threatens or what mitigates it). Both directions are registered.
+
+**Coverage.** All nine use cases are realized by at least one component. Every component is justified by at least one declared constraint, requirement, acceptance criterion or risk. No component exists that the declared scope does not support, and no declared use case is unrealized by the architecture.
