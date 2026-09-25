@@ -118,7 +118,7 @@ end note
 @enduml
 ```
 
-**DC §4 classification, independently re-verified.** `get_dc_classification` returned `isBusinessProcessLed: false`, classified 2026-09-24, with all four criteria evaluated and none fired. I re-verified each criterion against the declared scope rather than accepting the verdict:
+**DC §4 classification, independently re-verified.** `get_dc_classification` returned `isBusinessProcessLed: false`, re-evaluated this iteration, with all four criteria evaluated and none fired. I re-verified each criterion against the declared scope rather than accepting the verdict, and checked whether any Change Request had altered the basis — none has.
 
 | DC §4 criterion | Recorded verdict | Independent re-verification |
 |---|---|---|
@@ -201,11 +201,11 @@ end note
 @enduml
 ```
 
-**Artifacts read in full before any finding was recorded (upstream consumption).** Vision, Use-Case Model, Supplementary Specification, Review Record (existing Reviewer lens blocks), plus the DC §4 classification. The Development Case, Risk List, Iteration Plan, Software Architecture Document and Test Evaluation Summary were not read: none can carry a business-model section, and the Business Modeling discipline's artifact surface is exhausted by the three read.
+**Artifacts read in full before any finding was recorded (upstream consumption).** Vision, Use-Case Model, Supplementary Specification, Review Record (all existing lens blocks), plus the DC §4 classification. The Development Case, Risk List, Iteration Plan, Software Architecture Document and Test Evaluation Summary were not read: none can carry a business-model section, and the Business Modeling discipline's artifact surface is exhausted by the three read.
 
 **Checklists applied.** The Business Modeling checklist (Heuristic 1.2) was applied item by item and every item recorded Pass or N/A. N/A is not a defect: the Development Case does not require a business-model artifact of the BPA this phase, so a finding against a non-required artifact would be a false defect.
 
-**Entry criteria.** The Development Case is present and carries tailoring content, so it governs this review. The DC §4 classification is recorded. No business-model artifact was expected and none was found to be a placeholder mid-review.
+**Entry criteria.** The Development Case is present and carries tailoring content, so it governs this review. The DC §4 classification is recorded and re-evaluated this iteration. No business-model artifact was expected and none was found to be a placeholder mid-review.
 
 **Scope of this lens.** This is the Business Reviewer lens — the business-modeling quality gate. The generic Reviewer's technical lens and the Management Reviewer's lens are separate blocks in this same Review Record and are not written here.
 
