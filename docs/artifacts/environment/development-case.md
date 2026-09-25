@@ -115,24 +115,29 @@ end note
 | Open SCM issues | `Issue #1` — the environment-readiness record for the CI pipeline was stale | Corrected in this iteration; the record now cites the observed pipeline |
 
 ## Disciplines and Intensity
-
 Intensity per discipline and phase is **per the canonical matrix** — confirmed, not assigned. The
-only deltas are the inactive discipline and the one-time discipline.
+only deltas are the inactive discipline and the Environment row's phase levels, which are the
+canonical levels stated explicitly.
 
 | Discipline | Status for Portal | Delta from baseline |
 |---|---|---|
 | Business Modeling | **INACTIVE** | Not active in any phase. Reason: business-process-led = false (see Tailoring rationale 1). No BUC, business actor, business worker or Business Object Model is produced. |
-| Requirements | Active | Per canonical matrix |
-| Analysis & Design | Active | Per canonical matrix |
-| Implementation | Active | Per canonical matrix |
-| Test | Active | Per canonical matrix |
-| Deployment | Active | Per canonical matrix |
-| Configuration & Change Management | Active | Per canonical matrix |
-| Project Management | Active | Per canonical matrix |
-| Environment | Active | Per canonical matrix; **one-time at project start** for the project-preparation cluster, recurring thereafter for iteration preparation and continuous support |
+| Requirements | Active | Per canonical matrix — Critical (Inception), High (Elaboration), Medium (Construction), Low (Transition) |
+| Analysis & Design | Active | Per canonical matrix — Medium (Inception), Critical (Elaboration), High (Construction), Low (Transition) |
+| Implementation | Active | Per canonical matrix — Medium (Inception), Medium (Elaboration), Critical (Construction), Medium (Transition) |
+| Test | Active | Per canonical matrix — Low (Inception), Medium (Elaboration), Critical (Construction), High (Transition) |
+| Deployment | Active | Per canonical matrix — Low (Inception), Low (Elaboration), Medium (Construction), Critical (Transition) |
+| Configuration & Change Management | Active | Per canonical matrix — Medium (Inception), Medium (Elaboration), High (Construction), Medium (Transition) |
+| Project Management | Active | Per canonical matrix — High (Inception), Medium (Elaboration), High (Construction), Medium (Transition) |
+| Environment | Active | Per canonical matrix — High (Inception), Medium (Elaboration), not scheduled in Construction or Transition |
 
 Eight disciplines are active. No intensity level is deviated from the canonical matrix, so no
 stakeholder approval of a deviation is required.
+
+The Environment discipline's activity clusters — one-time project preparation, recurring iteration
+preparation, continuous support — are described in *Guidelines and Procedures*. That split is the
+activity cluster, not the intensity level: Environment is High in Inception and Medium in
+Elaboration, and the recurring clusters run inside those levels.
 
 ### The use-case-driven thread
 
