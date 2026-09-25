@@ -225,25 +225,35 @@ Every feature below is a declared requirement (FR-001..FR-009). No feature is ad
 | BG-003 | 80% employee adoption within 3 months: 80% of the 200 employees actively using the portal within 3 months of launch. |
 
 ## Traceability
+Every row below ends in a trace-graph element, never a document section. One edge is registered per row.
 
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| Problem Statement | BG-001, BG-002, BG-003 | Refines | FR-001, FR-003, FR-004, FR-008 |
-| Product Position Statement | FR-001, FR-004, FR-008 | Refines | Use-Case Model |
-| Stakeholder Summary | STK-001, STK-002, STK-003, STK-004 | Refines | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009 |
-| Product Overview | CON-001, CON-002, CON-005, CON-022, CON-023, CON-024, CON-025 | Refines | Use-Case Model |
-| FR-001 Clock In and Clock Out | STK-004, BG-002 | Refines | UC-001 |
-| FR-002 HR Corrects or Inserts a Clocking | STK-001, CON-012 | Refines | UC-003 |
-| FR-003 HR Exports Monthly Clocking Report (CSV) | STK-001, BG-001 | Refines | UC-002 |
-| FR-004 Read Internal News | STK-004 | Refines | UC-004 |
-| FR-005 HR Publishes News | STK-001, CON-009 | Refines | UC-005 |
-| FR-006 HR Edits Published News | STK-001, NFR-004 | Refines | UC-006 |
-| FR-007 HR Unpublishes News | STK-001, CON-017 | Refines | UC-007 |
-| FR-008 Search Employee Directory | STK-004, CON-005, R002 | Refines | UC-008 |
-| FR-009 HR Assigns or Clears Worker Category | STK-001, CON-014, CON-015, CON-016 | Refines | UC-009 |
-| NFR-001, NFR-002 | AC-001 | Refines | Supplementary Specification |
-| NFR-003 | CON-007 | Refines | Supplementary Specification |
-| NFR-004 | CON-018, CON-019 | Refines | Supplementary Specification |
-| NFR-005 | CON-002, CON-013 | Refines | Supplementary Specification |
-| AC-006 | CON-023, CON-028 | Refines | UC-001 |
-| R001, R002, R003 | CON-020, CON-021 | Refines | Risk List |
+| STK-001 | — | Refines | FR-002, FR-003, FR-005, FR-006, FR-007, FR-009 |
+| STK-004 | — | Refines | FR-001, FR-004, FR-008 |
+| BG-001 | — | Refines | FR-003 |
+| BG-002 | — | Refines | FR-001 |
+| BG-003 | — | Refines | AC-005 |
+| FR-001 Clock In and Clock Out | STK-004, BG-002 | Derives | UC-001 |
+| FR-002 HR Corrects or Inserts a Clocking | STK-001, CON-012 | Derives | UC-003 |
+| FR-003 HR Exports Monthly Clocking Report (CSV) | STK-001, BG-001 | Derives | UC-002 |
+| FR-004 Read Internal News | STK-004 | Derives | UC-004 |
+| FR-005 HR Publishes News | STK-001, CON-009 | Derives | UC-005 |
+| FR-006 HR Edits Published News | STK-001, NFR-004 | Derives | UC-006 |
+| FR-007 HR Unpublishes News | STK-001, CON-017 | Derives | UC-007 |
+| FR-008 Search Employee Directory | STK-004, CON-005, R002 | Derives | UC-008 |
+| FR-009 HR Assigns or Clears Worker Category | STK-001, CON-014, CON-015, CON-016 | Derives | UC-009 |
+| NFR-001 Page Load Performance | AC-001 | Derives | COMP-001 |
+| NFR-002 Clock In/Out Response Time | AC-001 | Derives | COMP-004 |
+| NFR-003 Availability Window | CON-007 | Derives | Supplementary Specification |
+| NFR-004 Audit Trail | CON-018, CON-019 | Derives | COMP-009 |
+| NFR-005 Authorization Model | CON-002, CON-013 | Derives | COMP-010 |
+| AC-006 Offline clocking retry | CON-023, CON-028 | Derives | COMP-003 |
+| R001 | CON-020, CON-021 | DependsOn | UC-001, UC-008, COMP-010 |
+| R002 | CON-020, CON-021 | DependsOn | UC-002, UC-008, COMP-006 |
+| R003 | CON-020, CON-021 | DependsOn | UC-001 |
+
+**NFR-003's endpoint.** Its registered downstream endpoint is the Supplementary Specification artifact, which elaborates it in the Reliability category. No finer-grained element is minted for it yet; the edge is registered against the artifact.
+
+**BG-003's verification path.** BG-003 is measured with STK-004 after go-live, outside the project's test effort. AC-005 is the adoption measure taken with real employees after launch; no acceptance criterion the team can run closes BG-003. The row records the goal's own downstream element, not a claim that a test closes it.
+
