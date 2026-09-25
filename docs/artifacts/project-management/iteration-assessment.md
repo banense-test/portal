@@ -214,10 +214,12 @@ This section accumulates one entry per iteration, recording which use cases the 
 | UC-005 | Publish News | Outline | A1 featuring un-features the previous (CON-009); A2 featuring is never automatic | No |
 | UC-006 | Edit Published News | Outline | A1 featured-flag change (CON-009) | No |
 | UC-007 | Unpublish News | Outline | A1 the featured item is un-featured; A2 no hard delete (CON-017) | No |
-| UC-008 | Search Employee Directory | Specification carried; to be exercised against the stand-in directory | Main flow; A1 empty job title or extension (R002); A2 no category (CON-015); A3 network unavailable; A4 no match | No |
+| UC-008 | Search Employee Directory | Specification carried; to be exercised against the stand-in directory, including the worker-category filter | Main flow; A1 empty job title or extension (R002); A2 no category (CON-015); A3 network unavailable; A4 no match; A5 category filter over the closed list of four (CON-013, CON-014) | No |
 | UC-009 | Assign or Clear Worker Category | Outline | A1 category cleared (CON-015); A2 fifth value refused (CON-014); A3 no employee field is editable (CON-005) | No |
 
 **The consequence of the unmet exit criterion.** UC-001, UC-002 and UC-008 are the three architecturally significant use cases and the three the plan scoped into this iteration as full specifications. CON-028 forbids building or testing against the real Keycloak or the real AD, so with no stand-in environment none of the three can be built or tested, and R004 — the risk the register itself calls the one that gates all testing — remains untreated for the second consecutive iteration. The specification work is complete; the environment that would let it be exercised does not exist.
+
+**UC-008's category filter, and what it adds to the stand-in.** UC-008 now filters the directory by worker category, as CON-013 declares: the search accepts a category as a term, the merged entries are filtered by the category link, and an employee with no category is not returned by a category filter. This is the one part of UC-008 that cannot be exercised against Active Directory at all, because the category is the only field the portal owns (CON-016) and AD holds no such attribute. The stand-in directory must therefore carry the category link as well as the declared AD attributes, and it must carry an entry with no category so the exclusion path is exercised. That requirement is carried into the Iteration Plan's work item 1 and into R004's treatment.
 
 ### Iteration 1 — Inception
 
