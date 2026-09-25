@@ -24,41 +24,28 @@
 ## Review Scope and Criteria
 ### Reviewer lens
 
-**Review type.** Technical review (peer-led, checklist-driven, findings documented). Not a formal Fagan inspection: no reader paraphrase step and no separate recorder role.
+**Review type.** Technical review at the Lifecycle Objectives review point. The evaluative lens is **exit criteria**, not completion: the question is whether the artifact set collectively satisfies the conditions for phase transition, and whether each artifact is internally sound and consistent with the artifacts it derives from.
 
-**Review point.** Lifecycle milestone — LCO. The evaluative lens is **exit criteria**, not completion: do the artifacts collectively satisfy the conditions for phase transition? No completion lens is applied, because Inception produces a baseline and not a running system.
+**Artifacts reviewed this pass.** Eight: Vision, Use-Case Model, Supplementary Specification, Development Case, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary. The Iteration Assessment is not reviewed for currency — the Project Manager authors it in the Assess touchpoint that runs after this review, so at review time it cannot yet describe the iteration being reviewed. Its absence or lag is not a finding and not a gate condition.
 
-**Artifacts reviewed (8 of 8).** Development Case, Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary.
-
-**Upstream consumption.** Every artifact was read in full before any finding was recorded. The traceability tree was projected from the Business level (47 roots, 150 nodes) and used as the completeness instrument, never the artifacts' own prose.
+**Upstream consumption.** Every artifact was read against the artifacts it derives from before any finding was recorded: the Use-Case Model against the Vision's declared scope, the Supplementary Specification against the Use-Case Model, the Software Architecture Document against the Use-Case Model and the Supplementary Specification, the Test Evaluation Summary against the acceptance criteria and the Use-Case Model, and the Development Case, Risk List and Iteration Plan against the declared scope and each other. The traceability tree was projected from the Business level and used as the completeness instrument.
 
 **Checklists applied, per artifact type.**
 
-| Artifact | Checklist applied |
+| Artifact | Checklist |
 |---|---|
-| Development Case | DC Baseline Conformance (§1.2) against the IARI baseline in force; Optional Trigger Justification against each §5.2 condition; intensity against the canonical matrix |
-| Vision | Scope adherence against the declared scope; stakeholder coverage; unsourced-figure check; UML presence; trace endpoints |
-| Use-Case Model | One UC per declared FR; `Source: FR-NNN` per use case; no cross-cutting mechanism as a UC; multi-actor process as one UC; UML presence |
-| Supplementary Specification | NFR coverage; business rules as rules; cross-cutting mechanisms as entries with `<<include>>`; no invented identifier in the trace graph |
-| Risk List | Declared risks preserved with identifier and magnitude; team risks numbered per CON-020; acceptance citing CON-021; mitigation and contingency present |
-| Iteration Plan | Every declared acceptance criterion accounted for; no fabricated duration; human gate bounded and reported apart; roadmap justified against the risk profile |
-| Software Architecture Document | Every High-volatility use case mapped to a component; no layer- or feature-named subsystem; CON-025 placement; no fabricated measurement; invariants enforced in the schema |
-| Test Evaluation Summary | Acceptance-verification plan per criterion; stand-in boundary stated; no fabricated result; SCM evidence current |
+| Vision | Scope adherence and no creep; stakeholder coverage; one feature per declared FR; NFR/AC/BG/CON coverage; no unsourced figure; UML present; trace endpoints are elements; diagram consistency with the Use-Case Model |
+| Use-Case Model | One UC per declared FR with a `Source: FR-NNN` line; no cross-cutting mechanism as a UC; multi-actor process is one UC; UML present; trace edges registered; SUSPECT edges reviewed; realizing-component table current |
+| Supplementary Specification | NFR-001..NFR-005 covered; CON-009..CON-019 as rules; cross-cutting mechanisms as entries; no invented identifier; UML present; trace endpoints are elements; downstream element currency |
+| Development Case | DC baseline conformance (roster, CORE ownership, CORE completeness, artifact universe, no role merge); optional trigger justification against each §5.2 condition; intensity per canonical matrix; environment record current; SCM issue record current |
+| Risk List | R001..R003 preserved with declared identifiers and magnitudes; team risks numbered per CON-020; acceptance cites CON-021; mitigation and contingency present; premise current; unconfirmed basis flagged |
+| Iteration Plan | AC-001..AC-006 accounted for; no fabricated duration or calendar date; human gate bounded and off the team's path; AC trace edges registered; measured actuals recorded; exit criteria carry a verdict |
+| Software Architecture Document | High-volatility UC to dedicated component; no layer or feature naming; CON-025 Keycloak in-network; no fabricated measurement; invariants enforced in schema; correction model complete; trace table matches the graph |
+| Test Evaluation Summary | AC verification plan; stand-in boundary stated; no fabricated result; SCM evidence current |
 
-**Entry criteria.** All eight artifacts present and in Draft; the Development Case present and carrying tailoring content, so it governs this review. No artifact was found to be a placeholder mid-review.
+**SCM evidence taken at this review.** `scm_list_pull_requests(open)` returns no open pull request, so no PR required a disposition. `scm_get_build_status(main)` returns success for run `36095051721`. `scm_list_issues(all)` returns three open issues: `Issue #1`, `Issue #2`, `Issue #3`, all labelled `severity:minor`, `nature:defect`, `configuration-record`.
 
-**SCM evidence (Construction/Transition rule applied at LCO as a reality check).**
-
-| Evidence | Observed value |
-|---|---|
-| Open pull requests | none — `scm_list_pull_requests(open)` returned none |
-| Branches awaiting review | none — `scm_list_branches_with_label("ready-for-review")` returned none |
-| Build on `main` | success — run `36050339100` |
-| Open issues | `Issue #1` |
-
-**Pull-request disposition.** Zero open pull requests and zero branches awaiting review, so no PR reached a terminal disposition this pass. This is consistent with Inception scope: RUP Ch.4 places no implementation activity in Inception, and no scaffolding PR was raised either. No productive code, no scope-ahead branch, and no defective diff was found to dispose.
-
-**Scope of this lens.** This is the generic Reviewer lens — the technical review of the artifacts produced this iteration. The Management Reviewer's lens and the Business Reviewer's lens are separate blocks in this same Review Record and are not written here.
+**Entry criteria.** All eight artifacts are present and in a reviewable state; the upstream artifacts each depends on are available; the checklists above were prepared before the artifacts were read. No artifact was found to be a placeholder mid-review.
 
 ### Business Reviewer lens
 
