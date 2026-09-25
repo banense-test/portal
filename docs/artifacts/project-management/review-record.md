@@ -315,7 +315,7 @@ endif
 ## Findings
 #### Iteration 3 — LCO technical review
 
-**Summary.** 4 findings: 0 Critical, 1 Major, 3 Minor. No Critical finding was recorded, so no finding of this lens escalates to the stakeholder on severity grounds. Of the six prior findings of this lens, four are closed and two are deferred — see Resolutions and Actions.
+**Summary.** 5 findings: 0 Critical, 1 Major, 4 Minor. No Critical finding was recorded, so no finding of this lens escalates to the stakeholder on severity grounds. Of the six prior findings of this lens, four are closed and two are deferred — see Resolutions and Actions.
 
 **Closure ledger.** Every prior finding of this lens, with its disposition.
 
@@ -434,6 +434,7 @@ class "Iteration Plan" as IP <<artifact>> {
   AC trace edges registered : Pass
   Measured actuals recorded : Pass
   Exit criteria carry a verdict : Pass
+  Cited CI run current : Fail
 }
 
 class "Software Architecture Document" as SAD <<artifact>> {
@@ -491,6 +492,11 @@ class "Test Evaluation Summary" as TES <<artifact>> {
   Major : 0
   Minor : 1
 }
+class "Iteration Plan" as IP <<artifact>> {
+  Critical : 0
+  Major : 0
+  Minor : 1
+}
 class "Vision" as V <<artifact>> {
   Critical : 0
   Major : 0
@@ -506,11 +512,6 @@ class "Risk List" as RL <<artifact>> {
   Major : 0
   Minor : 0
 }
-class "Iteration Plan" as IP <<artifact>> {
-  Critical : 0
-  Major : 0
-  Minor : 0
-}
 class "Software Architecture Document" as SAD <<artifact>> {
   Critical : 0
   Major : 0
@@ -518,10 +519,10 @@ class "Software Architecture Document" as SAD <<artifact>> {
 }
 
 class "Totals" as T <<ledger>> {
-  findings : 4
+  findings : 5
   Critical : 0
   Major : 1
-  Minor : 3
+  Minor : 4
   closed this pass : 4
   deferred this pass : 2
 }
@@ -529,10 +530,10 @@ class "Totals" as T <<ledger>> {
 UCM --> T
 DC --> T
 TES --> T
+IP --> T
 V --> T
 SS --> T
 RL --> T
-IP --> T
 SAD --> T
 
 note bottom of T
@@ -541,7 +542,7 @@ note bottom of T
   no fabricated figure.
   The one Major is the ten unreviewed SUSPECT edges into
   the Use-Case Model.
-  Four artifacts carry no open finding of this lens.
+  Three artifacts carry no open finding of this lens.
 end note
 @enduml
 ```
@@ -593,6 +594,12 @@ note right of DC
   - one SUSPECT edge unreviewed
 end note
 
+note right of IP
+  1 Minor
+  - criterion 6 cites a superseded
+    CI run as its own evidence
+end note
+
 note right of TES
   1 Minor (deferred)
   - defect count and CI run stale
@@ -625,6 +632,7 @@ end note
 | `Use-Case Model#F3` | Use-Case Model | **Major** | Ten `SUSPECT` edges into this artifact's use cases are unreviewed at phase close. The trace graph flags `COMP-001` → `UC-001`, `UC-002`, `UC-004`; `COMP-002` → `UC-001`, `UC-002`; `R004` → `UC-001`, `UC-008`; and `Iteration Plan` → `UC-001`, `UC-002`, `UC-008`. Each is a change another authority declared against a use case whose owner has not re-read it and has not declared the change in turn. The artifact's tables already state the current content — the realizing-component table matches the Software Architecture Document's registered edges, and the constraints-and-risks table states the Risk List's current `R001`, `R004` and `R009` entries — so what is missing is the declaration that clears the edges, not the content. A `SUSPECT` edge left open at phase close is a Major finding against the artifact owning the unreviewed end. | Re-read the Software Architecture Document's component rows, the Risk List's `R004` entry and the Iteration Plan's `UC-008` change against `UC-001`, `UC-002`, `UC-004` and `UC-008`, then declare the change in turn for each affected use case so the ten `SUSPECT` edges clear. The content is already current; the declaration is what is missing. |
 | `Development Case#F4` | Development Case | Minor | The artifact cites the CI configuration item by a revision the repository does not carry. Three places record `.github/workflows/ci.yml` at `a9890724` — the Organization and tool assessment table, the iteration-preparation checkpoint result and the LCO-gate environment verification. `Issue #4` in the tracker records that this revision does not match the repository blob. The artifact's CI evidence is therefore cited against a revision that is not the one in the repository, and the same citation is repeated in all three places. | Cite the current blob revision of `.github/workflows/ci.yml`, or cite the file without a revision and let the tracker hold the revision. Correct all three places that carry the citation. |
 | `Development Case#F5` | Development Case | Minor | The trace graph flags one `SUSPECT` edge into this artifact — `Iteration Plan` → `Development Case` — and the artifact has not reviewed it. The Iteration Plan declared a change this iteration: the coarse roadmap was re-planned from the measured actuals of both closed Inception iterations, and the stand-in directory was widened to carry the worker-category link. This artifact's end of the link has not been re-read against that change, so the edge stays flagged at phase close. | Re-read the Iteration Plan's re-planning against this artifact's process configuration and declare the change in turn, or clear the edge if the Development Case's content still holds. The edge is a governance link — the Iteration Plan refines the Development Case — so the review is a confirmation that the process configuration still governs the re-planned roadmap. |
+| `Iteration Plan#F3` | Iteration Plan | Minor | The plan's Evaluation Criteria layer (b) records exit criterion 6 as MET on the evidence of CI run `36095051721`, which is the run observed at the iteration-2 review. The build observed on `main` at this review is run `36111645523`. The artifact's Document Control states it is the iteration-3 plan, so it cites an iteration-2 observation as its own evidence. The verdict (MET) is unaffected — the build is green either way — but the cited value is superseded, and the same superseded run is cited in the Risk List's `R009` treatment row. | Refresh the run reference in layer (b) criterion 6 to the run observed at the point of submission, or cite the build state without a run identifier and let the tracker hold the run. The Risk List's `R009` row carries the same superseded citation and should be refreshed with it. |
 | `Test Evaluation Summary#F2` | Test Evaluation Summary | Minor | **Deferred from iteration 2; the defect stands in the same form.** The evidence block records three open defects (`Issue #1`, `Issue #2`, `Issue #3`) while the tracker holds four — `Issue #4` is not recorded — and the CI run cited (`36110698735`) is superseded by the run observed on `main` at this review (`36111645523`). The artifact's own rule — a defect is an SCM issue and its identifier is the issue number — makes the count a fact to be read from the tracker, not carried forward. | Record `Issue #4` alongside the other three, state the defect count as four, and refresh the CI run reference to the run observed at the point of submission. The three places that carry the count — the Test Summary evidence table, the Defects and Incidents section and the Conclusions table — must agree with the tracker. |
 
 **Traceability compliance (iteration 3).** The traceability tree was projected from the Business level and used as the completeness instrument. Result: 67 roots, 234 nodes. No `UNKNOWN LABEL` — every identifier in the graph belongs to a declared family. No `«LEAF»` at Business level: every declared requirement and acceptance criterion reaches at least one downstream element, so no requirement is unrealized. The iteration-2 table defects are corrected: the Vision and the Supplementary Specification now name `COMP-002` on the `NFR-003` row, and the Use-Case Model's realizing-component table matches the Software Architecture Document's registered edges.
