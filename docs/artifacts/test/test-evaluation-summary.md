@@ -33,12 +33,12 @@ The test effort verifies the declared acceptance criteria AC-001..AC-006 against
 [RECOMMENDATION — requires CR] No declared non-functional requirement covers concurrent load at the peak clocking windows (200 employees, 3 offices, arrival and departure). NFR-001 and NFR-002 are single-user measurements. A concurrency target would need a Change Request; it is not added here.
 
 ## Test Summary
-The test effort at Inception iteration 2 defines the mission and the acceptance-verification plan. It does not execute: no use case is implemented and no stand-in environment exists yet, so no acceptance criterion is verifiable at this point.
+The test effort at Inception iteration 3 defines the mission and the acceptance-verification plan. It does not execute: no use case is implemented and no stand-in environment exists yet, so no acceptance criterion is verifiable at this point.
 
 | Evidence | Source | Value |
 |---|---|---|
-| CI build on `main` | `scm_get_build_status` | success — run `36094575395`, 2026-09-25 |
-| Defects recorded | SCM issue tracker | 2 open — `Issue #1`, `Issue #2` |
+| CI build on `main` | `scm_get_build_status` | success — run `36110698735`, 2026-09-25 |
+| Defects recorded | SCM issue tracker | 3 open — `Issue #1`, `Issue #2`, `Issue #3` |
 | Test Cases authored | Test Case artifact | not yet produced — TestDesigner's artifact, not this one |
 | Stand-in OIDC issuer and stand-in directory | CON-028 | not yet built — R004 |
 | Executed test results | — | none — no use case is implemented |
