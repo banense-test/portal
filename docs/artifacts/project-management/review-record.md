@@ -1735,17 +1735,42 @@ Each action is the finding's Recommendation; its status is that finding's Resolu
 
 ### Business Reviewer lens
 
-**Prior findings of this lens.** None. This is the first review pass of the Business Reviewer lens on this project. `read_artifact_findings` returned an empty list for the Use-Case Model, and no finding on any artifact carries `reviewerRole: BusinessReviewer`. No `resolve_artifact_finding` call was emitted this pass, and none was due.
+#### Iteration 1 — actions arising
 
-**Cross-lens findings left untouched.** Three findings exist on artifacts I read. All three carry `reviewerRole: Reviewer` and are that lens's to close. The ownership invariant rejects a cross-lens close attempt, so none was attempted.
+**Prior findings of this lens.** None. This was the first review pass of the Business Reviewer lens on this project. `read_artifact_findings` returned an empty list for the Use-Case Model, and no finding on any artifact carried `reviewerRole: BusinessReviewer`. No `resolve_artifact_finding` call was emitted that pass, and none was due.
 
-| Finding | Lens | Severity | Status | Why this lens does not act |
-|---|---|---|---|---|
-| `Vision#F1` | Reviewer | Minor | Open | Traceability-table defect in the technical lens's checklist. Not a business-modeling defect. |
-| `Vision#F2` | Reviewer | Minor | Open | Boundary-diagram consistency between two system-level diagrams. Not a business-modeling defect. |
-| `Supplementary Specification#F1` | Reviewer | Minor | Open | Traceability-table defect in the technical lens's checklist. Not a business-modeling defect. |
+**Cross-lens findings left untouched.** Three findings existed on artifacts I read. All three carried `reviewerRole: Reviewer` and were that lens's to close. The ownership invariant rejects a cross-lens close attempt, so none was attempted.
 
-**Actions arising from this pass.** None. Zero findings were recorded, so no action, owner or remediation exists to carry forward. No action identifier is minted — a remediation is the finding's Recommendation, and there is no finding.
+| Finding | Lens | Severity | Why this lens does not act |
+|---|---|---|---|
+| `Vision#F1` | Reviewer | Minor | Traceability-table defect in the technical lens's checklist. Not a business-modeling defect. |
+| `Vision#F2` | Reviewer | Minor | Boundary-diagram consistency between two system-level diagrams. Not a business-modeling defect. |
+| `Supplementary Specification#F1` | Reviewer | Minor | Traceability-table defect in the technical lens's checklist. Not a business-modeling defect. |
+
+**Actions arising from that pass.** None. Zero findings were recorded, so no action, owner or remediation exists to carry forward. No action identifier is minted — a remediation is the finding's Recommendation, and there is no finding.
+
+**Carry-over.** Nothing was deferred and nothing was rejected. The Business Reviewer lens entered iteration 2 with no open finding and no outstanding action.
+
+#### Iteration 2 — closure of prior findings
+
+**Prior findings of this lens.** None. `read_artifact_findings` returns no finding carrying `reviewerRole: BusinessReviewer` on any artifact — the Use-Case Model, the Vision and the Supplementary Specification each return only findings of the Reviewer and Management Reviewer lenses. No prior finding of this lens exists to close, defer or reject, and no `resolve_artifact_finding` call was emitted this pass.
+
+[PLAN] artifacts × prior BR findings with resolution==null: Use-Case Model: [], Vision: [], Supplementary Specification: [] — TOTAL: 0.
+[EXIT] S_RECONCILE complete: closed=0, deferred=0, rejected=0, left-open=0. Total: 0 of 0.
+
+**Cross-lens findings left untouched.** The findings on the artifacts I read carry `reviewerRole: Reviewer` or `reviewerRole: ManagementReviewer` and are those lenses' to close. The ownership invariant rejects a cross-lens close attempt, so none was attempted.
+
+| Finding | Lens | Severity | Why this lens does not act |
+|---|---|---|---|
+| `Use-Case Model#F1` | Reviewer | Major | Unreviewed `SUSPECT` risk-to-use-case edges. A trace-graph currency defect in the technical lens's checklist, not a business-modeling defect. |
+| `Use-Case Model#F2` | Reviewer | Minor | Realizing-component table stale against the SAD. A trace-table defect, not a business-modeling defect. |
+| `Vision#F3` | Reviewer | Minor | `NFR-003` downstream element stale. A trace-table defect, not a business-modeling defect. |
+| `Supplementary Specification#F2` | Reviewer | Minor | `NFR-003` downstream element stale. A trace-table defect, not a business-modeling defect. |
+| `Vision#F1` | Management Reviewer | Minor | Business-goal verification path. The business-goal measurability item is mine and it passes; the finding is that the Vision's *statement* of the path was wrong, which is the Management Reviewer's scope finding. |
+
+#### Iteration 2 — actions arising
+
+**None.** Zero findings were recorded by this lens, so no action, owner or remediation exists to carry forward. No action identifier is minted — a remediation is the finding's Recommendation, and there is no finding.
 
 **Carry-over.** Nothing is deferred and nothing is rejected. The Business Reviewer lens has no open finding and no outstanding action entering the next iteration.
 
