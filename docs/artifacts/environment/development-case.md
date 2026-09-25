@@ -1,18 +1,38 @@
 ## Document Control
+
 - **Phase:** Inception
 - **Status:** Draft — governs Inception iteration 2; not yet reviewed
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 
 ## Tailoring Overview
+
 This Development Case is an **override delta** over the IARI Development Case baseline. The baseline
 supplies the 25-role roster, the 16 CORE artifacts, the 6 OPTIONAL artifacts, the fixed ownership
 allowlist and the canonical intensity matrix. This document declares only what Portal changes, and
 nothing here redefines any of those.
 
-### Organization and tool assessment (Inception, iteration 1)
+### Assessment scope and method
 
-The current assessment is *Organization and tool assessment (Inception, iteration 2)* below; the
-method it applies is in *Assessment scope and method*.
+The organization and tool baseline is assessed against observable repository state, not against
+intention: the presence and content of the CI workflow, the presence of the guideline files, the
+presence of the mandatory UI design input, and the open SCM issues. Each assessed item is recorded
+with the consequence it has for the process, and a gap is recorded with the role that owns it. The
+assessment is re-taken every iteration, because a gap that has closed and a gap that has opened are
+both process facts the next iteration must plan around.
+
+### Organization and tool assessment (Inception, iteration 2)
+
+| Assessed item | Finding | Consequence for the process |
+|---|---|---|
+| Prior process artifacts | None — this is the project's first artifact | No inherited process debt; the baseline applies unmodified |
+| Execution model | Agent-executed, 25-role IARI roster | No role merging; no training programme needed |
+| SCM repository | Present, hosted provider (`portal`) | CON-026 satisfied for source hosting |
+| CI workflow | Present — `.github/workflows/ci.yml` at `358f1f8`, build and test jobs, green on `main` | CON-026 satisfied. The pipeline syncs `Portal.sln` from the `src/` + `tests/` tree before every build, so a green check cannot be a stale-manifest lie |
+| `CONTRIBUTING.md` and lint config | **GAP** — absent | Guideline content is owned by the discipline experts, not by the Process Engineer. Referenced here, authored by them during Elaboration |
+| Mandatory UI design input | Present — `docs/inputs/employee-portal-design.html` | CON-031 is satisfied; the file is authoritative for the UI visual layer and is not a risk |
+| Change Requests | None logged | No CR-driven process change this iteration |
+| Stand-in environment (CON-028) | **GAP** — not built | The team builds a test OIDC issuer and a test directory carrying the declared attributes, including entries with empty job title and extension. This is the first construction item of the iteration and the one item that gates every use case |
+| Open SCM issues | `Issue #1` — the environment-readiness record for the CI pipeline was stale | Corrected in this iteration; the record now cites the observed pipeline |
 
 ### Plug-in classification
 
@@ -92,30 +112,8 @@ end note
    grants risk acceptance in advance for exactly this class of risk. It is bounded in the Risk List
    and never forecast in the plan.
 
-### Organization and tool assessment (Inception, iteration 2)
-
-| Assessed item | Finding | Consequence for the process |
-|---|---|---|
-| Prior process artifacts | None — this is the project's first artifact | No inherited process debt; the baseline applies unmodified |
-| Execution model | Agent-executed, 25-role IARI roster | No role merging; no training programme needed |
-| SCM repository | Present, hosted provider (`portal`) | CON-026 satisfied for source hosting |
-| CI workflow | Present — `.github/workflows/ci.yml` at `358f1f8`, build and test jobs, green on `main` | CON-026 satisfied. The pipeline syncs `Portal.sln` from the `src/` + `tests/` tree before every build, so a green check cannot be a stale-manifest lie |
-| `CONTRIBUTING.md` and lint config | **GAP** — absent | Guideline content is owned by the discipline experts, not by the Process Engineer. Referenced here, authored by them during Elaboration |
-| Mandatory UI design input | Present — `docs/inputs/employee-portal-design.html` | CON-031 is satisfied; the file is authoritative for the UI visual layer and is not a risk |
-| Change Requests | None logged | No CR-driven process change this iteration |
-| Stand-in environment (CON-028) | **GAP** — not built | The team builds a test OIDC issuer and a test directory carrying the declared attributes, including entries with empty job title and extension. This is the first construction item of the iteration and the one item that gates every use case |
-| Open SCM issues | `Issue #1` — the environment-readiness record for the CI pipeline was stale | Corrected in this iteration; the record now cites the observed pipeline |
-
-### Assessment scope and method
-
-The organization and tool baseline is assessed against observable repository state, not against
-intention: the presence and content of the CI workflow, the presence of the guideline files, the
-presence of the mandatory UI design input, and the open SCM issues. Each assessed item is recorded
-with the consequence it has for the process, and a gap is recorded with the role that owns it. The
-assessment is re-taken every iteration, because a gap that has closed and a gap that has opened are
-both process facts the next iteration must plan around.
-
 ## Disciplines and Intensity
+
 Intensity per discipline and phase is **per the canonical matrix** — confirmed, not assigned. The
 only deltas are the inactive discipline and the Environment row's phase levels, which are the
 canonical levels stated explicitly.
@@ -205,6 +203,7 @@ endif
 ```
 
 ## Artifacts and Templates
+
 ### CORE artifacts — all 16 produced
 
 All 16 CORE artifacts are in scope for this project. None is omitted, and primary ownership is
@@ -402,7 +401,6 @@ end note
 ```
 
 ## Guidelines and Procedures
-This section states the project's measurement policy, the Environment discipline's activity clusters, the version policy, the stand-in boundary, the iteration-preparation checkpoint and its result, guideline ownership, and the environment verification at the LCO gate.
 
 ### Measurement policy
 
@@ -535,17 +533,26 @@ Keycloak or the real AD (CON-028), so until the stand-ins exist no use case is b
 treatment is not executed. The stand-in environment is the first construction item of the iteration,
 and the checkpoint is re-taken before the iteration after it.
 
-### Guideline ownership
+### Environment readiness criteria (standing)
 
-The Process Engineer integrates tailoring input from the discipline experts and does not author
-technical guidance. Coding standards, UI patterns and test conventions live in `CONTRIBUTING.md` and
-the lint configuration, owned by the SoftwareArchitect, Implementer and TestManager respectively.
-This Development Case references those files; it does not duplicate their content.
+The criteria for what "ready" means, re-taken before every iteration starts. This is the checklist
+the iteration-preparation checkpoint verifies against; it is not milestone evidence. The milestone
+evidence is *Environment verification at the LCO gate*, which states the observed state of each item.
 
-### Environment readiness verification — Inception iteration 1
+| Check | Required state before an iteration starts | Owner of the gap |
+|---|---|---|
+| SCM repository reachable | Ready | — |
+| CI pipeline builds and tests (CON-026) | Ready — `.github/workflows/ci.yml` present, build and test jobs, green on `main` | — |
+| `CONTRIBUTING.md` | Ready — authored during Elaboration | SoftwareArchitect + Implementer |
+| Lint / formatter configuration | Ready — authored during Elaboration | Implementer |
+| Stand-in OIDC issuer and stand-in directory (CON-028) | Ready — including entries with empty job title and extension | Implementer + Integrator |
+| Mandatory UI design input (CON-031) | Ready — `docs/inputs/employee-portal-design.html` | — |
+| Version policy recorded | Ready — .NET 10, PostgreSQL 18 | — |
+| DC classification and optional triggers recorded | Ready — business-process-led = false; no optional trigger fired | — |
 
-The readiness criteria are stated once, in *Environment readiness criteria (standing)*. The observed
-state of each item at the milestone is in *Environment verification at the LCO gate*.
+The stand-in environment is the one item that gates development: no use case can be built or tested
+against the real Keycloak or the real AD (CON-028), so the stand-ins are the first construction item
+of the iteration.
 
 ### Environment verification at the LCO gate — Inception iteration 2
 
@@ -595,24 +602,6 @@ case, and it does not exist. The two guideline gaps — `CONTRIBUTING.md` and th
 are Elaboration work owned by the discipline experts and do not gate a use case. The CI pipeline is
 present and green, so criterion 6 is met.
 
-### Environment readiness plan — pre-iteration (Inception iteration 3)
-
-The items that must change state before the next iteration starts are stated once, in *Environment
-delta required before the next iteration starts*.
-
-### Process improvement actions for the next iteration
-
-Assessment-driven improvement, from the Review Record findings against this artifact and the observed
-environment state at the LCO gate. Each action names the decision it enables.
-
-| Observed problem | Root cause | Action | Owner |
-|---|---|---|---|
-| The environment-readiness record was stale on its own CI row and was offered as milestone evidence | The record was a pre-iteration plan presented as a post-iteration fact | The LCO-gate record above states the observed state of each item with its evidence; the readiness table is labelled a plan | ProcessEngineer |
-| The Environment intensity row stated a recurrence pattern where the canonical matrix states a level | The activity-cluster narrative was written into the intensity table | The intensity table states the canonical level per phase; the cluster narrative lives in the Environment discipline section | ProcessEngineer |
-| No iteration-preparation checkpoint result was recorded | The checkpoint was stated as an intention, not exercised as a record | The checkpoint result above records the observed state of each item it names | ProcessEngineer |
-| The stand-in environment (CON-028) does not exist, so no use case is buildable and R004's treatment is not executed | Environment work not yet delivered | The stand-in environment is the first construction item of the iteration; the checkpoint is re-taken before the iteration after it | Implementer + Integrator |
-| `CONTRIBUTING.md` and the lint configuration are absent | Guideline content is Elaboration work owned by the discipline experts | Authored during Elaboration; referenced from this Development Case, not duplicated in it | SoftwareArchitect, Implementer, TestManager |
-
 ### Environment delta required before the next iteration starts
 
 Against the LCO-gate record, three items must change state before the next iteration starts, and one
@@ -628,27 +617,6 @@ must not regress.
 The stand-in environment is the item that gates every use case. Until it exists no use case is
 buildable and R004's treatment is not executed, so it is the first construction item of the iteration
 and the checkpoint is re-taken before the iteration after it.
-
-### Environment readiness criteria (standing)
-
-The criteria for what "ready" means, re-taken before every iteration starts. This is the checklist
-the iteration-preparation checkpoint verifies against; it is not milestone evidence. The milestone
-evidence is *Environment verification at the LCO gate*, which states the observed state of each item.
-
-| Check | Required state before an iteration starts | Owner of the gap |
-|---|---|---|
-| SCM repository reachable | Ready | — |
-| CI pipeline builds and tests (CON-026) | Ready — `.github/workflows/ci.yml` present, build and test jobs, green on `main` | — |
-| `CONTRIBUTING.md` | Ready — authored during Elaboration | SoftwareArchitect + Implementer |
-| Lint / formatter configuration | Ready — authored during Elaboration | Implementer |
-| Stand-in OIDC issuer and stand-in directory (CON-028) | Ready — including entries with empty job title and extension | Implementer + Integrator |
-| Mandatory UI design input (CON-031) | Ready — `docs/inputs/employee-portal-design.html` | — |
-| Version policy recorded | Ready — .NET 10, PostgreSQL 18 | — |
-| DC classification and optional triggers recorded | Ready — business-process-led = false; no optional trigger fired | — |
-
-The stand-in environment is the one item that gates development: no use case can be built or tested
-against the real Keycloak or the real AD (CON-028), so the stand-ins are the first construction item
-of the iteration.
 
 ### Tool evaluation — Inception iteration 2
 
@@ -669,6 +637,26 @@ The two deficiencies are the same two items the LCO-gate record marks not ready.
 selection problem: the tools are chosen and adequate, and what is missing is configuration the
 project owes itself. No tool change is proposed, and no tool is replaced mid-project.
 
+### Process improvement actions for the next iteration
+
+Assessment-driven improvement, from the Review Record findings against this artifact and the observed
+environment state at the LCO gate. Each action names the decision it enables.
+
+| Observed problem | Root cause | Action | Owner |
+|---|---|---|---|
+| The environment-readiness record was stale on its own CI row and was offered as milestone evidence | The record was a pre-iteration plan presented as a post-iteration fact | The LCO-gate record states the observed state of each item with its evidence; the readiness table is labelled a plan | ProcessEngineer |
+| The Environment intensity row stated a recurrence pattern where the canonical matrix states a level | The activity-cluster narrative was written into the intensity table | The intensity table states the canonical level per phase; the cluster narrative lives in the Environment discipline section | ProcessEngineer |
+| No iteration-preparation checkpoint result was recorded | The checkpoint was stated as an intention, not exercised as a record | The checkpoint result records the observed state of each item it names | ProcessEngineer |
+| The stand-in environment (CON-028) does not exist, so no use case is buildable and R004's treatment is not executed | Environment work not yet delivered | The stand-in environment is the first construction item of the iteration; the checkpoint is re-taken before the iteration after it | Implementer + Integrator |
+| `CONTRIBUTING.md` and the lint configuration are absent | Guideline content is Elaboration work owned by the discipline experts | Authored during Elaboration; referenced from this Development Case, not duplicated in it | SoftwareArchitect, Implementer, TestManager |
+
+### Guideline ownership
+
+The Process Engineer integrates tailoring input from the discipline experts and does not author
+technical guidance. Coding standards, UI patterns and test conventions live in `CONTRIBUTING.md` and
+the lint configuration, owned by the SoftwareArchitect, Implementer and TestManager respectively.
+This Development Case references those files; it does not duplicate their content.
+
 ### Process support during the iteration
 
 Support is a first-class Environment activity, continuous across every iteration, not an Inception
@@ -677,7 +665,7 @@ afterthought. The Process Engineer is the process help desk while the iteration 
 | Support request | Response | Escalation |
 |---|---|---|
 | A producing role asks which artifact or template applies | Answered from this Development Case within the iteration; if the Development Case is silent, the gap is a defect in this document and is corrected in place | None — answered in-iteration |
-| A producing role reports a tool malfunction or a configuration problem | Logged with an improvement action in the tool evaluation below; a problem that blocks a use case is escalated immediately | ProjectManager, same iteration |
+| A producing role reports a tool malfunction or a configuration problem | Logged with an improvement action in the tool evaluation; a problem that blocks a use case is escalated immediately | ProjectManager, same iteration |
 | A template proves ambiguous or a section skeleton does not fit the artifact | The Development Case section is revised; the change is recorded as a process improvement action | None — corrected in-iteration |
 | A role believes the process is too heavy or too light for the work | Evaluated against the iteration's observed facts and the canonical intensity matrix; a deviation is never self-granted | Stakeholder, via `REQUIRES_USER_INPUT`, if a deviation is proposed |
 | A Change Request would change the process configuration | The Development Case is re-evaluated and the affected sections are revised | ChangeControlManager |
@@ -687,6 +675,7 @@ the iteration it is raised, and the answer is written into this document rather 
 conversation, so the next role to ask reads it instead of asking again.
 
 ## Traceability
+
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | Development Case | CON-001, CON-022, CON-023, CON-024, CON-026, CON-027, CON-028, CON-031 | Refines | UC-001, UC-002, UC-003 |
@@ -702,4 +691,3 @@ Every endpoint above is an element identifier, not a document section: the const
 process configuration tailors to, and the use cases, requirements and acceptance criteria whose
 production it sanctions. The Development Case is a process artifact and governs no system element of
 its own, so it carries no edge to an artifact name.
-
