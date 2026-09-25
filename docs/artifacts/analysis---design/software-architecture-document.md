@@ -807,7 +807,7 @@ One .NET 10 application and one PostgreSQL 18 instance, both on the internal Win
 
 ```plantuml
 @startuml Portal_Deployment
-title Portal - candidate deployment topology (Inception iteration 1)
+title Portal - candidate deployment topology (Inception iteration 2)
 
 node "Employee workstation\n(Chrome / Edge, CON-006)" as WS {
   artifact "Portal pages + clocking page script\n(localStorage retry, AC-006)" as BROWSER
@@ -892,7 +892,7 @@ end note
 
 | Environment | Where | Purpose | Data |
 |---|---|---|---|
-| Development and test | The team's environment, against stand-ins | Build and test every use case | Stand-in OIDC issuer and stand-in directory carrying the declared attributes, including entries with empty job title and extension (CON-028). No production data |
+| Development and test | The team's environment, against stand-ins | Build and test every use case | Stand-in OIDC issuer and stand-in directory carrying the declared attributes, including entries with empty job title and extension (CON-028). No production data. R004 materialized because this environment was not delivered in iteration 1; it is the first work item of iteration 2 |
 | CI | Hosted SCM provider | Build and test the artefact | No production data, no credentials, no deployment (CON-026) |
 | Production | The internal Windows Server estate | The live portal | Real Keycloak and real AD values substituted by Infrastructure at deployment (CON-028, CON-029) |
 
