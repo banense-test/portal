@@ -103,8 +103,14 @@ AC-005 and BG-003 are the only criteria that depend on real users rather than on
 | R004 — the stand-in environment is not ready | The stand-in environment is the first construction item of iteration 1. If it is absent, no use case can be built or tested and the iteration's exit criteria cannot pass |
 | R001, R005 — Infrastructure's side and the human validation gate | Not team test work (CON-021, CON-028). The team's evidence is that every use case works against the stand-ins |
 ## Defects and Incidents
+The SCM issue tracker is the authoritative record of defects. It holds two open issues, both recorded as defects. A defect is an issue in the tracker, never a free-text note, and its identifier is the issue number.
 
-The SCM issue tracker is the authoritative record of defects. It holds no issues, so no defect has been recorded and none is reported here. A defect is an issue in the tracker, never a free-text note, and its identifier is the issue number.
+| Issue | Title | Labels | Status |
+|---|---|---|---|
+| `Issue #1` | Development Case environment-readiness record for the CI pipeline is stale | severity:minor, nature:defect, configuration-record | open |
+| `Issue #2` | `docs/BRANCHING_STRATEGY.md` cites a superseded blob sha for the CI configuration item | severity:minor, nature:defect, configuration-record | open |
+
+Both are configuration-record defects: neither is a product defect, because no use case is implemented and no test has executed. Neither blocks an acceptance criterion. Both are owned by the ProcessEngineer, whose artifact and document they concern.
 
 ```plantuml
 @startuml DefectLifecycle
@@ -143,7 +149,6 @@ end note
 | Minor | The UI deviates from the mandatory design, or a non-blocking defect | A field rendered out of the committed design (CON-031) |
 
 **Incidents.** No incident has occurred. The two conditions that would stop the test effort are already registered as risks: R004 (the stand-in environment is not ready) blocks all testing, and R006 (a skewed client clock) is a test-design concern carried into the AC-006 test.
-
 ## Conclusions
 
 **Mission verdict for Inception iteration 1.** The Evaluation Mission is established: the test effort is scoped to AC-001..AC-006 against the declared use cases, the declared non-functional requirements and the declared business rules, with the stand-in boundary (CON-028) as its operating condition. Acceptance verification is not yet possible — no use case is implemented, no Test Case has been authored and no stand-in environment exists.
