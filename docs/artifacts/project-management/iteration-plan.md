@@ -240,8 +240,8 @@ Each criterion carries a verdict of MET or NOT MET at the point this plan is wri
 | Iteration Plan | CON-027 | DependsOn | R007 |
 | Iteration Plan | CON-021, CON-028 | DependsOn | R005 |
 | Iteration Plan | CON-028 | DependsOn | R004 |
-| Iteration Plan | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | AC-006 |
-| Iteration Plan | Development Case | Refines | Development Case |
+| Iteration Plan | — | Refines | Development Case |
+| Iteration Plan | — | Refines | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 |
 | AC-001 | NFR-001 | Refines | UC-001 |
 | AC-002 | FR-001 | Refines | UC-001 |
 | AC-003 | FR-005 | Refines | UC-005 |
