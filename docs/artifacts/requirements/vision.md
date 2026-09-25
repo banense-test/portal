@@ -247,7 +247,7 @@ Every row below ends in a trace-graph element identifier, never a document secti
 | FR-009 HR Assigns or Clears Worker Category | STK-001, CON-014, CON-015, CON-016 | Derives | UC-009 |
 | NFR-001 Page Load Performance | AC-001 | Derives | COMP-001 |
 | NFR-002 Clock In/Out Response Time | AC-001 | Derives | COMP-004 |
-| NFR-003 Availability Window | CON-007 | Derives | — not yet minted |
+| NFR-003 Availability Window | CON-007 | Derives | COMP-002 |
 | NFR-004 Audit Trail | CON-018, CON-019 | Derives | COMP-009 |
 | NFR-005 Authorization Model | CON-002, CON-013 | Derives | COMP-010 |
 | AC-006 Offline clocking retry | CON-023, CON-028 | Derives | COMP-003 |
@@ -255,8 +255,8 @@ Every row below ends in a trace-graph element identifier, never a document secti
 | R002 | CON-020, CON-021 | DependsOn | UC-002, UC-008, COMP-006 |
 | R003 | CON-020, CON-021 | DependsOn | UC-001 |
 
-**NFR-003 — downstream element not yet minted.** The Software Architect's component view assigns no component to the availability window, and the Test Designer's `TC-NNN` do not exist. No element-level edge is claimed for it; the edge is registered when that element is minted. The graph carries an artifact-level edge `NFR-003 → Supplementary Specification`, which records that the Supplementary Specification elaborates the requirement in its Reliability category — containment, not a design or test element, and not claimed as a trace endpoint here.
+**NFR-003's downstream element.** The availability window is a property of the single deployable's application boundary, so the Software Architect registers `NFR-003 → COMP-002`. No separate availability component exists: NFR-003 requires 07:00–19:00 Monday–Friday with fault tolerance inside the corporate network, not 24/7, and a single deployable on the estate Infrastructure operates (CON-029) is the whole of the design that requirement needs.
 
 **BG-003's verification path.** BG-003 is measured with STK-004 after go-live, outside the project's test effort. AC-005 is the adoption measure taken with real employees after launch; no acceptance criterion the team can run closes BG-003. The row records the goal's own downstream element, not a claim that a test closes it.
 
-**Label scope.** `STK-`, `BG-`, `FR-`, `NFR-`, `AC-`, `CON-` and `R` identifiers are declared identifiers, copied exactly. Every entry in the Traces To column is a trace-graph element identifier (`UC-NNN`, `COMP-NNN`, `FR-NNN`, `AC-NNN`) or an explicit not-yet-minted statement — no document section and no artifact name appears in it. `UC-NNN` is this role's, `COMP-NNN` is the Software Architect's, `TC-NNN` is the Test Designer's; none is minted here.
+**Label scope.** `STK-`, `BG-`, `FR-`, `NFR-`, `AC-`, `CON-` and `R` identifiers are declared identifiers, copied exactly. Every entry in the Traces To column is a trace-graph element identifier (`UC-NNN`, `COMP-NNN`, `FR-NNN`, `AC-NNN`) — no document section and no artifact name appears in it. `UC-NNN` is this role's, `COMP-NNN` is the Software Architect's, `TC-NNN` is the Test Designer's; none is minted here.
