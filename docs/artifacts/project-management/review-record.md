@@ -1,7 +1,8 @@
 ## Document Control
 - **Phase:** Inception
-- **Status:** In progress — LCO milestone review, iteration 3. The Reviewer lens has recorded its findings and disposition; the Business Reviewer, Management Reviewer and Review Coordinator blocks for this iteration are not yet written, so no milestone verdict is stated here.
+- **Status:** In progress — LCO milestone review, iteration 3. The Reviewer and Business Reviewer lenses have recorded their findings and dispositions; the Management Reviewer and Review Coordinator blocks for this iteration are not yet written, so no milestone verdict is stated here.
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
+
 ## Review Scope and Criteria
 ### Reviewer lens
 
