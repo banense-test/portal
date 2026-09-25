@@ -2206,16 +2206,18 @@ Until one of these holds, the Business Reviewer lens has no business-model artif
 
 #### Iteration 2 — actions arising
 
+**Stakeholder directive governing closure.** The stakeholder's answer to the sanction question at this review was **No**, with the directive: *"Please fix all findings."* Every finding below is therefore blocking, including the Minor ones. No finding of this lens is deferred and none is rejected.
+
 Each action is the finding's Recommendation; its status is that finding's Resolution. No action identifier is minted.
 
 | Finding | Owner | Action | Blocking? |
 |---|---|---|---|
 | `Risk List#F3` | ProjectManager | Re-assess `R004` at this milestone: record the second failed execution and revisit its magnitude, strategy and mitigation rather than carrying them unchanged. If the stand-in environment cannot be delivered by the team, the treatment must change — different sequencing, a different owner, or escalation to the stakeholder as a decision only they can make | **Yes** — `R004` gates every test and its treatment has now failed twice |
-| `Risk List#F4` | ProjectManager | Re-head the treatment column to the current iteration and refresh each row against observable state at Iter-2 close; for `R009`, record the guideline files as still absent and move the mitigation to the iteration that will author them | No — per the stakeholder directive that all findings are corrected |
-| `Development Case#F3` | ProcessEngineer | Record all three open issues in the "Open SCM issues" row, with their labels, or state the count as three and name the tracker as the authoritative record | No — per the stakeholder directive |
-| `Test Evaluation Summary#F2` | TestManager | Record `Issue #3` alongside `Issue #1` and `Issue #2`, state the defect count as three, and refresh the CI run reference to the run observed at submission | No — per the stakeholder directive |
+| `Risk List#F4` | ProjectManager | Re-head the treatment column to the current iteration and refresh each row against observable state at Iter-2 close; for `R009`, record the guideline files as still absent and move the mitigation to the iteration that will author them | **Yes** — per the stakeholder directive |
+| `Development Case#F3` | ProcessEngineer | Record all three open issues in the "Open SCM issues" row, with their labels, or state the count as three and name the tracker as the authoritative record | **Yes** — per the stakeholder directive |
+| `Test Evaluation Summary#F2` | TestManager | Record `Issue #3` alongside `Issue #1` and `Issue #2`, state the defect count as three, and refresh the CI run reference to the run observed at submission | **Yes** — per the stakeholder directive |
 
-**Carry-over.** All 4 findings of this lens remain open for the next iteration of this lens, which will reconcile them in its closure state before recording new defects. Nothing is deferred and nothing is rejected. The stakeholder's directive — all findings must be corrected, even if they are minor — governs the whole set.
+**Carry-over.** All 4 findings of this lens remain open for the next iteration of this lens, which will reconcile them in its closure state before recording new defects. Nothing is deferred and nothing is rejected. The stakeholder's directive — "Please fix all findings" — governs the whole set, including the minor ones.
 
 **Cross-lens findings left untouched.** The findings carrying `reviewerRole: Reviewer` and `reviewerRole: BusinessReviewer` are those lenses' to close. The ownership invariant rejects a cross-lens close attempt, so none was attempted.
 
