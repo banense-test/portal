@@ -1856,9 +1856,13 @@ Each action is the finding's Recommendation; its status is that finding's Resolu
 
 #### Iteration 2 — actions arising
 
-**None.** Zero findings were recorded by this lens, so no action, owner or remediation exists to carry forward. No action identifier is minted — a remediation is the finding's Recommendation, and there is no finding.
+Each action is the finding's Recommendation; its status is that finding's Resolution. No action identifier is minted.
 
-**Carry-over.** Nothing is deferred and nothing is rejected. The Business Reviewer lens has no open finding and no outstanding action entering the next iteration.
+| Finding | Owner | Action | Blocking? |
+|---|---|---|---|
+| `Use-Case Model#F1` (Business Reviewer) | SystemAnalyst | Add the worker-category filter to `UC-008` — extend main flow step 1 or add an alternative flow — so the directory filters by worker category as `CON-013` declares. If the filter is not intended, escalate the conflict between `FR-008`'s declared search dimensions and `CON-013`'s declared filter to the stakeholder rather than leaving it implicit in the model | No — Minor, and the discipline contributes no LCO exit criterion. Corrected per the stakeholder's directive that all findings are corrected, including the minor ones |
+
+**Carry-over.** `Use-Case Model#F1` remains open for the next iteration of this lens, which will reconcile it in its closure state before recording new defects. Nothing is deferred and nothing is rejected.
 
 **Condition that would re-activate this lens.** The lens re-activates if any of the following becomes true, and the Process Engineer's DC §4 classification is the trigger to watch:
 
@@ -1870,7 +1874,7 @@ Each action is the finding's Recommendation; its status is that finding's Resolu
 | The stakeholder declares business processes rather than system requirements | DC §4(d) fires; the full Business Modeling checklist applies at Elaboration depth |
 | A Glossary is triggered by specialist business-domain vocabulary | The business-terms review becomes applicable |
 
-Until one of these holds, the Business Reviewer lens has no artifact surface and produces no finding.
+Until one of these holds, the Business Reviewer lens has no business-model artifact surface. The one finding it carries is a business-rule realization defect on a system use case, which is reviewable regardless of the discipline's activation state.
 
 ### Management Reviewer lens
 
