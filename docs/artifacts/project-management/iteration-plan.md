@@ -240,13 +240,13 @@ Each criterion carries a verdict of MET or NOT MET at the point this plan is wri
 | Iteration Plan | CON-027 | DependsOn | R007 |
 | Iteration Plan | CON-021, CON-028 | DependsOn | R005 |
 | Iteration Plan | CON-028 | DependsOn | R004 |
-| Iteration Plan | AC-006 | Refines | UC-001 |
-| Iteration Plan | Development Case | Refines | LCO |
-| AC-001 | NFR-001 | Derives | UC-001 |
-| AC-002 | FR-001 | Derives | UC-001 |
-| AC-003 | FR-005 | Derives | UC-005 |
-| AC-004 | FR-008 | Derives | UC-008 |
-| AC-005 | BG-003 | Derives | UC-001 |
+| Iteration Plan | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | AC-006 |
+| Iteration Plan | Development Case | Refines | Development Case |
+| AC-001 | NFR-001 | Refines | UC-001 |
+| AC-002 | FR-001 | Refines | UC-001 |
+| AC-003 | FR-005 | Refines | UC-005 |
+| AC-004 | FR-008 | Refines | UC-008 |
+| AC-005 | BG-003 | Refines | UC-001 |
 
 The Development Case governs this plan: it fixes the active disciplines, the CORE artifact set, the agent role profile and the measurement policy. The declared acceptance criteria AC-001..AC-006 are accounted for in Evaluation Criteria layer (a) and deferred to the iterations named there; each carries a registered edge to the use case that carries it, so the criterion-to-use-case mapping exists in the graph and not only as prose.
 
@@ -255,3 +255,4 @@ The Development Case governs this plan: it fixes the active disciplines, the COR
 **No element of this role is minted.** The Project Manager produces no `UC-NNN`, `CLS-NNN`, `COMP-NNN`, `TC-NNN` or `INT-NNN`; those families belong to other authorities. The objectives table, the milestone table, the iteration table, the work-item table and the agent role profile are sections of this plan, not trace-graph elements, so no edge is registered on them.
 
 **Milestone not declared.** This plan produces the evidence the reviewers rule on. It does not declare the LCO milestone, the iteration or the phase as completed.
+
