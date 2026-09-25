@@ -509,6 +509,224 @@ end note
 **Optional trigger justification (iteration 3).** Every NOT-FIRED verdict was checked against its §5.2 condition. Glossary: the domain vocabulary is ordinary HR and intranet language and the one closed list is fixed by `CON-014` — condition does not hold. Architectural Proof-of-Concept: no technical risk requires empirical validation, and `CON-028` removes the only candidate — condition does not hold. Data Model: the portal owns five entities, well under ten, and `CON-030` states there is no data migration — condition does not hold. Deployment Model: one application and one database on one estate, reachable only from the internal network — condition does not hold. User-Interface Prototype: `CON-031` makes the design already decided and authoritative — condition does not hold. Test Plan: `CON-019` states no external compliance regime applies and there is no contractual test reporting — condition does not hold. No over-triggering found.
 
 **SCM evidence taken at this review.** `scm_list_pull_requests(open)` returns no open pull request, so no PR required a disposition. `scm_get_build_status(main)` returns success for run `36111645523`. `scm_list_issues(open)` returns four open issues: `Issue #1`, `Issue #2`, `Issue #3`, `Issue #4`, all labelled `severity:minor`, `nature:defect`, `configuration-record`.
+
+### Business Reviewer lens
+
+**Compliance matrix.** Every checklist item evaluated, recorded Pass or Fail. A Fail is a finding.
+
+```plantuml
+@startuml BR3_ComplianceMatrix
+title Business Modeling lens - compliance matrix, LCO Inception iteration 3
+skinparam classAttributeIconSize 0
+skinparam classFontSize 11
+
+class "Scenario selection" as S <<check>> {
+  BM scenario applicable : NONE - all six evaluated
+  DC-4 business-process-led : FALSE, re-verified this iteration
+  Verdict : Pass
+}
+class "Business artifact inventory" as A <<check>> {
+  Business Use-Case Model expected : NO
+  Business Object Model expected : NO
+  Business rules section expected : NO
+  Glossary business terms expected : NO
+  Verdict : Pass - nothing required, nothing missing
+}
+class "Stakeholder representation" as ST <<check>> {
+  STK-001 HR Director : represented, needs stated
+  STK-002 Software Engineer : represented, needs stated
+  STK-003 Infrastructure : represented, needs stated
+  STK-004 Employees : represented, needs stated
+  Verdict : Pass
+}
+class "Business rule audit" as R <<check>> {
+  CON-009 to CON-019 : 11 rules, each with an identifier
+  Testable condition : present on all 11
+  Attachment to an element : present on all 11
+  Verdict : Pass
+}
+class "Business goal measurability" as G <<check>> {
+  BG-001 50 percent HR time : path stated twice, disagreeing
+  BG-002 100 percent Excel : path stated twice, disagreeing
+  BG-003 80 percent adoption : path stated once, consistent
+  Verdict : Fail - finding recorded
+}
+class "Derivation readiness" as D <<check>> {
+  FR-001 to FR-009 to UC-001 to UC-009 : one to one, all traced
+  AC-001 to AC-006 to a use case : five of six registered
+  Verdict : Ready
+}
+class "Diagram coverage" as DG <<check>> {
+  Use case diagram, Vision : present
+  Use case diagram, Use-Case Model : present
+  Activity diagrams, UC-001 and UC-002 : present
+  Sequence diagram, UC-008 : present
+  Verdict : Pass
+}
+class "Scope adherence" as SC <<check>> {
+  Use cases : 9, one per declared FR
+  Phantom use case : none
+  Cross-cutting mechanism as a use case : none
+  Verdict : Pass
+}
+
+S --> A
+A --> ST
+ST --> R
+R --> G
+G --> D
+D --> DG
+DG --> SC
+
+note bottom of G
+  Fail = a finding is recorded against the Vision.
+  Every other checklist item is Pass.
+end note
+@enduml
+```
+
+**Business rule audit.** `CON-009`..`CON-019` are the declared business rules. Each was checked for an identifier, a testable condition, and an attachment to the element it constrains — and then for a realizing flow in the model. All eleven carry all three properties and all eleven are realized.
+
+```plantuml
+@startuml BR3_BusinessRuleRealization
+title Business rule realization - CON-009 to CON-019, each rule to the element that realizes it
+skinparam classAttributeIconSize 0
+
+class "CON-009 one featured item" as R9 <<rule>> {
+  testable : at most one featured at any moment
+  realized by : UC-005 A1, UC-006 A1, UC-007 A1
+}
+class "CON-010 no pair crosses midnight" as R10 <<rule>> {
+  testable : a pair belongs to one calendar date
+  realized by : UC-001 A3, UC-002 A2
+}
+class "CON-011 one pair per day" as R11 <<rule>> {
+  testable : at most one pair per employee per day
+  realized by : UC-001 A2
+}
+class "CON-012 only HR corrects" as R12 <<rule>> {
+  testable : original never overwritten, never deleted
+  realized by : UC-003, UC-002 A3
+}
+class "CON-013 category descriptive" as R13 <<rule>> {
+  testable : used in exactly two places
+  realized by : UC-008 steps 1 and 5, A5; UC-002 step 5
+}
+class "CON-014 closed list of four" as R14 <<rule>> {
+  testable : no fifth value without a Change Request
+  realized by : UC-009 A2, UC-008 A5
+}
+class "CON-015 at most one, may be empty" as R15 <<rule>> {
+  testable : blank, no default invented
+  realized by : UC-008 A2, UC-009 A1, UC-002 A4
+}
+class "CON-016 one home, link only" as R16 <<rule>> {
+  testable : no duplicate, no sync, no reconciliation
+  realized by : UC-002 step 3, UC-008 step 3, UC-009 step 3
+}
+class "CON-017 never deleted" as R17 <<rule>> {
+  testable : hidden, still present in the database
+  realized by : UC-007 A2
+}
+class "CON-018 no audit view screen" as R18 <<rule>> {
+  testable : audit read from the database
+  realized by : Supplementary Specification, Functionality
+}
+class "CON-019 no compliance regime" as R19 <<rule>> {
+  testable : no retention period mandated
+  realized by : Supplementary Specification, Functionality
+}
+
+class "Verdict" as V <<verdict>> {
+  rules audited : 11
+  with a testable condition : 11
+  with an attachment : 11
+  unrealized : 0
+}
+
+R9 --> V
+R10 --> V
+R11 --> V
+R12 --> V
+R13 --> V
+R14 --> V
+R15 --> V
+R16 --> V
+R17 --> V
+R18 --> V
+R19 --> V
+
+note bottom of V
+  CON-013's filter half was the one unrealized rule at
+  iteration 2. It is now realized in UC-008 main flow
+  steps 1 and 5 and alternative flow A5, and the prior
+  finding of this lens is closed.
+end note
+@enduml
+```
+
+**Business goal verification.** Each declared goal was checked for a measurable target and a single, consistent verification path.
+
+```plantuml
+@startuml BR3_BusinessGoalVerification
+title Business goal verification - declared target, stated path, registered edge
+skinparam classAttributeIconSize 0
+
+class "BG-001 reduce HR management time by 50 percent" as G1 <<goal>> {
+  declared target : 50 percent against the current manual processes
+  stated path : AC-002, AC-003, AC-004, AC-006
+  registered edge : FR-003
+  baseline of current HR time : not recorded
+  verdict : FAIL - the two statements disagree
+}
+class "BG-002 eliminate 100 percent of Excel" as G2 <<goal>> {
+  declared target : no new clocking recorded in Excel after go-live
+  stated path : AC-002, AC-005
+  registered edge : FR-001
+  AC-005 measures : 80 percent adoption
+  verdict : FAIL - the two statements disagree
+}
+class "BG-003 80 percent adoption in 3 months" as G3 <<goal>> {
+  declared target : 80 percent of 200 employees within 3 months
+  stated path : measured with STK-004 after go-live
+  registered edge : AC-005
+  verdict : PASS - stated once, consistent
+}
+
+class "Finding" as F <<finding>> {
+  key : Vision#F1
+  severity : Minor
+  defect : verification path stated twice and disagreeing
+}
+
+G1 --> F
+G2 --> F
+G3 --> F
+
+note bottom of F
+  BG-003 is the model the other two should follow: it
+  names its instrument and its registered edge agrees
+  with its stated path. BG-001 and BG-002 each name a
+  set of acceptance criteria in the Success criteria row
+  while the Traceability table registers a functional
+  requirement, and neither path measures the declared
+  target.
+end note
+@enduml
+```
+
+**Findings.**
+
+| Key | Artifact | Severity | Finding | Recommendation |
+|---|---|---|---|---|
+| `Vision#F1` | Vision | **Minor** | The Vision states each business goal's verification path twice, and for `BG-001` and `BG-002` the two statements disagree. The Problem Statement's Success criteria row says `BG-001` is "verified through AC-002, AC-003, AC-004 and AC-006" and `BG-002` "through AC-002 and AC-005", while the Traceability table registers `BG-001` → `FR-003` and `BG-002` → `FR-001`. Neither registered edge measures the declared target: `FR-003` is the CSV export, which does not measure a 50% reduction in HR management time, and `FR-001` is clock in/out, which does not measure the elimination of Excel. The two paths also disagree on instrument — acceptance criteria in one place, a functional requirement in the other. `BG-003` is the only goal stated consistently: its Success criteria row and its registered edge (`AC-005`) agree. A reader cannot tell which instrument closes `BG-001` or `BG-002`, and the goal layer is the one place the business outcome is asserted. | State each goal's verification path once, in the Success criteria row, and make the Traceability table's edge agree with it. For `BG-001`, name the instrument that measures the 50% reduction against the current manual processes — the acceptance criteria that measure HR effort removed (`AC-002`, `AC-003`, `AC-004`) — and register the edge on that instrument rather than on `FR-003`. For `BG-002`, name the instrument that measures zero new clockings in Excel after go-live and register the edge on it rather than on `FR-001`. Where no instrument the team can run closes a goal, say so explicitly, as the `BG-003` row already does. If the stakeholder intends a different instrument, that is a scope decision for `STK-001` rather than a modelling choice. |
+
+**Traceability compliance (business lens).** The `FR-NNN` → `UC-NNN` mapping is complete and one-to-one: nine declared functional requirements, nine use cases, each use case carrying a `Source: FR-NNN` line citing a declared requirement. The `AC-NNN` → `UC-NNN` mapping registers five of the six declared acceptance criteria (`AC-001`, `AC-002`, `AC-003`, `AC-004`, `AC-005`); `AC-006` is registered downstream to `COMP-003` and to `UC-001`'s alternative flow A1, which is the correct home for a reliability criterion. The `BG-NNN` → downstream mapping is the defect recorded above. No `UNKNOWN LABEL` and no phantom element was found in the business-facing content.
+
+**Derivation readiness (business lens).** Ready. Every declared requirement reaches a use case, every use case names its source requirement, and the two High-volatility use cases (`UC-001`, `UC-008`) are the ones the architecture encapsulates in dedicated components. The RequirementsSpecifier can derive from this model without a business-model intermediary, because the discipline that would produce one is correctly inactive.
+
+**Scope adherence (business lens).** No scope creep. Nine use cases, one per declared `FR-001`..`FR-009`; no phantom use case; no cross-cutting mechanism modelled as a use case — OIDC login, authorization, LDAP read, audit write and the clocking retry are all Supplementary Specification entries with `<<include>>` from their dependent use cases. No `[DERIVED]` marker survives in any artifact, so no silent derivation promotion exists to flag. No unsourced quantitative claim was found in the business-facing content: the artifacts state declared targets and record explicitly that no measurement exists yet.
+
 ## Resolutions and Actions
 #### Iteration 3 — closure of prior findings
 
