@@ -615,7 +615,7 @@ end note
 | Finding | Owner | Rework | Blocking |
 |---|---|---|---|
 | `Risk List#F3` | ProjectManager | Re-assess R004 at this milestone: record the second failed execution and revisit its magnitude, strategy and mitigation rather than carrying them unchanged. If the stand-in environment cannot be delivered by the team, the treatment must change — different sequencing, a different owner, or escalation to the stakeholder as a decision only they can make. Record the treatment state at Iter-2 close, not at Iter-1 close | Yes — R004 gates every test and its treatment has now failed twice |
-| `Use-Case Model#F1` | SystemAnalyst | Re-read the Risk List's current R001, R004 and R009 entries and update the constraints-and-risks table: record R004 as materialized and re-assessed, R001's probability and impact as `[ASSUMPTION — requires validation]`, and R009's remaining scope as the guideline files only. Then declare the change in turn so the SUSPECT edges clear | Yes — a SUSPECT edge left open at phase close is a Major finding against the artifact owning the unreviewed end |
+| `Use-Case Model#F1` | SystemAnalyst | Re-read the Risk List's current R001, R004 and R009 entries and update the constraints-and-risks table: record R004 as materialized and re-assessed, R001's probability and impact as unconfirmed estimates, and R009's remaining scope as the guideline files only. Then declare the change in turn so the SUSPECT edges clear | Yes — a SUSPECT edge left open at phase close is a Major finding against the artifact owning the unreviewed end |
 
 **Priority 2 — the seven Minor findings, by owner.**
 
@@ -633,17 +633,17 @@ end note
 
 | # | Adjustment | Basis |
 |---|---|---|
-| 1 | The stand-in environment (CON-028) becomes a hard gate: no other work item of iteration 3 starts until it is delivered and recorded. The Integrator is the single accountable owner | Exit criterion 5 not met for the second consecutive iteration; R004's treatment failed twice (`Risk List#F3`, Major) |
+| 1 | The stand-in environment (CON-028) becomes a hard gate: no work item that exercises a use case against the stand-in starts until it is delivered and recorded. The Integrator is the single accountable owner. The gate does not block the corrective work on the nine open findings — those are defects in records and tables, and correcting them does not require the stand-in | Exit criterion 5 not met for the second consecutive iteration; R004's treatment failed twice (`Risk List#F3`, Major) |
 | 2 | R004's magnitude is raised Significant to High and its probability 3 to 4 on the observed 2-of-2 materialization rate; its strategy stays Avoid, because CON-021's grant does not reach a risk whose mechanism is the team's own execution | `Risk List#F3` (Major) |
-| 3 | The Risk Register's treatment column is headed at the current iteration and every row is refreshed against observable state at close | `Risk List#F4` (Minor) |
-| 4 | R009's remaining scope is the guideline files, still absent; its mitigation moves to the iteration that will author them | `Risk List#F4` (Minor) |
-| 5 | The Use-Case Model's constraints-and-risks table records R004 as materialized and re-assessed, R001's P and I as `[ASSUMPTION — requires validation]`, and R009's remaining scope as the guideline files only; the change is declared in turn so the SUSPECT edges clear | `Use-Case Model#F1` (Major) |
-| 6 | The Use-Case Model's realizing-component table is reconciled with the Software Architecture Document's registered edges | `Use-Case Model#F2` (Minor) |
-| 7 | The NFR-003 row in the Vision and in the Supplementary Specification names COMP-002 as its downstream element | `Vision#F3`, `Supplementary Specification#F2` (Minor) |
-| 8 | UC-008 gains the worker-category filter CON-013 declares, or the conflict between FR-008's declared search dimensions and CON-013's declared filter is escalated to the stakeholder | `Use-Case Model#F1` (Business Reviewer, Minor) |
+| 3 | The stand-in directory carries the worker-category link as well as the declared AD attributes, including an entry with no category, because UC-008 filters the directory by worker category (CON-013) and the category is the one field the portal owns (CON-016) | UC-008's change; `Use-Case Model#F1` (Business Reviewer, Minor) |
+| 4 | The Risk Register's treatment column is headed at the current iteration and every row is refreshed against observable state at close | `Risk List#F4` (Minor) |
+| 5 | R009's remaining scope is the guideline files, still absent; its mitigation moves to the iteration that will author them | `Risk List#F4` (Minor) |
+| 6 | The Use-Case Model's constraints-and-risks table records R004 as materialized and re-assessed, R001's P and I as unconfirmed estimates, and R009's remaining scope as the guideline files only; the change is declared in turn so the SUSPECT edges clear | `Use-Case Model#F1` (Major) |
+| 7 | The Use-Case Model's realizing-component table is reconciled with the Software Architecture Document's registered edges | `Use-Case Model#F2` (Minor) |
+| 8 | The NFR-003 row in the Vision and in the Supplementary Specification names COMP-002 as its downstream element | `Vision#F3`, `Supplementary Specification#F2` (Minor) |
 | 9 | The Development Case's "Open SCM issues" row records all three open issues | `Development Case#F3` (Minor) |
 | 10 | The Test Evaluation Summary records `Issue #3`, states the defect count as three, and refreshes its CI run reference | `Test Evaluation Summary#F2` (Minor) |
-| 11 | The coarse roadmap is re-planned from the measured actuals of both closed Inception iterations — 6,918,081 tokens and 8:35:00.7478289 for Iter-1, 12,066,256 tokens and 2:03:51.5597976 for Iter-2 — and the fine plan is built only for the next iteration | CON-027; the measured shape replaces every assumed share |
+| 11 | The coarse roadmap is re-planned from the measured actuals of both closed Inception iterations — 6,918,081 tokens and 8:35:00.7478289 for Iter-1, 12,066,256 tokens and 2:03:51.5597976 for Iter-2 — and the fine plan is built only for the next iteration. Inception is re-planned to three iterations | CON-027; the measured shape replaces every assumed share |
 
 **No adjustment cuts or defers declared scope.** CON-027 forbids it. The remedy for an incomplete iteration is another iteration, and the stakeholder directs exactly that. No agent role is added to the next iteration as a remedy: adding roles increases coordination overhead without proportional benefit, and the lever here is the iteration, not the parallelism.
 
@@ -664,7 +664,7 @@ end note
 |---|---|---|---|
 | `Iteration Plan#F1` | ProjectManager | Evidence the stand-in environment (CON-028) — a test OIDC issuer and a test directory carrying the declared attributes, including entries with empty job title and extension — or state explicitly in Evaluation Criteria layer (b) that exit criterion 5 is NOT met and the LCO gate is not passable | Yes — the criterion that gates every use case |
 | `Development Case#F1` | ProcessEngineer | Add a post-iteration environment verification recording the actual state of each item at the LCO gate, with observed evidence for each; keep the pre-iteration readiness table as the plan it is | Yes |
-| `Risk List#F1` | ProjectManager | Mark R001's probability and impact as `[ASSUMPTION — requires validation]` in the Risk Register and the Risk Classification section; state the magnitude bands as provisional; re-anchor on a confirmed basis or obtain the confirmation | Yes |
+| `Risk List#F1` | ProjectManager | Mark R001's probability and impact as unconfirmed estimates in the Risk Register and the Risk Classification section; state the magnitude bands as provisional; re-anchor on a confirmed basis or obtain the confirmation | Yes |
 | `Test Evaluation Summary#F1` | TestManager | Record `Issue #1` as the open defect in the three places that assert none exists; state the defect count as one; refresh the CI run reference | Yes |
 | `Risk List#F1` | ProjectManager | Restate R009 to cover only the genuinely absent guideline files, or record the CI half as retired against the observed run | No |
 | `Iteration Plan#F1` | ProjectManager | Draw the human validation gate in parallel with Iter-2 and Iter-3 | No |
@@ -692,7 +692,7 @@ end note
 | 3 | The plan's currency table carries the measured actual of the iteration that closed — 6,918,081 tokens and 8:35:00.7478289 of agent time — and the human gate is reported apart in days of queue time | `Iteration Plan#F2` (Minor); CON-027 |
 | 4 | The roadmap gantt draws the CON-028 human validation gate in parallel with Iter-2 and Iter-3, not in series ahead of Iter-3 | `Iteration Plan#F1` (Minor) |
 | 5 | The missing acceptance-criterion trace edges are registered: AC-002 and AC-005 to UC-001, AC-003 to UC-005, AC-004 to UC-008 | `Iteration Plan#F2` (Minor) |
-| 6 | R001's probability and impact are marked `[ASSUMPTION — requires validation]` and the magnitude bands are stated as provisional; the confirmation is re-asked of the sponsor | `Risk List#F1` (Major) |
+| 6 | R001's probability and impact are recorded as unconfirmed estimates and the magnitude bands are stated as provisional; the confirmation is re-asked of the sponsor | `Risk List#F1` (Major) |
 | 7 | R004's treatment state is recorded against the observed stand-in environment, and its mitigation names a control that produces a record | `Risk List#F2` (Minor) |
 | 8 | R009 is restated to cover only the guideline files genuinely absent, with the CI half recorded as retired against the observed run | `Risk List#F1` (Minor) |
 | 9 | The Test Evaluation Summary records `Issue #1` as the open defect and refreshes its evidence block against the tracker and the CI at the point of submission | `Test Evaluation Summary#F1` (Major) |
