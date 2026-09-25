@@ -141,7 +141,6 @@ stop
 ```
 
 ## Resources
-
 ### Agent role profile
 
 Planning here means selecting which agent roles execute in each iteration. The 25-role IARI roster is fixed and no role is merged (Development Case). BusinessProcessAnalyst and BusinessReviewer are **not active** in any iteration: Business Modeling is inactive because business-process-led = false.
@@ -178,12 +177,14 @@ Planning here means selecting which agent roles execute in each iteration. The 2
 
 ### Two currencies, reported apart
 
-| Currency | What it measures | Iter-1 (measured actual) | Iter-2 (forecast) |
+| Currency | What it measures | Iter-1 (measured actual) | Iter-2 (measured actual) |
 |---|---|---|---|
-| Agent work | Tokens consumed, and the elapsed time the system measures | 6,918,081 tokens; 8:35:00.7478289 elapsed agent time | No forecast is invented from a theoretical capacity. The measured actual of the phase that closed is the input; the iteration's own spend is measured at its close |
-| Human gate | Days of queue time waiting for a person | 0:00:00 measured, excluding the end-of-iteration approval gate, which is not measured | The CON-028 validation of the real Keycloak and AD by Infrastructure with HR. Ceiling 14 days, then the process suspends. Actual measured and reported apart; estimate none |
+| Agent work | Tokens consumed, and the elapsed time the system measures | 6,918,081 tokens; 8:35:00.7478289 elapsed agent time | 12,066,256 tokens; 2:03:51.5597976 elapsed agent time |
+| Human gate | Days of queue time waiting for a person | 0:00:00 measured, excluding the end-of-iteration approval gate, which is not measured | 0:00:00 measured, excluding the end-of-iteration approval gate, which is not measured. The CON-028 validation of the real Keycloak and AD by Infrastructure with HR has not yet opened; it opens in Elaboration, ceiling 14 days, then the process suspends |
 
 The two are never summed into one figure and never converted into one another. There is no token budget on this project and none is to be set (CON-027): each iteration's measured spend is recorded and used to forecast the next, and declared scope is never cut or deferred to fit an estimate.
+
+**The measured shape, against the assumed one.** Iteration 2 spent 1.74 times iteration 1's tokens in a quarter of the elapsed agent time. The spend rose because the iteration read the accumulated artifact surface and re-read it to close 18 findings; the elapsed time fell because the work was corrective rather than generative. This measured shape — not the rubber profile's assumed distribution — is the input to the iteration 3 forecast. No forecast is invented from a theoretical capacity, and no work item carries a size: this system measures tokens and elapsed time, and a work item sized in hours, days, weeks or person-anything would be a unit nothing here produces.
 
 ## Use Cases and Scenarios Addressed
 
