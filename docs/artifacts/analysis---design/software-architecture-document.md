@@ -3,8 +3,7 @@
 - **Status:** Draft — iteration 2
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 ## Architectural Representation
-
-This document is the candidate architecture for Portal, produced in Inception iteration 1. It is a **sketch, not a baseline**: it fixes the architectural style, the subsystem decomposition, the mechanisms and the interfaces, and it surfaces the architectural risks that Elaboration must retire. The 4+1 views are addressed at the depth Inception requires — Logical and Deployment in full, Process and Implementation sketched, Data and Use-Case views carried far enough to validate the decomposition.
+This document is the candidate architecture for Portal, produced in Inception iteration 2. It is a **sketch, not a baseline**: it fixes the architectural style, the subsystem decomposition, the mechanisms and the interfaces, and it surfaces the architectural risks that Elaboration must retire. The 4+1 views are addressed at the depth Inception requires — Logical and Deployment in full, Process and Implementation sketched, Data and Use-Case views carried far enough to validate the decomposition.
 
 | View | Addressed this iteration | Primary diagram |
 |---|---|---|
@@ -13,9 +12,11 @@ This document is the candidate architecture for Portal, produced in Inception it
 | Deployment | Yes — nodes, connectors, environment mapping | Deployment diagram |
 | Implementation | Sketched — layers, repository layout, build structure | Component diagram (layers) |
 | Use-Case | Yes — the three architecturally significant use cases realized | Three sequence diagrams |
-| Data | Sketched — entities and the invariants they hold | Class diagram |
+| Data | Sketched — entities, the invariants they hold, the correction-resolution rule | Class diagram |
 
 **Architectural style.** A **layered, single-deployable application with an interface-separated domain**, decomposed by area of change rather than by feature. One .NET 10 process serves Razor Pages and the REST API; the domain is a set of components behind interfaces; PostgreSQL 18 is the only store. There is no message broker, no workflow engine, no rule engine, no anti-corruption layer and no distributed topology — the declared scope (9 use cases, 200 users, one internal network, one server estate) does not justify any of them, and CON-001/CON-022/CON-023/CON-024 fix the stack.
+
+**Optional artifacts.** The Development Case records the Architectural Proof-of-Concept, the Deployment Model and the Data Model as not triggered. The deployment topology and the data view are therefore sections of this document, and no prototype is planned: no technical risk requires empirical validation, and the two risks with a technical mechanism (R002, R006) are retired by a design decision plus the CON-028 stand-in test.
 
 ### ADR-001 — Architectural style: layered single deployable, decomposed by area of change
 
@@ -36,7 +37,7 @@ This document is the candidate architecture for Portal, produced in Inception it
 
 **Context.** The portal owns exactly three things: clockings, news, and the worker-category link (CON-016). CON-024 pins PostgreSQL 18, installed by Infrastructure on the existing estate. CON-030 states there is no data migration. CON-032 states backups are Infrastructure's existing practice.
 
-**Decision.** One relational PostgreSQL 18 instance, one schema, with the declared business rules enforced as database constraints wherever a constraint can express them: a unique constraint on (ad_user_id, work_date) for CON-011, a unique constraint on the idempotency key for AC-006, and a partial unique index on the featured flag for CON-009. The audit table is append-only.
+**Decision.** One relational PostgreSQL 18 instance, one schema, with the declared business rules enforced as database constraints wherever a constraint can express them: a unique constraint on (ad_user_id, work_date) for CON-011, a unique constraint on the idempotency key for AC-006, and a partial unique index on the featured flag for CON-009. The audit table is append-only, and the clocking row's recorded times are never updated in place (CON-012) — a correction is a new row.
 
 **Alternatives considered.**
 - *Enforce the invariants only in application code.* Rejected: CON-009 says the featured invariant "must hold wherever the change comes from, not only in the HR form". A constraint holds it against every writer, including a future one; application code holds it only where the author remembered.
@@ -60,7 +61,7 @@ This document is the candidate architecture for Portal, produced in Inception it
 
 **Trade-offs.** Reading LDAP on every directory request costs latency and makes the directory only as available as AD. Accepted: it is the only design that satisfies CON-016, and R001 (a change on Infrastructure's side) is accepted in advance under CON-021.
 
-**Consequences.** The CON-028 stand-in seam sits behind `IDirectoryGateway` and the OIDC client configuration, so every use case is buildable and testable without the real Keycloak or AD. R002's empty-attribute behaviour is a property of COMP-006 alone.
+**Consequences.** The CON-028 stand-in seam sits behind `IDirectoryGateway` and the OIDC client configuration, so every use case is buildable and testable without the real Keycloak or AD. R002's empty-attribute behaviour is a property of COMP-006 alone. R004 materialized because that stand-in was not delivered; the seam is unchanged and the stand-in behind it is the first work item of iteration 2.
 
 ### ADR-004 — Clocking capture: client-supplied timestamp with a server-verified idempotency key
 
@@ -70,7 +71,7 @@ This document is the candidate architecture for Portal, produced in Inception it
 
 **Alternatives considered.**
 - *Server timestamp only.* Rejected: AC-006 states the server must accept the client timestamp, because a server timestamp would record a time at which the employee did not press the button — the audit trail would record something that did not happen.
-- *A background sync queue or service worker.* Rejected: the declared scope excludes offline mode beyond the clocking retry, and excludes PWA and service worker. One action, one queue, one entity (REL-003).
+- *A background sync queue or service worker.* Rejected: the declared scope excludes offline mode beyond the clocking retry, and excludes PWA and service worker. One action, one queue, one entity.
 - *Accept any client timestamp without a skew bound.* Rejected: R006. An unbounded client clock would let a badly-set workstation write a clocking into the wrong day, breaking CON-010 and CON-011.
 
 **Trade-offs.** A skew bound means a clocking from a badly-set workstation is rejected rather than recorded; the employee reports it to HR, who corrects it through UC-003 with a full audit entry. This is the declared remedy path.
