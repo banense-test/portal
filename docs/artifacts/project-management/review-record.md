@@ -2781,53 +2781,139 @@ MR -> RR : write "Stakeholder sanction: REFUSED" and the verbatim acceptance
 
 **Milestone verdict: No-Go. The LCO milestone is NOT achieved.**
 
-**Basis of the verdict — anchored to data, not judgment.**
+**Basis of the verdict — anchored to the finding records, not to judgment.**
 
 | Condition for advancing the phase | Observed | Verdict |
 |---|---|---|
 | Unresolved Critical findings | 0 across all three lenses | Satisfied |
-| Unresolved Major findings | 4 — `Iteration Plan#F1`, `Development Case#F1`, `Risk List#F1` (Management Reviewer), `Test Evaluation Summary#F1` (Reviewer) | **Not satisfied** |
-| Planned iteration objectives achieved | 5 of 6 iteration exit criteria met; C5 (the stand-in environment, CON-028) is not evidenced by any artifact | **Not satisfied** |
+| Unresolved Major findings | 2 — `Use-Case Model#F1` (Reviewer), `Risk List#F3` (Management Reviewer) | **Not satisfied** |
+| Planned iteration objectives achieved | 5 of 6 iteration exit criteria met; C5 (the stand-in environment, `CON-028`) is not evidenced by any artifact | **Not satisfied** |
 | Stakeholder sanction | **REFUSED** — the sponsor declined to accept the scope and objectives and declined to sanction advancing past LCO | **Not satisfied** |
 
 Three of the four conditions fail. The phase gate does not open.
 
-**The refusal is the verdict.** The sanction was asked of the stakeholder — the sole sanctioning authority — with the leaning and all three open Major defects inside the question, so the answer was informed. A refusal is a disposition, not a defect the team must fix: the reasons the stakeholder gave are recorded as findings on the artifacts they target, and the refusal itself is recorded here. The stakeholder's directive — all findings must be corrected, even if they are minor — governs the whole 18-finding ledger, not only the lens that asked.
+```plantuml
+@startuml RC2_VerdictGate
+title Milestone verdict gate - LCO, Inception iteration 2: conditions checked against the finding records
+start
+:Read the finding records of every artifact;
+note right
+  read = 10 artifacts, unread = none
+  open Critical = 0
+  open Major = 2 - Use-Case Model F1 (Reviewer lens),
+  Risk List F3 (Management Reviewer lens)
+  open Minor = 7
+end note
+if (any unresolved Critical finding?) then (yes)
+  :Escalate to the stakeholder;
+  :record_milestone_auto_iterate(requiresIteration: true);
+  stop
+else (no)
+  if (open Major findings OR planned scope incomplete OR sanction not GRANTED?) then (yes)
+    :Stakeholder Contribution verdict;
+    note right
+      Open Major: 2.
+      Planned scope incomplete: exit criterion C5
+      (stand-in environment, CON-028) not met.
+      Stakeholder sanction: REFUSED.
+    end note
+    :Ask the stakeholder for input on the next pass;
+    :Fold the answer into the Review Record;
+    :record_milestone_auto_iterate(requiresIteration: true);
+    stop
+  else (no)
+    :Scope Complete verdict;
+    :record_milestone_auto_iterate(requiresIteration: false);
+    stop
+  endif
+endif
+@enduml
+```
 
-**The one unmet exit criterion.** C5, the stand-in environment (CON-028), is the criterion that gates every use case: CON-028 forbids building or testing against the real Keycloak or the real AD, so with no stand-in no use case can be built or tested and R004 — the risk the register itself calls the one that gates all testing — remains untreated. C6 (the build is verifiable) is met by the green build on `main`; the Development Case's record of it is stale, which is `Development Case#F1`.
+**The refusal is the verdict.** The sanction was asked of the stakeholder — the sole sanctioning authority — with the leaning, the unmet exit criterion C5 and both open Major defects inside the question, so the answer was informed. A refusal is a disposition, not a defect the team must fix: the reasons the stakeholder gave are recorded as findings on the artifacts they target, and the refusal itself is recorded here. The stakeholder's directive — fix all findings — governs the whole 9-finding ledger, not only the lens that asked.
+
+**The one unmet exit criterion.** C5, the stand-in environment (`CON-028`), is the criterion that gates every use case: `CON-028` forbids building or testing against the real Keycloak or the real AD, so with no stand-in no use case can be built or tested and `R004` — the risk the register itself calls the one that gates all testing — remains untreated. C6 (the build is verifiable) is met by the green build on `main`.
 
 **Lens dispositions consolidated.**
 
-| Lens | Disposition | Findings | Effect on the gate |
+| Lens | Disposition | Findings this pass | Effect on the gate |
 |---|---|---|---|
-| Reviewer (technical) | Approved with Changes | 11 — 0 Critical, 1 Major, 10 Minor | The artifacts are fit to carry the project forward; a technical "Approved with Changes" does not open the phase gate |
-| BusinessReviewer (business) | `BR-OK-INACTIVE` — discipline NOT APPLICABLE per DC §4 | 0 | Contributes no exit criterion of its own, so it neither blocks nor advances the milestone |
-| ManagementReviewer (gate) | No-Go — stakeholder sanction REFUSED | 7 — 0 Critical, 3 Major, 4 Minor | The gate verdict |
+| Reviewer (technical) | Approved with Changes | 6 — 0 Critical, 1 Major, 5 Minor | The artifacts are fit to carry the project forward; a technical "Approved with Changes" does not open the phase gate |
+| BusinessReviewer (business) | `BR-OK-INACTIVE` — discipline NOT APPLICABLE per DC §4 | 1 — 0 Critical, 0 Major, 1 Minor | Contributes no exit criterion of its own, so it neither blocks nor advances the milestone |
+| ManagementReviewer (gate) | No-Go — stakeholder sanction REFUSED | 2 — 0 Critical, 1 Major, 1 Minor | The gate verdict |
 
-**Review effectiveness report — current metrics only.** This is the project's first review event. No prior review history exists, so no trend is computed and none is asserted; no earlier iteration or cycle is invented to populate one. Trend analysis begins once a second review has actually occurred.
+**Review effectiveness report.** Two review events have now occurred, so a trend is computable and is asserted. No earlier iteration or cycle is invented to populate it.
 
-| Indicator | Current value | Basis |
-|---|---|---|
-| Review coverage | **100%** — 8 of 8 planned artifacts received formal review | Vision, Use-Case Model, Supplementary Specification, Development Case, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary |
-| Findings recorded | **18** — 0 Critical, 4 Major, 14 Minor | Three lenses: Reviewer 11, BusinessReviewer 0, ManagementReviewer 7 |
-| Defect density | **2.25 findings per artifact** (18 / 8) | Reported per artifact. Page counts and KLOC are not measured by this system, so density per page or per KLOC is not computable and is not stated |
-| Artifacts carrying no finding | **1 of 8** — the Use-Case Model | The cleanest artifact is the one whose checklist is the most mechanical: one use case per declared requirement, each citing its source |
-| Defect removal efficiency | **Not computable at this milestone** | DRE compares defects found in review against defects found in test. No use case is implemented and no test has executed, so the test half of the ratio does not exist. Reporting a figure here would be fabrication |
-| Rework effort | **Not measurable in this system's units** | Hours are not a unit this system produces. The corrective obligation is the 18 findings, each with an owner and a deadline; the measured currencies are tokens and elapsed time, and no phase has closed so no measured actual exists |
-| Review debt | **0%** — 0 of 18 findings overdue | First review event: no deadline has yet passed |
-| Escalations | **0** | No Critical finding exists and no finding is overdue |
+| Indicator | Iteration 1 | Iteration 2 | Reading |
+|---|---|---|---|
+| Review coverage | 100% — 8 of 8 planned artifacts | 100% — 8 of 8 planned artifacts | Flat at complete. No planned artifact has gone unreviewed |
+| Findings recorded | 18 — 0 Critical, 4 Major, 14 Minor | 9 — 0 Critical, 2 Major, 7 Minor | Falling on both severities. The Major count halved |
+| Prior findings closed | 0 — first review event | 18 of 18 | The whole iteration-1 ledger is closed on evidence read from the corrected artifacts |
+| Open ledger at close | 18 | 9 | Halved. The ledger is converging, not accumulating |
+| Defect density | 2.25 findings per artifact (18 / 8) | 1.13 findings per artifact (9 / 8) | Falling. Page counts and KLOC are not measured by this system, so density per page or per KLOC is not computable and is not stated |
+| Artifacts carrying no open finding | 1 of 8 — the Use-Case Model | 2 of 8 — the Iteration Plan and the Software Architecture Document | Rising. Both artifacts that converged this pass were corrected against observable state |
+| Defect removal efficiency | Not computable | Not computable | DRE compares defects found in review against defects found in test. No use case is implemented and no test has executed, so the test half of the ratio does not exist. Reporting a figure here would be fabrication |
+| Rework effort | Not measurable in this system's units | Not measurable in this system's units | Hours are not a unit this system produces. The corrective obligation is the open findings, each with an owner and a deadline; the measured currencies are tokens and elapsed time |
+| Review debt | 0% — 0 of 18 overdue | 0% — 0 of 9 overdue | No deadline has passed. No escalation notice is due |
+| Escalations | 0 | 0 | No Critical finding exists in either event |
 
-**Interpretation.** Coverage is complete and the process worked: the review surfaced the one unmet exit criterion, the stale evidence records and the unconfirmed basis of the risk bands — none of which the artifacts' own prose disclosed. The finding distribution is the signal to read: the four Major findings cluster on the artifacts that carry *evidence* rather than *content* (the Development Case's readiness record, the Test Evaluation Summary's evidence block, the Risk List's classification basis, the Iteration Plan's exit-criteria evidence). The content artifacts — the Use-Case Model, the Supplementary Specification, the Software Architecture Document — are clean or near-clean. The defect pattern is therefore not a requirements-quality problem; it is an evidence-currency problem, and it is corrected by refreshing records against observable state, not by reworking the baseline.
+```plantuml
+@startuml RC2_Effectiveness
+title Review effectiveness - LCO review events, Inception iteration 1 and iteration 2
+skinparam classAttributeIconSize 0
 
-**What this disposition does not do.** It does not cut or defer declared scope. CON-027 forbids it, and the remedy for an incomplete iteration is another iteration. It does not close any finding: closure belongs to the lens that emitted it, and no closure was due this pass. It does not mark the milestone, the iteration or the phase as completed.
+class "Iteration 1 review event" as E1 <<event>> {
+  artifacts reviewed : 8 of 8
+  coverage : 100%
+  findings recorded : 18
+  Critical : 0
+  Major : 4
+  Minor : 14
+  prior findings closed : 0
+  open ledger at close : 18
+  review debt : 0%
+}
+class "Iteration 2 review event" as E2 <<event>> {
+  artifacts reviewed : 8 of 8
+  coverage : 100%
+  findings recorded : 9
+  Critical : 0
+  Major : 2
+  Minor : 7
+  prior findings closed : 18
+  open ledger at close : 9
+  review debt : 0%
+}
+class "Trend" as T <<ledger>> {
+  coverage : 100% then 100% - flat
+  Major findings : 4 then 2 - falling
+  Minor findings : 14 then 7 - falling
+  open ledger : 18 then 9 - halved
+  closure : 0 then 18 prior findings closed
+  defect removal efficiency : not computable - no test has executed
+  rework effort : not measurable in this system's units
+}
+E1 --> T
+E2 --> T
+note bottom of T
+  Two review events have occurred, so a trend is computable and
+  is asserted. No earlier iteration or cycle is invented.
+  Defect removal efficiency compares review defects against test
+  defects; no use case is implemented and no test has executed,
+  so the test half does not exist and no figure is reported.
+  Rework effort is not measurable in hours - this system measures
+  tokens and elapsed time.
+end note
+@enduml
+```
 
-**Next action.** The phase auto-iterates. Each lens reconciles its own findings in its closure state before recording new defects; the producing roles execute the Priority 1 actions first. The LCO gate is re-asked once the stand-in environment is evidenced, the four Major findings are corrected and the stakeholder is willing to sanction the advance.
+**Interpretation.** Coverage is complete and the process is working: the review closed the entire iteration-1 ledger and halved the open one, and the finding count fell on both severities. The distribution is the signal to read. The two Major findings sit on the two artifacts that carry *evidence and treatment* rather than *content* — the Risk List's treatment of `R004` and the Use-Case Model's unreviewed risk edges. The content artifacts are clean or near-clean. The defect pattern is therefore not a requirements-quality problem; it is an evidence-currency and treatment-execution problem. The one thing the review process cannot fix by refreshing a record is C5: the stand-in environment is a delivery, and it has now failed twice. That is why the gate stays shut.
 
 **Review workflow and sign-off.**
 
 ```plantuml
-@startuml RC_ReviewEventSequence
-title Portal - LCO review event: interaction between coordinator, lenses, artifact authors and the sanctioning stakeholder
+@startuml RC2_ReviewEventSequence
+title Portal - LCO review event, Inception iteration 2: coordinator, lenses, artifact authors and the sanctioning stakeholder
 actor "ReviewCoordinator" as RC
 participant "Review Record" as RR
 participant "Reviewer\n(technical lens)" as REV
@@ -2836,42 +2922,48 @@ participant "ManagementReviewer\n(gate lens)" as MR
 actor "STK-001 Laura Gomez\n(project sponsor)" as STK
 participant "Artifact authors\n(SystemAnalyst, ProjectManager,\nProcessEngineer, SoftwareArchitect,\nTestManager)" as AUTH
 
-RC -> AUTH : request artifacts in target state
-AUTH --> RC : 8 artifacts delivered (Vision, UCM, SS, DC, RL, IP, SAD, TES)
-RC -> RC : enforce entry criteria - artifacts not draft, reviewers assigned, agenda distributed 48h ahead
-RC -> REV : assign technical review of 8 artifacts
-RC -> BR : assign business-modeling gate
+RC -> AUTH : request the evolved artifacts in target state
+AUTH --> RC : 8 artifacts delivered
+RC -> RC : enforce entry criteria - artifacts in target state, reviewers assigned, agenda distributed in advance
+RC -> REV : assign the technical review of 8 artifacts
+RC -> BR : assign the business-modeling gate
 RC -> MR : assign the LCO gate verdict
-REV -> RR : 11 findings (0 Critical, 1 Major, 10 Minor)
-BR -> RR : 0 findings - BM INACTIVE, no artifact surface
-MR -> RR : 7 findings (0 Critical, 3 Major, 4 Minor)
-MR -> STK : ask the sanction, with the leaning and every open Major defect inside the question
+REV -> RR : close 11 prior findings, record 6 new (0 Critical, 1 Major, 5 Minor)
+BR -> RR : close 0 prior findings, record 1 new (Minor)
+MR -> RR : close 7 prior findings, record 2 new (0 Critical, 1 Major, 1 Minor)
+MR -> STK : ask the sanction, with the leaning, the unmet criterion C5 and both open Major defects inside the question
 STK --> MR : NO - sanction REFUSED
-STK --> MR : all findings must be corrected, even if they are minor
+STK --> MR : Please fix all findings
 MR -> RR : write "Stakeholder sanction: REFUSED" and the verbatim acceptance
-RC -> RR : read all findings of all three lenses
-RC -> RC : consolidate - 18 findings, 0 Critical, 4 Major, 14 Minor
-RC -> RC : resolve conflicts between lenses, prioritise actions
+RC -> RR : read the finding records of every artifact
+RC -> RC : consolidate - 9 open findings, 0 Critical, 2 Major, 7 Minor
+RC -> RC : reconcile the lens counts against the finding records
 RC -> RR : upsert the authoritative Review Record for this milestone
+RC -> STK : ask for input on the next pass
+STK --> RC : answer folded into the Review Record
 RC -> RC : record_milestone_auto_iterate(requiresIteration: true)
 note over RC
-  The refusal is the verdict. No Critical finding exists,
-  so no Critical escalation is due; the phase auto-iterates
-  because the planned scope is not complete and the
-  sanction was refused.
+  The refusal and the unmet criterion C5 are the verdict.
+  No Critical finding exists, so no Critical escalation is due;
+  the phase auto-iterates because the planned scope is not
+  complete and the sanction was refused.
 end note
 @enduml
 ```
 
+**What this disposition does not do.** It does not cut or defer declared scope. `CON-027` forbids it, and the remedy for an incomplete iteration is another iteration. It does not close any finding: closure belongs to the lens that emitted it, and all 18 closures due this pass were materialised by the originating lens. It does not mark the milestone, the iteration or the phase as completed.
+
+**Next action.** The phase auto-iterates. Each lens reconciles its own findings in its closure state before recording new defects; the producing roles execute the Priority 1 actions first. The LCO gate is re-asked once the stand-in environment is delivered and evidenced, the two Major findings are corrected and the stakeholder is willing to sanction the advance.
+
 ### Review Coordinator — stakeholder input on the next iteration
 
-**Stakeholder finding (STK-001, project sponsor).** Asked, at the close of this consolidation, whether there was anything to add for the next pass — a missed requirement, a correction, a priority — the sponsor answered: *"Nothing new for this new iteration. Let's iterate again and address the findings."*
+**Stakeholder finding (STK-001, project sponsor).** Asked at this review whether there was anything the team must know — a decision, a correction, a priority — the sponsor answered: *"Please fix all findings."*
 
-**What this decides.** No new requirement, no correction and no re-prioritisation is added. The 18-finding ledger stands as consolidated, and the sponsor's earlier directive — all findings must be corrected, even if they are minor — remains the governing priority. The remedy for the incomplete iteration is another iteration, which is what the sponsor directs and what CON-027 requires: declared scope is never cut or deferred to fit an estimate.
+**What this decides.** No new requirement, no correction and no re-prioritisation is added. The 9-finding ledger stands as consolidated, and the directive that all findings be fixed — including the minor ones — governs the whole set. The remedy for the incomplete iteration is another iteration, which is what the sponsor directs and what `CON-027` requires: declared scope is never cut or deferred to fit an estimate.
 
 **Verified against the artifacts, not deferred blindly.** The answer adds no element to the declared scope, so nothing in the Vision, the Use-Case Model or the Supplementary Specification changes as a result of it. It confirms the disposition already recorded: the phase auto-iterates, each lens reconciles its own findings in its closure state, and the producing roles execute the Priority 1 actions first. No marker remains open — the question was asked in this review and answered, and the answer is written here in the sponsor's own words.
 
-**Effect on the milestone verdict.** None. The verdict remains **No-Go**: the sanction to advance past LCO was refused, four Major findings are open, and exit criterion C5 (the stand-in environment, CON-028) is not evidenced. The sponsor's answer directs the next iteration; it does not open the phase gate.
+**Effect on the milestone verdict.** None. The verdict remains **No-Go**: the sanction to advance past LCO was refused, two Major findings are open, and exit criterion C5 (the stand-in environment, `CON-028`) is not evidenced. The sponsor's answer directs the next iteration; it does not open the phase gate.
 
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
