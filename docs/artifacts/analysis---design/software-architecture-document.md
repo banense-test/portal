@@ -109,7 +109,6 @@ This document is the candidate architecture for Portal, produced in Inception it
 **Consequences.** The merge and the filter are one responsibility of COMP-002, and the stand-in directory must carry the category link as well as the AD attributes, because the category filter is the one part of UC-008 that cannot be exercised against Active Directory at all.
 
 ## Architectural Goals and Constraints
-
 ### Goals
 
 | Goal | Architectural response | Source |
@@ -122,6 +121,7 @@ This document is the candidate architecture for Portal, produced in Inception it
 | G-6 The declared invariants must hold against every writer | Database constraints for CON-009, CON-011 and AC-006 | CON-009, CON-011, AC-006 |
 | G-7 The team must never depend on the real Keycloak or AD | Two configuration-held seams: the OIDC client and `IDirectoryGateway` | CON-028 |
 | G-8 The full page load must stay under 3 seconds | Server-rendered pages, one page-level script, no client framework, no client cache | NFR-001, AC-001 |
+| G-9 The worker category must be a column of the directory and a filter on it, without becoming a second home for employee data | COMP-006 stays a pure AD projection; COMP-002 merges the AD fields with the category link and applies the filter to the merged entry | CON-013, CON-016 |
 
 ### Constraints
 
@@ -134,6 +134,8 @@ This document is the candidate architecture for Portal, produced in Inception it
 | CON-004, CON-005 | AD is read over LDAP and never written; the six directory fields are read-only |
 | CON-007 | Reachable only from the internal corporate network |
 | CON-008 | Clockings stored in UTC, displayed in Europe/Madrid; no multi-timezone case |
+| CON-013 | The worker category is a column of the directory and a filter on it, and a column of the CSV export — nowhere else. It does not drive access control |
+| CON-016 | The category is not an AD attribute, so the filter cannot be pushed into the LDAP query; it is applied to the merged entry in COMP-002 |
 | CON-026 | CI runs on the hosted SCM provider, never holds production data or credentials, never deploys |
 | CON-028 | Placeholder OIDC and LDAP values in configuration, never in code; stand-ins only |
 | CON-029 | Infrastructure deploys, monitors and patches; the team hands over at the end of Transition |
@@ -154,6 +156,8 @@ Every entry below is a technology the stakeholder declared. No technology is int
 | CI | Hosted SCM provider CI | — | CON-026 | Not a project dependency; no version is pinned and none is recorded |
 
 Keycloak, Active Directory and the CI service are **existing corporate systems the project consumes, not components it selects**. No version is pinned for them by the version policy, so none is recorded here — recording one would be inventing a version the stakeholder did not declare.
+
+**No third-party library is pinned by the version policy.** The policy pins the two declared frameworks only (.NET 10, PostgreSQL 18). Any library the Implementer adds is resolved against the registry at the point of use, and the policy governs it only if a pin is later recorded for it.
 
 ## Use-Case View
 The Use-Case View validates every other view: each architecturally significant use case is realized as a sequence of interactions through the components of the Logical view, on the nodes of the Deployment view.
