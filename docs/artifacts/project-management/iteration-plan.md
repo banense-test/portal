@@ -252,6 +252,7 @@ Each criterion carries a verdict of MET or NOT MET at the point this plan is wri
 | Iteration Plan | CON-027 | DependsOn | R007 |
 | Iteration Plan | CON-021, CON-028 | DependsOn | R005 |
 | Iteration Plan | CON-028 | DependsOn | R004 |
+| Iteration Plan | — | Refines | Development Case |
 | Iteration Plan | — | Refines | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 |
 | AC-001 | NFR-001 | Refines | UC-001 |
 | AC-002 | FR-001 | Refines | UC-001 |
@@ -259,11 +260,11 @@ Each criterion carries a verdict of MET or NOT MET at the point this plan is wri
 | AC-004 | FR-008 | Refines | UC-008 |
 | AC-005 | BG-003 | Refines | UC-001 |
 
-The Development Case governs this plan: it fixes the active disciplines, the CORE artifact set, the agent role profile and the measurement policy. It is an artifact, not a trace-graph element, so no edge is registered on it; the governance is stated here and in Resources. The declared acceptance criteria AC-001..AC-006 are accounted for in Evaluation Criteria layer (a) and deferred to the iterations named there; each carries a registered edge to the use case that carries it, so the criterion-to-use-case mapping exists in the graph and not only as prose.
+The Development Case governs this plan: it fixes the active disciplines, the CORE artifact set, the agent role profile and the measurement policy. The declared acceptance criteria AC-001..AC-006 are accounted for in Evaluation Criteria layer (a) and deferred to the iterations named there; each carries a registered edge to the use case that carries it, so the criterion-to-use-case mapping exists in the graph and not only as prose.
 
 **Re-read against UC-008's change.** UC-008 now filters the directory by worker category (CON-013). This plan's end changed: the stand-in directory that work item 1 delivers must carry the worker-category link, because the category filter is the one part of UC-008 that cannot be exercised against AD at all. The change is declared in turn.
 
-**Trace endpoints.** `FR-001`..`FR-009`, `NFR-001`..`NFR-005`, `AC-001`..`AC-006`, `CON-001`..`CON-032`, `BG-001`..`BG-003`, `STK-001`..`STK-004` and `R001`..`R009` are declared identifiers, copied exactly from the work order. `UC-001`..`UC-009` are the System Analyst's use-case identifiers. `LCO`, `LCA`, `IOC` and `PR` are the milestones this plan sequences. `run 36095051721` is an observed SCM fact, cited as returned by the `scm_*` tools. The findings cited above are the reviewers' `<artifact>#<key>` handles; a finding is not an element and no edge is registered on one.
+**Trace endpoints.** `FR-001`..`FR-009`, `NFR-001`..`NFR-005`, `AC-001`..`AC-006`, `CON-001`..`CON-032`, `BG-001`..`BG-003`, `STK-001`..`STK-004` and `R001`..`R009` are declared identifiers, copied exactly from the work order. `UC-001`..`UC-009` are the System Analyst's use-case identifiers. `LCO`, `LCA`, `IOC` and `PR` are the milestones this plan sequences; a milestone is not an element of the trace graph, so no edge is registered on one. `run 36095051721` is an observed SCM fact, cited as returned by the `scm_*` tools. The findings cited above are the reviewers' `<artifact>#<key>` handles; a finding is not an element and no edge is registered on one.
 
 **No element of this role is minted.** The Project Manager produces no `UC-NNN`, `CLS-NNN`, `COMP-NNN`, `TC-NNN` or `INT-NNN`; those families belong to other authorities. The objectives table, the milestone table, the iteration table, the work-item table and the agent role profile are sections of this plan, not trace-graph elements, so no edge is registered on them.
 
