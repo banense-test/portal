@@ -204,7 +204,6 @@ endif
 ```
 
 ## Artifacts and Templates
-
 ### CORE artifacts — all 16 produced
 
 All 16 CORE artifacts are in scope for this project. None is omitted, and primary ownership is
@@ -242,13 +241,13 @@ this iteration.
 The Development Case references these files; it does not author their content. Each is owned by the
 discipline expert named.
 
-| Reference | Owner | Status at Inception |
+| Reference | Owner | State at the LCO gate |
 |---|---|---|
-| `.github/workflows/` — build and test pipeline (CON-026) | ConfigurationManager + Implementer | **Missing** — must exist before the first build |
+| `.github/workflows/ci.yml` — build and test pipeline (CON-026) | ConfigurationManager + Implementer | **Present** — build and test jobs, green on `main` |
 | `CONTRIBUTING.md` — coding standards, branch and review conventions | SoftwareArchitect + Implementer | **Missing** — authored during Elaboration |
 | Lint / formatter configuration for .NET and Razor Pages | Implementer | **Missing** — authored during Elaboration |
 | `docs/inputs/employee-portal-design.html` — authoritative UI visual layer (CON-031) | UserInterfaceDesigner consumes; Designer and Implementer implement | Present and authoritative |
-| Stand-in configuration: test OIDC issuer, test directory (CON-028) | Implementer + Integrator | **Missing** — iteration-1 environment work |
+| Stand-in configuration: test OIDC issuer, test directory (CON-028) | Implementer + Integrator | **Missing** — the first construction item of the iteration |
 
 ## Optional Artifact Triggers
 
