@@ -19,6 +19,7 @@
 #
 # @startuml
 # title Portal - integration order (bottom-up over the subsystem graph)
+# skinparam componentStyle rectangle
 # package "1. Foundation" {
 #   [Configuration + stand-in boundary] as L1
 #   [Persistence] as L2
@@ -57,6 +58,10 @@
 # status check; a red post-merge build HALTS the pipeline until the root cause
 # is coordinated between Implementer, CCM and ConfigurationManager - it is never
 # silenced and never worked around.
+#
+# CI runtime state - which items are ready and which are not - is recorded in
+# .github/workflows/README.md. It is never recorded in docs/BRANCHING_STRATEGY.md,
+# which holds branching topology only.
 # ---------------------------------------------------------------------------
 
 name: CI
