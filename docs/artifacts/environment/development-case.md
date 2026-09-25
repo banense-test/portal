@@ -671,24 +671,10 @@ and the checkpoint is re-taken before the iteration after it.
 
 ### Environment readiness criteria (standing)
 
-The criteria for what "ready" means, re-taken before every iteration starts. This is the checklist
-the iteration-preparation checkpoint verifies against; it is not milestone evidence. The milestone
-evidence is the LCO-gate record, which states the observed state of each item.
-
-| Check | Required state before an iteration starts | Owner of the gap |
-|---|---|---|
-| SCM repository reachable | Ready | — |
-| CI pipeline builds and tests (CON-026) | Ready — `.github/workflows/ci.yml` present, build and test jobs, green on `main` | — |
-| `CONTRIBUTING.md` | Ready — authored during Elaboration | SoftwareArchitect + Implementer |
-| Lint / formatter configuration | Ready — authored during Elaboration | Implementer |
-| Stand-in OIDC issuer and stand-in directory (CON-028) | Ready — including entries with empty job title and extension | Implementer + Integrator |
-| Mandatory UI design input (CON-031) | Ready — `docs/inputs/employee-portal-design.html` | — |
-| Version policy recorded | Ready — .NET 10, PostgreSQL 18 | — |
-| DC classification and optional triggers recorded | Ready — business-process-led = false; no optional trigger fired | — |
-
-The stand-in environment is the one item that gates development: no use case can be built or tested
-against the real Keycloak or the real AD (CON-028), so the stand-ins are the first construction item
-of the iteration.
+The standing readiness criteria are stated in the block above and are re-taken before every
+iteration. The delta required before the next iteration starts is recorded in *Environment delta
+required before the next iteration starts*; the observed state at the LCO gate is recorded in
+*Environment verification at the LCO gate*.
 
 ### Tool evaluation — Inception iteration 2
 
