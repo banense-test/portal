@@ -176,17 +176,26 @@ Contingency: the iteration's exit criteria name the guideline files as evidence;
 |---|---|---|---|
 | R001 | CON-021, STK-003 | DependsOn | UC-001 |
 | R001 | CON-021, STK-003 | DependsOn | UC-008 |
+| R001 | CON-021, STK-003 | DependsOn | COMP-010 |
 | R002 | CON-005, CON-028 | DependsOn | UC-008 |
 | R002 | CON-005, CON-028 | DependsOn | UC-002 |
+| R002 | CON-005, CON-028 | DependsOn | COMP-006 |
 | R003 | BG-003, AC-005 | DependsOn | UC-001 |
 | R004 | CON-028 | DependsOn | UC-001 |
 | R004 | CON-028 | DependsOn | UC-008 |
+| R004 | CON-028 | DependsOn | COMP-006 |
 | R005 | CON-021, CON-028 | DependsOn | UC-008 |
 | R005 | CON-021, CON-028 | DependsOn | UC-009 |
 | R006 | AC-006 | DependsOn | UC-001 |
+| R006 | AC-006 | DependsOn | COMP-003 |
 | R007 | CON-027 | DependsOn | AC-001 |
 | R009 | CON-026 | DependsOn | UC-001 |
 
 R008 is retired as not applicable: its mechanism names no actor in this project, so it threatens no element and carries no trace edge. The retirement and its reason are recorded in the Risk Register and in Risk Mitigation and Contingency.
 
 R009's remaining scope is the guideline files, which govern how UC-001's implementation is written and reviewed; the CI half of the risk is retired against run `36050451436` and no longer threatens the build.
+
+**Trace endpoints.** `CON-001`..`CON-032`, `BG-001`..`BG-003`, `AC-001`..`AC-006` and `STK-001`..`STK-004` are declared identifiers, copied exactly from the work order. `UC-001`..`UC-009` are the System Analyst's use-case identifiers; `COMP-003`, `COMP-006` and `COMP-010` are the Software Architect's component identifiers. `run 36050451436` is an observed SCM fact, cited as returned by the `scm_*` tools. The findings cited above are the reviewers' `<artifact>#<key>` handles; a finding is not an element and no edge is registered on one.
+
+**No element of this role is minted.** The Project Manager produces no `UC-NNN`, `CLS-NNN`, `COMP-NNN`, `TC-NNN` or `INT-NNN`; those families belong to other authorities. The magnitude band table, the risk register and the mitigation narrative are sections of this artifact, not trace-graph elements, so no edge is registered on them.
+
