@@ -150,14 +150,16 @@ Priority is by architectural significance: risk retired, coverage of the archite
 | Rank | Use case | Volatility | Why it is architecturally significant | Risk it addresses | Elaboration iteration |
 |---|---|---|---|---|---|
 | 1 | UC-001 Clock In and Clock Out | High | Forces the client-timestamp, idempotency-key and localStorage-retry decisions (AC-006), the page-level script (CON-023), the skew bound (R006), and the CON-011/CON-010 invariants. It is the use case BG-002 and BG-003 depend on | R006, R003, R004 | First |
-| 2 | UC-008 Search Employee Directory | High | Forces the LDAP read, the merge with the portal-owned category link, and the empty-attribute behaviour that R002 is about. It is the use case AC-004 depends on | R002, R001, R005 | First |
+| 2 | UC-008 Search Employee Directory | High | Forces the LDAP read, the merge with the portal-owned category link, and the empty-attribute behaviour that R002 is about. It is the use case AC-004 depends on | R002, R001, R004 | First |
 | 3 | UC-002 Export Monthly Clocking Report | Medium | Forces the exact FR-003 contract and the AD read at export time (CON-016). It is the artefact that replaces the Excel sheet, so BG-001 depends on it | R002 | Second |
-| 4 | UC-009 Assign or Clear Worker Category | Low | Exercises the only write the portal makes about a person, and the CON-014/CON-015/CON-016 invariants | R005 | Second |
+| 4 | UC-009 Assign or Clear Worker Category | Low | Exercises the only write the portal makes about a person, and the CON-014/CON-015/CON-016 invariants | — | Second |
 | 5 | UC-005, UC-006, UC-007 Publish / Edit / Unpublish News | Low | Together they exercise the CON-009 featured invariant from three different entry points, which is why the invariant is enforced in the schema and not in the form | — | Second |
 | 6 | UC-003 Correct or Insert a Clocking | Low | Exercises the append-only correction model and the NFR-004 audit contract | R006 (contingency) | Third |
 | 7 | UC-004 Read Internal News | Low | Read path only; validates the no-cache rule of AC-006 | — | Third |
 
 **Coverage check.** Every component in the Logical view is exercised by at least one of the three realized scenarios, and every node in the Deployment view carries traffic from at least one of them. No view exists without a use-case scenario exercising it.
+
+**R004 gates this list.** Every use case below is built and tested against the CON-028 stand-ins, never against the real Keycloak or the real AD. R004 materialized in iteration 1 because the stand-in environment was not delivered, so no use case could be built or tested. The stand-in OIDC issuer and the stand-in directory are therefore the first work item of iteration 2, ahead of the use cases that depend on them.
 
 ### UC-001 Clock In and Clock Out — realization
 
