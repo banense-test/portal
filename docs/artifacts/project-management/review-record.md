@@ -761,6 +761,60 @@ Each action is the finding's Recommendation; its status is that finding's Resolu
 **Carry-over.** The five open findings of this lens carry to the next iteration of this lens, which will reconcile them in its closure state before recording new defects. The two deferred findings carry with their corrective action named. Nothing is rejected. The stakeholder's directive — all findings must be corrected, even if they are minor — governs the whole set.
 
 **Cross-lens findings left untouched.** The findings carrying `reviewerRole: ManagementReviewer` and `reviewerRole: BusinessReviewer` are those lenses' to close. The ownership invariant rejects a cross-lens close attempt, so none was attempted.
+
+### Business Reviewer lens
+
+**Closure ledger.** Every prior finding of this lens, with its disposition. One prior finding existed; it is closed.
+
+```plantuml
+@startuml BR3_ClosureLedger
+title Business Modeling lens - closure ledger and defect distribution, Inception iteration 3
+skinparam classAttributeIconSize 0
+
+class "Use-Case Model" as UCM <<artifact>> {
+  F1 Minor : Resolved - CON-013 filter half realized in UC-008
+}
+class "Vision" as V <<artifact>> {
+  F1 Minor : recorded this pass - business goal verification path
+}
+
+class "Ledger" as L <<ledger>> {
+  prior findings of this lens : 1
+  closed this pass : 1
+  deferred : 0
+  rejected : 0
+  left open : 0
+  new findings this pass : 1
+  Critical : 0
+  Major : 0
+  Minor : 1
+}
+
+UCM --> L
+V --> L
+
+note bottom of L
+  No Critical and no Major finding of this lens.
+  The one new Minor is a documentation defect in the
+  Vision's business-goal layer; it does not block
+  derivation and does not touch declared scope.
+end note
+@enduml
+```
+
+| Prior finding | Artifact | Severity | Disposition | Basis |
+|---|---|---|---|---|
+| `Use-Case Model#F1` | Use-Case Model | Minor | **Resolved** | `CON-013`'s filter half is now realized. UC-008 main flow step 1 admits a worker category as a search term; step 5 filters the merged entries by the category link; alternative flow A5 states the filter against the closed list of four values (`CON-014`) and records that an employee with no category link is not returned by a category filter (`CON-015`). The use case no longer claims `CON-013` while realizing only its column half. |
+
+**Open actions carried to the next iteration of this lens.**
+
+| Action | Owner | Artifact | Trigger |
+|---|---|---|---|
+| State each business goal's verification path once and make the Traceability edge agree with it | SystemAnalyst | Vision | `Vision#F1` — next iteration of this lens verifies the correction |
+| Confirm the instrument that closes `BG-001` and `BG-002`, if the stakeholder intends one other than the acceptance criteria named | STK-001 | Vision | Only if the SystemAnalyst cannot resolve the path from the declared acceptance criteria |
+
+**No action is carried against the Business Modeling discipline.** It is INACTIVE and no business-model artifact is required of it this phase. The two actions above are against the Vision's business-goal layer, which is the business-facing content this lens audits.
+
 ## Disposition
 #### Iteration 3 — disposition
 
