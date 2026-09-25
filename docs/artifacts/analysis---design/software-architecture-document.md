@@ -694,7 +694,6 @@ WCL ..> AUD : writes
 ```
 
 ## Process View
-
 The portal is a single process serving concurrent requests. There is no background job, no scheduler and no message broker: the monthly CSV is exported on demand by HR, not on a schedule, and no time-triggered actor is declared.
 
 ### Transaction boundaries
@@ -716,8 +715,8 @@ Only two things in this system can be contended by concurrent requests, and both
 
 | Failure | Behaviour | Source |
 |---|---|---|
-| Corporate network down at the moment of a clocking press | The press is held in browser localStorage and the POST is retried for up to 5 minutes; the server accepts the press timestamp and rejects duplicates by the idempotency key. Beyond 5 minutes the employee reports the clocking to HR | AC-006, REL-001 |
-| Network down for the directory or the news | A 'no connection' message. Nothing is copied locally, so there is nothing to cache and nothing to sync | AC-006, REL-002 |
+| Corporate network down at the moment of a clocking press | The press is held in browser localStorage and the POST is retried for up to 5 minutes; the server accepts the press timestamp and rejects duplicates by the idempotency key. Beyond 5 minutes the employee reports the clocking to HR | AC-006 |
+| Network down for the directory or the news | A 'no connection' message. Nothing is copied locally, so there is nothing to cache and nothing to sync | AC-006 |
 | Active Directory unavailable | The directory and the export cannot read the six AD fields. The clocking path is unaffected — it never touches AD | CON-005, R001 |
 | Keycloak unavailable | No session can be established, so no use case is reachable. Accepted in advance under CON-021; the remedy for a milestone delay is another iteration | CON-002, R001, CON-021 |
 | Database unavailable | No read and no write. Infrastructure's existing server-backup practice covers restore (CON-032); no backup design is part of this project | CON-032 |
