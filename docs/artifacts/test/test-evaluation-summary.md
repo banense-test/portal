@@ -162,15 +162,16 @@ end note
 
 **Recommendation.** Proceed to Elaboration with the stand-in environment as the first construction item, since R004 gates every test. The first acceptance-verifiable increment is UC-001, which carries AC-002, AC-005 and AC-006, followed by UC-008, which carries AC-004 and exercises R002's gap path. AC-005 and BG-003 are verified with real employees after go-live and cannot be closed by any test the team runs.
 ## Traceability
+Every row below names element identifiers on both sides. The downstream Test Case elements (`TC-NNN`) do not yet exist — they are the TestDesigner's to mint — so no edge is claimed to them here; the edges are registered when those elements are minted. The CI run cited in the Test Summary is an observed external fact, not an element, and carries no edge.
 
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | Test Scope | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009 | Refines | UC-001, UC-002, UC-003, UC-004, UC-005, UC-006, UC-007, UC-008, UC-009 |
-| Acceptance verification plan | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | Test Case |
-| Non-functional verification | NFR-001, NFR-002, NFR-003 | Refines | Test Case |
-| Audit verification | NFR-004 | Refines | Test Case |
-| Authorization verification | NFR-005 | Refines | Test Case |
-| Business-rule verification | CON-009, CON-010, CON-011, CON-012, CON-013, CON-014, CON-015, CON-016, CON-017 | Refines | Test Case |
+| Acceptance verification plan | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | UC-001, UC-005, UC-008 |
+| Non-functional verification | NFR-001, NFR-002, NFR-003 | Refines | UC-001, UC-008 |
+| Audit verification | NFR-004 | Refines | UC-002, UC-004, UC-005, UC-006, UC-007, UC-009 |
+| Authorization verification | NFR-005 | Refines | UC-001, UC-005, UC-009 |
+| Business-rule verification | CON-009, CON-010, CON-011, CON-012, CON-013, CON-014, CON-015, CON-016, CON-017 | Refines | UC-004, UC-005, UC-006, UC-007, UC-008, UC-009 |
 | Stand-in test boundary | CON-028, R002 | DependsOn | UC-008 |
-| Risk-directed test priority | R002, R004, R006 | DependsOn | Test Case |
-| Defect lifecycle | CON-026 | Refines | Test Case |
+| Risk-directed test priority | R002, R004, R006 | DependsOn | UC-001, UC-008 |
+| Defect lifecycle | CON-026 | Refines | — |
