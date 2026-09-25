@@ -1,7 +1,8 @@
 ## Document Control
 - **Phase:** Inception
-- **Status:** Draft — iteration 2 close, written after the reviewers ruled
+- **Status:** Draft — iteration 3
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
+
 ## Iteration Objectives Reached
 This assessment accumulates one entry per iteration. Each entry records the iteration's outcome given the ReviewCoordinator's verdict for that iteration; it does not declare the milestone.
 
