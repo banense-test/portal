@@ -1083,12 +1083,14 @@ Every row below is a registered edge in the trace graph. The components are the 
 | COMP-004 Clocking Ledger | CON-010, CON-011, CON-012, NFR-002 | Derives | UC-001, UC-003 |
 | COMP-005 News Publishing | CON-009, CON-017 | Derives | UC-005, UC-006, UC-007 |
 | COMP-006 Directory Gateway | CON-004, CON-005, CON-028, R002, R004 | Derives | UC-002, UC-008 |
-| COMP-007 Worker Category | CON-013, CON-014, CON-015, CON-016 | Derives | UC-009 |
+| COMP-007 Worker Category | CON-013, CON-014, CON-015, CON-016 | Derives | UC-008, UC-009 |
 | COMP-008 Monthly Export | FR-003 | Derives | UC-002 |
 | COMP-009 Audit Trail | NFR-004, CON-018, CON-024 | Derives | UC-002, UC-003, UC-005, UC-006, UC-007, UC-009 |
 | COMP-010 Identity and Access | NFR-005, CON-002, CON-025, R001 | Derives | UC-001, UC-002, UC-003, UC-004, UC-005, UC-006, UC-007, UC-008, UC-009 |
 
 **Link direction.** A component `Realizes` the use case it fulfils — design to use case. The `Traces From` column carries the constraints, requirements, acceptance criteria and risks that justify the component's existence; the `Traces To` column carries the use cases it realizes. `CON-026` and `CON-001` reach COMP-001 and COMP-002 as `DependsOn` (the artefact is built by the hosted CI and runs on the estate), and `R001`, `R002`, `R004` and `R006` reach their components as `DependsOn` (the component is what the risk threatens or what mitigates it). Both directions are registered.
+
+**COMP-007 realizes UC-008 as well as UC-009.** CON-013 declares the worker category is used as a column of the directory **and as a filter on it**. UC-008 therefore reads the category link, not only UC-009 which writes it. The category filter is applied to the merged entry in COMP-002, because the category is the one field Active Directory does not hold (CON-016) and the filter cannot be pushed into the LDAP query — COMP-006 stays a pure AD projection so the CON-028 stand-in seam remains a seam on AD alone.
 
 **NFR-003 has a downstream element.** The availability window is a property of the single deployable's application boundary, so `NFR-003 → COMP-002` is registered. No separate availability component is introduced: NFR-003 requires 07:00–19:00 Monday–Friday with fault tolerance inside the corporate network, not 24/7, and a single deployable on the estate Infrastructure operates (CON-029) is the whole of the design that requirement needs.
 
