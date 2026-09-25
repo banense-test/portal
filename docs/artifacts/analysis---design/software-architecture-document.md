@@ -385,7 +385,7 @@ The decomposition is by **area of change**, not by feature. Each component below
 
 ```plantuml
 @startuml Portal_Component
-title Portal - candidate architecture: components, layers and interfaces (Inception iteration 1)
+title Portal - candidate architecture: components, layers and interfaces (Inception iteration 2)
 skinparam componentStyle rectangle
 
 actor "Employee\n(STK-004)" as EMP
@@ -462,6 +462,8 @@ note right of C006
   The single read-only boundary to Active Directory.
   Encapsulates the LDAP port, the CON-028 stand-in
   seam and empty-attribute tolerance (R002).
+  R004 materialized: the stand-in behind this seam
+  is the first work item of iteration 2.
 end note
 
 note bottom of C007
