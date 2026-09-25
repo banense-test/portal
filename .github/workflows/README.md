@@ -7,16 +7,26 @@ state. `docs/BRANCHING_STRATEGY.md` records branching topology only and never CI
 
 | Item | State | Evidence |
 |---|---|---|
-| Workflow definition | Present | `.github/workflows/ci.yml` |
-| Build job | Green on `main` | run `36094382461` |
-| Test job | Green on `main` | run `36094382461` |
+| Workflow definition | Present | `.github/workflows/ci.yml` at `233644bc` |
+| Build job | Green on `main` | run `36095051721` |
+| Test job | Green on `main` | run `36095051721` |
 | Trigger coverage | `main`, `iteration/**`, `chore/**`, `feature/**`, `hotfix/**` on push and on pull_request | `.github/workflows/ci.yml` |
-| Solution sync | `Portal.sln` regenerated from the `src/` + `tests/` tree before every build | `.github/workflows/ci.yml` |
+| Solution sync | Verified - the build fails if any project under `src/` or `tests/` is absent from `Portal.sln` | `.github/workflows/ci.yml` |
 | Test discovery | Every `tests/**/*.csproj` executed; no fixed project name | `.github/workflows/ci.yml` |
 | Test database | PostgreSQL 18 service container on the test job, health-checked before tests run | `.github/workflows/ci.yml` |
 
 The evidence column cites the run that validated the current pipeline shape. It is
-refreshed when the pipeline changes, not on every run.
+refreshed when the pipeline changes, not on every run. The run for revision `233644bc`
+had not registered in the build-status endpoint when this record was written; the next
+check refreshes it.
+
+**Why the solution sync is verified rather than attempted.** `Portal.sln` is a build
+manifest, not a source of truth. The Implementer adds subsystem projects under `src/`
+every iteration, and a manifest that omits one compiles nothing of that work - the build
+stays green while the merged code is never built, and the green check becomes a lie. The
+sync step therefore adds every project it finds and then asserts the manifest lists each
+one, failing the build if any is missing. An add that silently fails can no longer pass
+as a sync.
 
 ## Integration discipline
 
@@ -32,11 +42,11 @@ refreshed when the pipeline changes, not on every run.
   iteration's integration outcome: pedigree chain, merged feature PRs, CI status and the
   component and deployment diagrams.
 
-## Integration outcome - Inception iteration 2
+## Integration outcome - Inception iteration 3
 
 ```plantuml
-@startuml Portal_Inception2_Pedigree
-title Portal - Inception iteration 2 integration pedigree
+@startuml Portal_Inception3_Pedigree
+title Portal - Inception iteration 3 integration pedigree
 skinparam componentStyle rectangle
 
 package "main - integration of record" {
@@ -69,9 +79,9 @@ end note
 
 | Subsystem | Pedigree | Basis |
 |---|---|---|
-| CI baseline (build + test) | VERIFIED | run `36094382461` green on `main` |
-| PostgreSQL 18 test service | VERIFIED | run `36094281565` green on `main` |
-| CI runtime state record | VERIFIED | run `36094382461` green on `main` |
+| CI baseline (build + test) | VERIFIED | run `36095051721` green on `main` |
+| PostgreSQL 18 test service | VERIFIED | run `36095051721` green on `main` |
+| CI runtime state record | VERIFIED | this file, at `233644bc` |
 | UC-001 .. UC-009 | DEFERRED | no implementation exists; Inception is documentation-only |
 
 Merged feature PRs this iteration: none. No branch carried `ready-for-review` and no pull
@@ -83,5 +93,8 @@ documentation-only and its topology defines no Inception iteration branch, so th
 and Elaboration instrument; the first one is due at the close of the first iteration that
 merges feature branches.
 
-Outstanding: `Issue #2` - `docs/BRANCHING_STRATEGY.md` cites a superseded blob sha for the
-CI configuration item. ConfigurationManager-owned; not corrected by the Integrator.
+## Issue state
+
+Open SCM issues are held by the tracker, which is their authority. This file does not
+restate their state: a copy of a state outside its authority goes stale the moment the
+state changes, and a stale copy is a defect. Read the tracker.
