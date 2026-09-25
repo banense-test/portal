@@ -7,7 +7,7 @@ The system boundary is the Employee Portal application. Actors sit ON the bounda
 
 ```plantuml
 @startuml Portal_UC_Model
-title Portal - system boundary, actors and use cases (Inception iteration 1)
+title Portal - system boundary, actors and use cases (Inception iteration 2)
 left to right direction
 skinparam packageStyle rectangle
 
