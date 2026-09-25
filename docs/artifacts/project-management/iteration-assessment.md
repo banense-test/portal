@@ -238,6 +238,8 @@ This section accumulates one entry per iteration, recording which use cases the 
 **The consequence of the unmet exit criterion.** UC-001, UC-002 and UC-008 are the three architecturally significant use cases and the three the plan scoped into iteration 1 as full specifications. CON-028 forbids building or testing against the real Keycloak or the real AD, so with no stand-in environment none of the three can be built or tested, and R004 — the risk the register itself calls the one that gates all testing — remains untreated. The specification work is complete; the environment that would let it be exercised does not exist.
 
 ## Results Relative to Evaluation Criteria
+This section accumulates one entry per iteration. Layer (a) carries one line per declared acceptance criterion; layer (b) carries one line per exit criterion the Iteration Plan set for that iteration.
+
 ### Layer (a) — every declared acceptance criterion, one line each
 
 | AC | Criterion | Verdict this iteration | Evidence |
