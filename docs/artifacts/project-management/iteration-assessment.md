@@ -733,7 +733,6 @@ The two currencies are reported apart and are never summed into one figure and n
 **No external change to the project's inputs.** The custom design at `docs/inputs/employee-portal-design.html` (CON-031) is committed to the repository and is not pending. The OIDC client is already registered (CON-003), so no request is outstanding. The CON-028 human validation of the real Keycloak and AD by Infrastructure with HR is not team work to plan and has not yet been opened; it opens in Elaboration.
 
 ## Rework Required
-
 **18 findings are open: 0 Critical, 4 Major, 14 Minor.** The stakeholder's directive is that all are corrected, including the minor ones. Nothing is deferred and nothing is rejected. The deadline for every finding is the next iteration of the lens that emitted it — a real event, because the phase auto-iterates. No calendar date is projected.
 
 ```plantuml
@@ -862,6 +861,174 @@ end note
 2. **An unexecuted work item is a failed exit criterion, not an open item.** The plan listed criterion 5 as open while the milestone verdict was taken. A criterion whose evidence does not exist at the point of assessment is NOT MET, and saying so is what makes the gate honest.
 3. **A figure whose provenance the register itself flags must not anchor the register's bands.** R001's probability and impact were recorded as the analyst's estimates in R001's own text, and the classification section then anchored every band on them. The flag belonged in the classification, not only in the risk's description.
 4. **Evidence blocks decay faster than content.** The four Major findings cluster on the artifacts that carry evidence — the readiness record, the test evidence block, the risk classification basis, the exit-criteria evidence — while the content artifacts are clean or near-clean. The defect pattern is an evidence-currency problem, corrected by refreshing records against observable state, not by reworking the baseline.
+5. **The risk register predicted the iteration's failure and the prediction was not acted on.** R004 named the exact outcome — the stand-in environment not ready, no use case buildable or testable — and its mitigation was the first work item of the plan. A risk-driven plan is only risk-driven if the item the risk names is executed first.
+
+### Iteration 2 — Inception
+
+**9 findings are open: 0 Critical, 2 Major, 7 Minor.** The stakeholder's directive is that all are corrected, including the minor ones. Nothing is deferred and nothing is rejected. The deadline for every finding is the next iteration of the lens that emitted it — a real event, because the phase auto-iterates. No calendar date is projected.
+
+**18 findings were closed this pass.** Every finding recorded at the iteration-1 LCO review is closed by the lens that emitted it, on evidence read from the corrected artifact. Nothing is deferred and nothing is rejected.
+
+```plantuml
+@startuml IA_Iter2_Rework
+title Portal - Inception iteration 2: rework ledger, 9 open findings by owner and severity
+skinparam classAttributeIconSize 0
+
+class "ProjectManager" as PM <<owner>> {
+  Major : 1
+  Minor : 1
+  Major : Risk List#F3 - R004 treatment failed twice, carried unchanged
+  Minor : Risk List#F4 - treatment column headed at Iter-1 close; R009 mitigation claims work not done
+}
+class "SystemAnalyst" as SA <<owner>> {
+  Major : 1
+  Minor : 3
+  Major : Use-Case Model#F1 - six SUSPECT risk-to-use-case edges unreviewed
+  Minor : Use-Case Model#F2 - realizing-component table stale against the SAD
+  Minor : Vision#F3 - NFR-003 row reads "not yet minted"
+  Minor : Use-Case Model#F1 - CON-013's directory filter has no realizing flow in UC-008
+}
+class "RequirementsSpecifier" as RS <<owner>> {
+  Major : 0
+  Minor : 1
+  Minor : Supplementary Specification#F2 - NFR-003 row reads "not yet minted"
+}
+class "ProcessEngineer" as PE <<owner>> {
+  Major : 0
+  Minor : 1
+  Minor : Development Case#F3 - open SCM issue row records one, tracker holds three
+}
+class "TestManager" as TM <<owner>> {
+  Major : 0
+  Minor : 1
+  Minor : Test Evaluation Summary#F2 - defect count and CI run stale
+}
+class "Rework ledger" as LED <<ledger>> {
+  findings : 9
+  Critical : 0
+  Major : 2
+  Minor : 7
+  closed this pass : 18
+  overdue : 0
+  deferred : 0
+  rejected : 0
+}
+PM --> LED
+SA --> LED
+RS --> LED
+PE --> LED
+TM --> LED
+note bottom of LED
+  The stakeholder's directive governs the whole ledger:
+  all findings are corrected, even the minor ones.
+  Nothing is deferred and nothing is rejected.
+  Deadline for every finding is the next iteration of
+  the lens that emitted it - a real event, because the
+  phase auto-iterates. No calendar date is projected.
+end note
+@enduml
+```
+
+**Priority 1 — the two Major findings.** Each either withholds the evidence for an LCO exit criterion or leaves a declared change unreviewed.
+
+| Finding | Owner | Rework | Blocking |
+|---|---|---|---|
+| `Risk List#F3` | ProjectManager | Re-assess R004 at this milestone: record the second failed execution and revisit its magnitude, strategy and mitigation rather than carrying them unchanged. If the stand-in environment cannot be delivered by the team, the treatment must change — different sequencing, a different owner, or escalation to the stakeholder as a decision only they can make. Record the treatment state at Iter-2 close, not at Iter-1 close | Yes — R004 gates every test and its treatment has now failed twice |
+| `Use-Case Model#F1` | SystemAnalyst | Re-read the Risk List's current R001, R004 and R009 entries and update the constraints-and-risks table: record R004 as materialized and re-assessed, R001's probability and impact as `[ASSUMPTION — requires validation]`, and R009's remaining scope as the guideline files only. Then declare the change in turn so the SUSPECT edges clear | Yes — a SUSPECT edge left open at phase close is a Major finding against the artifact owning the unreviewed end |
+
+**Priority 2 — the seven Minor findings, by owner.**
+
+| Owner | Findings | Rework |
+|---|---|---|
+| ProjectManager | `Risk List#F4` | Re-head the treatment column to the current iteration and refresh each row against observable state at Iter-2 close; for R009, record the guideline files as still absent and move the mitigation to the iteration that will actually author them |
+| SystemAnalyst | `Use-Case Model#F2`, `Vision#F3`, `Use-Case Model#F1` (Business Reviewer) | Reconcile the realizing-component table with the Software Architecture Document's registered edges — COMP-001 to UC-001, UC-002, UC-004, UC-008; COMP-002 to UC-001, UC-002, UC-008; add COMP-009 and COMP-010; replace the NFR-003 row's Traces To with COMP-002 and delete the "not yet minted" note for that row; add the worker-category filter to UC-008 — extend main flow step 1 or add an alternative flow — so the directory filters by worker category as CON-013 declares, or escalate the conflict between FR-008's declared search dimensions and CON-013's declared filter to the stakeholder |
+| RequirementsSpecifier | `Supplementary Specification#F2` | Replace the NFR-003 row's Traces To with COMP-002 and delete the "not yet minted" note for that row, so this artifact states the same downstream element the Software Architecture Document registers |
+| ProcessEngineer | `Development Case#F3` | Record all three open issues in the "Open SCM issues" row, with their labels and the fact that all three are configuration-record defects owned by the ProcessEngineer, or state the count as three and name the tracker as the authoritative record |
+| TestManager | `Test Evaluation Summary#F2` | Record `Issue #3` alongside `Issue #1` and `Issue #2`, state the defect count as three, and refresh the CI run reference to the run observed at the point of submission. The three places that carry the count — the Test Summary evidence table, the Defects and Incidents section and the Conclusions table — must agree with the tracker |
+
+**Closure discipline.** A finding is closed only when its owner confirms the corrective action and the lens that emitted it re-reads the artifact and verifies the action is adequate. Closure is executed by the originating lens. 18 closures were due this pass — every finding recorded at the iteration-1 LCO review — and all 18 were materialised by the originating lens. Review debt is 0% of the ledger — no finding is overdue.
+
+**Adjustments this assessment forces on the iteration 3 plan.** These are the plan-level consequences of the variances above, and they are the input to the next Iteration Plan.
+
+| # | Adjustment | Basis |
+|---|---|---|
+| 1 | The stand-in environment (CON-028) becomes a hard gate: no other work item of iteration 3 starts until it is delivered and recorded. The Integrator is the single accountable owner | Exit criterion 5 not met for the second consecutive iteration; R004's treatment failed twice (`Risk List#F3`, Major) |
+| 2 | R004's magnitude is raised Significant to High and its probability 3 to 4 on the observed 2-of-2 materialization rate; its strategy stays Avoid, because CON-021's grant does not reach a risk whose mechanism is the team's own execution | `Risk List#F3` (Major) |
+| 3 | The Risk Register's treatment column is headed at the current iteration and every row is refreshed against observable state at close | `Risk List#F4` (Minor) |
+| 4 | R009's remaining scope is the guideline files, still absent; its mitigation moves to the iteration that will author them | `Risk List#F4` (Minor) |
+| 5 | The Use-Case Model's constraints-and-risks table records R004 as materialized and re-assessed, R001's P and I as `[ASSUMPTION — requires validation]`, and R009's remaining scope as the guideline files only; the change is declared in turn so the SUSPECT edges clear | `Use-Case Model#F1` (Major) |
+| 6 | The Use-Case Model's realizing-component table is reconciled with the Software Architecture Document's registered edges | `Use-Case Model#F2` (Minor) |
+| 7 | The NFR-003 row in the Vision and in the Supplementary Specification names COMP-002 as its downstream element | `Vision#F3`, `Supplementary Specification#F2` (Minor) |
+| 8 | UC-008 gains the worker-category filter CON-013 declares, or the conflict between FR-008's declared search dimensions and CON-013's declared filter is escalated to the stakeholder | `Use-Case Model#F1` (Business Reviewer, Minor) |
+| 9 | The Development Case's "Open SCM issues" row records all three open issues | `Development Case#F3` (Minor) |
+| 10 | The Test Evaluation Summary records `Issue #3`, states the defect count as three, and refreshes its CI run reference | `Test Evaluation Summary#F2` (Minor) |
+| 11 | The coarse roadmap is re-planned from the measured actuals of both closed Inception iterations — 6,918,081 tokens and 8:35:00.7478289 for Iter-1, 12,066,256 tokens and 2:03:51.5597976 for Iter-2 — and the fine plan is built only for the next iteration | CON-027; the measured shape replaces every assumed share |
+
+**No adjustment cuts or defers declared scope.** CON-027 forbids it. The remedy for an incomplete iteration is another iteration, and the stakeholder directs exactly that. No agent role is added to the next iteration as a remedy: adding roles increases coordination overhead without proportional benefit, and the lever here is the iteration, not the parallelism.
+
+**Lessons learned.**
+
+1. **A treatment that is a sequencing statement is not a treatment.** R004's mitigation was "the stand-in environment is the first work item of the iteration". It was sequenced first twice and executed neither time. A treatment must name an accountable owner, a control that produces a record, and a consequence for non-delivery — a hard gate, not a position in a list.
+2. **A shared owner is no owner.** R004 was owned by "Implementer + Integrator" jointly, and the item was executed by neither. The re-assessment names the Integrator alone.
+3. **A risk that materializes twice is evidence, and evidence outranks an estimate.** R004's probability was an estimate of 3; the observed materialization rate is 2 of 2. The re-assessment raises the probability on the observation, not on a re-estimate.
+4. **The corrective pass worked, and it generated its own defects.** All 18 iteration-1 findings closed; 9 new ones recorded. The new findings cluster on records that describe state — a treatment column, an issue row, an evidence block, two trace rows — not on the baseline content. Evidence currency is the recurring failure mode of this project, and it is corrected by refreshing records against observable state at the point of submission.
+5. **A change declared in one artifact leaves the other end SUSPECT until its owner re-reads it.** The Risk List's changes to R001, R004 and R009 left six SUSPECT edges into the Use-Case Model. Declaring a change is half the work; the other half is the other end's owner re-reading and clearing it.
+6. **The iteration's spend rose while its elapsed time fell.** Iteration 2 spent 1.74 times iteration 1's tokens in a quarter of the elapsed agent time. Corrective work over an accumulated artifact surface is token-heavy and time-light, and the forecast for iteration 3 is built from that measured shape, not from an assumed one.
+
+### Iteration 1 — Inception
+
+**18 findings were open at that close: 0 Critical, 4 Major, 14 Minor.** The stakeholder's directive was that all are corrected, including the minor ones. Nothing was deferred and nothing was rejected. All 18 were closed at iteration 2.
+
+| Finding | Owner | Rework | Blocking |
+|---|---|---|---|
+| `Iteration Plan#F1` | ProjectManager | Evidence the stand-in environment (CON-028) — a test OIDC issuer and a test directory carrying the declared attributes, including entries with empty job title and extension — or state explicitly in Evaluation Criteria layer (b) that exit criterion 5 is NOT met and the LCO gate is not passable | Yes — the criterion that gates every use case |
+| `Development Case#F1` | ProcessEngineer | Add a post-iteration environment verification recording the actual state of each item at the LCO gate, with observed evidence for each; keep the pre-iteration readiness table as the plan it is | Yes |
+| `Risk List#F1` | ProjectManager | Mark R001's probability and impact as `[ASSUMPTION — requires validation]` in the Risk Register and the Risk Classification section; state the magnitude bands as provisional; re-anchor on a confirmed basis or obtain the confirmation | Yes |
+| `Test Evaluation Summary#F1` | TestManager | Record `Issue #1` as the open defect in the three places that assert none exists; state the defect count as one; refresh the CI run reference | Yes |
+| `Risk List#F1` | ProjectManager | Restate R009 to cover only the genuinely absent guideline files, or record the CI half as retired against the observed run | No |
+| `Iteration Plan#F1` | ProjectManager | Draw the human validation gate in parallel with Iter-2 and Iter-3 | No |
+| `Iteration Plan#F2` | ProjectManager | Register the missing acceptance-criterion edges (AC-002 and AC-005 to UC-001, AC-003 to UC-005, AC-004 to UC-008) | No |
+| `Iteration Plan#F2` | ProjectManager | Record the iteration's measured token spend and elapsed time, the two currencies reported apart | No |
+| `Development Case#F1` | ProcessEngineer | Refresh the Environment readiness record to show the CI pipeline present and green on `main` | No |
+| `Development Case#F2` | ProcessEngineer | State the Environment intensity row per canonical matrix and move the recurrence narrative to the Environment section | No |
+| `Development Case#F2` | ProcessEngineer | Record the iteration-preparation checkpoint result for the next iteration | No |
+| `Vision#F1` | SystemAnalyst | Replace section names in Traces To with element identifiers | No |
+| `Vision#F2` | SystemAnalyst | Align the boundary diagram with the Use-Case Model's | No |
+| `Vision#F1` | SystemAnalyst | State the business-goal verification path per goal, with BG-003 measured with STK-004 after go-live | No |
+| `Software Architecture Document#F1` | SoftwareArchitect | Reconcile the traceability table with the registered edges and drop UC-001 from the Traces From side of the COMP-003 row | No |
+| `Software Architecture Document#F2` | SoftwareArchitect | State that `Clocking`'s time fields are immutable and name the export's correction-resolution rule | No |
+| `Supplementary Specification#F1` | RequirementsSpecifier | Name element identifiers in Traces To, or state that the downstream elements do not yet exist and the edges will be registered when they are minted | No |
+| `Risk List#F2` | ProjectManager | Record the observed state of R004's treatment at the milestone and adjust its status | No |
+
+**Closure discipline.** A finding is closed only when its owner confirms the corrective action and the lens that emitted it re-reads the artifact and verifies the action is adequate. Closure is executed by the originating lens. No closure was due at that pass: it was the first review event, so no lens had a prior finding to reconcile. Review debt was 0% of the ledger — no finding was overdue.
+
+**Adjustments that assessment forced on the iteration 2 plan.** These were the plan-level consequences of its variances, and they were the input to the iteration 2 plan.
+
+| # | Adjustment | Basis |
+|---|---|---|
+| 1 | The stand-in environment (CON-028) is the first work item of iteration 2, and its delivery is evidenced in the artifact that owns it before any use case work begins | Exit criterion 5 not met; R004's treatment unexecuted |
+| 2 | The Iteration Plan's Evaluation Criteria section states each exit criterion's verdict as met or not met at the point the plan is written; a criterion whose evidence does not exist is recorded as NOT MET, not as open | `Iteration Plan#F1` (Major) |
+| 3 | The plan's currency table carries the measured actual of the iteration that closed — 6,918,081 tokens and 8:35:00.7478289 of agent time — and the human gate is reported apart in days of queue time | `Iteration Plan#F2` (Minor); CON-027 |
+| 4 | The roadmap gantt draws the CON-028 human validation gate in parallel with Iter-2 and Iter-3, not in series ahead of Iter-3 | `Iteration Plan#F1` (Minor) |
+| 5 | The missing acceptance-criterion trace edges are registered: AC-002 and AC-005 to UC-001, AC-003 to UC-005, AC-004 to UC-008 | `Iteration Plan#F2` (Minor) |
+| 6 | R001's probability and impact are marked `[ASSUMPTION — requires validation]` and the magnitude bands are stated as provisional; the confirmation is re-asked of the sponsor | `Risk List#F1` (Major) |
+| 7 | R004's treatment state is recorded against the observed stand-in environment, and its mitigation names a control that produces a record | `Risk List#F2` (Minor) |
+| 8 | R009 is restated to cover only the guideline files genuinely absent, with the CI half recorded as retired against the observed run | `Risk List#F1` (Minor) |
+| 9 | The Test Evaluation Summary records `Issue #1` as the open defect and refreshes its evidence block against the tracker and the CI at the point of submission | `Test Evaluation Summary#F1` (Major) |
+| 10 | The Development Case carries a post-iteration environment verification and a recorded iteration-preparation checkpoint result | `Development Case#F1` (Major), `Development Case#F2` (Minor) |
+| 11 | The Vision, the Supplementary Specification and the Software Architecture Document name element identifiers in their traceability tables and register each row as an edge | `Vision#F1`, `Supplementary Specification#F1`, `Software Architecture Document#F1` (Minor) |
+| 12 | The Vision's boundary diagram is aligned with the Use-Case Model's, and the SAD states the clocking time fields as immutable and names the export's correction-resolution rule | `Vision#F2`, `Software Architecture Document#F2` (Minor) |
+| 13 | The Vision states the business-goal verification path per goal, with BG-003 measured with STK-004 after go-live | `Vision#F1` (Minor) |
+| 14 | The Development Case's Environment intensity row states the level per phase | `Development Case#F2` (Minor) |
+
+**No adjustment cut or deferred declared scope.** CON-027 forbids it. The remedy for an incomplete iteration is another iteration, and the stakeholder directed exactly that. No agent role was added to the iteration 2 plan as a remedy: adding roles increases coordination overhead without proportional benefit, and the lever here is the iteration, not the parallelism.
+
+**Lessons learned.**
+
+1. **A planning record is not gate evidence.** The Development Case's pre-iteration readiness table was the only evidence offered for exit criterion 5, and it was a snapshot taken before the iteration ran — stale on its own CI row. A gate criterion needs a record taken at the gate, against observable state.
+2. **An unexecuted work item is a failed exit criterion, not an open item.** The plan listed criterion 5 as open while the milestone verdict was taken. A criterion whose evidence does not exist at the point of assessment is NOT MET, and saying so is what makes the gate honest.
+3. **A figure whose provenance the register itself flags must not anchor the register's bands.** R001's probability and impact were recorded as the analyst's estimates in R001's own text, and the classification section then anchored every band on them. The flag belonged in the classification, not only in the risk's description.
+4. **Evidence blocks decay faster than content.** The four Major findings clustered on the artifacts that carry evidence — the readiness record, the test evidence block, the risk classification basis, the exit-criteria evidence — while the content artifacts were clean or near-clean. The defect pattern is an evidence-currency problem, corrected by refreshing records against observable state, not by reworking the baseline.
 5. **The risk register predicted the iteration's failure and the prediction was not acted on.** R004 named the exact outcome — the stand-in environment not ready, no use case buildable or testable — and its mitigation was the first work item of the plan. A risk-driven plan is only risk-driven if the item the risk names is executed first.
 
 ## Traceability
