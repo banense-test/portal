@@ -1,7 +1,6 @@
 ## Document Control
-
 - **Phase:** Inception
-- **Status:** Draft — governs Inception iteration 1; not yet reviewed
+- **Status:** Draft — governs Inception iteration 2; not yet reviewed
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 
 ## Tailoring Overview
