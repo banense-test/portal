@@ -3,7 +3,7 @@
 ## Document Control
 
 - **Phase:** Inception
-- **Status:** Draft — iteration 2
+- **Status:** Draft — iteration 3
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 
 ## Purpose
@@ -68,6 +68,10 @@ package "Transition" {
   component "hotfix/<issue-id>" as HF <<branch>>
 }
 
+package "Repository maintenance" {
+  component "chore/<subject>" as CHORE <<branch>>
+}
+
 package "Baselines - tags on main" {
   component "baseline-elaboration-E1-v1" as T1 <<tag>>
   component "baseline-construction-C1-v1" as T2 <<tag>>
@@ -81,13 +85,16 @@ FE1 --> IE1 : APPROVED mechanism PR
 FC1 --> IC1 : APPROVED feature PR
 FC2 --> IC1 : APPROVED feature PR
 HF --> MAIN : patch merge
+CHORE --> MAIN : direct commit - documentation and CI config
 MAIN ..> T1 : tag
 MAIN ..> T2 : tag
 MAIN ..> T3 : tag
 
 note bottom of MAIN
-  Only the Integrator writes main and iteration/*.
-  No other role pushes to either.
+  Source code reaches main only through the Integrator:
+  iteration/* merges at LAM close or IOC, hotfix/* by patch merge.
+  Documentation and CI configuration are committed directly to
+  main by their owning role - no pull request, no review label.
 end note
 @enduml
 ```
@@ -317,6 +324,10 @@ A failed audit produces an SCM issue, never a silent correction. A naming violat
 `severity:minor` + `nature:defect` + `naming-violation`; a missing approval or a red build at tag
 time is `severity:blocker` + `nature:defect`.
 
+A passing audit produces no artifact. The absence of an SCM issue is the record, and the audit's
+evidence is re-read at the next close rather than carried forward — a result written down here would
+be a state restated outside its authority.
+
 ## Tooling
 
 ```plantuml
@@ -373,12 +384,15 @@ end note
 
 **CI configuration item.** The pipeline definition is identified by its repository path,
 `.github/workflows/ci.yml`. Its content revision is the blob sha the repository holds at the commit
-being audited; the revision is re-read at each iteration close and is never carried forward from a
-previous one. The pipeline builds and tests on push to `main`, `iteration/**`, `chore/**`,
-`feature/**` and `hotfix/**`, and on pull requests into the same set. It syncs `Portal.sln` from the
-`src/` and `tests/` tree before every build, so a project added by the Implementer cannot be
-silently omitted from the build. It holds no production data or credentials and does not deploy
-(CON-026, CON-029). The pre-tag CI gate is therefore evaluable from this iteration onward.
+being audited. The revision is re-read at each iteration close and is never carried forward from a
+previous one, and the observed value is recorded in that close's audit record — the tag message —
+never in this file: a sha written here is stale the moment the pipeline changes, which is the defect
+class recorded as `Issue #2`. The pipeline builds and tests on push to `main`, `iteration/**`,
+`chore/**`, `feature/**` and `hotfix/**`, and on pull requests into the same set. It syncs
+`Portal.sln` from the `src/` and `tests/` tree before every build, so a project added by the
+Implementer cannot be silently omitted from the build. It holds no production data or credentials
+and does not deploy (CON-026, CON-029). The pre-tag CI gate is therefore evaluable from this
+iteration onward.
 
 **CI runtime readiness is not recorded here.** Which pipeline items are ready and which are not is
 recorded in `.github/workflows/README.md`. This file holds branching topology and the conventions
@@ -407,7 +421,8 @@ authority.
 | Iteration close sequence | CON-026 | Refines | Development Case |
 | Baseline policy and tag naming | CON-021, CON-027 | Refines | Iteration Plan |
 | Pre-tag gate (APPROVED + CI green) | CON-026 | Refines | Review Record |
-| Change control boundary | CON-020 | Refines | Issue #2 |
+| Change control boundary | CON-020 | Refines | Development Case |
+| CI configuration item revision rule | CON-026 | Refines | Issue #2 |
 | Audit procedures | NFR-004, CON-018, CON-019 | Refines | Review Record |
 | Tooling and CI configuration item | CON-026 | Refines | Development Case |
 | Cross-phase invariants | CON-004, CON-016 | Refines | Software Architecture Document |
