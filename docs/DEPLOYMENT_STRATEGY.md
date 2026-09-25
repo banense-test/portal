@@ -1,287 +1,282 @@
-# Portal — Deployment Strategy
+# Portal — Deployment Strategy Baseline
 
-**Phase:** Inception | **Iteration:** 2 | **Status:** Draft — not yet reviewed
+**Phase:** Inception | **Iteration:** 3 | **Status:** Draft — governs Inception iteration 3; not yet reviewed
 **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 
-This is the deployment strategy baseline. It is held in the repository, not as a RUP artifact: the
-Development Case records the Deployment Model optional artifact as NOT FIRED (single-node topology,
-deployment is a section of the Software Architecture Document), and Release Notes enter at Transition
-per DC §5.1. This file is the Inception record of the strategy; the Release Notes will operationalise
-it from Transition onwards.
+This file is the deployment strategy baseline. It is not a RUP artifact: the Deployment Model optional
+artifact is not triggered (DC §5.2) and the Release Notes enter at Transition (DC §5.1). The strategy is
+seeded here in Inception, refined against the Software Architecture Document's Deployment View in
+Elaboration, and executed as the Release Notes at Transition.
 
-## 1. Deployment mode
+## 1. Deployment mode: custom-built
 
-**Custom-built internal web application.** Not shrink-wrapped, not downloadable. The portal is a single
-.NET 10 deployable (CON-022, CON-023) with one PostgreSQL 18 instance (CON-024), built for one
-organisation, reachable only from the internal corporate network (CON-007), and operated by the
-Infrastructure team that already runs the estate (CON-001, CON-029).
+The portal is installed on the internal Windows Server estate by the Infrastructure team that already
+operates it (CON-001, CON-029), is reachable only from the internal corporate network (CON-007), and is
+distributed to no one — the users reach it through a browser.
 
-Every packaging, distribution and installation decision below follows from that mode: there is no
-installer to ship to the public, no licence mechanism, and no self-service download.
+Shrink-wrapped and downloadable packaging are excluded by CON-007 and CON-029: there is no installer for a
+third party and no artefact for an end user to obtain. Every packaging decision below follows from this
+mode.
 
 ## 2. Target user community
 
-| Community | Who | What they receive | Source |
-|---|---|---|---|
-| End users | `STK-004` — 200 employees across 3 offices | Clock in/out, read news, search the directory, from a current Chrome or Edge browser | CON-006 |
-| HR administrators | `STK-001` — HR Director and the HR group | Publish, edit and unpublish news; correct or insert clockings; export the monthly CSV; assign or clear a worker category | NFR-005 |
-| Operator | `STK-003` — Infrastructure Team | The release to deploy, monitor and patch; the configuration values to substitute | CON-029 |
-
-`STK-002` is not a user of the portal: he clarifies engineering doubts for the technical roles and
-receives no deployment.
+| Population | Who | What they do |
+|---|---|---|
+| STK-004 | 200 employees, 3 offices, current Chrome or Edge (CON-006) | Clock in and out, read news, search the directory |
+| STK-001 | HR Director and HR Administrators | Publish, edit and unpublish news; correct clockings; export the monthly report; manage worker categories |
+| STK-003 | Infrastructure Team | Operates the portal in production (CON-029). Not a user of it |
 
 ## 3. Target environments
 
-| Environment | Where | Purpose | Data | Source |
-|---|---|---|---|---|
-| Development and test | The team's environment, against stand-ins | Build and test every use case | Stand-in OIDC issuer and stand-in directory carrying the declared attributes, including entries with empty job title and extension. No production data | CON-028 |
-| CI | Hosted SCM provider | Build and test the artefact | No production data, no credentials, no deployment | CON-026 |
-| Production | The internal Windows Server estate | The live portal | Real Keycloak and real AD values substituted by Infrastructure at deployment | CON-001, CON-024, CON-028, CON-029 |
+| Environment | Where | Purpose | Data |
+|---|---|---|---|
+| Development and test | The team's environment, against stand-ins | Build and test every use case | Stand-in OIDC issuer and stand-in directory carrying the declared attributes, including entries with empty job title and extension (CON-028). No production data |
+| CI | Hosted SCM provider | Build and test the artefact | No production data, no credentials, no deployment (CON-026) |
+| Production | The internal Windows Server estate | The live portal | Real Keycloak and real AD values substituted by Infrastructure at deployment (CON-028, CON-029) |
 
-No staging environment is introduced. The declared topology is one estate (CON-001) and one PostgreSQL
-instance on it (CON-024); the physical placement of the application and the database within the estate
-is Infrastructure's decision, and no component depends on the answer. The Software Architecture
-Document's Deployment View is the authority for the topology; this strategy operationalises it.
+No staging environment is declared and none is introduced. The human validation of the real Keycloak and
+real AD (CON-028) is performed by Infrastructure with HR against the production configuration.
 
-## 4. Deployment topology
+## 4. Topology
+
+The Deployment Model optional artifact is not triggered (DC §5.2): one application, one database, one
+estate, one network, one timezone (CON-008). The topology is the Software Architecture Document's
+Deployment View; this strategy operationalizes that view rather than restating it.
+
+**CON-025 is load-bearing.** Keycloak runs INSIDE the corporate network. External to this *project* is not
+the same as external to the *network*: the OIDC redirect is an intra-network call, nothing about login
+crosses the corporate boundary, and login keeps working with no internet link. A deployment view that
+placed Keycloak in a cloud node would contradict CON-025 and be wrong.
 
 ```plantuml
-@startuml DM_DeploymentUnit
-title Portal - the deployment unit and the environments it moves through
+@startuml DM_StrategyTopology
+title Portal - deployment topology (strategy baseline, Inception iteration 3)
 
-package "Deployment unit - tagged SCM release" {
-  component "Employee Portal\n.NET 10 + Razor Pages + REST API" as APP
-  component "PostgreSQL 18 schema" as SCHEMA
-  component "Configuration placeholders\nissuer, client id, client secret,\nLDAP host, bind account, base DN" as CFG
-  component "User Documentation" as DOC
+node "Employee workstation\n(Chrome / Edge, CON-006)" as WS {
+  artifact "Portal pages + clocking page script\n(localStorage retry, AC-006)" as BROWSER
 }
 
-node "Development and test\n(team, against stand-ins, CON-028)" as DEV
-node "CI - hosted SCM provider\nbuild and test only (CON-026)" as CI
-node "Production - internal Windows Server estate\n(Infrastructure, CON-001, CON-029)" as PROD
+node "Internal corporate network (CON-007)" as NET {
+  node "Internal Windows Server estate\n(operated by Infrastructure, CON-001, CON-029)" as ESTATE {
+    node "Application server" as APPSRV {
+      artifact "Employee Portal\n.NET 10 + Razor Pages + REST API\n(COMP-001 .. COMP-010)" as APP
+    }
+    node "Database server" as DBSRV {
+      database "PostgreSQL 18\n(CON-024)" as PG
+    }
+  }
+  node "Identity server\n(Infrastructure, not ours to deploy)" as IDSRV {
+    component "Keycloak\nOIDC provider (CON-002, CON-025)" as KC
+  }
+  node "Directory server\n(Infrastructure)" as DIRSRV {
+    component "Active Directory\nLDAP read-only (CON-004)" as AD
+  }
+}
 
-CI --> DEV : artefact
-DEV --> PROD : handover after Gate 1
-CFG ..> PROD : real values substituted by Infrastructure (CON-028)
+node "Hosted SCM provider (CON-026)" as CI {
+  component "CI pipeline\nbuild + test only, never deploys" as PIPE
+}
 
-note bottom of CFG
-  Placeholder values are held in configuration,
-  never in code. Infrastructure substitutes the
-  real values at deployment (CON-028).
+WS --> NET : HTTPS, intra-network only
+BROWSER --> APP : page requests + clocking POST
+APP --> PG : SQL
+APP --> KC : OIDC redirect (intra-network)
+APP --> AD : LDAP read
+KC --> AD : authentication (federated)
+PIPE ..> APP : builds the artefact
+
+note bottom of PIPE
+  CON-026: CI never holds production data or
+  credentials and never deploys. Infrastructure
+  deploys (CON-029).
 end note
-note bottom of PROD
-  One .NET 10 application and one PostgreSQL 18
-  instance on the estate Infrastructure already
-  operates. Keycloak and AD are existing corporate
-  systems on the same internal network, neither
-  deployed nor operated by this project
-  (CON-002, CON-025).
+
+note bottom of KC
+  CON-025: Keycloak runs INSIDE the corporate
+  network. External to this PROJECT is not the
+  same as external to the NETWORK. Login keeps
+  working with no internet link.
+end note
+
+note bottom of ESTATE
+  CON-001 declares ONE estate, not a number of
+  machines. The application and database nodes
+  above are logical, not a claim about physical
+  servers: their placement is Infrastructure's
+  decision and no component depends on it.
+end note
+
+note bottom of AD
+  Read-only, and the only source of the six
+  directory fields. The worker category is NOT an
+  AD attribute (CON-016), so the category filter
+  runs in the application, not in the LDAP query.
 end note
 @enduml
 ```
 
-**CON-025 is load-bearing.** Keycloak runs INSIDE the corporate network. External to this *project* is
-not the same as external to the *network*: the OIDC redirect is an intra-network call, nothing about
-login crosses the corporate boundary, and login keeps working with no internet link. A deployment view
-that placed Keycloak in a cloud node would contradict CON-025 and be wrong.
+## 5. Release unit and bill of materials
 
-## 5. The deployment unit
+One SCM release: a tag on the repository plus the artefact it names. Versioned, tagged and traceable, so
+the deployed binary is identifiable from the repository alone.
 
-The deployment unit is a **tagged SCM release** (CON-026): the artefact the CI pipeline builds and
-tests, tagged in the repository, handed to Infrastructure. It is versioned and traceable to the commit
-it was built from. CI never deploys — Infrastructure does (CON-026, CON-029).
+| Item | Content | Source |
+|---|---|---|
+| Application artefact | `Portal.sln` — .NET 10, Razor Pages front end and REST API, `COMP-001`..`COMP-010` as logical units inside one deployable | CON-022, CON-023 |
+| Database schema | PostgreSQL 18 schema — clockings, news, the worker-category link, the audit records | CON-024, NFR-004 |
+| Configuration template | Placeholder OIDC issuer, client id, client secret, LDAP host, bind account and base DN, held in configuration and never in code | CON-028 |
+| Release Notes | Drafted at Transition (DC §5.1) | — |
+| User Documentation | Employee guidance for clocking, news and the directory; HR guidance for publishing, correcting and exporting | CON-031 |
 
-## 6. Release path and the two acceptance gates
+The ten components are logical units inside one deployable, not ten services: the architecture is a layered
+single deployable. The physical placement of the application and the database within the estate is
+Infrastructure's decision and no component depends on it.
+
+## 6. Rollout approach
+
+One go-live for all three offices. There is one deployable, one estate, one PostgreSQL instance and one
+timezone (CON-008), and no per-office configuration exists to sequence — a phased rollout by office would
+add coordination without reducing risk. The risk a phased rollout would normally address is addressed
+instead by the two acceptance gates below.
 
 ```plantuml
-@startuml DM_ReleasePath
-title Portal - release path: build, two acceptance gates, go-live, rollback decision
-
+@startuml DM_Rollout
+title Portal - deployment rollout and rollback (Transition, handover to Infrastructure)
 start
+:Freeze the release candidate on main;
+:Tag the SCM release - versioned and traceable;
 :CI builds and tests the artefact (CON-026);
-:Tag the SCM release - the deployment unit;
-:Hand the release to Infrastructure (CON-029);
-
-partition "Gate 1 - development-site acceptance" {
-  :Verify all nine use cases against the stand-in environment (CON-028);
-  :Verify AC-001, AC-002, AC-003, AC-004, AC-006;
-  if (gate 1 passed?) then (yes)
-    :Proceed to Gate 2;
-  else (no)
-    :Return to the increment - no handover;
-    stop
-  endif
-}
-
-partition "Gate 2 - install-site acceptance" {
-  :Infrastructure substitutes the real Keycloak and AD values (CON-028);
-  :Verify the OIDC redirect intra-network (CON-025);
-  :Verify the directory against the real AD, including empty job title and extension (R002);
-  :Verify the FR-003 CSV against real data;
-  :Verify the availability window (NFR-003);
-  if (gate 2 passed?) then (yes)
-    :Proceed to beta;
-  else (no)
-    :Return to the increment - no go-live;
-    stop
-  endif
-}
-
-:Beta program - HR and a group of employees from each office;
-:Go-live - single cutover, all three offices;
-:Measure adoption with STK-004 (AC-005, BG-003);
-
-if (rollback trigger observed?) then (yes)
-  :Revert the affected function to the previous practice;
+note right
+  CI never deploys and never holds
+  production data or credentials.
+end note
+:Gate 1 - development-site acceptance;
+note right
+  Every use case exercised against the
+  stand-ins (CON-028). AC-001..AC-006.
+end note
+if (Gate 1 passed?) then (yes)
+  :Hand the artefact and the configuration template to Infrastructure;
+  :Infrastructure substitutes the real OIDC and LDAP values (CON-028);
+  :Infrastructure installs on the internal Windows Server estate (CON-029);
+  :Gate 2 - install-site acceptance;
   note right
-    Excel clocking sheet, mass email, PDF directory.
-    Recorded clockings are never deleted (CON-012, CON-017).
-    No migration is reversed - there is none (CON-030).
+    Real Keycloak and real AD, performed by
+    Infrastructure with HR (CON-028). A formality:
+    the same use cases already passed Gate 1.
   end note
+  if (Gate 2 passed?) then (yes)
+    :Go live - the portal is available to STK-004;
+    :Infrastructure operates, monitors and patches (CON-029);
+  else (no)
+    :Withdraw the release - the application only, never the database;
+    :Export the clockings recorded since go-live (FR-003) before withdrawal;
+    :Record the failure and re-enter the iteration;
+  endif
 else (no)
-  :Portal remains in operation under Infrastructure (CON-029);
+  :Do not deploy - the release is not shippable;
+  :Record the failure and re-enter the iteration;
 endif
 stop
 @enduml
 ```
 
-Both gates are formalities by design: each verifies a state that earlier work has already established,
-and neither is the first time the system is exercised.
+### 6.1 Two acceptance gates
 
-| Gate | Where | Who runs it | What it verifies | Failure consequence |
+| Gate | Where | Who runs it | Criteria | Consequence of failure |
 |---|---|---|---|---|
-| Gate 1 — development-site acceptance | The team's environment, against the stand-ins | TestManager with the team | All nine use cases against the stand-in OIDC issuer and stand-in directory; `AC-001`, `AC-002`, `AC-003`, `AC-004`, `AC-006` | The increment is not handed over. No release is tagged for handover |
-| Gate 2 — install-site acceptance | Production, on the estate | Infrastructure with HR | The real Keycloak and real AD values substituted; the OIDC redirect intra-network (CON-025); the directory against the real AD including empty job title and extension (R002); the `FR-003` CSV against real data; the availability window (NFR-003) | No go-live. The portal is not opened to employees |
+| Gate 1 — development-site acceptance | The team's environment, against the stand-ins | The team | Every use case exercised against the stand-ins (CON-028); `AC-001`..`AC-006` | The release is not shippable. No deployment is attempted |
+| Gate 2 — install-site acceptance | Production, against the real Keycloak and the real AD | Infrastructure with HR (CON-028) | The same use cases, on the real identity and directory path | The release is withdrawn and the iteration re-entered |
 
-`AC-005` is not a gate criterion. It is an adoption measure taken with `STK-004` after go-live, and no
-test the team runs can close it.
+Gate 2 is a formality by construction: it re-runs use cases that already passed Gate 1, and the only
+variable it introduces is the substitution of the real OIDC and LDAP values. A Gate 2 failure is therefore
+a configuration defect, not a functional one, and it is diagnosed as such.
 
-## 7. Rollout approach
+### 6.2 Beta programme
 
-**Single cutover, all three offices at once.** There is no phased rollout, no pilot office and no
-parallel running, and the reason is the declared scope: the portal starts empty and records clockings
-from go-live onwards (CON-030), so there is no data to migrate, no reconciliation between an old and a
-new record of truth, and no state that a phased rollout would protect. All three offices are in one
-timezone (CON-008) and reach the same estate over the same internal network (CON-007), so there is no
-per-office variation to stage.
-
-The rollout sequence is: Gate 1 → handover to Infrastructure → Gate 2 → beta → go-live → adoption
-measurement. The beta program sits between Gate 2 and go-live, not before it: beta participants use the
-production configuration, which is the only configuration in which the real AD's data quality (R002) is
-observable.
-
-## 8. Beta program
+The beta is the install-site acceptance run with a pilot group, and it is the only structured feedback
+mechanism the rollout has.
 
 | Element | Definition |
 |---|---|
-| Participants | `STK-001` (HR, the sponsor) and a group of `STK-004` employees drawn from each of the three offices, so that the AD attribute gaps R002 predicts are exercised across offices rather than in one |
-| Duration | Bounded by the beta success criteria below, not by a calendar span. No duration is stated because none has been measured |
-| Feedback mechanism | Every item is recorded as an SCM issue against the repository, with an identifier and a state. Feedback held only in conversation is not feedback this program can act on |
-| Success criteria | (1) Every one of the nine use cases has been exercised by a beta participant in the production configuration. (2) No open item blocks a declared use case. (3) `AC-002`, `AC-003` and `AC-004` are observed to hold with a real participant, not a tester. (4) HR has published, edited and unpublished a news item and exported a monthly CSV without technical assistance |
-| Exit | Beta closes when the four criteria hold; otherwise another beta round. Beta does not close on a date |
+| Participants | A pilot group drawn from `STK-004` across the three offices, plus `STK-001` (HR) as the process owner. The pilot group is the population that exercises the real identity and directory path before full go-live |
+| Feedback mechanism | `STK-001` collects it, because HR owns the HR processes the portal replaces. A defect found in the pilot is raised as an SCM issue and carries an issue number; a usability observation is recorded against the use case it concerns |
+| Success criteria | `AC-002` (an employee clocks in and out without help from HR or the development team), `AC-003` (HR publishes a news item without technical assistance), `AC-004` (any employee finds a colleague's phone or email in under 10 seconds), `AC-005` (employees complete at least one clocking with no prior training) |
+| Exit | Every pilot defect is closed or recorded as a known issue before full go-live. `AC-001` and `AC-006` are measured at Gate 1, not in the pilot |
 
-```plantuml
-@startuml DM_BetaPipeline
-title Portal - beta feedback pipeline: from a beta participant to a closed item
+## 7. Rollback criteria
 
-start
-:Beta participant (STK-001 HR, STK-004 employees, STK-003 operator) hits a defect or raises feedback;
-:Record it as an SCM issue against the repository;
-note right
-  Every item carries an identifier and a state.
-  Feedback held only in conversation is not
-  feedback this program can act on.
-end note
-:TestManager triages - defect, question, or a change request routed to the ChangeControlManager;
-if (blocks a declared use case?) then (yes)
-  :ProjectManager prioritises it into the current increment;
-  :Fix and retest at Gate 1;
-else (no)
-  :Schedule it, or record it as a known limitation;
-endif
-:Re-verify with the beta participant who raised it;
-if (beta success criteria met?) then (yes)
-  :Beta closes - proceed to go-live;
-else (no)
-  :Another beta round;
-endif
-stop
-@enduml
-```
+The application is withdrawn; the database is never withdrawn. Clockings recorded since go-live are the
+record of hours worked and are not recoverable from anywhere else (CON-030 — there is no import and no
+historical source), so a rollback that discarded them would destroy the only copy. Before any withdrawal,
+the clockings recorded since go-live are exported through `UC-002` (FR-003).
 
-## 9. Rollback criteria
-
-Rollback here means **reverting a function to the practice it replaced**, not restoring a database.
-There is no migration to reverse (CON-030) and no record is ever deleted (CON-012, CON-017), so a
-rollback loses nothing that was recorded.
-
-| Trigger | Scope of the rollback | What is preserved | Decision owner |
-|---|---|---|---|
-| Clocking cannot be recorded reliably — a clocking is lost or recorded with a wrong time | Clocking reverts to the Excel sheet for the affected period | Every clocking already recorded stays in the database; HR corrects or inserts the gap through `FR-002` | `STK-001` with `STK-003` |
-| The directory shows wrong or missing employee data that AD cannot explain | The directory screen is withdrawn; the PDF list stays in use | The worker-category links already assigned stay in the database | `STK-001` with `STK-003` |
-| News publishing is unavailable or an item cannot be unpublished | News reverts to mass email | Every published item and its audit trail stay in the database | `STK-001` |
-| Login fails for a material part of the workforce | The portal is closed to employees until login is restored | Nothing is lost; no clocking is recorded while the portal is closed | `STK-003` |
-| The availability window (NFR-003) is not met during 07:00–19:00 Monday–Friday | The affected function reverts until the estate issue is resolved | As above | `STK-003` |
-
-A rollback is a decision by `STK-001` and `STK-003`, not by the development team: the team hands over
-at the end of Transition and does not run the portal afterwards (CON-029). A rollback never cuts or
-defers declared scope — the remedy for a delayed milestone is another iteration (CON-021).
-
-## 10. Configuration substituted at deployment
-
-The OIDC client and the LDAP connection are configured with placeholder values — issuer, client id,
-client secret, LDAP host, bind account, base DN — held in configuration and never in code.
-**Infrastructure substitutes the real values at deployment** (CON-028). This is the one deployment step
-that is not the team's, and it is the step Gate 2 verifies.
-
-## 11. What the deployment does not touch
-
-| System | Position | Source |
+| Trigger | Threshold | Action |
 |---|---|---|
-| Active Directory | Never written to. The portal reads the six directory fields over LDAP and writes nothing back. No employee field is editable anywhere in the portal | CON-004, CON-005 |
-| Keycloak | Not deployed, not configured and not operated by this project. It is already deployed, already federated to AD, and maintained by someone else. It runs inside the corporate network, so the OIDC redirect is an intra-network call and login keeps working with no internet link | CON-002, CON-025 |
-| Payroll system | No integration | Declared scope |
-| Backups | The Infrastructure team's existing server-backup practice already covers this PostgreSQL instance in restorable form. No backup design, tooling or restore procedure is part of this project | CON-032 |
-| CI | Builds and tests only. It never holds production data or credentials and never deploys | CON-026 |
+| Gate 2 fails | Any use case fails on the real identity or directory path | Withdraw the application; export the clockings; re-enter the iteration |
+| Login unavailable | The OIDC path against the real Keycloak fails for any employee | Withdraw the application; export the clockings; escalate to Infrastructure |
+| Clocking not recorded | A clocking press is accepted by the client and not persisted, or a duplicate is created | Withdraw the application; export the clockings; the idempotency key and the client timestamp are the first items examined |
+| Clocking integrity broken | A day carries more than one clocking pair for an employee, or a pair crosses midnight (CON-010, CON-011) | Withdraw the application; export the clockings; the schema constraint is the first item examined |
+| Audit trail incomplete | A news publication, edit, unpublish, category change or clocking correction is not audited (NFR-004) | Withdraw the application; export the clockings; the audit write is the first item examined |
+| Response time breached | `NFR-002` (under 1 second for clock in/out) is breached for a sustained period, or `NFR-001` (under 3 seconds full page load) is breached | Do not withdraw on the first breach — record it, and withdraw only if the breach persists after Infrastructure has examined the estate |
 
-## 12. Post-launch operations
+A withdrawal is a deployment action, not a data action. The database stays in place, the schema stays in
+place, and the clockings stay in place.
 
-The Infrastructure team operates the portal in production once it is live — deployment, monitoring and
-patching — exactly as they already operate AD and Keycloak. The development team hands over at the end
-of Transition and does not run it afterwards (CON-029). The Operations Guide in the User Documentation
-is the handover artefact.
+## 8. Migration
 
-## 13. Bill of materials
+There is none (CON-030). The portal starts empty and records clockings from go-live onwards. The historical
+Excel sheets stay on the shared drive as a read-only archive and are not imported. `BG-002` — eliminate
+100% of Excel usage for recording new clockings — refers to new clockings only, and no migration step
+exists to satisfy it.
 
-| Deliverable | State | Owner |
+## 9. Compatibility position
+
+| Item | Position |
+|---|---|
+| Browsers | Current Chrome and Edge (CON-006). No other browser is supported and none is tested |
+| Client framework | None. Razor Pages with a page-level script on the clocking page (CON-023). No SPA, no client-side router, no client cache of the directory or the news |
+| Timezone | All three offices are Europe/Madrid (CON-008). Clockings are stored in UTC and displayed in Europe/Madrid. No multi-timezone case exists |
+| Network | Internal corporate network only (CON-007). The portal is not reachable from outside it |
+| Identity | The portal is an OIDC client of the existing Keycloak, which federates Active Directory (CON-002). The client is already registered and its credentials are with the development team (CON-003) |
+| Active Directory | Read-only. The portal never writes to AD (CON-004) and holds no local copy of the employee (CON-016) |
+| Backups | Infrastructure's existing server-backup practice covers the PostgreSQL instance in restorable form (CON-032). No backup design, tooling or restore procedure is part of this project |
+
+## 10. Handover
+
+The development team hands over at the end of Transition and does not operate the portal afterwards
+(CON-029). Infrastructure takes deployment, monitoring and patching, exactly as it already operates AD and
+Keycloak. The handover package is the release unit in section 5, plus the configuration template with the
+placeholder values Infrastructure replaces.
+
+## 11. Constraints and risks this strategy carries
+
+| Item | State | Effect on the deployment plan |
 |---|---|---|
-| The tagged SCM release — the .NET 10 artefact and the PostgreSQL 18 schema | Not yet built; no release is tagged in Inception | ConfigurationManager, Integrator |
-| Configuration placeholder set — issuer, client id, client secret, LDAP host, bind account, base DN | Not yet built; held in configuration, never in code | Implementer, Integrator |
-| User Documentation — employee guidance for clocking, news and directory; HR guidance for publishing, correcting and exporting | Not yet produced | TechnicalWriter, with the Deployment Manager contributing the Operations Guide |
-| Release Notes | Not yet produced; DC §5.1 places them in Transition | DeploymentManager |
-| `docs/inputs/employee-portal-design.html` — the authoritative UI visual layer | Present in the repository | UserInterfaceDesigner consumes; Designer and Implementer implement |
-| `CONTRIBUTING.md` and the lint configuration | Absent; authored during Elaboration | SoftwareArchitect, Implementer, TestManager |
-| Stand-in environment — test OIDC issuer and test directory | Absent; the first construction item of the iteration | Implementer, Integrator |
+| Stand-in environment (CON-028) | Not delivered — no stand-in OIDC issuer and no stand-in directory exist in the repository | No use case can be built or tested against the real Keycloak or the real AD, so no use case is buildable and Gate 1 cannot be run. This is the first construction item of the iteration |
+| `R004` | Materialized — the stand-in environment is not delivered | The risk that gates every test. Its treatment is a hard gate owned by the Integrator |
+| `R001` | Probability and impact recorded as `[ASSUMPTION — requires validation]`; exposure 12 provisional | The magnitude bands rest on `R002`'s and `R003`'s declared exposures, not on `R001` |
+| `R002` | Treatment specified, not executed — the stand-in directory is to carry entries with empty job title and extension | Gate 1 cannot exercise the directory's gap behaviour until the stand-in directory exists |
+| `R005` | Gate not yet opened; it opens in Elaboration, bounded at 14 days of queue time | The human validation of the real Keycloak and real AD (CON-028) is Infrastructure's and HR's work, not the team's to plan |
+| No release cut | Inception produces no deployable increment | The first SCM release is cut at Transition. No tag exists and none is claimed |
+| CI build | Green on `main` — run `36110880293` | The build is verifiable (CON-026). CI never deploys and never holds production data or credentials |
 
-No training programme is a deliverable: `AC-005` requires that 80% of employees complete a clocking
-with no prior training, so training would invalidate the criterion it is meant to support.
-
-## 14. Traceability
+## 12. Traceability
 
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| Deployment strategy | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009 | Refines | UC-001, UC-002, UC-003, UC-004, UC-005, UC-006, UC-007, UC-008, UC-009 |
-| Deployment strategy | CON-001, CON-002, CON-004, CON-005, CON-006, CON-007, CON-008, CON-022, CON-023, CON-024, CON-025, CON-026, CON-028, CON-029, CON-030, CON-031, CON-032 | Refines | NFR-003 |
-| Deployment strategy | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Refines | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 |
-| Deployment strategy | R002, R003 | DependsOn | UC-008 |
-| Deployment strategy | CON-021 | DependsOn | R001 |
-| Deployment strategy | CON-028 | DependsOn | R004 |
+| Deployment strategy (this file) | CON-001, CON-022, CON-023, CON-024, CON-026, CON-029 | Refines | UC-001, UC-002, UC-003, UC-004, UC-005, UC-006, UC-007, UC-008, UC-009 |
+| Deployment mode: custom-built | CON-001, CON-007, CON-029 | Refines | UC-001 |
+| Release unit and bill of materials | CON-001, CON-024, CON-031 | Refines | UC-001, UC-004, UC-008 |
+| Target environments | CON-026, CON-028 | Refines | AC-006 |
+| Two acceptance gates | CON-028, CON-029 | Refines | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 |
+| Beta programme | CON-028, CON-029 | Refines | AC-002, AC-003, AC-004, AC-005 |
+| Rollback criteria | CON-010, CON-011, CON-012, NFR-004 | Refines | UC-001, UC-003 |
+| Migration: none | CON-030 | Refines | UC-002 |
+| Compatibility position | CON-002, CON-003, CON-004, CON-006, CON-007, CON-008, CON-016, CON-023, CON-032 | Refines | UC-001, UC-008 |
+| Handover to Infrastructure | CON-029 | Refines | UC-001, UC-002, UC-003, UC-004, UC-005, UC-006, UC-007, UC-008, UC-009 |
+| Constraints and risks carried | CON-028, R001, R002, R004, R005 | Refines | UC-001, UC-008 |
 
-**Trace endpoints.** `FR-001`..`FR-009`, `NFR-001`..`NFR-005`, `AC-001`..`AC-006`, `CON-001`..`CON-032`,
-`BG-001`..`BG-003`, `STK-001`..`STK-004` and `R001`..`R009` are declared identifiers, copied exactly
-from the work order. `UC-001`..`UC-009` are the System Analyst's use-case identifiers. No element of
-this role is minted: the Deployment Manager produces no `UC-NNN`, `CLS-NNN`, `COMP-NNN`, `TC-NNN` or
-`INT-NNN`. The sections of this file are not trace-graph elements, so no edge is registered on them.
-
-**Milestone not declared.** This file produces the evidence the reviewers rule on. It does not declare
-the LCO milestone, the iteration or the phase as completed.
+Every endpoint above is an element identifier, not a document section: the constraints the deployment plan
+tailors to, and the use cases and acceptance criteria the release carries. This strategy governs no system
+element of its own, so it carries no edge to an artifact name.
