@@ -34,7 +34,6 @@
 | STK-004 | Cuba Corp Employees | End users — 200 people across 3 offices; clock in/out, read news, search the directory | Medium | Clock in and out without help from HR or the development team (AC-002); find a colleague's phone or email in under 10 seconds (AC-004); complete a clocking with no prior training (AC-005); a clocking made during a network outage of up to 5 minutes is not lost (AC-006) |
 
 ## Product Overview
-
 Employee Portal is a single internal web application for Cuba Corp's 200 employees across 3 offices. It replaces three manual artefacts with one authenticated entry point:
 
 - **Clocking** replaces the shared Excel clocking sheets. The employee presses Clock In or Clock Out on the main screen; the portal records the time the button was pressed and shows the confirmation. HR corrects or inserts clockings when needed, and exports the monthly CSV.
@@ -45,7 +44,7 @@ The portal is a .NET 10 application with Razor Pages and a REST API, backed by P
 
 ```plantuml
 @startuml Portal_Vision_UC
-title Portal - system boundary, actors and candidate use cases (Inception iteration 1)
+title Portal - system boundary, actors and candidate use cases (Inception iteration 2)
 left to right direction
 skinparam packageStyle rectangle
 
@@ -77,6 +76,14 @@ HR --> UC007
 HR --> UC009
 HR --> UC001 : views all clockings
 KC --> UC001
+KC --> UC002
+KC --> UC003
+KC --> UC004
+KC --> UC005
+KC --> UC006
+KC --> UC007
+KC --> UC008
+KC --> UC009
 AD --> UC008
 AD --> UC009
 
