@@ -605,8 +605,8 @@ present and green, so criterion 6 is met.
 
 ### Environment readiness plan — pre-iteration (Inception iteration 3)
 
-Superseded by *Environment delta required before the next iteration starts*, which states the items
-that must change state before the next iteration starts.
+The items that must change state before the next iteration starts are stated once, in *Environment
+delta required before the next iteration starts*.
 
 ### Process improvement actions for the next iteration
 
