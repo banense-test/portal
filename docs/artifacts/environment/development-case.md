@@ -1,9 +1,7 @@
 ## Document Control
-
 - **Phase:** Inception
-- **Status:** Draft — governs Inception iteration 2; not yet reviewed
+- **Status:** Draft — governs Inception iteration 3; not yet reviewed
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
-
 ## Tailoring Overview
 
 This Development Case is an **override delta** over the IARI Development Case baseline. The baseline
