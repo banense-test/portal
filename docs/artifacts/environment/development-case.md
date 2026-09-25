@@ -100,6 +100,20 @@ end note
    grants risk acceptance in advance for exactly this class of risk. It is bounded in the Risk List
    and never forecast in the plan.
 
+### Organization and tool assessment (Inception, iteration 2)
+
+| Assessed item | Finding | Consequence for the process |
+|---|---|---|
+| Prior process artifacts | None — this is the project's first artifact | No inherited process debt; the baseline applies unmodified |
+| Execution model | Agent-executed, 25-role IARI roster | No role merging; no training programme needed |
+| SCM repository | Present, hosted provider (`portal`) | CON-026 satisfied for source hosting |
+| CI workflow | Present — `.github/workflows/ci.yml` at `358f1f8`, build and test jobs, green on `main` | CON-026 satisfied. The pipeline syncs `Portal.sln` from the `src/` + `tests/` tree before every build, so a green check cannot be a stale-manifest lie |
+| `CONTRIBUTING.md` and lint config | **GAP** — absent | Guideline content is owned by the discipline experts, not by the Process Engineer. Referenced here, authored by them during Elaboration |
+| Mandatory UI design input | Present — `docs/inputs/employee-portal-design.html` | CON-031 is satisfied; the file is authoritative for the UI visual layer and is not a risk |
+| Change Requests | None logged | No CR-driven process change this iteration |
+| Stand-in environment (CON-028) | **GAP** — not built | The team builds a test OIDC issuer and a test directory carrying the declared attributes, including entries with empty job title and extension. This is the first construction item of the iteration and the one item that gates every use case |
+| Open SCM issues | `Issue #1` — the environment-readiness record for the CI pipeline was stale | Corrected in this iteration; the record now cites the observed pipeline |
+
 ## Disciplines and Intensity
 
 Intensity per discipline and phase is **per the canonical matrix** — confirmed, not assigned. The
