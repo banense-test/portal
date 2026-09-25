@@ -381,7 +381,7 @@ The decomposition is by **area of change**, not by feature. Each component below
 | Component | Responsibility | Area of change it encapsulates | Volatility | Interfaces offered | Interfaces used |
 |---|---|---|---|---|---|
 | COMP-001 Portal Web UI | Razor Pages screens implementing the committed design; the clocking page's page-level script | The UI visual layer (CON-031) and the page-level script (CON-023) | Medium | — | `IIdentityAccess`, `IClockingCapture`, `IClockingLedger`, `INewsCatalog`, `IDirectoryGateway`, `IWorkerCategoryStore`, `IMonthlyExport` |
-| COMP-002 Portal REST API | The application boundary: routing, request validation, authorization checks, error translation | The HTTP contract between the pages and the domain | Medium | — | every domain interface |
+| COMP-002 Portal REST API | The application boundary: routing, request validation, authorization checks, error translation, and the merge of the AD fields with the portal-owned category | The HTTP contract between the pages and the domain | Medium | — | every domain interface |
 | COMP-003 Clocking Capture | The press-to-record mechanism: client timestamp, idempotency key, skew bound, retry semantics | **The clocking capture mechanism** | **High** | `IClockingCapture` | `IClockingLedger` |
 | COMP-004 Clocking Ledger | The clocking record: today's pair, month history, append, correction, the CON-010/CON-011 invariants | The clocking record model | Low | `IClockingLedger` | `IAuditTrail` |
 | COMP-005 News Publishing | Publish, edit, unpublish, the featured flag, the CON-009 invariant, the CON-017 no-delete rule | The news lifecycle | Low | `INewsCatalog` | `IAuditTrail` |
@@ -395,11 +395,13 @@ The decomposition is by **area of change**, not by feature. Each component below
 
 **Why the mechanisms are components and not utilities.** COMP-009 Audit Trail and COMP-010 Identity and Access are architectural mechanisms: common solutions to common problems, used by many components. They are components because they have wide impact on structure and because NFR-004 and NFR-005 are system-wide requirements with no single use case owning them.
 
+**Where the category filter lives.** CON-013 makes the worker category a column of the directory **and a filter on it**. The category is the one field Active Directory does not hold (CON-016), so the filter cannot be pushed into the LDAP query: COMP-006 returns the six AD fields, COMP-007 supplies the category links, and COMP-002 applies the filter to the merged entry. This is why the merge is a responsibility of the application boundary and not of the gateway — the gateway must stay a pure AD projection so the CON-028 stand-in seam remains a seam on AD alone.
+
 ### Component diagram
 
 ```plantuml
 @startuml Portal_Component
-title Portal - candidate architecture: components, layers and interfaces (Inception iteration 2)
+title Portal - candidate architecture: components, layers and interfaces (Inception iteration 3)
 skinparam componentStyle rectangle
 
 actor "Employee\n(STK-004)" as EMP
@@ -476,8 +478,10 @@ note right of C006
   The single read-only boundary to Active Directory.
   Encapsulates the LDAP port, the CON-028 stand-in
   seam and empty-attribute tolerance (R002).
-  R004 materialized: the stand-in behind this seam
-  is the first work item of iteration 2.
+  R004's treatment has failed twice: the stand-in
+  behind this seam is a hard gate owned by the
+  Integrator, and no use-case work item starts
+  until it is delivered and recorded.
 end note
 
 note bottom of C007
@@ -485,7 +489,16 @@ note bottom of C007
   the link AD user id -> category. Closed list of
   four (CON-014), at most one, may be empty (CON-015),
   never a duplicate of the employee (CON-016).
-  Read by exactly two components (CON-013).
+  Read by exactly two components (CON-013): the
+  directory, which also filters by it, and the export.
+end note
+
+note bottom of C002
+  The category filter is applied here, on the merged
+  entries: the category is the one field AD does not
+  hold (CON-016), so the filter cannot be pushed into
+  the LDAP query. An employee with no category link
+  is not returned by a category filter (CON-015).
 end note
 @enduml
 ```
@@ -496,7 +509,7 @@ No component depends on another component's concrete type. COMP-002 depends only
 
 ```plantuml
 @startuml Portal_Interfaces
-title Portal - subsystem boundaries defined by interfaces (candidate, Inception iteration 2)
+title Portal - subsystem boundaries defined by interfaces (candidate, Inception iteration 3)
 skinparam componentStyle rectangle
 
 component "COMP-001\nPortal Web UI" as C001
@@ -554,9 +567,11 @@ end note
 note right of IDIR
   The only boundary to Active Directory. The CON-028
   stand-in seam sits behind this interface, so the team
-  never works against the real AD. R004 materialized
-  because the stand-in behind this seam was not
-  delivered; it is the first work item of iteration 2.
+  never works against the real AD. R004's treatment has
+  failed twice because the stand-in behind this seam was
+  not delivered; it is now a hard gate owned by the
+  Integrator, and the stand-in directory must also carry
+  the worker-category link (CON-013).
 end note
 
 note bottom of IAUD
@@ -573,9 +588,11 @@ The analysis classes below are the architecturally significant ones — the busi
 
 **The recorded times of a clocking are immutable.** CON-012 states the original record is never overwritten in place and never deleted. `Clocking.clockInUtc` and `Clocking.clockOutUtc` are therefore set once at insert and carry no setter; a correction is a new `ClockingCorrection` record, never an update to the clocking row. The `corrected` flag is not a field of `Clocking` either — it is derived from the existence of a correction record, so it cannot drift from the correction chain. The effective value of a day is resolved from that chain by the rule stated in the Data View.
 
+**The directory returns a merged entry, not an AD entry.** `AdEntry` is the pure AD projection COMP-006 returns; `DirectoryEntry` is what the directory screen shows — the six read-only AD fields plus the portal-owned category. CON-013 makes the category a column and a filter, and the filter is applied to `DirectoryEntry`, because AD does not hold the category. An entry with no category link has no category and is not returned by a category filter (CON-015).
+
 ```plantuml
 @startuml Portal_Class
-title Portal - key abstractions and the invariants they hold (candidate, Inception iteration 2)
+title Portal - key abstractions and the invariants they hold (candidate, Inception iteration 3)
 
 package "Clocking (COMP-003, COMP-004)" {
   class "Clocking" as CLK <<entity>> {
@@ -647,6 +664,17 @@ package "Directory and category (COMP-006, COMP-007)" {
     + email : String
     + extension : String
   }
+  class "DirectoryEntry" as DENT <<entity>> {
+    + adUserId : String
+    + fullName : String
+    + jobTitle : String
+    + department : String
+    + office : String
+    + email : String
+    + extension : String
+    + category : WorkerCategory
+    + matchesCategory(c) : Boolean
+  }
   class "WorkerCategoryLink" as WCL <<entity>> {
     + adUserId : String
     + category : WorkerCategory
@@ -662,6 +690,15 @@ package "Directory and category (COMP-006, COMP-007)" {
     Never persisted: CON-016 forbids a local copy of
     the employee. An empty attribute is blank, not an
     error (R002).
+  end note
+  note bottom of DENT
+    The merged view the directory returns: the six AD
+    fields plus the portal-owned category. CON-013
+    makes the category a column AND a filter, so the
+    filter is applied to this merged entry, not to the
+    LDAP query - AD does not hold the category.
+    CON-015: an entry with no link has no category and
+    is not returned by a category filter.
   end note
   note bottom of WCL
     The only write the portal makes about a person.
@@ -701,6 +738,8 @@ CLK "1" *-- "0..*" CORR : corrected by
 NEWS --> NCAT : categorised as
 WCL --> WCAT : one of four
 WCL ..> ADE : keyed by adUserId, never a copy
+ADE --> DENT : merged with the category link
+WCL --> DENT : supplies the category
 CORR ..> AUD : writes
 NEWS ..> AUD : writes
 WCL ..> AUD : writes
