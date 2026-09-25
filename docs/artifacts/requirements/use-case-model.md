@@ -543,32 +543,34 @@ Every row below ends in a trace-graph element, never a document section. One edg
 | UC-008 Search Employee Directory | FR-008 | Derives | Supplementary Specification |
 | UC-009 Assign or Clear Worker Category | FR-009 | Derives | Supplementary Specification |
 
-**Constraints and risks carried by each use case.** These are the declared identifiers each use case is bound by; they are stated in the use-case specifications above and are not separate trace edges.
+**Constraints and risks carried by each use case.** These are the declared identifiers each use case is bound by; they are stated in the use-case specifications above and are not separate trace edges. The risk column states the Risk List's current entry, not a restatement of it.
 
 | Use case | Constraints applied | Risks |
 |---|---|---|
-| UC-001 | CON-008, CON-010, CON-011, CON-012, CON-023 | R001, R003, R004, R006, R009 |
-| UC-002 | CON-005, CON-015, CON-016 | R002 |
+| UC-001 | CON-008, CON-010, CON-011, CON-012, CON-023 | R001 (P and I `[ASSUMPTION — requires validation]`, exposure 12 provisional, accepted in advance under CON-021); R003 (accepted in advance under CON-021); R004 (Materialized — the stand-in environment is not delivered, so this use case cannot be built or tested against it; treatment replaced by a hard gate, Integrator accountable); R006 (treatment designed, not executed — the skew bound and the server-side idempotency check are design decisions this use case carries); R009 (CI half retired against the observed green build on `main`; remaining scope is the absent guideline files `CONTRIBUTING.md` and lint configuration) |
+| UC-002 | CON-005, CON-015, CON-016 | R002 (treatment specified, not executed — the stand-in directory is to carry entries with empty job title and extension, and it is not delivered) |
 | UC-003 | CON-010, CON-011, CON-012, NFR-004 | — |
 | UC-004 | CON-009, CON-017 | — |
 | UC-005 | CON-009, NFR-004 | — |
 | UC-006 | CON-009, NFR-004 | — |
 | UC-007 | CON-009, CON-017, NFR-004 | — |
-| UC-008 | CON-004, CON-005, CON-013, CON-015, CON-016 | R001, R002, R004, R005 |
-| UC-009 | CON-004, CON-013, CON-014, CON-015, CON-016, NFR-004 | R005 |
+| UC-008 | CON-004, CON-005, CON-013, CON-014, CON-015, CON-016 | R001 (P and I `[ASSUMPTION — requires validation]`, exposure 12 provisional, accepted in advance under CON-021); R002 (treatment specified, not executed — this use case is the one that reads the inconsistently filled LDAP attributes); R004 (Materialized — the stand-in directory that would exercise the empty-attribute path is not delivered); R005 (gate not yet opened; it opens in Elaboration, bounded at 14 days of queue time) |
+| UC-009 | CON-004, CON-013, CON-014, CON-015, CON-016, NFR-004 | R005 (gate not yet opened; it opens in Elaboration, bounded at 14 days of queue time) |
 
-**Realizing components.** Each component realizes the use case it fulfils; the edge runs component → use case and is owned by the Software Architect.
+**Realizing components.** Each component realizes the use case it fulfils; the edge runs component → use case and is owned by the Software Architect. The table states the edges the Software Architecture Document registers.
 
 | Component | Realizes |
 |---|---|
-| COMP-001 | UC-004 |
-| COMP-002 | UC-001 |
-| COMP-003 | UC-001 |
-| COMP-004 | UC-001, UC-003 |
-| COMP-005 | UC-005, UC-006, UC-007 |
-| COMP-006 | UC-002, UC-008 |
-| COMP-007 | UC-009 |
-| COMP-008 | UC-002 |
+| COMP-001 Portal Web UI | UC-001, UC-002, UC-004, UC-008 |
+| COMP-002 Portal REST API | UC-001, UC-002, UC-008 |
+| COMP-003 Clocking Capture | UC-001 |
+| COMP-004 Clocking Ledger | UC-001, UC-003 |
+| COMP-005 News Publishing | UC-005, UC-006, UC-007 |
+| COMP-006 Directory Gateway | UC-002, UC-008 |
+| COMP-007 Worker Category | UC-009 |
+| COMP-008 Monthly Export | UC-002 |
+| COMP-009 Audit Trail | UC-002, UC-003, UC-005, UC-006, UC-007, UC-009 |
+| COMP-010 Identity and Access | UC-001, UC-002, UC-003, UC-004, UC-005, UC-006, UC-007, UC-008, UC-009 |
 
 **Diagram associations — not trace edges.** The actors and the cross-cutting mechanisms are drawn on the boundary diagram and are document-local labels, not trace-graph elements. No edge is registered on them and none is claimed.
 
