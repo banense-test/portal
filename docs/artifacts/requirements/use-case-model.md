@@ -518,26 +518,33 @@ end note
 **Business rules applied:** CON-004, CON-013, CON-014, CON-015, CON-016, NFR-004.
 
 ## Traceability
-Every row ends in a trace-graph element, never a document section. One edge is registered per row.
+Every row below ends in a trace-graph element, never a document section. One edge is registered per row.
 
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| UC-001 Clock In and Clock Out | FR-001, AC-006, CON-010, CON-011 | Derives | Supplementary Specification |
-| UC-002 Export Monthly Clocking Report | FR-003, CON-005, CON-015, CON-016 | Derives | Supplementary Specification |
-| UC-003 Correct or Insert a Clocking | FR-002, CON-012, NFR-004 | Derives | Supplementary Specification |
-| UC-004 Read Internal News | FR-004, CON-009, CON-017 | Derives | Supplementary Specification |
-| UC-005 Publish News | FR-005, CON-009, NFR-004 | Derives | Supplementary Specification |
-| UC-006 Edit Published News | FR-006, CON-009, NFR-004 | Derives | Supplementary Specification |
-| UC-007 Unpublish News | FR-007, CON-017, NFR-004 | Derives | Supplementary Specification |
-| UC-008 Search Employee Directory | FR-008, CON-005, CON-016, R002 | Derives | Supplementary Specification |
-| UC-009 Assign or Clear Worker Category | FR-009, CON-014, CON-015, CON-016 | Derives | Supplementary Specification |
-| Actor: Employee | STK-004 | Refines | UC-001, UC-004, UC-008 |
-| Actor: HR Administrator | STK-001, NFR-005 | Refines | UC-002, UC-003, UC-005, UC-006, UC-007, UC-009 |
-| Actor: Keycloak | CON-002, CON-025 | Refines | UC-001, UC-002, UC-003, UC-004, UC-005, UC-006, UC-007, UC-008, UC-009 |
-| Actor: Active Directory | CON-004, CON-005, CON-016 | Refines | UC-002, UC-008, UC-009 |
-| Cross-cutting mechanism: OIDC login | CON-002, CON-025, NFR-005 | Refines | Supplementary Specification |
-| Cross-cutting mechanism: LDAP read | CON-004, CON-005, CON-016 | Refines | Supplementary Specification |
-| Cross-cutting mechanism: audit write | NFR-004, CON-018 | Refines | Supplementary Specification |
+| UC-001 Clock In and Clock Out | FR-001 | Derives | Supplementary Specification |
+| UC-002 Export Monthly Clocking Report | FR-003 | Derives | Supplementary Specification |
+| UC-003 Correct or Insert a Clocking | FR-002 | Derives | Supplementary Specification |
+| UC-004 Read Internal News | FR-004 | Derives | Supplementary Specification |
+| UC-005 Publish News | FR-005 | Derives | Supplementary Specification |
+| UC-006 Edit Published News | FR-006 | Derives | Supplementary Specification |
+| UC-007 Unpublish News | FR-007 | Derives | Supplementary Specification |
+| UC-008 Search Employee Directory | FR-008 | Derives | Supplementary Specification |
+| UC-009 Assign or Clear Worker Category | FR-009 | Derives | Supplementary Specification |
+
+**Constraints and risks carried by each use case.** These are the declared identifiers each use case is bound by; they are stated in the use-case specifications above and are not separate trace edges.
+
+| Use case | Constraints applied | Risks |
+|---|---|---|
+| UC-001 | CON-008, CON-010, CON-011, CON-012, CON-023 | R001, R003, R004, R006, R009 |
+| UC-002 | CON-005, CON-015, CON-016 | R002 |
+| UC-003 | CON-010, CON-011, CON-012, NFR-004 | — |
+| UC-004 | CON-009, CON-017 | — |
+| UC-005 | CON-009, NFR-004 | — |
+| UC-006 | CON-009, NFR-004 | — |
+| UC-007 | CON-009, CON-017, NFR-004 | — |
+| UC-008 | CON-004, CON-005, CON-013, CON-015, CON-016 | R001, R002, R004, R005 |
+| UC-009 | CON-004, CON-013, CON-014, CON-015, CON-016, NFR-004 | R005 |
 
 **Realizing components.** Each component realizes the use case it fulfils; the edge runs component → use case and is owned by the Software Architect.
 
@@ -552,23 +559,20 @@ Every row ends in a trace-graph element, never a document section. One edge is r
 | COMP-007 | UC-009 |
 | COMP-008 | UC-002 |
 
-**Risks carried by these use cases.** The edge runs risk → use case.
+**Diagram associations — not trace edges.** The actors and the cross-cutting mechanisms are drawn on the boundary diagram and are document-local labels, not trace-graph elements. No edge is registered on them and none is claimed.
 
-| Risk | DependsOn |
+| Association | Reaches |
 |---|---|
-| R001 | UC-001, UC-008 |
-| R002 | UC-002, UC-008 |
-| R003 | UC-001 |
-| R004 | UC-001, UC-008 |
-| R005 | UC-008, UC-009 |
-| R006 | UC-001 |
-| R009 | UC-001 |
+| Employee (STK-004) | UC-001, UC-004, UC-008 |
+| HR Administrator (STK-001) | UC-001 (secondary), UC-002, UC-003, UC-005, UC-006, UC-007, UC-009 |
+| Keycloak (external system) | UC-001..UC-009, via the OIDC login mechanism |
+| Active Directory (external system) | UC-002 (FullName at export time), UC-008, UC-009 |
+| Cross-cutting mechanism: OIDC login | UC-001..UC-009 |
+| Cross-cutting mechanism: authorization | UC-001..UC-009 |
+| Cross-cutting mechanism: LDAP read | UC-002, UC-008, UC-009 |
+| Cross-cutting mechanism: audit write | UC-002, UC-003, UC-005, UC-006, UC-007, UC-009 |
+| Cross-cutting mechanism: clocking retry | UC-001 |
 
 **Downstream endpoint.** `Supplementary Specification` is the registered artifact element each use case derives into; the RequirementsSpecifier elaborates the per-use-case flows and the quantified NFR thresholds there. The design elements this model feeds are the `COMP-NNN` components listed above, owned by the Software Architect — there is no separate Design Model artifact in this project.
 
-### Label scope
-
-`UC-001..UC-009`, `FR-001..FR-009`, `NFR-001..NFR-005`, `AC-001..AC-006`, `CON-001..CON-032`, `STK-001..STK-004` and `R001..R009` are trace-graph elements; the edges above are registered on them. `COMP-NNN` is owned by the Software Architect and is referenced, never minted here.
-
-The actor rows and the cross-cutting-mechanism rows are diagram associations and document-local labels, not trace-graph elements: an actor is drawn on the boundary, and a cross-cutting mechanism is a Supplementary Specification entry. No edge is registered on them, and none is claimed. The registered edges of this model are the `FR-NNN → UC-NNN` derivations and the `UC-NNN → Supplementary Specification` derivations.
-
+**Label scope.** `UC-001..UC-009`, `FR-001..FR-009`, `NFR-001..NFR-005`, `AC-001..AC-006`, `CON-001..CON-032`, `STK-001..STK-004` and `R001..R009` are trace-graph elements; the edges above are registered on them. `COMP-NNN` is owned by the Software Architect and is referenced, never minted here.
