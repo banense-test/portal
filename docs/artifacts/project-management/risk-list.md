@@ -122,21 +122,105 @@ end note
 
 **Not registered.** CON-021 states that the availability, configuration and ownership of Keycloak and Active Directory are not risks of this project. They are not registered here, and no risk below restates them.
 ## Risk Register
-
-| ID | Risk | Mechanism actor | P | I | Exposure | Magnitude | Strategy | Owner | Status | Treatment state at Iter-1 close |
+| ID | Risk | Mechanism actor | P | I | Exposure | Magnitude | Strategy | Owner | Status | Treatment state at Iter-2 close |
 |---|---|---|---|---|---|---|---|---|---|---|
 | R001 | A change on Infrastructure's side to Active Directory or Keycloak breaks the portal. | STK-003 Infrastructure | 3 `[ASSUMPTION — requires validation]` | 4 `[ASSUMPTION — requires validation]` | 12 provisional | High provisional | Accept (CON-021) | ProjectManager | Open | No treatment to execute: acceptance is the strategy. The dependency is confined to two configuration-held boundaries (CON-028) and the real values are substituted at deployment (CON-029) |
-| R002 | The LDAP attributes the directory reads (job title, extension) are not filled consistently across the 3 offices, so the directory shows gaps. | STK-001 HR and the office staff who maintain the AD attributes | 3 | 3 | 9 | Significant | Accept (CON-021) | ProjectManager | Open | Treatment specified, not evidenced: the stand-in directory is to carry entries with empty job title and extension. The stand-in environment was not delivered at Iter-1 close (R004) |
+| R002 | The LDAP attributes the directory reads (job title, extension) are not filled consistently across the 3 offices, so the directory shows gaps. | STK-001 HR and the office staff who maintain the AD attributes | 3 | 3 | 9 | Significant | Accept (CON-021) | ProjectManager | Open | Treatment specified, NOT executed: the stand-in directory is to carry entries with empty job title and extension. The stand-in environment was not delivered at Iter-2 close either (R004), so the gap path is still unexercised |
 | R003 | Employees keep recording clockings in Excel out of habit, so BG-002 and BG-003 are not met. | STK-004 Employees | 3 | 2 | 6 | Moderate | Accept (CON-021) | ProjectManager | Open | No team treatment to execute: the mechanism is HR's communication campaign. AC-005 measures it after go-live |
-| R004 | The stand-in environment (CON-028) is not ready, so no use case can be built or tested and the iteration produces no verifiable increment. | Implementer + Integrator (the team) | 3 | 3 | 9 | Significant | Avoid | ProjectManager | Materialized | **Treatment NOT executed at Iter-1 close.** The stand-in environment was not delivered, so no use case could be built or tested and the iteration produced no verifiable increment. Contingency executed: another iteration. Treatment re-scoped as the first work item of Iter-2 |
+| R004 | The stand-in environment (CON-028) is not ready, so no use case can be built or tested and the iteration produces no verifiable increment. | Implementer + Integrator (the team) | 4 — raised from 3 on the observed 2-of-2 materialization rate | 3 | 12 | High — raised from Significant | Avoid | Integrator, accountable | Materialized | **Treatment FAILED TWICE.** Not delivered at Iter-1 close and not delivered at Iter-2 close; the Development Case's LCO-gate verification records no stand-in configuration. Re-assessed at this close: probability raised, magnitude Significant → High, treatment replaced by a hard gate — no other work item starts until the stand-in is delivered and recorded — with one accountable owner and the ProcessEngineer's iteration-preparation checkpoint as the control that produces the record. Strategy stays Avoid: CON-021's grant does not reach a risk whose mechanism is the team's own execution |
 | R005 | The human validation of the real Keycloak and AD by Infrastructure with HR (CON-028) does not return before Elaboration closes, delaying the LCA milestone. | STK-003 Infrastructure + STK-001 HR | 3 | 3 | 9 | Significant | Accept (CON-021) | ProjectManager | Open | Gate not yet opened; it opens in Elaboration. Bounded at 14 days of queue time, after which the process suspends |
-| R006 | A skewed client clock makes the server record a press timestamp that did not happen, so the audit trail is wrong (AC-006). | STK-004 Employees' client clocks | 2 | 3 | 6 | Moderate | Avoid | ProjectManager | Open | Treatment designed, not executed: the skew bound and the server-side idempotency check are design decisions carried by UC-001. The stand-in test exercising a skewed clock is not built (R004) |
-| R007 | The coarse roadmap under-counts the iterations the declared scope needs, so the declared scope is not complete at PR. | ProjectManager (the team's own planning) | 2 | 3 | 6 | Moderate | Avoid | ProjectManager | Open | Treatment executed: the coarse roadmap is re-planned at every iteration from the measured actuals of the phases that have closed. Iter-1's measured actuals are recorded in the Iteration Assessment |
+| R006 | A skewed client clock makes the server record a press timestamp that did not happen, so the audit trail is wrong (AC-006). | STK-004 Employees' client clocks | 2 | 3 | 6 | Moderate | Avoid | ProjectManager | Open | Treatment designed, NOT executed: the skew bound and the server-side idempotency check are design decisions carried by UC-001. The stand-in test exercising a skewed clock is not built (R004) |
+| R007 | The coarse roadmap under-counts the iterations the declared scope needs, so the declared scope is not complete at PR. | ProjectManager (the team's own planning) | 2 | 3 | 6 | Moderate | Avoid | ProjectManager | Open | Treatment executed: the coarse roadmap is re-planned at every iteration from the measured actuals of the phases that have closed. Iter-2's measured actuals are recorded in the Iteration Assessment |
 | R008 | Developer turnover and knowledge loss. | None — no development organization exists in this project | — | — | — | — | Not applicable — retired | ProjectManager | Retired | Not applicable: the mechanism names no actor in this project |
-| R009 | The guideline files the Development Case references (`CONTRIBUTING.md`, lint configuration) are not in place, so the first increment is built without the agreed coding and review standards. | ConfigurationManager + Implementer (the team) | 2 | 2 | 4 | Minor | Avoid | ProjectManager | Open | **CI half RETIRED against the observed run:** the pipeline exists and builds green on `main` (run `36050451436`). Remaining scope: the guideline files are not in place |
+| R009 | The guideline files the Development Case references (`CONTRIBUTING.md`, lint configuration) are not in place, so the first increment is built without the agreed coding and review standards. | ConfigurationManager + Implementer (the team) | 2 | 2 | 4 | Minor | Avoid | ProjectManager | Open | **CI half RETIRED against the observed run:** the pipeline exists and builds green on `main` (run `36095051721`). Remaining scope: the guideline files are still absent at Iter-2 close — the mitigation moves to the iteration that will author them |
 
 R001, R002 and R003 are the business-declared risks, carried with the identifiers and magnitudes the stakeholder declared. R004 onwards are the risks the team identifies, numbered in the same series in the order raised (CON-020).
 
+```plantuml
+@startuml RiskRegister_Iter2Close
+title Portal - Risk register at Inception iteration 2 close: magnitude and treatment state
+skinparam classAttributeIconSize 0
+
+class "R001" as R1 <<risk>> {
+  exposure : 12 provisional
+  band : High provisional
+  strategy : Accept (CON-021)
+  treatment : none to execute
+}
+class "R002" as R2 <<risk>> {
+  exposure : 9
+  band : Significant
+  strategy : Accept (CON-021)
+  treatment : specified, NOT executed
+}
+class "R003" as R3 <<risk>> {
+  exposure : 6
+  band : Moderate
+  strategy : Accept (CON-021)
+  treatment : HR's, not the team's
+}
+class "R004" as R4 <<risk>> {
+  exposure : 12
+  band : High
+  strategy : Avoid
+  treatment : FAILED TWICE - re-assessed
+}
+class "R005" as R5 <<risk>> {
+  exposure : 9
+  band : Significant
+  strategy : Accept (CON-021)
+  treatment : gate not yet opened
+}
+class "R006" as R6 <<risk>> {
+  exposure : 6
+  band : Moderate
+  strategy : Avoid
+  treatment : designed, NOT executed
+}
+class "R007" as R7 <<risk>> {
+  exposure : 6
+  band : Moderate
+  strategy : Avoid
+  treatment : executed
+}
+class "R008" as R8 <<risk>> {
+  band : none
+  strategy : Not applicable
+  treatment : retired - no actor
+}
+class "R009" as R9 <<risk>> {
+  exposure : 4
+  band : Minor
+  strategy : Avoid
+  treatment : CI half retired; guidelines absent
+}
+
+class "Register at Iter-2 close" as REG <<ledger>> {
+  risks : 9
+  materialized : 1 - R004
+  retired : 1 - R008
+  treatments executed : 1 - R007
+  treatments failed : 1 - R004
+}
+R1 --> REG
+R2 --> REG
+R3 --> REG
+R4 --> REG
+R5 --> REG
+R6 --> REG
+R7 --> REG
+R8 --> REG
+R9 --> REG
+note bottom of REG
+  R004 is the only risk whose treatment this project has
+  attempted and failed, and it has failed twice. Its
+  probability is raised on the observed materialization
+  rate; its strategy stays Avoid because CON-021's grant
+  does not cover a risk whose mechanism is the team's own
+  execution, so acceptance is not the team's to grant.
+end note
+@enduml
+```
 ## Risk Mitigation and Contingency
 
 **R001 — a change on Infrastructure's side breaks the portal (High provisional, accept).**
