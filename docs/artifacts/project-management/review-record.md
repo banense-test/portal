@@ -228,82 +228,23 @@ end note
 
 ### Review Coordinator — consolidation
 
-**Review event.** Lifecycle Milestone Review — LCO, end of Inception, iteration 1. This is the project's first review event: no prior review history exists, so no effectiveness trend is computed and none is asserted.
+**Review event.** Lifecycle Milestone Review — LCO, end of Inception, iteration 2. This is the project's second review event; the first was the iteration-1 LCO review, whose sanction was refused.
 
 **Lens participation (authoritative).**
 
-| Lens | Role | Participation | Findings recorded |
-|---|---|---|---|
-| Technical | Reviewer | EXECUTED | 11 — 0 Critical, 1 Major, 10 Minor |
-| Business | BusinessReviewer | EXECUTED | 0 — Business Modeling INACTIVE, no artifact surface |
-| Management | ManagementReviewer | EXECUTED | 7 — 0 Critical, 3 Major, 4 Minor |
+| Lens | Role | Participation | Findings recorded this pass | Prior findings closed this pass |
+|---|---|---|---|---|
+| Technical | Reviewer | EXECUTED | 6 — 0 Critical, 1 Major, 5 Minor | 11 |
+| Business | BusinessReviewer | EXECUTED | 1 — 0 Critical, 0 Major, 1 Minor | 0 |
+| Management | ManagementReviewer | EXECUTED | 2 — 0 Critical, 1 Major, 1 Minor | 7 |
 
 All three lenses executed. No lens is recorded as INACTIVE — did not evaluate this review.
 
 **Review process framework.** Seven review types, each triggered by the workflow activity that requires it. A PRA Review is never a substitute for a milestone review.
 
-```plantuml
-@startuml RC_ReviewFramework
-title Portal - review process framework: seven review types and the workflow activity that triggers each
-start
-:Workflow activity completes;
-if (which activity?) then (Project Initiation)
-  :Project Approval Review;
-  note right
-    Scope feasibility against the Vision and the Risk List.
-    Participants: STK-001, SystemAnalyst, ProjectManager, ManagementReviewer.
-  end note
-elseif (Process configuration) then (Process configuration)
-  :Project Planning Review;
-  note right
-    Development Case tailoring and Iteration Plan roadmap
-    ruled feasible and acceptable to stakeholders.
-  end note
-elseif (Plan for Next Iteration) then (Plan for Next Iteration)
-  :Iteration Plan Review;
-  note right
-    The iteration plan is reviewed BEFORE the iteration begins.
-  end note
-elseif (Manage Iteration - mid) then (Manage Iteration - mid)
-  :PRA Review;
-  note right
-    Progress, Risk and Assessment: project health during execution.
-  end note
-elseif (Manage Iteration - exit criteria) then (Manage Iteration - exit criteria)
-  :Iteration Evaluation Criteria Review;
-  note right
-    Each exit criterion verified before the iteration closes.
-  end note
-elseif (Manage Iteration - close) then (Manage Iteration - close)
-  :Iteration Acceptance Review;
-  note right
-    Formal acceptance of the iteration's deliverables.
-  end note
-elseif (Close-Out Phase) then (Close-Out Phase)
-  :Project Acceptance Review;
-  note right
-    Final project-level acceptance at close-out.
-  end note
-else (Phase exit)
-  :Lifecycle Milestone Review;
-  note right
-    LCO / LCA / IOC / PR - the sanction to proceed.
-    A PRA Review is NEVER a substitute for this.
-  end note
-endif
-:Review Record produced, signed and archived;
-note right
-  No Review Record = the review did not happen.
-  Entry criteria enforced BEFORE the review begins;
-  exit criteria enforced BEFORE it closes.
-end note
-stop
-@enduml
-```
-
 | Review type | Triggering workflow activity | Required participants | Entry criteria | Exit criteria | Primary output |
 |---|---|---|---|---|---|
-| Project Approval Review | Project Initiation | STK-001, SystemAnalyst, ProjectManager, ManagementReviewer | Vision and Risk List in target state; agenda distributed 48h ahead | Scope feasibility ruled; Review Record signed | Review Record |
+| Project Approval Review | Project Initiation | STK-001, SystemAnalyst, ProjectManager, ManagementReviewer | Vision and Risk List in target state; agenda distributed in advance | Scope feasibility ruled; Review Record signed | Review Record |
 | Project Planning Review | Process configuration | ProcessEngineer, ProjectManager, STK-001, ManagementReviewer | Development Case and Iteration Plan in target state | Tailoring and roadmap ruled feasible and acceptable to stakeholders | Review Record |
 | Iteration Plan Review | Plan for Next Iteration | ProjectManager, SoftwareArchitect, TestManager, Reviewer | Iteration Plan in target state; exit criteria stated | Plan reviewed before the iteration begins | Review Record |
 | PRA Review | Manage Iteration (mid-iteration) | ProjectManager, discipline leads, ManagementReviewer | Progress and risk data current | Project health assessed; corrective actions assigned | Review Record |
@@ -315,46 +256,40 @@ stop
 **Review calendar — Inception, mapped to the iteration boundary.**
 
 ```plantuml
-@startuml RC_ReviewCalendar
-title Portal - Inception review calendar: review events mapped to iteration boundaries and the LCO gate
-|#LightBlue|Iteration 1 (Inception)|
+@startuml RC2_ReviewCalendar
+title Portal - Inception review calendar, iteration 2: review events mapped to the iteration boundary and the LCO gate
+|#LightBlue|Iteration 2 (Inception)|
 start
-:Artifacts produced: Vision, Use-Case Model, Supplementary Specification, Development Case, Risk List, Iteration Plan, SAD, Test Evaluation Summary;
+:Artifacts evolved: Development Case, Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary;
 note right
-  Trigger: Project Initiation + Process configuration complete.
+  Trigger: the phase auto-iterated after the iteration-1 refusal.
   Entry criteria: artifacts in target state, reviewers assigned,
-  agenda and evaluation criteria distributed 48h in advance.
-end note
-:Project Approval Review;
-:Project Planning Review;
-note right
-  Both are Inception reviews. Neither is a milestone review:
-  they rule on scope feasibility and on process acceptability.
+  agenda and evaluation criteria distributed in advance.
 end note
 |#LightGreen|Review event: LCO|
-:Lifecycle Milestone Review - LCO;
+:Lifecycle Milestone Review - LCO, iteration 2;
 note right
-  Trigger: Close-Out Phase (end of Inception).
   Participants with sanctioning authority: STK-001 (sponsor),
   ManagementReviewer. Technical lens: Reviewer.
-  Business lens: BusinessReviewer - INACTIVE, did not evaluate.
+  Business lens: BusinessReviewer.
+  All three lenses EXECUTED this review.
 end note
 :Three lens blocks written into the Review Record;
 :Findings recorded per lens, each with owner, severity, deadline;
-|#LightBlue|Iteration 1 (Inception)|
-if (LCO exit criteria met AND sanction GRANTED?) then (yes)
+:Review Coordinator consolidates the ledger and the verdict;
+if (0 open Critical AND 0 open Major AND planned scope complete AND sanction GRANTED?) then (yes)
   :Sanction to proceed to Elaboration;
   :Iteration Acceptance Review - Inception increment accepted;
   stop
 else (no)
   :No-Go - sanction REFUSED;
+  note right
+    Basis: 2 open Major findings, exit criterion C5
+    (stand-in environment, CON-028) not met, and the
+    sponsor declined to sanction the advance.
+  end note
   :Findings carried to the next iteration of each lens;
   :Auto-iterate the phase;
-  note right
-    The refusal is the verdict, not a defect.
-    Every finding is corrected, including the minor ones.
-    Declared scope is never cut to fit an estimate (CON-027).
-  end note
   stop
 endif
 @enduml
