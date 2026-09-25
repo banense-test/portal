@@ -883,6 +883,223 @@ Conclusion: BPA + BR are correctly INACTIVE for this engagement. No findings, no
 
 **Escalation.** No Critical finding was recorded by this lens, so nothing escalates to the stakeholder via `REQUIRES_USER_INPUT`. No `[SCOPE_QUESTION]` is open in this block: the declared scope is complete and unambiguous for the business dimension, and no business value was invented.
 
+### Management Reviewer lens
+
+**Stakeholder sanction: REFUSED**
+
+**Stakeholder acceptance:** "No" — the stakeholder does not accept the project scope and objectives and does not sanction advancing past the Lifecycle Objectives milestone. Directive recorded verbatim: "All findings must be corrected, even if they are minor." The stakeholder also declined to confirm `R001`'s probability (3) and impact (4).
+
+**Overall disposition: No-Go.**
+
+The LCO milestone is **not achieved**. The sanction to proceed to Elaboration was asked of the stakeholder — the sole sanctioning authority — with the leaning and all three open Major defects inside the question, and it was refused. A refusal is a verdict, not a defect the team must fix: the reasons the stakeholder gave are recorded as findings on the artifacts they target, and the refusal itself is the disposition.
+
+**LCO exit criteria, assessed against the artifacts and the SCM.**
+
+| # | Exit criterion | Verdict | Basis |
+|---|---|---|---|
+| 1 | Stakeholders agree on the scope | Met | Vision and Use-Case Model carry the declared scope with no creep: nine use cases, one per declared `FR-001`..`FR-009`, each citing its source requirement. Trace graph: 47 roots, 150 nodes, no `SUSPECT`, no `UNKNOWN LABEL`. |
+| 2 | The project is viable | Met | Stack pinned by `CON-022`/`CON-023`/`CON-024`; the OIDC client is already registered (`CON-003`) so login is testable from day one; the Architectural Proof-of-Concept NOT-FIRED verdict holds. |
+| 3 | Initial risks identified and classified | Met | Risk List carries `R001`..`R009` with probability, impact, magnitude, strategy, owner, mitigation and contingency. `R001`..`R003` preserved with the declared identifiers; team risks numbered per `CON-020`; every acceptance cites `CON-021`. The classification's *basis* is defective (`Risk List#F1`), but the criterion — that risks are identified and classified — is met. |
+| 4 | The process configuration governs the project | Met | Development Case conforms to the IARI baseline: roster unchanged, CORE ownership unchanged, no artifact outside the universe, Business Modeling INACTIVE on the correct trigger, all six OPTIONAL triggers audited and none over-triggered. |
+| 5 | The stand-in environment is available (`CON-028`) | **Not met** | No artifact evidences the stand-in OIDC issuer or the stand-in directory. The only record is the Development Case's pre-iteration readiness table, which is stale on its own CI row. |
+| 6 | The build is verifiable (`CON-026`) | Met | Run `36050339100` on `main` is green. |
+
+**Four-axis health scorecard.**
+
+| Dimension | Rating | Basis |
+|---|---|---|
+| Scope | **Green** | Nine use cases, one per declared requirement, all traced, no creep, no phantom use case, no silent derivation. |
+| Schedule | **Amber** | Five of six iteration exit criteria met. No calendar date exists and none is invented. The human gate is bounded at 14 days of queue time and reported apart from agent time. |
+| Cost | **Not measurable** | No budget or cap is declared (`CON-027`) and no phase has closed, so no measured actual exists and no forecast is invented. The iteration's own measured spend is not recorded (`Iteration Plan#F2`). |
+| Quality | **Amber** | 18 open findings across the three lenses: 0 Critical, 4 Major, 14 Minor. SCM defect identifier: `Issue #1`. |
+
+A project green on three dimensions and amber on two is not a green project. The two amber dimensions are the ones the stakeholder's refusal is grounded in.
+
+```plantuml
+@startuml MR_ProjectHealth
+title Project health state machine - LCO, Inception iteration 1
+skinparam classAttributeIconSize 0
+
+[*] --> Healthy : iteration 1 opens
+
+Healthy --> AtRisk : C5 stand-in environment not evidenced at the milestone
+AtRisk --> AtRisk : 11 Reviewer-lens findings (0 Critical, 1 Major)
+AtRisk --> AtRisk : 7 Management Reviewer-lens findings (0 Critical, 3 Major)
+AtRisk --> NoGo : stakeholder sanction REFUSED
+
+NoGo --> Rework : all findings corrected, even the minor ones
+Rework --> AtRisk : findings closed and re-verified
+AtRisk --> Healthy : C5 evidenced and sanction GRANTED
+Healthy --> [*] : LCO achieved
+
+note right of AtRisk
+  Four-axis health at this milestone:
+  Scope   GREEN  - 9 UC, one per declared FR, no creep
+  Schedule AMBER - 5 of 6 iteration exit criteria met
+  Cost    NOT MEASURABLE - no budget declared (CON-027),
+          no phase closed, no measured actual exists
+  Quality AMBER - 0 Critical, 4 Major, 14 Minor across lenses
+end note
+
+note bottom of NoGo
+  The transition into NoGo is the stakeholder's refusal,
+  not a technical defect. No Critical finding was recorded
+  by any lens, so nothing here is a safety or correctness
+  stop - it is the sponsor declining to sanction the advance
+  until the findings are corrected.
+end note
+@enduml
+```
+
+**Risk retirement.** No prior review exists, so no trend line is computed and none is asserted. What the register shows is that **no risk was retired by a treatment this iteration**: `R008` is retired as not applicable (its mechanism names no actor in this project), and `R001`..`R007` and `R009` all remain Open. `R004` — the risk the register itself identifies as gating every test — is the one whose treatment this iteration was scoped to execute, and that treatment is unverified at the milestone. That unverified treatment is exit criterion 5.
+
+```plantuml
+@startuml MR_RiskRetirement
+title Risk status and retirement trend - LCO, Inception iteration 1 (no prior review: no trend asserted)
+skinparam classAttributeIconSize 0
+
+class "R001" as R1 <<risk>> {
+  magnitude : High (12)
+  strategy : Accept (CON-021)
+  status : Open
+  retired this iteration : NO
+}
+class "R002" as R2 <<risk>> {
+  magnitude : Significant (9)
+  strategy : Accept (CON-021)
+  status : Open
+  retired this iteration : NO
+}
+class "R003" as R3 <<risk>> {
+  magnitude : Moderate (6)
+  strategy : Accept (CON-021)
+  status : Open
+  retired this iteration : NO
+}
+class "R004" as R4 <<risk>> {
+  magnitude : Significant (9)
+  strategy : Avoid
+  status : Open
+  retired this iteration : NO
+}
+class "R005" as R5 <<risk>> {
+  magnitude : Significant (9)
+  strategy : Accept (CON-021)
+  status : Open
+  retired this iteration : NO
+}
+class "R006" as R6 <<risk>> {
+  magnitude : Moderate (6)
+  strategy : Avoid
+  status : Open
+  retired this iteration : NO
+}
+class "R007" as R7 <<risk>> {
+  magnitude : Moderate (6)
+  strategy : Avoid
+  status : Open
+  retired this iteration : NO
+}
+class "R008" as R8 <<risk>> {
+  magnitude : none
+  strategy : Not applicable
+  status : Retired
+  retired this iteration : YES - no actor for its mechanism
+}
+class "R009" as R9 <<risk>> {
+  magnitude : Minor (4)
+  strategy : Avoid
+  status : Open
+  retired this iteration : NO
+}
+
+class "Retirement ledger" as LED <<ledger>> {
+  risks retired this iteration : 1 of 9
+  risks retired by a treatment : 0
+  R004 treatment executed : NOT VERIFIED
+}
+
+R1 --> LED
+R2 --> LED
+R3 --> LED
+R4 --> LED
+R5 --> LED
+R6 --> LED
+R7 --> LED
+R8 --> LED
+R9 --> LED
+
+note bottom of LED
+  No prior review exists, so no trend line is computed and
+  none is asserted. What the register shows is that no risk
+  was retired by a TREATMENT this iteration: R008 is retired
+  as not applicable (its mechanism names no actor), and
+  R001..R007 and R009 all remain Open.
+  R004 is the risk that gates every test. Its treatment is
+  the stand-in environment, and that treatment is unverified
+  at the milestone - which is exit criterion C5.
+end note
+@enduml
+```
+
+**Review workflow and sign-off.**
+
+```plantuml
+@startuml MR_ReviewWorkflow
+title LCO review workflow and stakeholder sign-off - Inception iteration 1
+skinparam classAttributeIconSize 0
+
+actor "Management Reviewer\n(this lens)" as MR
+participant "Review Record" as RR
+participant "Reviewer lens" as REV
+participant "Business Reviewer lens" as BR
+actor "STK-001 Laura Gomez\n(project sponsor)" as STK
+
+MR -> RR : read prior findings of this lens
+RR --> MR : none - first pass of this lens
+note over MR
+  S_RECONCILE: 0 prior MR findings, so 0 closures.
+  The 11 Reviewer-lens findings are that lens's to close;
+  the ownership invariant rejects a cross-lens close.
+end note
+
+MR -> MR : assess LCO exit criteria C1..C6
+note over MR
+  C1..C4 and C6 MET. C5 (stand-in environment,
+  CON-028) NOT MET - no artifact evidences it.
+end note
+
+REV -> RR : 11 findings (0 Critical, 1 Major, 10 Minor)
+BR -> RR : 0 findings - BM INACTIVE, no artifact surface
+
+MR -> STK : ask the sanction, with the leaning and every open Major defect inside the question
+note over STK
+  The sanction is the stakeholder's alone and is never
+  left as an un-actionable finding. It was asked with
+  the leaning (Conditional Go) and the 3 Major defects
+  in the question, so the answer is informed.
+end note
+STK --> MR : NO - sanction REFUSED
+STK --> MR : all findings must be corrected, even if they are minor
+STK --> MR : R001 P=3 / I=4 NOT confirmed
+
+MR -> RR : record 7 findings of this lens (0 Critical, 3 Major, 4 Minor)
+MR -> RR : write the verdict - No-Go, basis: sanction REFUSED
+MR -> RR : write "Stakeholder sanction: REFUSED" and the verbatim acceptance
+
+note over STK
+  A refusal is a verdict, not a defect the team must fix.
+  The reasons the stakeholder gave are recorded as findings
+  on the artifacts they target; the refusal itself is
+  recorded as the disposition.
+end note
+@enduml
+```
+
+**What this lens does not decide.** The iteration's closure and the re-planning that follows the refusal belong to the ReviewCoordinator. This block states the Management Reviewer lens's gate verdict and the evidence for it. The generic Reviewer lens's disposition (Approved with Changes, 11 findings, 0 Critical) and the Business Reviewer lens's verdict (`BR-OK-INACTIVE`) are separate blocks in this same Review Record.
+
+**Escalation.** No Critical finding was recorded by this lens, so nothing escalates on severity grounds. The stakeholder was consulted regardless, because the sanction is theirs alone, and refused it. No `[SCOPE_QUESTION]` is open in this block: the declared scope is complete and unambiguous, and no element was invented.
+
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
