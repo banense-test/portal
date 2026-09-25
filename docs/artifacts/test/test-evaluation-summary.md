@@ -162,16 +162,29 @@ end note
 
 **Recommendation.** Proceed to Elaboration with the stand-in environment as the first construction item, since R004 gates every test. The first acceptance-verifiable increment is UC-001, which carries AC-002, AC-005 and AC-006, followed by UC-008, which carries AC-004 and exercises R002's gap path. AC-005 and BG-003 are verified with real employees after go-live and cannot be closed by any test the team runs.
 ## Traceability
-Every row below names element identifiers on both sides. The downstream Test Case elements (`TC-NNN`) do not yet exist — they are the TestDesigner's to mint — so no edge is claimed to them here; the edges are registered when those elements are minted. The CI run cited in the Test Summary is an observed external fact, not an element, and carries no edge.
+This artifact mints no element of its own, so it registers no new trace edge. The edges below already exist in the graph, registered by the authority of each declared element; this table records which of them the test effort verifies. A document section is not an element and is not named as a trace endpoint.
 
-| Element | Traces From | Link Type | Traces To |
-|---|---|---|---|
-| Test Scope | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009 | Refines | UC-001, UC-002, UC-003, UC-004, UC-005, UC-006, UC-007, UC-008, UC-009 |
-| Acceptance verification plan | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | UC-001, UC-005, UC-008 |
-| Non-functional verification | NFR-001, NFR-002, NFR-003 | Refines | UC-001, UC-008 |
-| Audit verification | NFR-004 | Refines | UC-002, UC-004, UC-005, UC-006, UC-007, UC-009 |
-| Authorization verification | NFR-005 | Refines | UC-001, UC-005, UC-009 |
-| Business-rule verification | CON-009, CON-010, CON-011, CON-012, CON-013, CON-014, CON-015, CON-016, CON-017 | Refines | UC-004, UC-005, UC-006, UC-007, UC-008, UC-009 |
-| Stand-in test boundary | CON-028, R002 | DependsOn | UC-008 |
-| Risk-directed test priority | R002, R004, R006 | DependsOn | UC-001, UC-008 |
-| Defect lifecycle | CON-026 | Refines | — |
+| Declared element | Verified by | Edge already registered by its authority |
+|---|---|---|
+| FR-001, FR-002, FR-003 | UC-001, UC-003 | SystemAnalyst |
+| FR-004, FR-005, FR-006, FR-007 | UC-002, UC-004, UC-005, UC-006, UC-007 | SystemAnalyst |
+| FR-008, FR-009 | UC-008, UC-009 | SystemAnalyst |
+| AC-001 | UC-001 | SystemAnalyst |
+| AC-002, AC-005 | UC-001 | SystemAnalyst |
+| AC-003 | UC-005 | SystemAnalyst |
+| AC-004 | UC-008 | SystemAnalyst |
+| AC-006 | UC-001 | SystemAnalyst |
+| NFR-001, NFR-002 | COMP-001 | SoftwareArchitect |
+| NFR-003 | COMP-001 | SoftwareArchitect |
+| NFR-004 | COMP-009 | SoftwareArchitect |
+| NFR-005 | COMP-002 | SoftwareArchitect |
+| CON-009 | COMP-005 | SoftwareArchitect |
+| CON-010, CON-011, CON-012 | COMP-003 | SoftwareArchitect |
+| CON-013, CON-014, CON-015, CON-016 | COMP-006 | SoftwareArchitect |
+| CON-017 | COMP-005 | SoftwareArchitect |
+| CON-028 | COMP-006 | SoftwareArchitect |
+| R002 | UC-002, UC-008, COMP-006 | ProjectManager |
+| R004 | UC-001, UC-008, COMP-006 | ProjectManager |
+| R006 | UC-001, COMP-003 | ProjectManager |
+
+The downstream Test Case elements (`TC-NNN`) do not yet exist — they are the TestDesigner's to mint. No edge to them is claimed here; the edges are registered when those elements are minted. The CI run cited in the Test Summary is an observed external fact, not an element, and carries no edge.
