@@ -2572,11 +2572,11 @@ end note
 
 **Stakeholder sanction: REFUSED**
 
-**Stakeholder acceptance:** "No" — the stakeholder does not accept the project scope and objectives and does not sanction advancing past the Lifecycle Objectives milestone. Directive recorded verbatim: "All findings must be corrected, even if they are minor." Asked at the close of iteration 1 whether there was anything to add for the next pass, the sponsor answered: "Nothing new for this new iteration. Let's iterate again and address the findings."
+**Stakeholder acceptance:** "No" — the stakeholder does not accept the project scope and objectives and does not sanction advancing past the Lifecycle Objectives milestone. Directive recorded verbatim: "Please fix all findings."
 
 **Overall disposition: No-Go.**
 
-The LCO milestone is **not achieved**. The sanction was asked of the stakeholder — the sole sanctioning authority — with the leaning and every open Major defect inside the question, and it was refused. The refusal stands for this milestone: the stakeholder has since directed another iteration to address the findings, and re-asking an answered question is not a consultation. A refusal is a verdict, not a defect the team must fix: the reasons the stakeholder gave are recorded as findings on the artifacts they target, and the refusal itself is the disposition.
+The LCO milestone is **not achieved**. The sanction was asked of the stakeholder — the sole sanctioning authority — at this review, with the leaning (No-Go) and both open Major defects inside the question, and it was refused. A refusal is a verdict, not a defect the team must fix: the reasons the stakeholder gave are recorded as findings on the artifacts they target, and the refusal itself is the disposition. The directive that all findings be fixed governs the whole ledger, including the minor ones.
 
 **LCO exit criteria, assessed against the artifacts and the SCM.**
 
@@ -2610,7 +2610,7 @@ AtRisk --> AtRisk : 7 prior findings of this lens closed on evidence
 AtRisk --> AtRisk : Reviewer lens records 6 new findings (1 Major)
 AtRisk --> AtRisk : Business Reviewer lens records 1 new finding (Minor)
 AtRisk --> NoGo : C5 stand-in environment still not evidenced
-NoGo --> Rework : all findings corrected, even the minor ones
+NoGo --> Rework : all findings fixed, including the minor ones
 Rework --> AtRisk : findings closed and re-verified
 AtRisk --> Healthy : C5 evidenced and sanction GRANTED
 Healthy --> [*] : LCO achieved
@@ -2749,16 +2749,16 @@ end note
 REV -> RR : 6 findings (0 Critical, 1 Major, 5 Minor)
 BR -> RR : 1 finding (0 Critical, 0 Major, 1 Minor)
 
-MR -> STK : the sanction for this milestone
+MR -> STK : ask the sanction, with the leaning and every open Major defect inside the question
 note over STK
-  The sanction is the stakeholder's alone. For this
-  milestone the stakeholder has already answered: the
-  sanction stands REFUSED and the directive is to
-  iterate again and address the findings. The question
-  is not re-asked - re-asking an answered question is
-  not a consultation.
+  The sanction is the stakeholder's alone and is never
+  left as an un-actionable finding. It was asked with
+  the leaning (No-Go), the unmet exit criterion C5 and
+  both open Major defects inside the question, so the
+  answer is informed.
 end note
-STK --> MR : REFUSED - iterate again and address the findings
+STK --> MR : NO - sanction REFUSED
+STK --> MR : Please fix all findings
 
 MR -> RR : record 4 findings of this lens (0 Critical, 1 Major, 3 Minor)
 MR -> RR : write the verdict - No-Go, basis: C5 not met and sanction REFUSED
@@ -2768,7 +2768,7 @@ MR -> RR : write "Stakeholder sanction: REFUSED" and the verbatim acceptance
 
 **What this lens does not decide.** The iteration's closure and the re-planning that follows belong to the ReviewCoordinator. This block states the Management Reviewer lens's gate verdict and the evidence for it. The generic Reviewer lens's disposition (Approved with Changes, 6 findings, 0 Critical) and the Business Reviewer lens's verdict (`BR-OK-INACTIVE`, 1 Minor finding) are separate blocks in this same Review Record.
 
-**Escalation.** No Critical finding was recorded by this lens, so nothing escalates on severity grounds. The stakeholder was consulted — the sanction is theirs alone — and refused it; the refusal stands and the directive to iterate is recorded. No `[SCOPE_QUESTION]` is open in this block: the declared scope is complete and unambiguous, and no element was invented.
+**Escalation.** No Critical finding was recorded by this lens, so nothing escalates on severity grounds. The stakeholder was consulted — the sanction is theirs alone — and refused it; the refusal stands and the directive to fix all findings is recorded. No `[SCOPE_QUESTION]` is open in this block: the declared scope is complete and unambiguous, and no element was invented.
 
 ### Review Coordinator — consolidated milestone disposition
 
