@@ -353,7 +353,6 @@ end
 ```
 
 ## Logical View
-
 ### Decomposition — one component per area of change
 
 The decomposition is by **area of change**, not by feature. Each component below encapsulates exactly one decision likely to change, and hides it from every other component. The two High-volatility areas of the Use-Case Model each own a component; the Medium-volatility area owns a third.
@@ -547,26 +546,31 @@ end note
 
 The analysis classes below are the architecturally significant ones — the business entities and the records that carry the declared invariants. They are not a complete design model; the Designer refines them into `CLS-NNN` design classes in Elaboration.
 
+**The recorded times of a clocking are immutable.** CON-012 states the original record is never overwritten in place and never deleted. `Clocking.clockInUtc` and `Clocking.clockOutUtc` are therefore set once at insert and carry no setter; a correction is a new `ClockingCorrection` record, never an update to the clocking row. The `corrected` flag is not a field of `Clocking` either — it is derived from the existence of a correction record, so it cannot drift from the correction chain. The effective value of a day is resolved from that chain by the rule stated in the Data View.
+
 ```plantuml
 @startuml Portal_Class
-title Portal - key abstractions and the invariants they hold (candidate, Inception iteration 1)
+title Portal - key abstractions and the invariants they hold (candidate, Inception iteration 2)
 
 package "Clocking (COMP-003, COMP-004)" {
   class "Clocking" as CLK <<entity>> {
     + id : Guid
     + adUserId : String
     + workDate : Date
-    + clockInUtc : Instant
-    + clockOutUtc : Instant
+    + clockInUtc : Instant {readonly}
+    + clockOutUtc : Instant {readonly}
     + idempotencyKey : String
-    + corrected : Boolean
     + isOpen() : Boolean
-    + hoursWorked() : Decimal
+    + effectiveClockIn(corrections) : Instant
+    + effectiveClockOut(corrections) : Instant
+    + isCorrected(corrections) : Boolean
+    + hoursWorked(corrections) : Decimal
   }
   class "ClockingCorrection" as CORR <<entity>> {
     + id : Guid
     + clockingId : Guid
     + previousValue : String
+    + newValue : String
     + reason : String
     + correctedBy : String
     + correctedAtUtc : Instant
@@ -574,10 +578,13 @@ package "Clocking (COMP-003, COMP-004)" {
   note bottom of CLK
     CON-010: a pair never crosses midnight.
     CON-011: at most one pair per employee per day.
-    CON-012: never overwritten in place, never deleted -
-    a correction is a new record (ClockingCorrection).
+    CON-012: the recorded times are set once at insert,
+    never updated in place and never deleted. A
+    correction is a new ClockingCorrection record.
     idempotencyKey is UNIQUE: the AC-006 retry cannot
     create a second record.
+    The effective value of a day is resolved from the
+    correction chain, never by mutating this row.
   end note
 }
 
