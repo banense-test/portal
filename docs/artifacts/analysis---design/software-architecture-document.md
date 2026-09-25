@@ -875,7 +875,7 @@ One .NET 10 application and one PostgreSQL 18 instance, both on the internal Win
 
 ```plantuml
 @startuml Portal_Deployment
-title Portal - candidate deployment topology (Inception iteration 2)
+title Portal - candidate deployment topology (Inception iteration 3)
 
 node "Employee workstation\n(Chrome / Edge, CON-006)" as WS {
   artifact "Portal pages + clocking page script\n(localStorage retry, AC-006)" as BROWSER
@@ -933,6 +933,13 @@ note bottom of ESTATE
   servers: their placement is Infrastructure's
   decision and no component depends on it.
 end note
+
+note bottom of AD
+  Read-only, and the only source of the six
+  directory fields. The worker category is NOT an
+  AD attribute (CON-016), so the category filter
+  runs in the application, not in the LDAP query.
+end note
 @enduml
 ```
 
@@ -960,7 +967,7 @@ end note
 
 | Environment | Where | Purpose | Data |
 |---|---|---|---|
-| Development and test | The team's environment, against stand-ins | Build and test every use case | Stand-in OIDC issuer and stand-in directory carrying the declared attributes, including entries with empty job title and extension (CON-028). No production data. R004 materialized because this environment was not delivered in iteration 1; it is the first work item of iteration 2 |
+| Development and test | The team's environment, against stand-ins | Build and test every use case | Stand-in OIDC issuer and stand-in directory carrying the declared attributes, including entries with empty job title and extension, and the worker-category link (CON-028, CON-013). No production data. R004's treatment has failed twice because this environment was not delivered; it is now a hard gate owned by the Integrator, and no use-case work item starts until it is delivered and recorded |
 | CI | Hosted SCM provider | Build and test the artefact | No production data, no credentials, no deployment (CON-026) |
 | Production | The internal Windows Server estate | The live portal | Real Keycloak and real AD values substituted by Infrastructure at deployment (CON-028, CON-029) |
 
