@@ -983,6 +983,8 @@ end note
 
 ### Business Reviewer lens
 
+#### Iteration 1 — LCO business review
+
 **Summary.** **0 findings: 0 Critical, 0 Major, 0 Minor.** No business-model artifact exists to carry a defect, and none is required by the Development Case. No finding of this lens escalates to the stakeholder.
 
 **Compliance matrix.** Every Business Modeling checklist item evaluated and recorded Pass or N/A. N/A is the correct verdict for an item whose subject does not exist and is not required — it is not a Fail, and it is not a finding.
@@ -1038,7 +1040,362 @@ end note
 
 **Scope-adherence result.** No scope creep was found in the business dimension. Nine use cases, one per declared `FR-001`..`FR-009`; no phantom use case; no cross-cutting mechanism modelled as a use case — OIDC login, authorization, LDAP read, audit write and the clocking retry are all Supplementary Specification entries with `<<include>>` from their dependent use cases. No `[DERIVED]` marker was found in any artifact, so no silent derivation promotion exists to flag. No unsourced quantitative claim was found: the artifacts state declared targets and explicitly record that no measurement exists yet.
 
-**Prior findings of this lens.** None. This is the first review pass of the Business Reviewer lens on this project: `read_artifact_findings` returned an empty list for the Use-Case Model and no finding with `reviewerRole: BusinessReviewer` on any artifact. The three findings that do exist — `Vision#F1`, `Vision#F2`, `Supplementary Specification#F1` — carry `reviewerRole: Reviewer` and belong to that lens; the ownership invariant forbids me from closing them, and no `resolve_artifact_finding` call was emitted this pass.
+**Prior findings of this lens.** None. This was the first review pass of the Business Reviewer lens on this project: `read_artifact_findings` returned an empty list for the Use-Case Model and no finding with `reviewerRole: BusinessReviewer` on any artifact. The three findings that existed — `Vision#F1`, `Vision#F2`, `Supplementary Specification#F1` — carry `reviewerRole: Reviewer` and belong to that lens; the ownership invariant forbids me from closing them, and no `resolve_artifact_finding` call was emitted that pass.
+
+#### Iteration 2 — LCO business review
+
+**Summary.** **0 findings: 0 Critical, 0 Major, 0 Minor.** The Business Modeling discipline remains INACTIVE on the correct trigger, no business-model artifact exists to carry a defect, and none is required by the Development Case. No finding of this lens escalates to the stakeholder.
+
+**Business Modeling artifact coverage map.** The primary evidence of this review: which business-model artifacts the Development Case requires, which exist, and the verdict on each. Five artifacts, none required, none present — and the three checklist items whose subject does exist, all passing.
+
+```plantuml
+@startuml BR2_BMCoverageMap
+title Business Modeling artifact coverage map - LCO, Inception iteration 2
+skinparam classAttributeIconSize 0
+skinparam classFontSize 11
+
+class "Business Use-Case Model" as BUC <<artifact>> {
+  required by DC : NO
+  present : NO
+  verdict : NOT REQUIRED
+}
+class "Business Object Model\n(workers, entities)" as BOM <<artifact>> {
+  required by DC : NO
+  present : NO
+  verdict : NOT REQUIRED
+}
+class "Business rules section (BR-NNN)" as BR <<artifact>> {
+  required by DC : NO
+  present : NO
+  verdict : NOT REQUIRED
+}
+class "Glossary (business-domain terms)" as GL <<artifact>> {
+  trigger fired : NO
+  present : NO
+  verdict : NOT REQUIRED
+}
+class "Business Use-Case Realizations" as REAL <<artifact>> {
+  required by DC : NO
+  present : NO
+  verdict : NOT REQUIRED
+}
+
+class "Live checklist item 1\nStakeholder representation coverage" as C1 <<checklist>> {
+  subject : STK-001..STK-004
+  verdict : PASS
+}
+class "Live checklist item 2\nBusiness rules as formal constraints" as C2 <<checklist>> {
+  subject : CON-009..CON-019
+  verdict : PASS
+}
+class "Live checklist item 3\nBusiness goals measurable" as C3 <<checklist>> {
+  subject : BG-001..BG-003
+  verdict : PASS
+}
+
+class "Verdict" as V <<verdict>> {
+  disposition : BR-OK-INACTIVE
+  findings : 0
+  Critical : 0
+  escalation : none
+}
+
+BUC --> V
+BOM --> V
+BR --> V
+GL --> V
+REAL --> V
+C1 --> V
+C2 --> V
+C3 --> V
+
+note bottom of V
+  Five Business Modeling artifacts: none required by the
+  Development Case, none present. Three checklist items
+  have a live subject and all three pass.
+  A finding against an artifact the Development Case does
+  not require would be a false defect.
+end note
+@enduml
+```
+
+**DC §4 classification, independently re-verified this iteration.** `get_dc_classification` returns `isBusinessProcessLed: false`, re-evaluated this iteration, with all four criteria evaluated and none fired. I re-verified each criterion against the declared scope rather than accepting the verdict, and checked whether any Change Request had altered the basis — none has.
+
+```plantuml
+@startuml BR2_DC4Gate
+title DC-4 business-process-led gate - re-verified at Inception iteration 2
+skinparam classAttributeIconSize 0
+
+class "DC-4 classification" as DC4 <<decision>> {
+  business-process-led : FALSE
+  re-evaluated : Inception iteration 2
+  basis changed by a CR : NO
+}
+
+class "4(a) re-engineers or automates a business process" as C1 <<criterion>> {
+  verdict : NOT FIRED
+  evidence : three manual artefacts replaced by a web application
+}
+class "4(b) business actors and business workers modelled" as C2 <<criterion>> {
+  verdict : NOT FIRED
+  evidence : STK-001..STK-004 are organisational parties, not business workers
+}
+class "4(c) a Business Use-Case Model is input or output" as C3 <<criterion>> {
+  verdict : NOT FIRED
+  evidence : FR-001..FR-009 and UC01/UC02/UC03 declared directly
+}
+class "4(d) stakeholder declared business processes" as C4 <<criterion>> {
+  verdict : NOT FIRED
+  evidence : CON-009..CON-019 are system invariants, not process definitions
+}
+
+class "Consequence" as CONS <<verdict>> {
+  Business Modeling : INACTIVE
+  BPA and BR : not active
+  BM exit criterion at LCO : none
+}
+
+DC4 --> C1
+DC4 --> C2
+DC4 --> C3
+DC4 --> C4
+C1 --> CONS
+C2 --> CONS
+C3 --> CONS
+C4 --> CONS
+
+note bottom of CONS
+  All four criteria evaluated against the declared scope and
+  none fired. The classification is re-evaluated every
+  iteration; no Change Request has altered its basis.
+end note
+@enduml
+```
+
+**Business-rule audit — the four formal-constraint properties, per rule.** Each of the eleven declared business rules was audited against the four properties a formal constraint must carry: a unique identifier, a source, an explicit attachment to the element it constrains, and a testable condition. **Eleven audited, zero defective.**
+
+```plantuml
+@startuml BR2_BusinessRuleAudit
+title Business-rule audit - CON-009..CON-019 against the four formal-constraint properties
+skinparam classAttributeIconSize 0
+skinparam classFontSize 10
+
+class "CON-009 one featured item" as R9 <<rule>> {
+  identifier : Pass
+  source : Pass - declared BusinessRule
+  attachment : Pass - COMP-005, UC-004/005/006/007
+  testable : Pass
+}
+class "CON-010 pair never crosses midnight" as R10 <<rule>> {
+  identifier : Pass
+  source : Pass - declared BusinessRule
+  attachment : Pass - COMP-004, UC-001/003
+  testable : Pass
+}
+class "CON-011 one pair per day" as R11 <<rule>> {
+  identifier : Pass
+  source : Pass - declared BusinessRule
+  attachment : Pass - COMP-004, UC-001/003
+  testable : Pass
+}
+class "CON-012 no in-place overwrite" as R12 <<rule>> {
+  identifier : Pass
+  source : Pass - declared BusinessRule
+  attachment : Pass - COMP-004, UC-001/003
+  testable : Pass
+}
+class "CON-013 category does not drive access" as R13 <<rule>> {
+  identifier : Pass
+  source : Pass - declared BusinessRule
+  attachment : Pass - COMP-007, UC-008/009
+  testable : Pass
+}
+class "CON-014 closed list of four" as R14 <<rule>> {
+  identifier : Pass
+  source : Pass - declared BusinessRule
+  attachment : Pass - COMP-007, UC-009
+  testable : Pass
+}
+class "CON-015 at most one, may be empty" as R15 <<rule>> {
+  identifier : Pass
+  source : Pass - declared BusinessRule
+  attachment : Pass - COMP-007, UC-002/008/009
+  testable : Pass
+}
+class "CON-016 one home for employee data" as R16 <<rule>> {
+  identifier : Pass
+  source : Pass - declared BusinessRule
+  attachment : Pass - COMP-007, UC-002/008/009
+  testable : Pass
+}
+class "CON-017 news never deleted" as R17 <<rule>> {
+  identifier : Pass
+  source : Pass - declared BusinessRule
+  attachment : Pass - COMP-005, UC-007
+  testable : Pass
+}
+class "CON-018 no in-portal audit view" as R18 <<rule>> {
+  identifier : Pass
+  source : Pass - declared BusinessRule
+  attachment : Pass - COMP-009
+  testable : Pass
+}
+class "CON-019 no compliance regime" as R19 <<rule>> {
+  identifier : Pass
+  source : Pass - declared Regulatory
+  attachment : Pass - no design element, stated
+  testable : Pass
+}
+
+class "Audit result" as A <<ledger>> {
+  rules audited : 11
+  defective : 0
+}
+
+R9 --> A
+R10 --> A
+R11 --> A
+R12 --> A
+R13 --> A
+R14 --> A
+R15 --> A
+R16 --> A
+R17 --> A
+R18 --> A
+R19 --> A
+
+note bottom of A
+  Each rule carries a unique identifier, a declared source,
+  an explicit attachment to the element that must enforce it
+  (stated once, in the Supplementary Specification's
+  Traceability table and the Use-Case Model's
+  constraints-and-risks table), and a testable condition.
+  No rule is defective.
+end note
+@enduml
+```
+
+**Derivation-readiness assessment (the Business-to-System Derivation Readiness Gate).** The gate is **not applicable, and correctly so** — it is not "failed". The derivation never passes through a business model: the stakeholder declared the system use cases directly (`UC01`, `UC02`, `UC03`) alongside `FR-001`..`FR-009`, and the Use-Case Model realises them one-for-one as `UC-001`..`UC-009`. There is no business worker whose automation disposition must be annotated, because no business worker exists; there is no business entity needing a candidate analysis-class annotation, because no business entity exists. The bridge is not broken — it is not needed, and the System Analyst is not blocked.
+
+```plantuml
+@startuml BR2_DerivationGate
+title Business-to-System Derivation Readiness Gate - applicability at LCO, Inception iteration 2
+skinparam classAttributeIconSize 0
+
+class "Gate question" as Q <<decision>> {
+  is the business model a sound foundation
+  for deriving system use cases?
+}
+
+class "Path A - derivation through a business model" as PA <<path>> {
+  business workers to annotate : 0
+  business entities to annotate : 0
+  BUC to system UC mapping : none
+  verdict : NOT APPLICABLE
+}
+class "Path B - derivation direct from declared requirements" as PB <<path>> {
+  declared system use cases : UC01, UC02, UC03
+  declared requirements : FR-001..FR-009
+  realised one for one : UC-001..UC-009
+  verdict : APPLICABLE AND SATISFIED
+}
+
+class "Gate verdict" as V <<verdict>> {
+  bridge status : NOT NEEDED
+  broken : NO
+  System Analyst blocked : NO
+}
+
+Q --> PA
+Q --> PB
+PA --> V
+PB --> V
+
+note bottom of V
+  The gate is not applicable, and correctly so - it is not
+  "failed". The derivation never passes through a business
+  model: the stakeholder declared the system use cases
+  directly alongside FR-001..FR-009, and the Use-Case Model
+  realises them one for one. There is no business worker
+  whose automation disposition must be annotated, because
+  no business worker exists.
+end note
+@enduml
+```
+
+**Stakeholder representation coverage — independently verified, not accepted on the BPA's assertion.** All four declared parties are represented, and no significant organisational part relevant to the declared scope is missing.
+
+```plantuml
+@startuml BR2_StakeholderCoverage
+title Stakeholder representation coverage - declared parties against the Vision's Stakeholder Summary
+skinparam classAttributeIconSize 0
+
+class "STK-001 Laura Gomez\nHR Director, sponsor" as S1 <<stakeholder>> {
+  represented : YES
+  influence : High
+  needs stated : YES
+}
+class "STK-002 Miguel Torres\nSoftware Engineer" as S2 <<stakeholder>> {
+  represented : YES
+  influence : High
+  needs stated : YES
+}
+class "STK-003 Infrastructure Team\noperates AD and Keycloak" as S3 <<stakeholder>> {
+  represented : YES
+  influence : High
+  needs stated : YES
+}
+class "STK-004 Cuba Corp Employees\n200 people, 3 offices" as S4 <<stakeholder>> {
+  represented : YES
+  influence : Medium
+  needs stated : YES
+}
+
+class "Coverage result" as C <<ledger>> {
+  declared parties : 4
+  represented : 4
+  unrepresented organisational part : none
+}
+
+S1 --> C
+S2 --> C
+S3 --> C
+S4 --> C
+
+note bottom of C
+  No significant organisational part relevant to the declared
+  scope is unrepresented. STK-003 is correctly modelled as a
+  stakeholder and not as a use-case actor: it operates the
+  portal in production (CON-029) and performs no in-portal
+  administration. No compliance function is declared
+  (CON-019), so none is missing.
+end note
+@enduml
+```
+
+**Checklist detail — the three items that are NOT N/A.** Three Business Modeling checklist items have a subject that exists in this project even though the discipline is inactive. Each was evaluated on its merits and each passes.
+
+| Checklist item | Verdict | Evidence |
+|---|---|---|
+| Stakeholder representation coverage | **Pass** | All four declared stakeholders are represented in the Vision's Stakeholder Summary with role, interest, influence and the needs the product must satisfy: `STK-001` Laura Gómez (HR Director, sponsor), `STK-002` Miguel Torres (Software Engineer), `STK-003` Infrastructure Team (operates AD and Keycloak), `STK-004` Cuba Corp Employees (200 people, 3 offices). No significant organisational part relevant to the declared scope is unrepresented. The Infrastructure Team is correctly modelled as a stakeholder and not as a use-case actor — it operates the portal in production (`CON-029`) and performs no in-portal administration. No compliance function is declared (`CON-019`), so none is missing. |
+| Business rules as formal constraints | **Pass** | `CON-009`..`CON-019` are declared as `[BusinessRule]` constraints and each is attached to the element it constrains: `CON-009` to the news feature set (`FR-005`, `FR-006`, `FR-007`), `CON-010`/`CON-011`/`CON-012` to clocking (`FR-001`, `FR-002`, `FR-003`), `CON-013`/`CON-014`/`CON-015`/`CON-016` to the worker category (`FR-008`, `FR-009`), `CON-017` to news retention (`FR-007`), `CON-018`/`CON-019` to the audit (`NFR-004`). Each is testable and each carries its source. They are system invariants, not business-process definitions — which is precisely why they do not trigger Business Modeling. |
+| Business goals measurable | **Pass** | `BG-001` (50% reduction in HR management time, measured against the current manual processes), `BG-002` (100% of new clockings out of Excel), `BG-003` (80% of 200 employees within 3 months) each carry a numeric target and a stated basis of measurement. `BG-003`'s verification path is now stated per goal in the Vision: it is measured with `STK-004` after go-live, outside the project's test effort, and no acceptance criterion the team can run closes it. |
+
+**Traceability compliance (iteration 2).** The traceability tree was projected from the Business level and used as the completeness instrument. Result: 66 roots, 231 nodes, **no `UNKNOWN LABEL`** — every identifier in the graph belongs to a declared family. No `«LEAF»` at Business level: every declared requirement and acceptance criterion reaches at least one downstream element. No business-level element (`BUC-NNN`, `BR-NNN`, `OBJ-NNN`) appears in the graph, which is the expected shape for a project with Business Modeling inactive. The six `SUSPECT` edges the generic Reviewer lens records (`R001` → `UC-001`, `R001` → `UC-008`, `R004` → `UC-001`, `R004` → `UC-008`, `R009` → `UC-001`) are risk-to-use-case edges at the Business level and are that lens's finding (`Use-Case Model#F1`) — they are not business-modeling defects and I record no finding on them.
+
+**Scope-adherence result (iteration 2).** No scope creep was found in the business dimension. Nine use cases, one per declared `FR-001`..`FR-009`; every use case carries a `Source: FR-NNN` line citing a declared requirement; no phantom use case; no cross-cutting mechanism modelled as a use case — OIDC login, authorization, LDAP read, audit write and the clocking retry are all Supplementary Specification entries with `<<include>>` from their dependent use cases. No `[DERIVED]` marker survives in any artifact, so no silent derivation promotion exists to flag. No unsourced quantitative claim was found: the artifacts state declared targets and explicitly record that no measurement exists yet. No financial figure appears anywhere in the artifact set.
+
+**Prior findings of this lens.** None. `read_artifact_findings` returns no finding carrying `reviewerRole: BusinessReviewer` on any artifact — the Use-Case Model, the Vision and the Supplementary Specification each return only findings of the Reviewer and Management Reviewer lenses. No prior finding of this lens exists to close, defer or reject, and no `resolve_artifact_finding` call was emitted this pass.
+
+**Cross-lens findings left untouched.** The findings on the artifacts I read carry `reviewerRole: Reviewer` or `reviewerRole: ManagementReviewer` and are those lenses' to close. The ownership invariant rejects a cross-lens close attempt, so none was attempted.
+
+| Finding | Lens | Severity | Why this lens does not act |
+|---|---|---|---|
+| `Use-Case Model#F1` | Reviewer | Major | Unreviewed `SUSPECT` risk-to-use-case edges. A trace-graph currency defect in the technical lens's checklist, not a business-modeling defect. |
+| `Use-Case Model#F2` | Reviewer | Minor | Realizing-component table stale against the SAD. A trace-table defect, not a business-modeling defect. |
+| `Vision#F3` | Reviewer | Minor | `NFR-003` downstream element stale. A trace-table defect, not a business-modeling defect. |
+| `Supplementary Specification#F2` | Reviewer | Minor | `NFR-003` downstream element stale. A trace-table defect, not a business-modeling defect. |
+| `Vision#F1` | Management Reviewer | Minor | Business-goal verification path. The business-goal measurability item is mine and it passes; the finding is that the Vision's *statement* of the path was wrong, which is the Management Reviewer's scope finding. |
 
 ### Management Reviewer lens
 
