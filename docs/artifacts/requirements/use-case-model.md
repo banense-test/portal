@@ -531,6 +531,8 @@ end note
 ## Traceability
 Every row below ends in a trace-graph element, never a document section. One edge is registered per row.
 
+**Use case to declared requirement.**
+
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | UC-001 Clock In and Clock Out | FR-001 | Derives | Supplementary Specification |
@@ -543,7 +545,31 @@ Every row below ends in a trace-graph element, never a document section. One edg
 | UC-008 Search Employee Directory | FR-008 | Derives | Supplementary Specification |
 | UC-009 Assign or Clear Worker Category | FR-009 | Derives | Supplementary Specification |
 
-**Constraints and risks carried by each use case.** These are the declared identifiers each use case is bound by; they are stated in the use-case specifications above and are not separate trace edges. The risk column states the Risk List's current entry, not a restatement of it.
+**Acceptance criterion to use case.** The criterion is the measurable outcome the use case's increment closes; the edge runs criterion → use case.
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| AC-001 | — | Refines | UC-001 |
+| AC-002 | — | Refines | UC-001 |
+| AC-003 | — | Refines | UC-005 |
+| AC-004 | — | Refines | UC-008 |
+| AC-005 | — | Refines | UC-001 |
+
+**Risk to use case.** The edge runs risk → use case: the risk is the exposure the use case carries. `Traces From` names the constraint that authorizes the risk's registration and, where it applies, its acceptance in advance.
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| R001 | CON-020, CON-021 | DependsOn | UC-001, UC-008 |
+| R002 | CON-020, CON-021 | DependsOn | UC-002, UC-008 |
+| R003 | CON-020, CON-021 | DependsOn | UC-001 |
+| R004 | CON-020 | DependsOn | UC-001, UC-008 |
+| R005 | CON-020, CON-021 | DependsOn | UC-008, UC-009 |
+| R006 | CON-020 | DependsOn | UC-001 |
+| R009 | CON-020 | DependsOn | UC-001 |
+
+R004, R006 and R009 cite CON-020 alone: they are team-identified risks numbered in the declared series, and CON-021's acceptance in advance does not reach them — R004 and R006 are treated by Avoid, and R009's mechanism is the team's own execution.
+
+**Constraints and risks carried by each use case.** These are the declared identifiers each use case is bound by; they are stated in the use-case specifications above. The risk column states the Risk List's current entry, not a restatement of it.
 
 | Use case | Constraints applied | Risks |
 |---|---|---|
