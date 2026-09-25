@@ -1032,7 +1032,6 @@ end note
 5. **The risk register predicted the iteration's failure and the prediction was not acted on.** R004 named the exact outcome — the stand-in environment not ready, no use case buildable or testable — and its mitigation was the first work item of the plan. A risk-driven plan is only risk-driven if the item the risk names is executed first.
 
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | Iteration Assessment | Iteration Plan | Refines | LCO |
@@ -1041,10 +1040,10 @@ end note
 | Iteration Assessment | CON-027 | DependsOn | R007 |
 | Iteration Assessment | CON-028 | DependsOn | R004 |
 | Iteration Assessment | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | UC-001, UC-005, UC-008 |
-| Iteration Assessment | Issue #1 | DependsOn | R009 |
-| Iteration Assessment | run 36050451436 | DependsOn | R009 |
+| Iteration Assessment | Issue #1, Issue #2, Issue #3 | DependsOn | R009 |
+| Iteration Assessment | run 36095051721 | DependsOn | R009 |
 
-**Trace endpoints.** `FR-001`..`FR-009`, `NFR-001`..`NFR-005`, `AC-001`..`AC-006`, `CON-001`..`CON-032`, `BG-001`..`BG-003`, `STK-001`..`STK-004` and `R001`..`R009` are declared identifiers, copied exactly from the work order. `Issue #1` and `run 36050451436` are observed SCM facts, cited as returned by the `scm_*` tools. `LCO` is the milestone this iteration works toward. The findings cited above are the reviewers' `<artifact>#<key>` handles; a finding is not an element and no edge is registered on one.
+**Trace endpoints.** `FR-001`..`FR-009`, `NFR-001`..`NFR-005`, `AC-001`..`AC-006`, `CON-001`..`CON-032`, `BG-001`..`BG-003`, `STK-001`..`STK-004` and `R001`..`R009` are declared identifiers, copied exactly from the work order. `Issue #1`, `Issue #2`, `Issue #3` and `run 36095051721` are observed SCM facts, cited as returned by the `scm_*` tools. `LCO` is the milestone this iteration works toward. The findings cited above are the reviewers' `<artifact>#<key>` handles; a finding is not an element and no edge is registered on one.
 
 **No element of this role is minted.** The Project Manager produces no `UC-NNN`, `CLS-NNN`, `COMP-NNN`, `TC-NNN` or `INT-NNN`; those families belong to other authorities. The objectives table, the variance ledger, the metrics table and the rework ledger are sections of this assessment, not trace-graph elements, so no edge is registered on them.
 
