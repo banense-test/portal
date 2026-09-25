@@ -976,15 +976,18 @@ Clockings are stored in UTC and displayed in Europe/Madrid (CON-008). All three 
 ## Quality
 Each declared quality attribute is mapped to the architectural tactics that address it. A quality attribute with no tactic would be a gap; there is none below.
 
+`SEC-`, `USA-`, `SUP-` and `PERF-` are **document-local labels of the Supplementary Specification**, not trace-graph elements: they are cited here to point at the entries that carry the requirement, and no trace edge is registered on them. The declared identifiers (`NFR-NNN`, `CON-NNN`, `AC-NNN`, `R-NNN`) are the trace endpoints.
+
 | Quality attribute | Requirement | Architectural tactic | Component |
 |---|---|---|---|
 | Performance | NFR-001, NFR-002 | Server rendering, one page-level script, no client cache, indexed queries, AD off the clocking path | COMP-001, COMP-002, COMP-004, COMP-006 |
-| Reliability | NFR-003, AC-006 | localStorage retry with a client timestamp and an idempotency key; the retry is idempotent by construction so there is nothing to reconcile; the directory and news show a 'no connection' message | COMP-001, COMP-003, COMP-004 |
+| Availability | NFR-003 | One deployable, one failure domain, no 24/7 design: the declared window is 07:00–19:00 Monday–Friday with fault tolerance inside the corporate network. Infrastructure operates it (CON-029) | COMP-002 |
+| Reliability | AC-006 | localStorage retry with a client timestamp and an idempotency key; the retry is idempotent by construction so there is nothing to reconcile; the directory and news show a 'no connection' message | COMP-001, COMP-003, COMP-004 |
 | Functionality — audit | NFR-004 | One audit interface, append-only, written in the same transaction as the change it records; no second audit path | COMP-009 |
 | Functionality — authorization | NFR-005 | Two levels derived from AD group membership, resolved once in COMP-010; no role matrix, no permission screen, no per-category rule | COMP-010 |
-| Security | SEC-001..SEC-008 | OIDC client of the existing Keycloak; no local account and no second credential store; AD never written; internal network only; secrets in configuration, never in code; CI never holds production data or credentials | COMP-010, COMP-006 |
-| Usability | USA-001..USA-007, AC-002..AC-005 | The committed design implemented as the UI visual layer; server-rendered pages on current Chrome and Edge; no training required for the clocking path | COMP-001 |
-| Supportability | SUP-001..SUP-008 | One deployable artefact for Infrastructure to operate; placeholder OIDC and LDAP values in configuration; no data migration; no backup design in this project | COMP-001..COMP-010 |
+| Security | Supplementary Specification `SEC-` entries | OIDC client of the existing Keycloak; no local account and no second credential store; AD never written; internal network only; secrets in configuration, never in code; CI never holds production data or credentials | COMP-010, COMP-006 |
+| Usability | Supplementary Specification `USA-` entries, AC-002..AC-005 | The committed design implemented as the UI visual layer; server-rendered pages on current Chrome and Edge; no training required for the clocking path | COMP-001 |
+| Supportability | Supplementary Specification `SUP-` entries | One deployable artefact for Infrastructure to operate; placeholder OIDC and LDAP values in configuration; no data migration; no backup design in this project | COMP-001..COMP-010 |
 | Maintainability | G-1, G-2, G-3 | One component per area of change, each behind an interface; the two High-volatility areas are replaceable without touching the rest of the system | COMP-003, COMP-006, COMP-008 |
 | Data integrity | CON-009, CON-010, CON-011, CON-012, CON-014, CON-015, CON-016, CON-017 | The declared invariants enforced as database constraints wherever a constraint can express them, so they hold against every writer; the clocking row's recorded times are immutable and a correction is a new row | COMP-004, COMP-005, COMP-007 |
 
