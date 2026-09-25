@@ -655,8 +655,8 @@ environment state at the LCO gate. Each action names the decision it enables.
 
 ### Environment delta required before the next iteration starts
 
-The readiness criteria above are re-taken before each iteration. Against the LCO-gate record, three
-items must change state before the next iteration starts, and one must not regress.
+Against the LCO-gate record, three items must change state before the next iteration starts, and one
+must not regress.
 
 | Item | State at the LCO gate | Required before the next iteration starts | Owner |
 |---|---|---|---|
