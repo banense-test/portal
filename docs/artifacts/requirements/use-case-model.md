@@ -518,21 +518,50 @@ end note
 **Business rules applied:** CON-004, CON-013, CON-014, CON-015, CON-016, NFR-004.
 
 ## Traceability
+Every row ends in a trace-graph element, never a document section. One edge is registered per row.
+
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| UC-001 Clock In and Clock Out | FR-001, AC-006, CON-010, CON-011 | Derives | Supplementary Specification, Design Model |
-| UC-002 Export Monthly Clocking Report | FR-003, CON-005, CON-015, CON-016 | Derives | Supplementary Specification, Design Model |
-| UC-003 Correct or Insert a Clocking | FR-002, CON-012, NFR-004 | Derives | Supplementary Specification, Design Model |
-| UC-004 Read Internal News | FR-004, CON-009, CON-017 | Derives | Supplementary Specification, Design Model |
-| UC-005 Publish News | FR-005, CON-009, NFR-004 | Derives | Supplementary Specification, Design Model |
-| UC-006 Edit Published News | FR-006, CON-009, NFR-004 | Derives | Supplementary Specification, Design Model |
-| UC-007 Unpublish News | FR-007, CON-017, NFR-004 | Derives | Supplementary Specification, Design Model |
-| UC-008 Search Employee Directory | FR-008, CON-005, CON-016, R002 | Derives | Supplementary Specification, Design Model |
-| UC-009 Assign or Clear Worker Category | FR-009, CON-014, CON-015, CON-016 | Derives | Supplementary Specification, Design Model |
+| UC-001 Clock In and Clock Out | FR-001, AC-006, CON-010, CON-011 | Derives | Supplementary Specification |
+| UC-002 Export Monthly Clocking Report | FR-003, CON-005, CON-015, CON-016 | Derives | Supplementary Specification |
+| UC-003 Correct or Insert a Clocking | FR-002, CON-012, NFR-004 | Derives | Supplementary Specification |
+| UC-004 Read Internal News | FR-004, CON-009, CON-017 | Derives | Supplementary Specification |
+| UC-005 Publish News | FR-005, CON-009, NFR-004 | Derives | Supplementary Specification |
+| UC-006 Edit Published News | FR-006, CON-009, NFR-004 | Derives | Supplementary Specification |
+| UC-007 Unpublish News | FR-007, CON-017, NFR-004 | Derives | Supplementary Specification |
+| UC-008 Search Employee Directory | FR-008, CON-005, CON-016, R002 | Derives | Supplementary Specification |
+| UC-009 Assign or Clear Worker Category | FR-009, CON-014, CON-015, CON-016 | Derives | Supplementary Specification |
 | Actor: Employee | STK-004 | Refines | UC-001, UC-004, UC-008 |
 | Actor: HR Administrator | STK-001, NFR-005 | Refines | UC-002, UC-003, UC-005, UC-006, UC-007, UC-009 |
-| Actor: Keycloak | CON-002, CON-025 | Refines | UC-001..UC-009 (via the login mechanism) |
+| Actor: Keycloak | CON-002, CON-025 | Refines | UC-001, UC-002, UC-003, UC-004, UC-005, UC-006, UC-007, UC-008, UC-009 |
 | Actor: Active Directory | CON-004, CON-005, CON-016 | Refines | UC-002, UC-008, UC-009 |
 | Cross-cutting mechanism: OIDC login | CON-002, CON-025, NFR-005 | Refines | Supplementary Specification |
 | Cross-cutting mechanism: LDAP read | CON-004, CON-005, CON-016 | Refines | Supplementary Specification |
 | Cross-cutting mechanism: audit write | NFR-004, CON-018 | Refines | Supplementary Specification |
+
+**Realizing components.** Each component realizes the use case it fulfils; the edge runs component → use case and is owned by the Software Architect.
+
+| Component | Realizes |
+|---|---|
+| COMP-001 | UC-004 |
+| COMP-002 | UC-001 |
+| COMP-003 | UC-001 |
+| COMP-004 | UC-001, UC-003 |
+| COMP-005 | UC-005, UC-006, UC-007 |
+| COMP-006 | UC-002, UC-008 |
+| COMP-007 | UC-009 |
+| COMP-008 | UC-002 |
+
+**Risks carried by these use cases.** The edge runs risk → use case.
+
+| Risk | DependsOn |
+|---|---|
+| R001 | UC-001, UC-008 |
+| R002 | UC-002, UC-008 |
+| R003 | UC-001 |
+| R004 | UC-001, UC-008 |
+| R005 | UC-008, UC-009 |
+| R006 | UC-001 |
+| R009 | UC-001 |
+
+**Downstream endpoint.** `Supplementary Specification` is the registered artifact element each use case derives into; the RequirementsSpecifier elaborates the per-use-case flows and the quantified NFR thresholds there. The design elements this model feeds are the `COMP-NNN` components listed above, owned by the Software Architect — there is no separate Design Model artifact in this project.
