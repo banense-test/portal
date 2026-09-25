@@ -3087,24 +3087,27 @@ end note
 
 ### Review Coordinator — consolidation
 
+**Iteration 2 — LCO milestone review.**
+
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | Review Record | Development Case, Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan, Software Architecture Document, Test Evaluation Summary | Refines | LCO |
 | Review process framework | Development Case | Refines | LCO |
-| Review calendar — Inception | Iteration Plan | Refines | LCO |
+| Review calendar — Inception iteration 2 | Iteration Plan | Refines | LCO |
 | Lens participation record | Reviewer, BusinessReviewer, ManagementReviewer | Refines | LCO |
-| Consolidated finding tracker | Development Case#F1, Development Case#F2, Vision#F1, Vision#F2, Supplementary Specification#F1, Risk List#F1, Risk List#F2, Iteration Plan#F1, Iteration Plan#F2, Software Architecture Document#F1, Software Architecture Document#F2, Test Evaluation Summary#F1 | Refines | LCO |
+| Consolidated finding tracker — open | Use-Case Model#F1, Use-Case Model#F2, Vision#F3, Supplementary Specification#F2, Development Case#F3, Test Evaluation Summary#F2, Risk List#F3, Risk List#F4 | Refines | LCO |
+| Consolidated finding tracker — closed | Development Case#F1, Development Case#F2, Vision#F1, Vision#F2, Supplementary Specification#F1, Risk List#F1, Risk List#F2, Iteration Plan#F1, Iteration Plan#F2, Software Architecture Document#F1, Software Architecture Document#F2, Test Evaluation Summary#F1 | Refines | LCO |
 | Consolidated action plan | CON-027, CON-028 | DependsOn | R004, R007 |
 | Review effectiveness report | CON-026, CON-027 | DependsOn | LCO |
 | Milestone disposition — No-Go | CON-028, AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | LCO |
 | Stakeholder input on the next iteration | STK-001, CON-027 | Refines | LCO |
-| Observed SCM evidence | Issue #1, run 36050339100 | DependsOn | R009 |
+| Observed SCM evidence | Issue #1, Issue #2, Issue #3, run 36095051721 | DependsOn | R009 |
 
-**Trace endpoints.** `FR-001`..`FR-009`, `NFR-001`..`NFR-005`, `AC-001`..`AC-006`, `CON-001`..`CON-032`, `BG-001`..`BG-003`, `STK-001`..`STK-004` and `R001`..`R009` are declared identifiers, copied exactly from the work order. `Issue #1` and `run 36050339100` are observed SCM facts, cited as returned by the `scm_*` tools. `LCO` is the milestone this review serves. The findings of the three lenses are cited by their `<artifact>#<key>` handles; a finding is not an element and no edge is registered on one.
+**Trace endpoints.** `FR-001`..`FR-009`, `NFR-001`..`NFR-005`, `AC-001`..`AC-006`, `CON-001`..`CON-032`, `BG-001`..`BG-003`, `STK-001`..`STK-004` and `R001`..`R009` are declared identifiers, copied exactly from the work order. `UC-001`..`UC-009` are the System Analyst's use-case identifiers; `COMP-001`..`COMP-010` are the Software Architect's component identifiers. `Issue #1`, `Issue #2`, `Issue #3` and `run 36095051721` are observed SCM facts, cited as returned by the `scm_*` tools. `LCO` is the milestone this review serves. The findings of the three lenses are cited by their `<artifact>#<key>` handles; a finding is not an element and no edge is registered on one.
 
-**No element of this role is minted.** The Review Coordinator produces no `UC-NNN`, `CLS-NNN`, `COMP-NNN`, `TC-NNN` or `INT-NNN`; those families belong to other authorities. The review framework, the calendar, the finding tracker, the effectiveness report, the disposition and the stakeholder input are sections of this Review Record, not trace-graph elements, so no edge is registered on them — naming a document section in a Traces To column registers nothing, which is the defect recorded as `Vision#F1` and `Supplementary Specification#F1`.
+**No element of this role is minted.** The Review Coordinator produces no `UC-NNN`, `CLS-NNN`, `COMP-NNN`, `TC-NNN` or `INT-NNN`; those families belong to other authorities. The review framework, the calendar, the finding tracker, the effectiveness report, the disposition and the stakeholder input are sections of this Review Record, not trace-graph elements, so no edge is registered on them — naming a document section in a Traces To column registers nothing, which is the defect recorded as `Vision#F1` and `Supplementary Specification#F1` in iteration 1.
 
-**Stakeholder decisions recorded.** `STK-001` declined to sanction the advance past LCO and declined to confirm `R001`'s probability and impact. The refusal is the disposition of this review; the `R001` answer is recorded as `Risk List#F1`. Asked for anything to add for the next pass, the sponsor answered that there is nothing new and directed another iteration to address the findings; that answer is recorded in the Disposition and adds no element to the declared scope. No marker remains open: every question asked in this review has been answered, and each answer is written in the stakeholder's own words.
+**Stakeholder decisions recorded.** `STK-001` declined to sanction the advance past the Lifecycle Objectives milestone at this review, answering "No" to the sanction question asked with the leaning, the unmet exit criterion C5 and both open Major defects inside the question. The refusal is the disposition of this review. The stakeholder's directive, recorded verbatim, is "Please fix all findings" — it governs the whole finding ledger, including the minor ones. No marker remains open: every question asked in this review has been answered, and each answer is written in the stakeholder's own words.
 
 **Lens blocks preserved.** The three lens blocks — Reviewer, Business Reviewer, Management Reviewer — are the reviewers' own output and are preserved as written. This consolidation adds the Review Coordinator's blocks and does not rewrite theirs.
 
