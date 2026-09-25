@@ -1093,6 +1093,35 @@ Until one of these holds, the Business Reviewer lens has no artifact surface and
 
 **Carry-over.** All 7 findings of this lens remain open for the next iteration of this lens, which will reconcile them in its closure state before recording new defects. The 11 Reviewer-lens findings carry to that lens.
 
+### Review Coordinator — consolidated action plan
+
+**Prioritisation rule.** The stakeholder's directive is that all findings are corrected, including the minor ones, so nothing is deferred. Priority is nevertheless ordered: the four Major findings first, because each one either withholds the evidence for an LCO exit criterion or misstates observable SCM state; then the fourteen Minor findings, grouped by owner so each producing role receives one work list.
+
+**Priority 1 — Major findings (4).**
+
+| Finding | Owner | Action | Why it is first |
+|---|---|---|---|
+| `Iteration Plan#F1` (Management Reviewer) | ProjectManager | Evidence the stand-in environment (CON-028) — a test OIDC issuer and a test directory carrying the declared attributes, including entries with empty job title and extension — or state explicitly in Evaluation Criteria layer (b) that exit criterion 5 is NOT met and the LCO gate is not passable | C5 is the one LCO exit criterion not met, and it is the criterion that gates every use case: CON-028 forbids building or testing against the real Keycloak or the real AD |
+| `Development Case#F1` (Management Reviewer) | ProcessEngineer | Add a post-iteration environment verification recording the actual state of each item at the LCO gate, with observed evidence for each; keep the pre-iteration readiness table as the plan it is | The readiness table is the only evidence offered for C5 and is a pre-iteration snapshot, stale on its own CI row |
+| `Risk List#F1` (Management Reviewer) | ProjectManager | Mark R001's probability and impact as `[ASSUMPTION — requires validation]` in the Risk Register and the Risk Classification section; state the magnitude bands are provisional; re-anchor on a confirmed basis or obtain the confirmation | The sponsor declined to confirm R001's P and I, yet every magnitude band — including the boundaries that decide which risks need a stakeholder acceptance — is derived from them |
+| `Test Evaluation Summary#F1` (Reviewer) | TestManager | Record `Issue #1` as the open defect in the three places that assert none exists; state the defect count as one; refresh the CI run reference | The claim is false against observable SCM state and would let the milestone verdict conclude that no defect exists |
+
+**Priority 2 — Minor findings, by owner.**
+
+| Owner | Findings | Actions |
+|---|---|---|
+| ProjectManager | `Risk List#F1` (Reviewer), `Iteration Plan#F1` (Reviewer), `Iteration Plan#F2` (Reviewer), `Iteration Plan#F2` (Management Reviewer) | Restate R009 to cover only the genuinely absent guideline files, or record the CI half as retired with the observed run; draw the human validation gate in parallel with Iter-2 and Iter-3; register the missing acceptance-criterion edges (AC-002 and AC-005 to UC-001, AC-003 to UC-005, AC-004 to UC-008); record the iteration's measured token spend and elapsed time, agent time and human queue time reported apart |
+| ProcessEngineer | `Development Case#F1` (Reviewer), `Development Case#F2` (Reviewer), `Development Case#F2` (Management Reviewer) | Refresh the Environment readiness record to show the CI pipeline present and green on `main`; state the Environment intensity row per canonical matrix and move the recurrence narrative to the Environment section; record the iteration-preparation checkpoint result for the next iteration |
+| SystemAnalyst | `Vision#F1` (Reviewer), `Vision#F2` (Reviewer), `Vision#F1` (Management Reviewer) | Replace section names in Traces To with element identifiers; align the boundary diagram with the Use-Case Model's; state the business-goal verification path per goal, with BG-003 measured with STK-004 after go-live |
+| SoftwareArchitect | `Software Architecture Document#F1`, `Software Architecture Document#F2` | Reconcile the traceability table with the registered edges and drop UC-001 from the Traces From side of the COMP-003 row; state that Clocking's time fields are immutable and name the export's correction-resolution rule |
+| RequirementsSpecifier | `Supplementary Specification#F1` | Name element identifiers in Traces To, or state that the downstream elements do not yet exist and the edges will be registered when they are minted |
+
+**Closure discipline.** A finding is closed only when its owner confirms the corrective action AND the lens that emitted it re-reads the artifact and verifies the action is adequate. Closure is executed by the originating lens via `resolve_artifact_finding`; the Review Record narrative documents the rationale, tool call first. No closure was due this pass: this is the first review event, so no lens had a prior finding to reconcile.
+
+**Carry-over.** All 18 findings remain open and carry to the next iteration of their originating lens. Nothing is deferred and nothing is rejected. The phase auto-iterates, so the next iteration of each lens is a real event and the deadlines are live.
+
+**Escalation.** No finding is overdue, so no escalation notice is due. No Critical finding exists, so no Critical escalation is triggered. Review debt is 0% of the ledger.
+
 ## Disposition
 ### Reviewer lens
 
