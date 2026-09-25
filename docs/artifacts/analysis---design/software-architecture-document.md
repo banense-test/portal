@@ -142,7 +142,6 @@ Every entry below is a technology the stakeholder declared. No technology is int
 Keycloak, Active Directory and the CI service are **existing corporate systems the project consumes, not components it selects**. No version is pinned for them by the version policy, so none is recorded here — recording one would be inventing a version the stakeholder did not declare.
 
 ## Use-Case View
-
 The Use-Case View validates every other view: each architecturally significant use case is realized as a sequence of interactions through the components of the Logical view, on the nodes of the Deployment view.
 
 ### Architecturally significant use cases — prioritized for the Project Manager
@@ -299,7 +298,7 @@ activate LED
 LED -> DB : SELECT clockings WHERE work_date IN month
 DB --> LED : rows
 deactivate LED
-LED --> EXP : Clocking[] grouped
+LED --> EXP : Clocking[] grouped, each with its correction chain
 EXP -> GW : full names for the AD user ids in the result
 activate GW
 GW -> AD : LDAP read of FullName
@@ -312,6 +311,7 @@ CAT -> DB : SELECT ad_user_id, category
 DB --> CAT : rows, or none
 deactivate CAT
 CAT --> EXP : adUserId -> category
+EXP -> EXP : resolve the effective times from the correction chain
 EXP -> EXP : one row per employee per day with at least one clocking
 note right of EXP
   FR-003 columns in order: EmployeeId, FullName,
@@ -321,6 +321,12 @@ note right of EXP
   two decimals from the recorded times, not the
   minute-rounded values shown; Corrected Y/N.
   Europe/Madrid local time.
+  ClockIn/ClockOut read the EFFECTIVE value: the
+  newValue of the most recent correction for that
+  day, ordered by correctedAtUtc; the original
+  recorded value when no correction exists.
+  Corrected = Y when at least one correction
+  record exists for that day.
 end note
 EXP --> API : CSV stream
 deactivate EXP
