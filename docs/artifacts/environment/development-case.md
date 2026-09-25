@@ -543,10 +543,11 @@ This Development Case references those files; it does not duplicate their conten
 
 ### Environment readiness verification — Inception iteration 1
 
-Pre-iteration plan, re-taken before each iteration starts. It is a plan, not milestone evidence: the
+The standing criteria for what "ready" means, re-taken before each iteration starts. This is the
+checklist the iteration-preparation checkpoint verifies against; it is not milestone evidence. The
 milestone evidence is the LCO-gate record below, which states the observed state of each item.
 
-| Check | Required state before the iteration starts | Owner of the gap |
+| Check | Required state before an iteration starts | Owner of the gap |
 |---|---|---|
 | SCM repository reachable | Ready | — |
 | CI pipeline builds and tests (CON-026) | Ready — `.github/workflows/ci.yml` present, build and test jobs, green on `main` | — |
