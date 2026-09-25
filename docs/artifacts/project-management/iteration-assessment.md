@@ -3,7 +3,6 @@
 - **Status:** Draft — iteration 2 close, written after the reviewers ruled
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 ## Iteration Objectives Reached
-
 The ReviewCoordinator's verdict for this iteration is **iteration REQUIRED (scope incomplete)**, and the stakeholder refused the sanction to advance past LCO. This assessment records the iteration's outcome given that verdict. It does not declare the milestone: the LCO verdict is the ReviewCoordinator's and the ManagementReviewer's, and it has been issued.
 
 | # | Planned objective | Verdict | Basis |
@@ -14,6 +13,56 @@ The ReviewCoordinator's verdict for this iteration is **iteration REQUIRED (scop
 | 4 | Establish Feasibility | **Met** | The stack is pinned by CON-022/CON-023/CON-024; the OIDC client is already registered (CON-003) so login is testable from day one; the Development Case's Architectural Proof-of-Concept NOT-FIRED verdict holds — no technical unknown requires empirical validation. |
 
 **The iteration's own six objectives, as the Iteration Plan decomposed them.** The four phase objectives above are the assessment frame; the plan carried six finer objectives. Four are met, one is met with a defective basis, and one is not met.
+
+| Plan objective | Verdict | Basis |
+|---|---|---|
+| 1 — Agreed scope as a named set of use cases | Met | UC-001..UC-009, one per FR-001..FR-009; UC-001, UC-002, UC-008 detailed, the remaining six outlined |
+| 2 — Non-functional and business-rule baseline | Met | Supplementary Specification carries NFR-001..NFR-005 and CON-009..CON-019 |
+| 3 — Process configuration | Met | Development Case: Business Modeling inactive, no OPTIONAL trigger fired, version policy .NET 10 / PostgreSQL 18 |
+| 4 — Initial risks identified and classified | Met, with a defective basis | R001..R009 classified; the magnitude bands rest on an unconfirmed estimate (`Risk List#F1`) |
+| 5 — Stand-in environment real (CON-028) | **Not met** | No artifact evidences the test OIDC issuer or the test directory. This is LCO exit criterion 5 and the one criterion the ManagementReviewer records as NOT MET |
+| 6 — Build verifiable (CON-026) | Met | The CI pipeline builds and tests on `main`; the build is green. The Development Case's record of it is stale (`Development Case#F1`) |
+
+**What the iteration did not do, as planned.** It did not implement a use case, did not verify an acceptance criterion, and did not close a milestone. That was the plan's own statement and it held: zero acceptance criteria are verified, and the LCO gate did not open.
+
+### Iteration 2 — Inception
+
+The ReviewCoordinator's verdict for this iteration is **iteration REQUIRED (scope incomplete)**, and the stakeholder refused the sanction to advance past LCO. This assessment records the iteration's outcome given that verdict. It does not declare the milestone: the LCO verdict is the ReviewCoordinator's and the ManagementReviewer's, and it has been issued.
+
+| # | Planned objective | Verdict | Basis |
+|---|---|---|---|
+| 1 | Define Project Scope | **Met** | Vision, Use-Case Model and Supplementary Specification carry the declared scope with no creep: nine use cases, one per declared FR-001..FR-009, each citing its source requirement. The trace graph projects 66 roots and 231 nodes with no UNKNOWN LABEL and no leaf at Business level. The three iteration-1 trace-table findings on these artifacts are closed. |
+| 2 | Identify Critical Risks | **Met, with a defective basis** | Risk List carries R001..R009 with probability, impact, magnitude, strategy, owner, mitigation and contingency. R001..R003 are preserved with the declared identifiers and magnitudes; team risks are numbered per CON-020; every acceptance cites CON-021. The classification's *basis* remains defective: R001's probability and impact are the analyst's estimates, the stakeholder declined to confirm them, and the High band's lower boundary rests on them. R004 was re-assessed at this close and moved Significant to High on the observed 2-of-2 materialization rate, so the boundary now rests on two unconfirmed figures. |
+| 3 | Tailor Development Process | **Met** | Development Case conforms to the IARI baseline: the 25-role roster is unchanged, CORE ownership is unchanged, no artifact outside the CORE + OPTIONAL universe, no role merged. Business Modeling is INACTIVE on the correct trigger (business-process-led = false, all four DC §4 criteria evaluated and none fired). All six OPTIONAL triggers were re-audited against their §5.2 conditions and none fired. |
+| 4 | Establish Feasibility | **Met, with the exercisable-environment gap** | The stack is pinned by CON-022/CON-023/CON-024; the OIDC client is already registered (CON-003) so login is testable from day one; the Development Case's Architectural Proof-of-Concept NOT-FIRED verdict holds — no technical unknown requires empirical validation. The gap: feasibility is established on paper and cannot yet be exercised, because the stand-in environment that CON-028 requires for any build or test was not delivered. |
+
+**The iteration's own six objectives, as the Iteration Plan decomposed them.** Four are met, one is met with a defective basis, and one is not met.
+
+| Plan objective | Verdict | Basis |
+|---|---|---|
+| 1 — Deliver the stand-in environment (CON-028) | **Not met** | No artifact evidences the test OIDC issuer or the test directory. The Development Case's LCO-gate verification records no stand-in configuration. This is LCO exit criterion 5, and it is the second consecutive iteration in which it has failed |
+| 2 — Deliver the guideline files the Development Case references | **Not met** | `CONTRIBUTING.md` and the lint configuration are still absent at this close. The CI pipeline builds and tests on `main` (run `36095051721`), so the build half of the objective holds and the guideline half does not |
+| 3 — Correct every finding the LCO review recorded, including the minor ones | **Met** | All 18 iteration-1 findings are closed by their originating lenses on evidence read from the corrected artifact. Nothing is deferred and nothing is rejected |
+| 4 — Re-anchor the Risk List's magnitude bands on a confirmed basis | **Met, with the basis still unconfirmed** | R001's probability and impact are marked `[ASSUMPTION — requires validation]` in the Risk Register and the Risk Classification section, and the bands are anchored on R002's and R003's declared exposures. The sponsor has not confirmed R001's figures, so the High band's lower boundary remains provisional |
+| 5 — Record the iteration's measured spend and elapsed time | **Met** | The measured actuals of Iter-2 are recorded in Test Results below, the two currencies reported apart |
+| 6 — Make the plan's exit-criteria verdicts honest at the point of writing | **Met** | Evaluation Criteria layer (b) carries a verdict of MET or NOT MET per criterion, and criterion 5 is recorded as NOT MET with the explicit statement that the LCO gate is not passable until its evidence exists |
+
+**What the iteration did not do, as planned.** It did not implement a use case, did not verify an acceptance criterion, and did not close a milestone. That was the plan's own statement and it held: zero acceptance criteria are verified, and the LCO gate did not open.
+
+**The iteration's central fact.** The one objective the iteration existed to close — the stand-in environment — was not closed, for the second consecutive iteration. The corrective pass on the 18 findings succeeded completely; the environment work did not happen at all. R004 named this exact outcome before the iteration began, and its treatment failed again.
+
+### Iteration 1 — Inception
+
+The ReviewCoordinator's verdict for that iteration was **iteration REQUIRED (scope incomplete)**, and the stakeholder refused the sanction to advance past LCO.
+
+| # | Planned objective | Verdict | Basis |
+|---|---|---|---|
+| 1 | Define Project Scope | **Met** | Vision, Use-Case Model and Supplementary Specification carry the declared scope with no creep: nine use cases, one per declared FR-001..FR-009, each citing its source requirement. The trace graph projects 47 roots and 150 nodes with no SUSPECT edge and no UNKNOWN LABEL. The Use-Case Model is the one artifact carrying no finding from any lens. |
+| 2 | Identify Critical Risks | **Met, with a defective basis** | Risk List carries R001..R009 with probability, impact, magnitude, strategy, owner, mitigation and contingency. R001..R003 are preserved with the declared identifiers and magnitudes; team risks are numbered per CON-020; every acceptance cites CON-021. The classification's *basis* is defective: R001's probability and impact are the analyst's estimates, the stakeholder declined to confirm them, and every magnitude band is derived from them (`Risk List#F1`, Major). |
+| 3 | Tailor Development Process | **Met** | Development Case conforms to the IARI baseline: the 25-role roster is unchanged, CORE ownership is unchanged, no artifact outside the CORE + OPTIONAL universe, no role merged. Business Modeling is INACTIVE on the correct trigger (business-process-led = false, all four DC §4 criteria evaluated and none fired). All six OPTIONAL triggers were audited against their §5.2 conditions and none fired. |
+| 4 | Establish Feasibility | **Met** | The stack is pinned by CON-022/CON-023/CON-024; the OIDC client is already registered (CON-003) so login is testable from day one; the Development Case's Architectural Proof-of-Concept NOT-FIRED verdict holds — no technical unknown requires empirical validation. |
+
+**The iteration's own six objectives, as the Iteration Plan decomposed them.** Four are met, one is met with a defective basis, and one is not met.
 
 | Plan objective | Verdict | Basis |
 |---|---|---|
