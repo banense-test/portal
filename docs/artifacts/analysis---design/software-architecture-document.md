@@ -3,7 +3,7 @@
 - **Status:** Draft — iteration 3
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 ## Architectural Representation
-This document is the candidate architecture for Portal, produced in Inception iteration 2. It is a **sketch, not a baseline**: it fixes the architectural style, the subsystem decomposition, the mechanisms and the interfaces, and it surfaces the architectural risks that Elaboration must retire. The 4+1 views are addressed at the depth Inception requires — Logical and Deployment in full, Process and Implementation sketched, Data and Use-Case views carried far enough to validate the decomposition.
+This document is the candidate architecture for Portal, produced in Inception iteration 3. It is a **sketch, not a baseline**: it fixes the architectural style, the subsystem decomposition, the mechanisms and the interfaces, and it surfaces the architectural risks that Elaboration must retire. The 4+1 views are addressed at the depth Inception requires — Logical and Deployment in full, Process and Implementation sketched, Data and Use-Case views carried far enough to validate the decomposition.
 
 | View | Addressed this iteration | Primary diagram |
 |---|---|---|
@@ -61,7 +61,7 @@ This document is the candidate architecture for Portal, produced in Inception it
 
 **Trade-offs.** Reading LDAP on every directory request costs latency and makes the directory only as available as AD. Accepted: it is the only design that satisfies CON-016, and R001 (a change on Infrastructure's side) is accepted in advance under CON-021.
 
-**Consequences.** The CON-028 stand-in seam sits behind `IDirectoryGateway` and the OIDC client configuration, so every use case is buildable and testable without the real Keycloak or AD. R002's empty-attribute behaviour is a property of COMP-006 alone. R004 materialized because that stand-in was not delivered; the seam is unchanged and the stand-in behind it is the first work item of iteration 2.
+**Consequences.** The CON-028 stand-in seam sits behind `IDirectoryGateway` and the OIDC client configuration, so every use case is buildable and testable without the real Keycloak or AD. R002's empty-attribute behaviour is a property of COMP-006 alone. R004's treatment has failed twice because the stand-in behind that seam was not delivered; the seam is unchanged and the stand-in behind it is now a hard gate owned by the Integrator, which must also carry the worker-category link because UC-008 filters by it (CON-013).
 
 ### ADR-004 — Clocking capture: client-supplied timestamp with a server-verified idempotency key
 
@@ -92,6 +92,21 @@ This document is the candidate architecture for Portal, produced in Inception it
 **Trade-offs.** Server rendering means every interaction is a round trip; on the corporate network with NFR-002's one-second budget for clocking this is acceptable, and it keeps the page weight low for AC-001.
 
 **Consequences.** The UI layer is thin and the visual layer is not a design decision this project takes — it is an input it implements.
+
+### ADR-006 — The worker-category filter is applied to the merged entry, not to the LDAP query
+
+**Context.** CON-013 declares the worker category is used as a column of the directory **and as a filter on it**. CON-016 states employee data has exactly one home — Active Directory — and the portal stores only the link AD user id → category. The category is therefore the one directory field Active Directory does not hold, and it cannot be part of an LDAP filter.
+
+**Decision.** COMP-006 Directory Gateway stays a **pure AD projection**: it returns the six read-only fields and nothing else. COMP-007 supplies the category links for the returned AD user ids, and **COMP-002 Portal REST API merges the two and applies the category filter to the merged entry**. An entry with no category link has no category and is not returned by a category filter (CON-015); no default category is invented.
+
+**Alternatives considered.**
+- *Push the category filter into the LDAP query.* Rejected: impossible without writing the category into AD, which CON-004 forbids, and without a local copy of the employee, which CON-016 forbids. The category is not an AD attribute.
+- *Filter inside COMP-006 by joining the category store there.* Rejected: it would make the gateway depend on the portal's own store, so the CON-028 stand-in seam would no longer be a seam on AD alone — the stand-in would have to reproduce the category store too, and the gateway would stop being replaceable by a different directory.
+- *Filter inside COMP-007.* Rejected: COMP-007 owns the link, not the directory entry. Filtering there would require it to hold the AD fields, which is the local copy CON-016 forbids.
+
+**Trade-offs.** The filter runs in the application boundary over the entries the LDAP search returned, so a category filter cannot reduce the LDAP result set — the search still reads every entry matching the name, department or office criteria. Accepted: the directory is 200 employees on an internal network, and the alternative costs the CON-028 seam.
+
+**Consequences.** The merge and the filter are one responsibility of COMP-002, and the stand-in directory must carry the category link as well as the AD attributes, because the category filter is the one part of UC-008 that cannot be exercised against Active Directory at all.
 
 ## Architectural Goals and Constraints
 
