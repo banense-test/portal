@@ -1898,6 +1898,8 @@ The artifacts are fit to carry the project into Elaboration, subject to the six 
 
 ### Business Reviewer lens
 
+#### Iteration 1 — disposition
+
 **Verdict: [BR-OK-INACTIVE] — Discipline NOT APPLICABLE per DC §4**
 
 DC §4 trigger evaluation: project does not exhibit business-process-led characteristics. No ERP / BPM / workflow-redesign / M&A signals found in Vision. No Business Use Cases / Workers / Entities sections present in Use-Case Model. No business-domain specialist terms in Glossary.
@@ -1914,6 +1916,29 @@ Conclusion: BPA + BR are correctly INACTIVE for this engagement. No findings, no
 **What this verdict does NOT say.** It does not say the business dimension of the project is unexamined. Three Business Modeling checklist items have a live subject and each was evaluated and passed: stakeholder representation coverage (`STK-001`..`STK-004` all represented), business rules as formal constraints (`CON-009`..`CON-019`, each attached to the element it constrains and each testable), and business-goal measurability (`BG-001`..`BG-003`, each with a numeric target and a stated basis of measurement). The verdict is that no *business-model artifact* is required, not that no business thinking was done.
 
 **What this verdict does NOT decide.** The LCO verdict belongs to the ReviewCoordinator and the ManagementReviewer. This block states the Business Modeling lens's disposition and the evidence for it; it does not close the milestone. The generic Reviewer lens's disposition (Approved with Changes, 11 findings, 0 Critical) and the Management Reviewer's lens are separate blocks in this same Review Record.
+
+**Effect on the LCO exit criteria.** The Business Modeling discipline contributes no exit criterion of its own to LCO, because it is inactive. It therefore neither blocks nor advances the milestone. The criterion the generic Reviewer lens records as **Not met** — the stand-in environment (`CON-028`) — is an Environment-discipline gap and is outside this lens's scope; I record no finding on it and take no position on it.
+
+**Escalation.** No Critical finding was recorded by this lens, so nothing escalates to the stakeholder via `REQUIRES_USER_INPUT`. No `[SCOPE_QUESTION]` is open in this block: the declared scope is complete and unambiguous for the business dimension, and no business value was invented.
+
+#### Iteration 2 — disposition
+
+**Verdict: [BR-OK-INACTIVE] — Discipline NOT APPLICABLE per DC §4**
+
+DC §4 trigger evaluation, re-run this iteration: the project does not exhibit business-process-led characteristics. All four criteria were evaluated against the declared scope and none fired. No Business Use Cases / Workers / Entities sections are present in the Use-Case Model. No business-domain specialist terms exist in a Glossary, and the Glossary's §5.2 trigger is NOT FIRED. No Change Request has altered the basis of the classification.
+
+Conclusion: the BPA and the Business Reviewer are correctly INACTIVE for this engagement. No findings, no recommendations. Downstream reviewers (MR, RC) may treat the Business Modeling discipline as out-of-scope for the LCO milestone.
+
+**Basis of the verdict — the two conditions that must BOTH hold, and both do.**
+
+| Condition | Observed | Evidence |
+|---|---|---|
+| No business-process-led signal in the Vision prose | Holds | The Vision describes a web application replacing three manual artefacts (Excel clocking sheets, mass emails, PDF phone list). No ERP, BPM, workflow-redesign or M&A signal. No business process is named as the subject of the work. |
+| Zero Business Modeling sections in any artifact | Holds | Use-Case Model: 0 business use cases, 0 business workers, 0 business entities — its Actors section names system actors (Employee, HR Administrator) and external systems (Keycloak, Active Directory). Supplementary Specification: `CON-009`..`CON-019` are declared system invariants, not business-process definitions. Glossary: artifact does not exist; its §5.2 trigger is NOT FIRED. |
+
+**What this verdict does NOT say.** It does not say the business dimension of the project is unexamined. Three Business Modeling checklist items have a live subject and each was evaluated and passed: stakeholder representation coverage (`STK-001`..`STK-004` all represented, no organisational part missing), business rules as formal constraints (eleven rules audited against the four formal-constraint properties, zero defective), and business-goal measurability (`BG-001`..`BG-003`, each with a numeric target and a stated basis of measurement). The verdict is that no *business-model artifact* is required, not that no business thinking was done.
+
+**What this verdict does NOT decide.** The LCO verdict belongs to the ReviewCoordinator and the ManagementReviewer. This block states the Business Modeling lens's disposition and the evidence for it; it does not close the milestone. The generic Reviewer lens's disposition and the Management Reviewer's lens are separate blocks in this same Review Record.
 
 **Effect on the LCO exit criteria.** The Business Modeling discipline contributes no exit criterion of its own to LCO, because it is inactive. It therefore neither blocks nor advances the milestone. The criterion the generic Reviewer lens records as **Not met** — the stand-in environment (`CON-028`) — is an Environment-discipline gap and is outside this lens's scope; I record no finding on it and take no position on it.
 
