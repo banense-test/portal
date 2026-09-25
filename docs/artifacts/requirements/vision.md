@@ -37,13 +37,13 @@ Employee Portal is a single internal web application for Cuba Corp's 200 employe
 
 - **Clocking** replaces the shared Excel clocking sheets. The employee presses Clock In or Clock Out on the main screen; the portal records the time the button was pressed and shows the confirmation. HR corrects or inserts clockings when needed, and exports the monthly CSV.
 - **News** replaces mass emails. HR publishes, edits and unpublishes internal news; employees read it on the main page, sorted by date and filterable by category, with at most one item featured in a banner.
-- **Directory** replaces the PDF phone list. Employees search colleagues by name, department or office; the six corporate fields are read live from Active Directory and are read-only, and HR assigns the one field the portal owns — the worker category.
+- **Directory** replaces the PDF phone list. Employees search colleagues by name, department, office or worker category; the six corporate fields are read live from Active Directory and are read-only, and HR assigns the one field the portal owns — the worker category.
 
 The portal is a .NET 10 application with Razor Pages and a REST API, backed by PostgreSQL 18, running on the internal Windows Server estate. It is an OIDC client of the existing Keycloak, which federates Active Directory. It is reachable only from the internal corporate network.
 
 ```plantuml
 @startuml Portal_Vision_UC
-title Portal - system boundary, actors and candidate use cases (Inception iteration 2)
+title Portal - system boundary, actors and candidate use cases (Inception iteration 3)
 left to right direction
 skinparam packageStyle rectangle
 
