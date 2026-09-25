@@ -900,7 +900,6 @@ end note
 There is no staging environment declared, and none is introduced. The human validation of the real Keycloak and real AD (CON-028) is performed by Infrastructure with HR against the production configuration, and its feedback reaches the team before Elaboration closes.
 
 ## Implementation View
-
 ### Layers and repository layout
 
 The repository layout is the one already in place; this architecture does not fork a parallel tree.
@@ -915,7 +914,7 @@ The repository layout is the one already in place; this architecture does not fo
 | CI | `.github/workflows/` | The build and test pipeline | CON-026 |
 | Documentation | `docs/artifacts/`, `docs/inputs/` | The RUP artifacts and the authoritative UI design | CON-031 |
 
-**Build structure.** One solution, one deployable artefact. The Development Case records the CI pipeline definition as a gap owned by the ConfigurationManager and the Implementer; this architecture requires only that the pipeline builds and tests the single artefact and never deploys (CON-026).
+**Build structure.** One solution, one deployable artefact. The CI pipeline exists and builds green on `main`; this architecture requires only that it builds and tests the single artefact and never deploys (CON-026). The guideline files the Development Case records as absent (`CONTRIBUTING.md`, lint configuration) are the ConfigurationManager's and Implementer's work and do not change the build structure.
 
 **Dependency rule.** Presentation depends on the Application boundary; the Application boundary depends on domain interfaces; domain components depend on each other only through interfaces; mechanisms are depended upon, never depending. No component reaches across a layer boundary, and no component depends on a concrete type of another component.
 
