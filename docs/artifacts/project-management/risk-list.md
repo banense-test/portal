@@ -7,15 +7,15 @@
 ## Risk Classification
 Probability and impact are each scored 1–5; exposure is their product. CON-020 fixes this scheme for every risk the team identifies — the same probability, impact, mitigation and contingency as R001 and R002 — so no second scheme is introduced.
 
-**The bands are anchored on the business-declared risks.** R002 (P=3, I=3, exposure=9) and R003 (P=3, I=2, exposure=6) are declared by the business with their identifiers and magnitudes, so their exposures are a confirmed basis. The Significant band is anchored on R002's declared exposure of 9; the Moderate band on R003's declared exposure of 6. No band is anchored on R001.
+**The bands are anchored on a declared or observed basis, never on an unconfirmed estimate.** R002 (P=3, I=3, exposure=9) and R003 (P=3, I=2, exposure=6) are declared by the business with their identifiers and magnitudes, so their exposures are a confirmed basis. The Significant band is anchored on R002's declared exposure of 9; the Moderate band on R003's declared exposure of 6. The High band's lower boundary is anchored on R004's observed exposure of 12, whose probability is derived from the observed 2-of-2 materialization rate rather than estimated.
 
-**R001's probability and impact are the analyst's estimates, not values the stakeholder stated.** The stakeholder was asked to confirm them and declined. They are therefore recorded as unconfirmed estimates, and no magnitude band is anchored on them. This changes no acceptance decision: the boundary that decides whether a risk needs the stakeholder's grant is the Significant/Moderate boundary at 8, anchored on R002's declared exposure of 9 — and both the High and the Significant band require the stakeholder's grant in any case, so a risk moving between them changes no strategy.
+**R001's probability and impact are the analyst's estimates, not values the stakeholder stated, and the stakeholder has declined to confirm them.** The question was put at three consecutive reviews and the answer was no each time. The decision is settled: R001's probability and impact stand as the analyst's unconfirmed estimates, and no magnitude band is anchored on them. This changes no acceptance decision — the boundary that decides whether a risk needs the stakeholder's grant is the Significant/Moderate boundary at 8, anchored on R002's declared exposure of 9, and both the High and the Significant band require the stakeholder's grant in any case, so a risk moving between them changes no strategy. R001's acceptance is granted by CON-021 independently of its magnitude.
 
-**R004 was re-assessed at Iter-2 close and moved from Significant to High.** Its treatment has failed twice: the stand-in environment was not delivered in Iter-1 and was not delivered in Iter-2, so its probability is raised from 3 to 4 on the observed 2-of-2 materialization rate, giving exposure 12. R004's exposure is derived from an observation, not an estimate. The High band's lower boundary therefore rests on two figures of different provenance — R001's unconfirmed estimate of 12 and R004's observed exposure of 12 — and neither is stakeholder-confirmed. This changes no acceptance decision either: R004's strategy is Avoid, and avoidance is the team's to decide. CON-021's advance grant does not reach R004, because the grant covers risks whose mechanism is set by the declared constraints or lies outside the team's control, and R004's mechanism is the team's own execution.
+**R004 was re-assessed at Iter-2 close and moved from Significant to High.** Its treatment has failed twice: the stand-in environment was not delivered in Iter-1 and was not delivered in Iter-2, so its probability is raised from 3 to 4 on the observed 2-of-2 materialization rate, giving exposure 12. R004's exposure is derived from an observation, not an estimate, which is why it — and not R001 — carries the High band's lower boundary. This changes no acceptance decision either: R004's strategy is Avoid, and avoidance is the team's to decide. CON-021's advance grant does not reach R004, because the grant covers risks whose mechanism is set by the declared constraints or lies outside the team's control, and R004's mechanism is the team's own execution.
 
 | Magnitude | Exposure | Anchor | Who may decide the strategy |
 |---|---|---|---|
-| High | 12–25 | Lower boundary provisional — rests on R001's unconfirmed estimate of 12 and R004's observed exposure of 12 | Avoid or transfer is the team's. Acceptance is the stakeholder's grant, never the team's |
+| High | 12–25 | Lower boundary anchored on R004's observed exposure of 12 — probability derived from the observed 2-of-2 materialization rate, impact an estimate. R001's unconfirmed estimate of 12 is consistent with it and is not the anchor | Avoid or transfer is the team's. Acceptance is the stakeholder's grant, never the team's |
 | Significant | 8–11 | R002, declared by the business at exposure 9 | Avoid or transfer is the team's. Acceptance is the stakeholder's grant, never the team's |
 | Moderate | 5–7 | R003, declared by the business at exposure 6 | Avoid or transfer is the team's; acceptance recorded with mitigation and contingency |
 | Minor | 3–4 | — | Avoid or transfer is the team's |
@@ -89,10 +89,12 @@ note bottom of CLS
   The bands are anchored on the business-declared
   risks R002 (exposure 9) and R003 (exposure 6),
   which the stakeholder declared with their
-  magnitudes. No band is anchored on R001: its
-  probability and impact are the analyst's
-  estimates, the stakeholder was asked to confirm
-  them and declined, and they are recorded as
+  magnitudes, and the High band's lower boundary
+  on R004's observed exposure of 12. No band is
+  anchored on R001: its probability and impact are
+  the analyst's estimates, the stakeholder was asked
+  to confirm them at three consecutive reviews and
+  declined each time, and they are recorded as
   unconfirmed. R004 was re-assessed at Iter-2 close
   and moved Significant to High on the observed
   2-of-2 materialization rate.
@@ -123,7 +125,7 @@ end note
 ## Risk Register
 | ID | Risk | Mechanism actor | P | I | Exposure | Magnitude | Strategy | Owner | Status | Treatment state at Iter-3 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| R001 | A change on Infrastructure's side to Active Directory or Keycloak breaks the portal. | STK-003 Infrastructure | 3 — analyst's estimate, unconfirmed; the stakeholder declined to confirm | 4 — analyst's estimate, unconfirmed; the stakeholder declined to confirm | 12 provisional | High provisional | Accept (CON-021) | ProjectManager | Open | No treatment to execute: acceptance is the strategy. The dependency is confined to two configuration-held boundaries (CON-028) and the real values are substituted at deployment (CON-029) |
+| R001 | A change on Infrastructure's side to Active Directory or Keycloak breaks the portal. | STK-003 Infrastructure | 3 — the analyst's estimate; the stakeholder declined to confirm it at three consecutive reviews | 4 — the analyst's estimate; the stakeholder declined to confirm it at three consecutive reviews | 12 — provisional, unconfirmed basis | High provisional | Accept (CON-021) | ProjectManager | Open | No treatment to execute: acceptance is the strategy. The dependency is confined to two configuration-held boundaries (CON-028) and the real values are substituted at deployment (CON-029) |
 | R002 | The LDAP attributes the directory reads (job title, extension) are not filled consistently across the 3 offices, so the directory shows gaps. | STK-001 HR and the office staff who maintain the AD attributes | 3 | 3 | 9 | Significant | Accept (CON-021) | ProjectManager | Open | Treatment specified, NOT executed: the stand-in directory is to carry entries with empty job title and extension, and entries with no category link. The stand-in environment was not delivered at Iter-2 close either (R004), so the gap path is still unexercised. Iter-3: the stand-in directory is the first work item |
 | R003 | Employees keep recording clockings in Excel out of habit, so BG-002 and BG-003 are not met. | STK-004 Employees | 3 | 2 | 6 | Moderate | Accept (CON-021) | ProjectManager | Open | No team treatment to execute: the mechanism is HR's communication campaign. AC-005 measures it after go-live |
 | R004 | The stand-in environment (CON-028) is not ready, so no use case can be built or tested and the iteration produces no verifiable increment. | Integrator (the team) | 4 — raised from 3 on the observed 2-of-2 materialization rate | 3 | 12 | High — raised from Significant | Avoid | Integrator, accountable | Materialized | **Treatment FAILED TWICE.** Not delivered at Iter-1 close and not delivered at Iter-2 close; the Development Case's LCO-gate verification records no stand-in configuration. Re-assessed at Iter-2 close: probability raised, magnitude Significant → High, owner changed to the Integrator alone, treatment replaced by a hard gate — no work item that exercises a use case against the stand-in starts until it is delivered and recorded. The stand-in directory must also carry the worker-category link, because UC-008 filters by it (CON-013). Strategy stays Avoid: CON-021's grant does not reach a risk whose mechanism is the team's own execution |
@@ -200,7 +202,7 @@ class "Register at Iter-3" as REG <<ledger>> {
   retired : 1 - R008
   treatments executed : 1 - R007
   treatments failed : 1 - R004
-  bands anchored on a declared basis : R002, R003
+  bands anchored on a declared or observed basis : R002, R003, R004
 }
 R1 --> REG
 R2 --> REG
@@ -226,7 +228,7 @@ end note
 **R001 — a change on Infrastructure's side breaks the portal (High provisional, accept).**
 Mitigation: the portal's dependency on AD and Keycloak is confined to two configuration-held boundaries — the OIDC client and the LDAP connection (CON-028). The team never works against the real systems, so a change on Infrastructure's side cannot break development, and the real values are substituted at deployment.
 Contingency: Infrastructure operates the portal in production (CON-029) and owns the change. If a change breaks the portal, the remedy is another iteration (CON-021). Declared scope is not cut.
-Basis: R001's probability and impact are the analyst's estimates and the stakeholder declined to confirm them, so its exposure and the High band's lower boundary are provisional. The strategy is unaffected: CON-021 grants acceptance for R001 in advance, and the boundary that decides whether a risk needs a grant is anchored on R002's declared exposure.
+Basis: R001's probability and impact are the analyst's estimates and the stakeholder has declined to confirm them, so its exposure is provisional and no magnitude band is anchored on it. The strategy is unaffected: CON-021 grants acceptance for R001 in advance, and the boundary that decides whether a risk needs a grant is anchored on R002's declared exposure.
 
 **R002 — LDAP attributes inconsistently filled across the 3 offices (Significant, accept).**
 Mitigation: the stand-in directory carries entries whose job title or extension is empty, and entries with no category link, so UC-008's gap path (A1) and UC-002's blank-FullName path (A5) are exercised before the real AD is validated. An empty attribute renders as blank and the entry is still shown. The mitigation is not executed: the stand-in environment was not delivered at Iter-2 close (R004), so the gap path remains unexercised.
@@ -390,6 +392,8 @@ end note
 R008 is retired as not applicable: its mechanism names no actor in this project, so it threatens no element and carries no trace edge. The retirement and its reason are recorded in the Risk Register and in Risk Mitigation and Contingency.
 
 R009's remaining scope is the guideline files, which govern how UC-001's implementation is written and reviewed; the CI half of the risk is retired against run `36095051721` and no longer threatens the build.
+
+**R001's unconfirmed basis changes no trace edge.** R001's probability and impact are the analyst's estimates and the stakeholder has declined to confirm them; the decision is recorded in Risk Classification and in the Risk Register. R001's acceptance is granted by CON-021 independently of its magnitude, so the edges above stand unchanged.
 
 **Re-read against UC-008's change.** UC-008 now filters the directory by worker category (CON-013), accepting a category as a search term and excluding an employee with no category from a category filter. Each risk edge into UC-008 was re-read against that change: R001, R002 and R005 still hold unchanged — the directory still reads AD over LDAP and still depends on the stand-in. R004's end changed: the stand-in directory must now also carry the worker-category link, because the category filter is the one part of UC-008 that cannot be exercised against AD at all. That change is declared in turn.
 
