@@ -11,16 +11,8 @@ nothing here redefines any of those.
 
 ### Organization and tool assessment (Inception, iteration 1)
 
-| Assessed item | Finding | Consequence for the process |
-|---|---|---|
-| Prior process artifacts | None — this is the project's first artifact | No inherited process debt; the baseline applies unmodified |
-| Execution model | Agent-executed, 25-role IARI roster | No role merging; no training programme needed |
-| SCM repository | Present, hosted provider (`portal`) | CON-026 satisfied for source hosting |
-| CI workflow | **GAP** — no pipeline definition found at `.github/workflows/ci.yml` | CON-026 requires hosted CI; a pipeline definition must exist before the first build. Owner: ConfigurationManager + Implementer |
-| `CONTRIBUTING.md` and lint config | **GAP** — absent | Guideline content is owned by the discipline experts, not by the Process Engineer. Referenced here, authored by them during Elaboration |
-| Mandatory UI design input | Present — `docs/inputs/employee-portal-design.html` | CON-031 is satisfied; the file is authoritative for the UI visual layer and is not a risk |
-| Change Requests | None logged | No CR-driven process change this iteration |
-| Stand-in environment (CON-028) | Not yet built | The team builds a test OIDC issuer and a test directory carrying the declared attributes, including entries with empty job title and extension. This is iteration-1 environment work |
+The current assessment is *Organization and tool assessment (Inception, iteration 2)* below; the
+method it applies is in *Assessment scope and method*.
 
 ### Plug-in classification
 
