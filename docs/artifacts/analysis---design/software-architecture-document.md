@@ -972,6 +972,22 @@ Clockings are stored in UTC and displayed in Europe/Madrid (CON-008). All three 
 **No measured figure exists yet.** Nothing in this project has been built or measured, so this section states the declared targets and the tactics chosen to meet them, and no performance number is asserted. The first measurement of the full page load and the clocking response is taken in Elaboration, against the stand-in environment, and reported as a measured value at that point.
 
 ## Quality
+Each declared quality attribute is mapped to the architectural tactics that address it. A quality attribute with no tactic would be a gap; there is none below.
+
+| Quality attribute | Requirement | Architectural tactic | Component |
+|---|---|---|---|
+| Performance | NFR-001, NFR-002 | Server rendering, one page-level script, no client cache, indexed queries, AD off the clocking path | COMP-001, COMP-002, COMP-004, COMP-006 |
+| Reliability | NFR-003, AC-006 | localStorage retry with a client timestamp and an idempotency key; the retry is idempotent by construction so there is nothing to reconcile; the directory and news show a 'no connection' message | COMP-001, COMP-003, COMP-004 |
+| Functionality — audit | NFR-004 | One audit interface, append-only, written in the same transaction as the change it records; no second audit path | COMP-009 |
+| Functionality — authorization | NFR-005 | Two levels derived from AD group membership, resolved once in COMP-010; no role matrix, no permission screen, no per-category rule | COMP-010 |
+| Security | SEC-001..SEC-008 | OIDC client of the existing Keycloak; no local account and no second credential store; AD never written; internal network only; secrets in configuration, never in code; CI never holds production data or credentials | COMP-010, COMP-006 |
+| Usability | USA-001..USA-007, AC-002..AC-005 | The committed design implemented as the UI visual layer; server-rendered pages on current Chrome and Edge; no training required for the clocking path | COMP-001 |
+| Supportability | SUP-001..SUP-008 | One deployable artefact for Infrastructure to operate; placeholder OIDC and LDAP values in configuration; no data migration; no backup design in this project | COMP-001..COMP-010 |
+| Maintainability | G-1, G-2, G-3 | One component per area of change, each behind an interface; the two High-volatility areas are replaceable without touching the rest of the system | COMP-003, COMP-006, COMP-008 |
+| Data integrity | CON-009, CON-010, CON-011, CON-012, CON-014, CON-015, CON-016, CON-017 | The declared invariants enforced as database constraints wherever a constraint can express them, so they hold against every writer; the clocking row's recorded times are immutable and a correction is a new row | COMP-004, COMP-005, COMP-007 |
+
+### Architectural risks and their disposition
+
 | Risk | Architectural exposure | Disposition |
 |---|---|---|
 | R001 — a change on Infrastructure's side breaks the portal | The portal depends on AD and Keycloak through two configuration-held boundaries | Accepted in advance (CON-021). The dependency is confined to COMP-006 and COMP-010, so a change on Infrastructure's side cannot break development, and the real values are substituted at deployment. R001's probability and impact are marked provisional in the Risk List; the architectural exposure does not depend on their value, because the dependency is confined to two components either way |
@@ -982,6 +998,22 @@ Clockings are stored in UTC and displayed in Europe/Madrid (CON-008). All three 
 | R006 — a skewed client clock records a timestamp that did not happen | COMP-003 accepts the client timestamp, which is what AC-006 requires | Avoided by design: COMP-003 bounds the accepted skew, and the idempotency key is verified server-side. The stand-in test exercises a skewed clock. Contingency is HR correction through UC-003 |
 | R007 — the roadmap under-counts the iterations | No architectural exposure | Project Manager's; re-planned from measured actuals each iteration (CON-027) |
 | R009 — the CI pipeline and guideline files are not in place | The build cannot be verified | The CI half is retired: the pipeline exists and builds green on `main`. The guideline files remain the ConfigurationManager's and Implementer's work |
+
+### Proof-of-Concept Disposition
+
+The Development Case evaluated the Architectural Proof-of-Concept optional artifact against its §5.2 trigger and found it **not fired**: no technical risk requires empirical validation. R001 and R002 are dependency and data-quality risks owned by Infrastructure and HR, not technical unknowns, and CON-021 accepts them in advance; CON-028 removes the only candidate by fixing the stand-in approach; CON-003 confirms the OIDC client is already registered so login is testable from day one.
+
+Two risks nevertheless have a technical mechanism, and both are retired by a design decision plus the CON-028 stand-in test rather than by a prototype. Their dispositions are recorded as **analysis-only** — no code is built for them, and the Implementer builds nothing on their account.
+
+| Risk | Mode | What retires it | Acceptance criterion | Where it is exercised |
+|---|---|---|---|---|
+| R002 — LDAP attributes inconsistently filled across the 3 offices | analysis-only | COMP-006 is the single LDAP boundary; an empty job title or extension renders as blank without removing the entry, and no default value is invented (CON-015) | The stand-in directory, carrying entries with empty job title and extension, returns those entries with the attribute blank in both UC-008 (directory) and UC-002 (FullName column of the CSV) | The stand-in directory (CON-028), the first work item of iteration 2 |
+| R006 — a skewed client clock records a timestamp that did not happen | analysis-only | COMP-003 bounds the accepted client-clock skew, and the idempotency key is verified server-side by a unique constraint so a retry cannot create a second record | A clocking POST carrying a skewed client timestamp outside the bound is rejected rather than recorded, and a repeated POST carrying the same idempotency key creates no second record | The stand-in test (CON-028), the first work item of iteration 2 |
+
+**The remedy path for both is the same and is already declared.** A clocking rejected by the skew bound is reported by the employee to HR, who corrects it through UC-003 with a full audit entry (NFR-004). An attribute that is empty in AD renders blank; HR fills it in AD, which is the single home of employee data (CON-016).
+
+**No prototype is planned for Elaboration either.** The two mechanisms above are validated by the stand-in environment, which is iteration-2 construction work owned by the Implementer and Integrator, not by a proof-of-concept. If a later iteration finds a technical unknown that the stand-in cannot exercise, the disposition is revised then, with the risk it retires named.
+
 ## Traceability
 Every row below is a registered edge in the trace graph. The components are the elements this document mints; the ADRs and the 4+1 views are **sections of this document, not elements**, so they carry no edge of their own — the justification they record is carried by the component rows they govern.
 
