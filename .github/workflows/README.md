@@ -7,18 +7,16 @@ state. `docs/BRANCHING_STRATEGY.md` records branching topology only and never CI
 
 | Item | State | Evidence |
 |---|---|---|
-| Workflow definition | Present | `.github/workflows/ci.yml` at `233644bc` |
-| Build job | Green on `main` | run `36095051721` |
-| Test job | Green on `main` | run `36095051721` |
+| Workflow definition | Present | `.github/workflows/ci.yml` |
+| Build job | Green on `main` | run `36110535676` |
+| Test job | Green on `main` | run `36110535676` |
 | Trigger coverage | `main`, `iteration/**`, `chore/**`, `feature/**`, `hotfix/**` on push and on pull_request | `.github/workflows/ci.yml` |
 | Solution sync | Verified - the build fails if any project under `src/` or `tests/` is absent from `Portal.sln` | `.github/workflows/ci.yml` |
 | Test discovery | Every `tests/**/*.csproj` executed; no fixed project name | `.github/workflows/ci.yml` |
 | Test database | PostgreSQL 18 service container on the test job, health-checked before tests run | `.github/workflows/ci.yml` |
 
 The evidence column cites the run that validated the current pipeline shape. It is
-refreshed when the pipeline changes, not on every run. The run for revision `233644bc`
-had not registered in the build-status endpoint when this record was written; the next
-check refreshes it.
+refreshed when the pipeline changes, not on every run.
 
 **Why the solution sync is verified rather than attempted.** `Portal.sln` is a build
 manifest, not a source of truth. The Implementer adds subsystem projects under `src/`
@@ -79,9 +77,9 @@ end note
 
 | Subsystem | Pedigree | Basis |
 |---|---|---|
-| CI baseline (build + test) | VERIFIED | run `36095051721` green on `main` |
-| PostgreSQL 18 test service | VERIFIED | run `36095051721` green on `main` |
-| CI runtime state record | VERIFIED | this file, at `233644bc` |
+| CI baseline (build + test) | VERIFIED | run `36110535676` green on `main` |
+| PostgreSQL 18 test service | VERIFIED | run `36110535676` green on `main` |
+| CI runtime state record | VERIFIED | this file |
 | UC-001 .. UC-009 | DEFERRED | no implementation exists; Inception is documentation-only |
 
 Merged feature PRs this iteration: none. No branch carried `ready-for-review` and no pull
