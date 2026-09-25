@@ -606,24 +606,8 @@ present and green, so criterion 6 is met.
 
 ### Environment readiness plan — pre-iteration (Inception iteration 3)
 
-This is the plan the iteration-preparation checkpoint verifies against before the next iteration
-starts. It is a plan, not milestone evidence: the milestone evidence is the LCO-gate record above,
-which states the observed state of each item.
-
-| Check | Required state before the iteration starts | Owner of the gap |
-|---|---|---|
-| SCM repository reachable | Ready | — |
-| CI pipeline builds and tests (CON-026) | Ready — `.github/workflows/ci.yml` present, build and test jobs, green on `main` | — |
-| `CONTRIBUTING.md` | Ready — authored during Elaboration | SoftwareArchitect + Implementer |
-| Lint / formatter configuration | Ready — authored during Elaboration | Implementer |
-| Stand-in OIDC issuer and stand-in directory (CON-028) | Ready — including entries with empty job title and extension | Implementer + Integrator |
-| Mandatory UI design input (CON-031) | Ready — `docs/inputs/employee-portal-design.html` | — |
-| Version policy recorded | Ready — .NET 10, PostgreSQL 18 | — |
-| DC classification and optional triggers recorded | Ready — business-process-led = false; no optional trigger fired | — |
-
-The stand-in environment is the one item that gates development: no use case can be built or tested
-against the real Keycloak or the real AD (CON-028), so the stand-ins are the first construction item
-of the iteration.
+Superseded by *Environment delta required before the next iteration starts*, which states the items
+that must change state before the next iteration starts.
 
 ### Process improvement actions for the next iteration
 
