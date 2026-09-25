@@ -150,7 +150,7 @@ Priority is by architectural significance: risk retired, coverage of the archite
 | Rank | Use case | Volatility | Why it is architecturally significant | Risk it addresses | Elaboration iteration |
 |---|---|---|---|---|---|
 | 1 | UC-001 Clock In and Clock Out | High | Forces the client-timestamp, idempotency-key and localStorage-retry decisions (AC-006), the page-level script (CON-023), the skew bound (R006), and the CON-011/CON-010 invariants. It is the use case BG-002 and BG-003 depend on | R006, R003, R004 | First |
-| 2 | UC-008 Search Employee Directory | High | Forces the LDAP read, the merge with the portal-owned category link, and the empty-attribute behaviour that R002 is about. It is the use case AC-004 depends on | R002, R001, R004 | First |
+| 2 | UC-008 Search Employee Directory | High | Forces the LDAP read, the merge with the portal-owned category link, the category filter (CON-013), and the empty-attribute behaviour that R002 is about. It is the use case AC-004 depends on | R002, R001, R004 | First |
 | 3 | UC-002 Export Monthly Clocking Report | Medium | Forces the exact FR-003 contract and the AD read at export time (CON-016). It is the artefact that replaces the Excel sheet, so BG-001 depends on it | R002 | Second |
 | 4 | UC-009 Assign or Clear Worker Category | Low | Exercises the only write the portal makes about a person, and the CON-014/CON-015/CON-016 invariants | — | Second |
 | 5 | UC-005, UC-006, UC-007 Publish / Edit / Unpublish News | Low | Together they exercise the CON-009 featured invariant from three different entry points, which is why the invariant is enforced in the schema and not in the form | — | Second |
@@ -159,7 +159,7 @@ Priority is by architectural significance: risk retired, coverage of the archite
 
 **Coverage check.** Every component in the Logical view is exercised by at least one of the three realized scenarios, and every node in the Deployment view carries traffic from at least one of them. No view exists without a use-case scenario exercising it.
 
-**R004 gates this list.** Every use case below is built and tested against the CON-028 stand-ins, never against the real Keycloak or the real AD. R004 materialized in iteration 1 because the stand-in environment was not delivered, so no use case could be built or tested. The stand-in OIDC issuer and the stand-in directory are therefore the first work item of iteration 2, ahead of the use cases that depend on them.
+**R004 gates this list.** Every use case below is built and tested against the CON-028 stand-ins, never against the real Keycloak or the real AD. R004's treatment has failed twice — the stand-in environment was not delivered at Iter-1 close and not at Iter-2 close — so no use case has yet been built or tested. The treatment is now a hard gate owned by the Integrator alone: no work item that exercises a use case against the stand-in starts until the stand-in is delivered and recorded. The stand-in directory must carry the worker-category link as well as entries with empty job title and extension, because UC-008 filters the directory by worker category (CON-013) and the category is the one field the portal owns (CON-016) — the category filter is the one part of UC-008 that cannot be exercised against Active Directory at all.
 
 ### UC-001 Clock In and Clock Out — realization
 
@@ -222,7 +222,7 @@ end
 
 ```plantuml
 @startuml SEQ_UC008
-title UC-008 Search Employee Directory - LDAP read merged with the portal-owned category (R002)
+title UC-008 Search Employee Directory - LDAP read merged with the portal-owned category, filtered by category (CON-013, R002)
 
 actor "Employee" as EMP
 participant "Directory page\n(COMP-001)" as PAGE
@@ -232,9 +232,9 @@ participant "Worker Category\n(COMP-007)" as CAT
 participant "Active Directory\n(LDAP, read-only)" as AD <<external>>
 database "PostgreSQL 18" as DB
 
-EMP -> PAGE : search by name / department / office
+EMP -> PAGE : search by name / department / office / worker category
 activate PAGE
-PAGE -> API : GET /api/directory?q=...
+PAGE -> API : GET /api/directory?q=...&category=...
 activate API
 API -> GW : search(criteria)
 activate GW
@@ -244,17 +244,22 @@ AD --> GW : entries (attributes may be empty)
 deactivate AD
 GW --> API : AdEntry[] - the six read-only fields
 deactivate GW
-API -> CAT : categories for the returned AD user ids
+API -> CAT : category links for the returned AD user ids
 activate CAT
 CAT -> DB : SELECT ad_user_id, category
 DB --> CAT : rows, or none
 deactivate CAT
 CAT --> API : ad_user_id -> category
 API -> API : merge the six AD fields with the portal-owned category
+API -> API : filter the merged entries by the requested category
 note right of API
   CON-005: the six AD fields are read-only.
   CON-016: the portal stores only the link.
   CON-015: no row -> blank, no default invented.
+  CON-013: the category is a column of the
+  directory AND a filter on it. The filter is
+  applied to the merged entries, because the
+  category is the one field AD does not hold.
 end note
 API --> PAGE : entry list
 deactivate API
@@ -267,6 +272,15 @@ alt an entry has an empty job title or extension (R002)
     still shown. The stand-in directory carries such
     entries (CON-028) so this path is exercised
     before the real AD is validated.
+  end note
+end
+alt a category filter is applied (CON-013, CON-014)
+  note over API
+    The filter accepts the closed list of four values
+    (CON-014). An employee with no category link is
+    not returned by a category filter (CON-015) - the
+    filter matches a link, and an absent link matches
+    no value. No default category is invented.
   end note
 end
 @enduml
