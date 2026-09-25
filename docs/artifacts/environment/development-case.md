@@ -114,6 +114,15 @@ end note
 | Stand-in environment (CON-028) | **GAP** — not built | The team builds a test OIDC issuer and a test directory carrying the declared attributes, including entries with empty job title and extension. This is the first construction item of the iteration and the one item that gates every use case |
 | Open SCM issues | `Issue #1` — the environment-readiness record for the CI pipeline was stale | Corrected in this iteration; the record now cites the observed pipeline |
 
+### Assessment scope and method
+
+The organization and tool baseline is assessed against observable repository state, not against
+intention: the presence and content of the CI workflow, the presence of the guideline files, the
+presence of the mandatory UI design input, and the open SCM issues. Each assessed item is recorded
+with the consequence it has for the process, and a gap is recorded with the role that owns it. The
+assessment is re-taken every iteration, because a gap that has closed and a gap that has opened are
+both process facts the next iteration must plan around.
+
 ## Disciplines and Intensity
 Intensity per discipline and phase is **per the canonical matrix** — confirmed, not assigned. The
 only deltas are the inactive discipline and the Environment row's phase levels, which are the
