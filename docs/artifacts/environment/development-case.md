@@ -690,6 +690,25 @@ The stand-in environment is the one item that gates development: no use case can
 against the real Keycloak or the real AD (CON-028), so the stand-ins are the first construction item
 of the iteration.
 
+### Tool evaluation — Inception iteration 2
+
+Each tool in the development environment is evaluated after the iteration against what the process
+needs it to do, not against its feature list. A deficiency is logged with an improvement action; a
+deficiency carried silently from iteration to iteration is the failure mode this evaluation exists to
+prevent.
+
+| Tool | Process need it serves | Evaluation | Improvement action |
+|---|---|---|---|
+| Hosted SCM provider (CON-026) | Version control, branch and merge, issue tracking | Adequate — repository reachable, branches and issues in use | None |
+| Hosted CI (`.github/workflows/ci.yml`) | Build and test on every push and pull request (CON-026) | Adequate — build and test jobs, green on `main`; the solution manifest is synced from the `src/` + `tests/` tree so a green check cannot be a stale-manifest lie | None |
+| Lint / formatter configuration | Enforce the coding standards the discipline experts author | **Deficient** — no configuration exists, so no standard is enforced mechanically | Authored during Elaboration by the Implementer; referenced from this Development Case |
+| Stand-in OIDC issuer and stand-in directory (CON-028) | Let every use case be built and tested without the real Keycloak or the real AD | **Deficient** — does not exist, so no use case is buildable and R004's treatment is not executed | First construction item of the iteration; owned by Implementer + Integrator |
+| `docs/inputs/employee-portal-design.html` (CON-031) | Authoritative UI visual layer for the UI Designer and Implementer | Adequate — present and authoritative | None |
+
+The two deficiencies are the same two items the LCO-gate record marks not ready. Neither is a tool
+selection problem: the tools are chosen and adequate, and what is missing is configuration the
+project owes itself. No tool change is proposed, and no tool is replaced mid-project.
+
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
