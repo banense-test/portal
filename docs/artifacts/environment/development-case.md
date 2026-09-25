@@ -552,9 +552,8 @@ This Development Case references those files; it does not duplicate their conten
 
 ### Environment readiness verification — Inception iteration 1
 
-Superseded by *Environment readiness criteria (standing)*, which states the criteria re-taken before
-every iteration, and by *Environment verification at the LCO gate*, which states the observed state
-of each item at the milestone.
+The readiness criteria are stated once, in *Environment readiness criteria (standing)*. The observed
+state of each item at the milestone is in *Environment verification at the LCO gate*.
 
 ### Environment verification at the LCO gate — Inception iteration 2
 
