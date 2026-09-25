@@ -1,9 +1,7 @@
 ## Document Control
-
 - **Phase:** Inception
-- **Status:** Draft — iteration 1, not yet reviewed
+- **Status:** Draft — iteration 2
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
-
 ## Architectural Representation
 
 This document is the candidate architecture for Portal, produced in Inception iteration 1. It is a **sketch, not a baseline**: it fixes the architectural style, the subsystem decomposition, the mechanisms and the interfaces, and it surfaces the architectural risks that Elaboration must retire. The 4+1 views are addressed at the depth Inception requires — Logical and Deployment in full, Process and Implementation sketched, Data and Use-Case views carried far enough to validate the decomposition.
