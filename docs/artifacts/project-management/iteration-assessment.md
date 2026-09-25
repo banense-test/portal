@@ -325,6 +325,41 @@ The plan's critical chain ran in the order it was written. Two of its nine work 
 **No declared scope was cut or deferred.** CON-027 forbids it, and the remedy for an incomplete iteration is another iteration. The stakeholder's directive is that all findings are corrected, including the minor ones; nothing in the 18-finding ledger is deferred and nothing is rejected.
 
 ## Use Cases and Scenarios Implemented
+**None.** No use case is implemented, no scenario is executed and no acceptance criterion is verified. This is the plan's own statement of what Inception does, and it held.
+
+| UC | Name | This iteration | Scenarios carried | Implemented |
+|---|---|---|---|---|
+| UC-001 | Clock In and Clock Out | Full specification | Main flow; A1 network unavailable (AC-006); A2 pair already complete (CON-011); A3 open at midnight (CON-010); A4 HR views all clockings | No |
+| UC-002 | Export Monthly Clocking Report | Full specification | Main flow; A1 day with no clocking; A2 missing clock-out; A3 corrected day; A4 no worker category (CON-015); A5 blank FullName (R002) | No |
+| UC-003 | Correct or Insert a Clocking | Outline | A1 no reason supplied; A2 no self-service correction | No |
+| UC-004 | Read Internal News | Outline | A1 no item featured (CON-009); A2 network unavailable | No |
+| UC-005 | Publish News | Outline | A1 featuring un-features the previous (CON-009); A2 featuring is never automatic | No |
+| UC-006 | Edit Published News | Outline | A1 featured-flag change (CON-009) | No |
+| UC-007 | Unpublish News | Outline | A1 the featured item is un-featured; A2 no hard delete (CON-017) | No |
+| UC-008 | Search Employee Directory | Full specification | Main flow; A1 empty job title or extension (R002); A2 no category (CON-015); A3 network unavailable; A4 no match | No |
+| UC-009 | Assign or Clear Worker Category | Outline | A1 category cleared (CON-015); A2 fifth value refused (CON-014); A3 no employee field is editable (CON-005) | No |
+
+**The consequence of the unmet exit criterion.** UC-001, UC-002 and UC-008 are the three architecturally significant use cases and the three the plan scoped into iteration 1 as full specifications. CON-028 forbids building or testing against the real Keycloak or the real AD, so with no stand-in environment none of the three can be built or tested, and R004 — the risk the register itself calls the one that gates all testing — remains untreated. The specification work is complete; the environment that would let it be exercised does not exist.
+
+### Iteration 2 — Inception
+
+**None.** No use case is implemented, no scenario is executed and no acceptance criterion is verified. This is the plan's own statement of what Inception does, and it held.
+
+| UC | Name | This iteration | Scenarios carried | Implemented |
+|---|---|---|---|---|
+| UC-001 | Clock In and Clock Out | Specification carried; to be exercised against the stand-in OIDC issuer | Main flow; A1 network unavailable (AC-006); A2 pair already complete (CON-011); A3 open at midnight (CON-010); A4 HR views all clockings | No |
+| UC-002 | Export Monthly Clocking Report | Specification carried; to be exercised against the stand-in directory | Main flow; A1 day with no clocking; A2 missing clock-out; A3 corrected day; A4 no worker category (CON-015); A5 blank FullName (R002) | No |
+| UC-003 | Correct or Insert a Clocking | Outline | A1 no reason supplied; A2 no self-service correction | No |
+| UC-004 | Read Internal News | Outline | A1 no item featured (CON-009); A2 network unavailable | No |
+| UC-005 | Publish News | Outline | A1 featuring un-features the previous (CON-009); A2 featuring is never automatic | No |
+| UC-006 | Edit Published News | Outline | A1 featured-flag change (CON-009) | No |
+| UC-007 | Unpublish News | Outline | A1 the featured item is un-featured; A2 no hard delete (CON-017) | No |
+| UC-008 | Search Employee Directory | Specification carried; to be exercised against the stand-in directory | Main flow; A1 empty job title or extension (R002); A2 no category (CON-015); A3 network unavailable; A4 no match | No |
+| UC-009 | Assign or Clear Worker Category | Outline | A1 category cleared (CON-015); A2 fifth value refused (CON-014); A3 no employee field is editable (CON-005) | No |
+
+**The consequence of the unmet exit criterion.** UC-001, UC-002 and UC-008 are the three architecturally significant use cases and the three the plan scoped into this iteration as full specifications. CON-028 forbids building or testing against the real Keycloak or the real AD, so with no stand-in environment none of the three can be built or tested, and R004 — the risk the register itself calls the one that gates all testing — remains untreated for the second consecutive iteration. The specification work is complete; the environment that would let it be exercised does not exist.
+
+### Iteration 1 — Inception
 
 **None.** No use case is implemented, no scenario is executed and no acceptance criterion is verified. This is the plan's own statement of what Inception does, and it held.
 
