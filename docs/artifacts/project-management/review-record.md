@@ -12,7 +12,7 @@
 ### Management Reviewer lens
 
 - **Phase:** Inception
-- **Status:** LCO milestone review — verdict recorded, iteration 1
+- **Status:** LCO milestone review — verdict recorded, iteration 2
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 
 ### Reviewer lens
