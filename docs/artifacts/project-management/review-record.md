@@ -1141,3 +1141,20 @@ end note
 
 **Observed SCM facts.** None cited by this lens. The Business Modeling discipline produces no code, no build and no pull request, so no `scm_*` observation bears on this verdict. The SCM evidence in the Reviewer lens's block is that lens's instrument.
 
+### Management Reviewer lens
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| Management Reviewer lens — LCO compliance table | CON-026, CON-028 | Refines | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 |
+| Management Reviewer lens — four-axis health scorecard | CON-027, CON-028 | Refines | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 |
+| Management Reviewer lens — risk retirement ledger | R001, R002, R003, R004, R005, R006, R007, R008, R009 | Refines | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 |
+| Management Reviewer lens — findings | Iteration Plan#F1, Iteration Plan#F2, Development Case#F1, Development Case#F2, Risk List#F1, Risk List#F2, Vision#F1 | Refines | CON-026, CON-027, CON-028 |
+| Management Reviewer lens — stakeholder sanction | STK-001 | Refines | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 |
+| Management Reviewer lens — SCM evidence | Issue #1, run 36050339100 | Refines | CON-026 |
+| Management Reviewer lens — scope-adherence result | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009 | Refines | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 |
+| Management Reviewer lens — disposition | CON-028, STK-001 | Refines | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 |
+
+**Trace endpoints.** `FR-001`..`FR-009`, `AC-001`..`AC-006`, `CON-026`, `CON-027`, `CON-028`, `R001`..`R009` and `STK-001` are declared identifiers, copied exactly from the work order. `Issue #1` and `run 36050339100` are observed SCM facts, cited as returned by the `scm_*` tools. The findings of this lens are cited by their `<artifact>#<key>` handles in the Findings block; a finding is not an element and no edge is registered on one.
+
+**No element of this lens is minted.** The Management Reviewer produces no `UC-NNN`, `CLS-NNN`, `COMP-NNN`, `TC-NNN` or `INT-NNN`; those families belong to other authorities. The verdict, the health scorecard and the risk-retirement ledger are sections of this Review Record, not trace-graph elements, so no edge is registered on them.
+
