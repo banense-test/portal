@@ -3,7 +3,7 @@
 ## Document Control
 
 - **Phase:** Inception
-- **Status:** Draft — iteration 1, not yet reviewed
+- **Status:** Draft — iteration 2
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 
 ## Purpose
@@ -143,6 +143,57 @@ Code Reviewer reviews; the Integrator merges APPROVED features into `iteration/C
 `hotfix/{issue-id}` branches from `main`, receives an express review, and merges to `main` with a
 patch baseline tag.
 
+## Iteration Close Sequence
+
+The order below is the only order in which a baseline tag may be written. It is the same sequence
+in every phase; only the branch names change.
+
+```plantuml
+@startuml Portal_IterationCloseSequence
+title Portal - iteration close: from feature branch to baseline tag
+
+actor "Implementer" as IMP
+actor "Code Reviewer" as CR
+actor "Integrator" as INT
+participant "Hosted CI" as CI
+actor "ConfigurationManager" as CM
+
+== Feature work ==
+IMP -> IMP : branch feature/C{n}-{uc-id}-{subject} from iteration/C{n}
+IMP -> CR : label ready-for-review
+CR -> CR : open PR into iteration/C{n}
+CR -> CI : build + test on the PR
+CI --> CR : status
+CR -> INT : consolidated review state APPROVED
+INT -> INT : merge PR into iteration/C{n}
+INT -> CI : post-merge build
+CI --> INT : status
+
+== Iteration close ==
+INT -> INT : open iteration/C{n} -> main
+CR -> CI : build + test on the close PR
+CI --> CR : status
+CR -> INT : consolidated review state APPROVED
+CM -> CM : scm_get_pull_request_review_state(close PR)
+
+alt APPROVED
+  INT -> INT : scm_merge_pull_request
+  INT -> CI : post-merge build on main
+  CI --> CM : green
+  CM -> CM : scm_create_tag baseline-{phase}{n}-v{x}
+else NONE or CHANGES_REQUESTED
+  CM -> CM : scm_create_issue severity:blocker + nature:defect
+  CM -> CM : no tag written
+end
+
+note right of CM
+  Both gates are verified before the tag:
+  the close PR is APPROVED and post-merge
+  main CI is green. Either fails: no tag.
+end note
+@enduml
+```
+
 ## Baseline Policy
 
 A baseline is written once per iteration close, never mid-iteration. It freezes a commit whose
@@ -154,6 +205,10 @@ build or an unreviewed commit is a defect, not a baseline.
 | `baseline-elaboration-E{n}-v{x}` | LAM close, after `iteration/E{n} → main` merges | the Elaboration architecture baseline |
 | `baseline-construction-C{n}-v{x}` | IOC, after `iteration/C{n} → main` merges | the Construction iteration baseline |
 | `baseline-transition-T{n}-v{x}` | release close, after the hotfix merges | the release baseline |
+
+Inception writes no baseline tag. The phase produces documents, not a buildable baseline, and the
+architecture is not yet stable enough for a tag to mean anything downstream. The first tag of the
+project is `baseline-elaboration-E1-v1`.
 
 `{x}` starts at `1`. A higher `{x}` is justified only after an explicit rollback or a post-baseline
 critical fix applied to the iteration branch. Routine iteration work targets the NEXT iteration's
@@ -316,13 +371,20 @@ end note
 | Labels | `ready-for-review` is the Implementer to Code Reviewer handoff; `severity:*` and `nature:*` classify SCM issues |
 | Dashboards | Query the branch, PR, tag and Issue graph directly. No status report artifact is produced or upserted |
 
-**CI configuration item.** The pipeline definition is present at `.github/workflows/ci.yml`
-(sha `358f1f826ce016cfc4ff492e6247c8eab232eaec`). It builds and tests on push to `main`,
-`iteration/**`, `chore/**`, `feature/**` and `hotfix/**`, and on pull requests into the same set. It
-syncs `Portal.sln` from the `src/` and `tests/` tree before every build, so a project added by the
-Implementer cannot be silently omitted from the build. It holds no production data or credentials
-and does not deploy (CON-026, CON-029). The pre-tag CI gate is therefore evaluable from this
-iteration onward.
+**CI configuration item.** The pipeline definition is identified by its repository path,
+`.github/workflows/ci.yml`. Its content revision is the blob sha the repository holds at the commit
+being audited; the revision is re-read at each iteration close and is never carried forward from a
+previous one. The pipeline builds and tests on push to `main`, `iteration/**`, `chore/**`,
+`feature/**` and `hotfix/**`, and on pull requests into the same set. It syncs `Portal.sln` from the
+`src/` and `tests/` tree before every build, so a project added by the Implementer cannot be
+silently omitted from the build. It holds no production data or credentials and does not deploy
+(CON-026, CON-029). The pre-tag CI gate is therefore evaluable from this iteration onward.
+
+**CI runtime readiness is not recorded here.** Which pipeline items are ready and which are not is
+recorded in `.github/workflows/README.md`. This file holds branching topology and the conventions
+that govern it; a readiness snapshot is a different configuration record with a different owner and
+a different update cadence, and a second copy of it here would be a state restated outside its
+authority.
 
 ## Cross-Phase Invariants
 
@@ -332,7 +394,7 @@ iteration onward.
 3. A baseline tag freezes only an APPROVED and CI-green commit.
 4. A pull request is merged only when its consolidated review state is APPROVED.
 5. A configuration item is cited by its identifier; its state is never restated outside its
-authority.
+   authority.
 6. Documentation and CI configuration are committed directly to `main`; source code travels by
    pull request.
 
@@ -342,9 +404,10 @@ authority.
 |---|---|---|---|
 | Branch topology | CON-026, CON-029 | Refines | Development Case |
 | Branch naming convention | CON-020 | Refines | Development Case |
+| Iteration close sequence | CON-026 | Refines | Development Case |
 | Baseline policy and tag naming | CON-021, CON-027 | Refines | Iteration Plan |
 | Pre-tag gate (APPROVED + CI green) | CON-026 | Refines | Review Record |
-| Change control boundary | CON-020 | Refines | Change Request |
+| Change control boundary | CON-020 | Refines | Issue #2 |
 | Audit procedures | NFR-004, CON-018, CON-019 | Refines | Review Record |
 | Tooling and CI configuration item | CON-026 | Refines | Development Case |
 | Cross-phase invariants | CON-004, CON-016 | Refines | Software Architecture Document |
