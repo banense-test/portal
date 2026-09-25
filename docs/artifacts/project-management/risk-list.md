@@ -1,20 +1,24 @@
 ## Document Control
 
 - **Phase:** Inception
-- **Status:** Draft — iteration 1, not yet reviewed
+- **Status:** Draft — iteration 2
 - **Milestone Target:** Lifecycle Objectives (LCO) — end of Inception. NOT YET ACHIEVED.
 
 ## Risk Classification
 
-Probability and impact are each scored 1–5; exposure is their product. The bands are anchored on the declared risks: R001 (P=3, I=4, exposure=12) is the highest declared exposure and sits at the bottom of the High band. CON-020 fixes this scheme for every risk the team identifies — the same probability, impact, mitigation and contingency as R001 and R002 — so no second scheme is introduced.
+Probability and impact are each scored 1–5; exposure is their product. CON-020 fixes this scheme for every risk the team identifies — the same probability, impact, mitigation and contingency as R001 and R002 — so no second scheme is introduced.
 
-| Magnitude | Exposure | Who may decide the strategy |
-|---|---|---|
-| High | 12–25 | Avoid or transfer is the team's. Acceptance is the stakeholder's grant, never the team's |
-| Significant | 8–11 | Avoid or transfer is the team's. Acceptance is the stakeholder's grant, never the team's |
-| Moderate | 5–7 | Avoid or transfer is the team's; acceptance recorded with mitigation and contingency |
-| Minor | 3–4 | Avoid or transfer is the team's |
-| Low | 1–2 | Avoid or transfer is the team's |
+**The bands are anchored on the business-declared risks.** R002 (P=3, I=3, exposure=9) and R003 (P=3, I=2, exposure=6) are declared by the business with their identifiers and magnitudes, so their exposures are a confirmed basis. The Significant band is anchored on R002's declared exposure of 9; the Moderate band on R003's declared exposure of 6.
+
+**R001's probability and impact are the analyst's estimates, not values the stakeholder stated, and the stakeholder declined to confirm them.** R001's exposure of 12 and the High band's lower boundary are therefore `[ASSUMPTION — requires validation]` and provisional. This changes no acceptance decision: the boundary that decides whether a risk needs the stakeholder's grant is the Significant/Moderate boundary at 8, anchored on R002's declared exposure of 9 — and both the High and the Significant band require the stakeholder's grant in any case, so a risk moving between them changes no strategy.
+
+| Magnitude | Exposure | Anchor | Who may decide the strategy |
+|---|---|---|---|
+| High | 12–25 | Lower boundary provisional — rests on R001's unconfirmed exposure of 12 | Avoid or transfer is the team's. Acceptance is the stakeholder's grant, never the team's |
+| Significant | 8–11 | R002, declared by the business at exposure 9 | Avoid or transfer is the team's. Acceptance is the stakeholder's grant, never the team's |
+| Moderate | 5–7 | R003, declared by the business at exposure 6 | Avoid or transfer is the team's; acceptance recorded with mitigation and contingency |
+| Minor | 3–4 | — | Avoid or transfer is the team's |
+| Low | 1–2 | — | Avoid or transfer is the team's |
 
 ```plantuml
 @startuml RiskList_Class
@@ -29,7 +33,7 @@ class "Risk" as RISK <<entity>> {
   + magnitude : {High, Significant, Moderate, Minor, Low}
   + strategy : {Avoid, Transfer, Accept, NotApplicable}
   + owner : Role
-  + status : {Open, Retired, Closed}
+  + status : {Open, Materialized, Retired, Closed}
   + mechanismActor : {Agent, Human, ExternalSystem, None}
 }
 
@@ -37,6 +41,7 @@ class "Mitigation" as MIT <<entity>> {
   + action : String
   + artifactThatRetiresIt : ArtifactId
   + iteration : IterationId
+  + controlThatProducesARecord : ArtifactId
 }
 
 class "Contingency" as CONT <<entity>> {
@@ -79,6 +84,17 @@ note right of RISK
   in place of a strategy.
 end note
 
+note bottom of CLS
+  The bands are anchored on the business-declared
+  risks R002 (exposure 9) and R003 (exposure 6),
+  which the stakeholder declared with their
+  magnitudes. R001's probability and impact are
+  the analyst's estimates, not values the
+  stakeholder stated, and the stakeholder declined
+  to confirm them: R001's exposure and the High
+  band's lower boundary are PROVISIONAL.
+end note
+
 note bottom of ACC
   Accept on a HIGH or SIGNIFICANT risk is the
   stakeholder's grant, never self-issued.
@@ -101,37 +117,39 @@ end note
 
 ## Risk Register
 
-| ID | Risk | Mechanism actor | P | I | Exposure | Magnitude | Strategy | Owner | Status |
-|---|---|---|---|---|---|---|---|---|---|
-| R001 | A change on Infrastructure's side to Active Directory or Keycloak breaks the portal. | STK-003 Infrastructure | 3 | 4 | 12 | High | Accept (CON-021) | ProjectManager | Open |
-| R002 | The LDAP attributes the directory reads (job title, extension) are not filled consistently across the 3 offices, so the directory shows gaps. | STK-001 HR and the office staff who maintain the AD attributes | 3 | 3 | 9 | Significant | Accept (CON-021) | ProjectManager | Open |
-| R003 | Employees keep recording clockings in Excel out of habit, so BG-002 and BG-003 are not met. | STK-004 Employees | 3 | 2 | 6 | Moderate | Accept (CON-021) | ProjectManager | Open |
-| R004 | The stand-in environment (CON-028) is not ready, so no use case can be built or tested and the iteration produces no verifiable increment. | Implementer + Integrator (the team) | 3 | 3 | 9 | Significant | Avoid | ProjectManager | Open |
-| R005 | The human validation of the real Keycloak and AD by Infrastructure with HR (CON-028) does not return before Elaboration closes, delaying the LCA milestone. | STK-003 Infrastructure + STK-001 HR | 3 | 3 | 9 | Significant | Accept (CON-021) | ProjectManager | Open |
-| R006 | A skewed client clock makes the server record a press timestamp that did not happen, so the audit trail is wrong (AC-006). | STK-004 Employees' client clocks | 2 | 3 | 6 | Moderate | Avoid | ProjectManager | Open |
-| R007 | The coarse roadmap under-counts the iterations the declared scope needs, so the declared scope is not complete at PR. | ProjectManager (the team's own planning) | 2 | 3 | 6 | Moderate | Avoid | ProjectManager | Open |
-| R008 | Developer turnover and knowledge loss. | None — no development organization exists in this project | — | — | — | — | Not applicable — retired | ProjectManager | Retired |
-| R009 | The CI pipeline definition and the guideline files (CON-026, CONTRIBUTING.md, lint config) are not in place, so the first build cannot be verified. | ConfigurationManager + Implementer (the team) | 2 | 2 | 4 | Minor | Avoid | ProjectManager | Open |
+| ID | Risk | Mechanism actor | P | I | Exposure | Magnitude | Strategy | Owner | Status | Treatment state at Iter-1 close |
+|---|---|---|---|---|---|---|---|---|---|---|
+| R001 | A change on Infrastructure's side to Active Directory or Keycloak breaks the portal. | STK-003 Infrastructure | 3 `[ASSUMPTION — requires validation]` | 4 `[ASSUMPTION — requires validation]` | 12 provisional | High provisional | Accept (CON-021) | ProjectManager | Open | No treatment to execute: acceptance is the strategy. The dependency is confined to two configuration-held boundaries (CON-028) and the real values are substituted at deployment (CON-029) |
+| R002 | The LDAP attributes the directory reads (job title, extension) are not filled consistently across the 3 offices, so the directory shows gaps. | STK-001 HR and the office staff who maintain the AD attributes | 3 | 3 | 9 | Significant | Accept (CON-021) | ProjectManager | Open | Treatment specified, not evidenced: the stand-in directory is to carry entries with empty job title and extension. The stand-in environment was not delivered at Iter-1 close (R004) |
+| R003 | Employees keep recording clockings in Excel out of habit, so BG-002 and BG-003 are not met. | STK-004 Employees | 3 | 2 | 6 | Moderate | Accept (CON-021) | ProjectManager | Open | No team treatment to execute: the mechanism is HR's communication campaign. AC-005 measures it after go-live |
+| R004 | The stand-in environment (CON-028) is not ready, so no use case can be built or tested and the iteration produces no verifiable increment. | Implementer + Integrator (the team) | 3 | 3 | 9 | Significant | Avoid | ProjectManager | Materialized | **Treatment NOT executed at Iter-1 close.** The stand-in environment was not delivered, so no use case could be built or tested and the iteration produced no verifiable increment. Contingency executed: another iteration. Treatment re-scoped as the first work item of Iter-2 |
+| R005 | The human validation of the real Keycloak and AD by Infrastructure with HR (CON-028) does not return before Elaboration closes, delaying the LCA milestone. | STK-003 Infrastructure + STK-001 HR | 3 | 3 | 9 | Significant | Accept (CON-021) | ProjectManager | Open | Gate not yet opened; it opens in Elaboration. Bounded at 14 days of queue time, after which the process suspends |
+| R006 | A skewed client clock makes the server record a press timestamp that did not happen, so the audit trail is wrong (AC-006). | STK-004 Employees' client clocks | 2 | 3 | 6 | Moderate | Avoid | ProjectManager | Open | Treatment designed, not executed: the skew bound and the server-side idempotency check are design decisions carried by UC-001. The stand-in test exercising a skewed clock is not built (R004) |
+| R007 | The coarse roadmap under-counts the iterations the declared scope needs, so the declared scope is not complete at PR. | ProjectManager (the team's own planning) | 2 | 3 | 6 | Moderate | Avoid | ProjectManager | Open | Treatment executed: the coarse roadmap is re-planned at every iteration from the measured actuals of the phases that have closed. Iter-1's measured actuals are recorded in the Iteration Assessment |
+| R008 | Developer turnover and knowledge loss. | None — no development organization exists in this project | — | — | — | — | Not applicable — retired | ProjectManager | Retired | Not applicable: the mechanism names no actor in this project |
+| R009 | The guideline files the Development Case references (`CONTRIBUTING.md`, lint configuration) are not in place, so the first increment is built without the agreed coding and review standards. | ConfigurationManager + Implementer (the team) | 2 | 2 | 4 | Minor | Avoid | ProjectManager | Open | **CI half RETIRED against the observed run:** the pipeline exists and builds green on `main` (run `36050451436`). Remaining scope: the guideline files are not in place |
 
 R001, R002 and R003 are the business-declared risks, carried with the identifiers and magnitudes the stakeholder declared. R004 onwards are the risks the team identifies, numbered in the same series in the order raised (CON-020).
 
 ## Risk Mitigation and Contingency
 
-**R001 — a change on Infrastructure's side breaks the portal (High, accept).**
+**R001 — a change on Infrastructure's side breaks the portal (High provisional, accept).**
 Mitigation: the portal's dependency on AD and Keycloak is confined to two configuration-held boundaries — the OIDC client and the LDAP connection (CON-028). The team never works against the real systems, so a change on Infrastructure's side cannot break development, and the real values are substituted at deployment.
 Contingency: Infrastructure operates the portal in production (CON-029) and owns the change. If a change breaks the portal, the remedy is another iteration (CON-021). Declared scope is not cut.
+Basis: R001's probability and impact are the analyst's estimates and the stakeholder declined to confirm them, so its exposure and the High band's lower boundary are `[ASSUMPTION — requires validation]`. The strategy is unaffected: CON-021 grants acceptance for R001 in advance, and the boundary that decides whether a risk needs a grant is anchored on R002's declared exposure.
 
 **R002 — LDAP attributes inconsistently filled across the 3 offices (Significant, accept).**
-Mitigation: the stand-in directory carries entries whose job title or extension is empty, so UC-008's gap path (A1) and UC-002's blank-FullName path (A5) are exercised from iteration 1, before the real AD is validated. An empty attribute renders as blank and the entry is still shown.
+Mitigation: the stand-in directory carries entries whose job title or extension is empty, so UC-008's gap path (A1) and UC-002's blank-FullName path (A5) are exercised before the real AD is validated. An empty attribute renders as blank and the entry is still shown.
 Contingency: HR fills the attributes in AD; the portal renders blank meanwhile and no default value is invented (CON-015). If the validation delays a milestone, the remedy is another iteration (CON-021).
 
 **R003 — employees keep using Excel out of habit (Moderate, accept).**
 Mitigation: AC-005 requires 80% of employees to complete a clocking with no prior training, and the UI is the mandatory committed design (CON-031), so no training programme is needed for the clocking path.
 Contingency: HR communication campaign; BG-003 measures adoption at 3 months. The mechanism is HR's, not the team's, and the remedy for a milestone delay is another iteration (CON-021).
 
-**R004 — the stand-in environment is not ready (Significant, avoid).**
-Mitigation: the stand-in environment is the first construction item of iteration 1, before any use case work; the Development Case's iteration preparation checkpoint verifies it, and the Development Case records the gap with its owner.
-Contingency: if it is not ready, the iteration's exit criteria cannot pass and the remedy is another iteration.
+**R004 — the stand-in environment is not ready (Significant, avoid, materialized).**
+The risk materialized at Iter-1 close: the stand-in environment was not delivered, so no use case could be built or tested and the iteration produced no verifiable increment. The contingency was executed — another iteration.
+Mitigation for Iter-2: the stand-in environment is the first work item of Iter-2, before any use case work. Its delivery is evidenced in the artifact that owns it — the Development Case's post-iteration environment verification, a record taken at the gate against observable state — and the control that produces that record is the Development Case's iteration-preparation checkpoint. The mitigation names a control that produces a record, not a stated intention.
+Contingency: if it is not ready again, the iteration's exit criteria cannot pass and the remedy is another iteration.
 
 **R005 — the human validation gate does not return before Elaboration closes (Significant, accept).**
 Mitigation: the gate is bounded at 14 days of queue time, after which the process suspends (Development Case measurement policy). The team's work does not wait on it — every use case is built and tested against the stand-ins (CON-028).
@@ -148,9 +166,10 @@ Contingency: another iteration to finish the declared scope. Declared scope is n
 **R008 — developer turnover and knowledge loss (retired, not applicable).**
 The mechanism names a development organization: staffing, onboarding, skills, morale, friction between people. IARI executes with LLM agents — there is no employment relationship, no onboarding, no morale and no interpersonal friction to manage. No actor exists for this mechanism, so it is not classified and carries no strategy. Recorded here so the retirement is visible rather than silent.
 
-**R009 — the CI pipeline and guideline files are not in place (Minor, avoid).**
-Mitigation: the ConfigurationManager and Implementer author the pipeline definition and the guideline files in iteration 1; the Development Case records the gap with its owner.
-Contingency: the iteration's exit criteria name the pipeline as evidence; if it is not in place, the criterion fails and the remedy is another iteration.
+**R009 — the guideline files are not in place (Minor, avoid).**
+The CI half of this risk is retired against observable state: the pipeline definition exists and builds green on `main` (run `36050451436`), so the first build is verifiable and the risk as originally stated no longer holds. What remains is the guideline files.
+Mitigation: the ConfigurationManager and Implementer author `CONTRIBUTING.md` and the lint configuration in Iter-2; the Development Case's post-iteration environment verification records their state at the gate.
+Contingency: the iteration's exit criteria name the guideline files as evidence; if they are not in place, the criterion fails and the remedy is another iteration.
 
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
@@ -170,3 +189,4 @@ Contingency: the iteration's exit criteria name the pipeline as evidence; if it 
 
 R008 is retired as not applicable: its mechanism names no actor in this project, so it threatens no element and carries no trace edge. The retirement and its reason are recorded in the Risk Register and in Risk Mitigation and Contingency.
 
+R009's remaining scope is the guideline files, which govern how UC-001's implementation is written and reviewed; the CI half of the risk is retired against run `36050451436` and no longer threatens the build.
