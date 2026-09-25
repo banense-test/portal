@@ -1025,7 +1025,7 @@ Every row below is a registered edge in the trace graph. The components are the 
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | COMP-001 Portal Web UI | AC-001, NFR-001, CON-023, CON-031, CON-026 | Derives | UC-001, UC-002, UC-004, UC-008 |
-| COMP-002 Portal REST API | CON-001, CON-022 | Derives | UC-001, UC-002, UC-008 |
+| COMP-002 Portal REST API | CON-001, CON-022, NFR-003 | Derives | UC-001, UC-002, UC-008 |
 | COMP-003 Clocking Capture | AC-006, R006 | Derives | UC-001 |
 | COMP-004 Clocking Ledger | CON-010, CON-011, CON-012, NFR-002 | Derives | UC-001, UC-003 |
 | COMP-005 News Publishing | CON-009, CON-017 | Derives | UC-005, UC-006, UC-007 |
@@ -1036,5 +1036,7 @@ Every row below is a registered edge in the trace graph. The components are the 
 | COMP-010 Identity and Access | NFR-005, CON-002, CON-025, R001 | Derives | UC-001, UC-002, UC-003, UC-004, UC-005, UC-006, UC-007, UC-008, UC-009 |
 
 **Link direction.** A component `Realizes` the use case it fulfils — design to use case. The `Traces From` column carries the constraints, requirements, acceptance criteria and risks that justify the component's existence; the `Traces To` column carries the use cases it realizes. `CON-026` and `CON-001` reach COMP-001 and COMP-002 as `DependsOn` (the artefact is built by the hosted CI and runs on the estate), and `R001`, `R002`, `R004` and `R006` reach their components as `DependsOn` (the component is what the risk threatens or what mitigates it). Both directions are registered.
+
+**NFR-003 has a downstream element.** The availability window is a property of the single deployable's application boundary, so `NFR-003 → COMP-002` is registered. No separate availability component is introduced: NFR-003 requires 07:00–19:00 Monday–Friday with fault tolerance inside the corporate network, not 24/7, and a single deployable on the estate Infrastructure operates (CON-029) is the whole of the design that requirement needs.
 
 **Coverage.** All nine use cases are realized by at least one component. Every component is justified by at least one declared constraint, requirement, acceptance criterion or risk. No component exists that the declared scope does not support, and no declared use case is unrealized by the architecture.
