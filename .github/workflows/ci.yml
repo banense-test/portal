@@ -109,6 +109,11 @@ jobs:
       # them would compile nothing of that work and a green check would be a lie. So the
       # manifest is synced from the src/ + tests/ tree before every build and can never
       # drift out of sync with the merged code.
+      #
+      # The add is idempotent and tolerates the already-present case, so it cannot be
+      # trusted on its own to prove the manifest covers the tree. The step therefore
+      # verifies the result and fails the build if any project under src/ or tests/ is
+      # absent from Portal.sln. The sync is a guarantee only if it is checked.
       - name: Sync solution with the src/ and tests/ tree
         run: |
           set -euo pipefail
@@ -119,10 +124,22 @@ jobs:
           fi
           for p in $projects; do
             echo "Ensuring $p is in Portal.sln"
-            dotnet sln Portal.sln add "$p" || true
+            dotnet sln Portal.sln add "$p" >/dev/null 2>&1 || true
           done
+          listed=$(dotnet sln Portal.sln list | tr '\\' '/')
+          missing=0
+          for p in $projects; do
+            if ! printf '%s\n' "$listed" | grep -qF "$p"; then
+              echo "Project $p is under src/ or tests/ but absent from Portal.sln." >&2
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            echo "Portal.sln does not cover the src/ and tests/ tree; refusing to build." >&2
+            exit 1
+          fi
           echo "Projects in Portal.sln:"
-          dotnet sln Portal.sln list
+          printf '%s\n' "$listed"
 
       - name: Restore
         run: dotnet restore Portal.sln
@@ -167,9 +184,25 @@ jobs:
         run: |
           set -euo pipefail
           projects=$(find src tests -name '*.csproj' -not -path '*/obj/*' -not -path '*/bin/*' | sort)
+          if [ -z "$projects" ]; then
+            echo "No project files found under src/ or tests/." >&2
+            exit 1
+          fi
           for p in $projects; do
-            dotnet sln Portal.sln add "$p" || true
+            dotnet sln Portal.sln add "$p" >/dev/null 2>&1 || true
           done
+          listed=$(dotnet sln Portal.sln list | tr '\\' '/')
+          missing=0
+          for p in $projects; do
+            if ! printf '%s\n' "$listed" | grep -qF "$p"; then
+              echo "Project $p is under src/ or tests/ but absent from Portal.sln." >&2
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            echo "Portal.sln does not cover the src/ and tests/ tree; refusing to test." >&2
+            exit 1
+          fi
 
       - name: Restore
         run: dotnet restore Portal.sln
