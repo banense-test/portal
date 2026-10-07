@@ -256,10 +256,9 @@ DC --> OPT
 ```
 
 ## Disciplines and Intensity
-
 Intensity per discipline and phase is **per the canonical matrix**, unmodified. No deviation is proposed or granted.
 
-**Inactive discipline:** Business Modeling — inactive for the whole project (T-1). Its intensity row in the canonical matrix does not apply.
+**Inactive discipline:** Business Modeling — inactive as a **production** discipline for the whole project (T-1). Its intensity row in the canonical matrix does not apply, because no business-modeling artifact is produced. The business **lens** still executes at the lifecycle gates (I2, E2, C3, T1) under the BusinessReviewer, re-deriving the DC §4 verdict each iteration; that is a review activity, not a Business Modeling work item, and it carries no intensity level.
 
 **Environment** is one-time at project start, per the baseline. Its Inception work is this document; its Elaboration work is the iteration-preparation checkpoint and the guideline integration named in Guidelines and Procedures.
 
