@@ -139,12 +139,11 @@ end note
 | STK-004 | Cuba Corp Employees | End users, 200 people, 3 offices | High | Medium | Clock in and out in one press with confirmation; read news and filter by category; find a colleague's phone and email in under 10 seconds (AC-004). |
 
 ## Product Overview
-
 The portal is a single .NET 10 web application (Razor Pages front end, REST API back end, PostgreSQL 18) reachable only from the internal corporate network on current Chrome and Edge. It authenticates through the existing Keycloak as an OIDC client and reads people data live from Active Directory over LDAP. It owns three processes and the audit trail they require.
 
 ```plantuml
 @startuml
-title Employee Portal — system boundary, actors and candidate use cases (Inception 1)
+title Employee Portal — system boundary, actors and candidate use cases (Inception 2)
 
 left to right direction
 skinparam packageStyle rectangle
@@ -181,7 +180,7 @@ HR --> UC008
 HR --> UC009
 HR --> UC010
 HR --> UC012
-AD --> UC011
+UC011 --> AD
 
 note bottom of KC
   Cross-cutting, not a use case.
@@ -201,6 +200,8 @@ end note
 note bottom of UC011
   Architecturally significant:
   live LDAP read, no local copy. R001, CON-032.
+  The portal initiates the read; AD never
+  initiates anything.
 end note
 @enduml
 ```
