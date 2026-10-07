@@ -527,23 +527,23 @@ stop
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| UC-001 | FR-001 | Refines | — |
+| UC-001 | FR-001 | Refines | COMP-001 |
 | UC-002 | FR-002 | Refines | COMP-001, Software Architecture Document |
-| UC-003 | FR-003 | Refines | — |
+| UC-003 | FR-003 | Refines | COMP-002 |
 | UC-004 | FR-004 | Refines | COMP-002, Software Architecture Document |
 | UC-005 | FR-005 | Refines | COMP-001, Software Architecture Document |
-| UC-006 | FR-006 | Refines | — |
-| UC-007 | FR-007 | Refines | — |
-| UC-008 | FR-008 | Refines | — |
-| UC-009 | FR-009 | Refines | — |
+| UC-006 | FR-006 | Refines | COMP-003 |
+| UC-007 | FR-007 | Refines | COMP-003 |
+| UC-008 | FR-008 | Refines | COMP-003 |
+| UC-009 | FR-009 | Refines | COMP-003 |
 | UC-010 | FR-010 | Refines | COMP-004, Software Architecture Document |
 | UC-011 | FR-011 | Refines | COMP-005, COMP-006, COMP-009, Software Architecture Document |
-| UC-012 | FR-012 | Refines | — |
+| UC-012 | FR-012 | Refines | COMP-005, COMP-006 |
 | Use-Case Model | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012 | Derives | Software Architecture Document |
 | Use-Case Model | CON-001, CON-018, CON-030, CON-031, NFR-001, CON-041 | DependsOn | Supplementary Specification |
 | Use-Case Model | R001 | Refines | Risk List |
 | Use-Case Model | AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | Test Case |
 
-**Reading the table.** `Traces From` is the declared input each use case realizes — the `Source:` identifier copied from the Work Order. `Traces To` is empty for the seven use cases surveyed but not detailed this iteration: they acquire their realization in Elaboration, and no downstream element exists yet to point at. The five architecturally significant use cases already constrain the Software Architecture Document, which is why they carry a downstream end.
+**Reading the table.** `Traces From` is the declared input each use case realizes — the `Source:` identifier copied from the Work Order. `Traces To` is the component in the Software Architecture Document that realizes the use case. All twelve use cases reach a component: the five detailed this iteration constrain the architecture directly, and the seven surveyed ones are carried by the subsystems the architect decomposed for their functional area.
 
 **Coverage.** Twelve declared requirements, twelve use cases, one-to-one. No use case exists without a declared source, and no declared requirement is left without a use case. The cross-cutting mechanisms — authentication, authorization, audit trail, no-connection handling — are specified in the Supplementary Specification and included by the use cases that depend on them; they are not use cases and carry no identifier of the `UC-` family.
