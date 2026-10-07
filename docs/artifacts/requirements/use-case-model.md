@@ -527,22 +527,27 @@ stop
 ```
 
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| UC-001 | FR-001 | Refines | (Elaboration: use-case realization) |
-| UC-002 | FR-002 | Refines | (Elaboration: use-case realization) |
-| UC-003 | FR-003 | Refines | (Elaboration: use-case realization) |
-| UC-004 | FR-004 | Refines | (Elaboration: use-case realization) |
-| UC-005 | FR-005 | Refines | (Elaboration: use-case realization) |
-| UC-006 | FR-006 | Refines | (Elaboration: use-case realization) |
-| UC-007 | FR-007 | Refines | (Elaboration: use-case realization) |
-| UC-008 | FR-008 | Refines | (Elaboration: use-case realization) |
-| UC-009 | FR-009 | Refines | (Elaboration: use-case realization) |
-| UC-010 | FR-010 | Refines | (Elaboration: use-case realization) |
-| UC-011 | FR-011 | Refines | (Elaboration: use-case realization) |
-| UC-012 | FR-012 | Refines | (Elaboration: use-case realization) |
-| Use-Case Model | Vision | Refines | Supplementary Specification |
+| UC-001 | FR-001 | Refines | — |
+| UC-002 | FR-002 | Refines | Software Architecture Document |
+| UC-003 | FR-003 | Refines | — |
+| UC-004 | FR-004 | Refines | Software Architecture Document |
+| UC-005 | FR-005 | Refines | Software Architecture Document |
+| UC-006 | FR-006 | Refines | — |
+| UC-007 | FR-007 | Refines | — |
+| UC-008 | FR-008 | Refines | — |
+| UC-009 | FR-009 | Refines | — |
+| UC-010 | FR-010 | Refines | Software Architecture Document |
+| UC-011 | FR-011 | Refines | Software Architecture Document |
+| UC-012 | FR-012 | Refines | — |
+| Use-Case Model | STK-001, STK-004 | Refines | Supplementary Specification |
+| Use-Case Model | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012 | Refines | Software Architecture Document |
 | Use-Case Model | CON-001, CON-018, CON-030, CON-031 | Refines | Supplementary Specification |
 | Use-Case Model | R001 | Refines | Risk List |
 | Use-Case Model | AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | Test Case |
+
+**Reading the table.** `Traces From` is the declared input each use case realizes — the `Source:` identifier copied from the Work Order. `Traces To` is empty for the seven use cases surveyed but not detailed this iteration: they acquire their realization in Elaboration, and no downstream element exists yet to point at. The five architecturally significant use cases already constrain the Software Architecture Document, which is why they carry a downstream end.
+
+**Coverage.** Twelve declared requirements, twelve use cases, one-to-one. No use case exists without a declared source, and no declared requirement is left without a use case. The cross-cutting mechanisms — authentication, authorization, audit trail, no-connection handling — are specified in the Supplementary Specification and included by the use cases that depend on them; they are not use cases and carry no identifier of the `UC-` family.
+
