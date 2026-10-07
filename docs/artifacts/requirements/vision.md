@@ -18,10 +18,9 @@ Cuba Corp runs three internal processes on fragmented manual tooling: employee c
 | Success criteria | BG-001 HR management time reduced by 50% against current effort. BG-002 no new clocking recorded in a shared Excel sheet once live. BG-003 80% of the 200 employees actively using the portal within 3 months of go-live. Verified by AC-001 to AC-006. |
 
 ## Product Position Statement
-
 ```plantuml
 @startuml
-title Employee Portal — product context (Inception 1)
+title Employee Portal — product context (Inception 2)
 
 skinparam componentStyle rectangle
 
@@ -69,7 +68,6 @@ end note
 | That | Records clock in/out with confirmation and own monthly history, lets HR view, export and correct clockings, lets HR publish, edit, unpublish and feature news that employees read and filter, and lets any employee search colleagues by name, department or office — with an audit trail over every change. |
 | Unlike | The shared Excel sheets, the mass-email distribution and the PDF phone list, which are separate, manual, unauditable and stale. |
 | Our product | Centralizes the three processes in one application, reads people data live from Active Directory so it cannot go stale, and records every change to clockings, news and worker category in an audit trail. |
-
 ## Stakeholder Summary
 
 ```plantuml
