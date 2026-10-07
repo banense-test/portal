@@ -2196,6 +2196,70 @@ end note
 
 **This is the Reviewer's technical-lens disposition on the artifacts. The LCO milestone verdict is the ReviewCoordinator's, and the milestone is not achieved until that verdict is recorded.**
 
+#### Iteration 2
+
+**Disposition from this lens: Approved with Changes.**
+
+```plantuml
+@startuml
+title Disposition — LCO technical lens, Inception 2 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+class "Disposition from this lens" as D <<verdict>> {
+  Approved with Changes
+  The requirements baseline, the candidate
+  architecture and the risk record are sound.
+  Two Major findings are open.
+}
+
+class "Why not Approved" as W1 <<reason>> {
+  Two Major findings are open.
+  Both are statements about observable state
+  that do not reconcile with the trace graph
+  or with the artifact's own text.
+}
+
+class "Why not Rejected" as W2 <<reason>> {
+  No Critical finding exists.
+  No scope hallucination, no phantom use case,
+  no baseline redefinition, no ownership
+  reassignment, no invented technology,
+  no fabricated quantitative claim.
+}
+
+class "LCO exit criteria, from this lens" as W3 <<reason>> {
+  The technical artifacts collectively satisfy
+  the LCO conditions: the scope is agreed and
+  complete, the initial risks are identified and
+  classified, and the architecture confronts the
+  highest-magnitude technical risks.
+}
+
+class "Milestone verdict" as W4 <<note>> {
+  The LCO milestone verdict is the
+  ReviewCoordinator's. The milestone is not
+  achieved until that verdict is recorded.
+}
+
+D --> W1
+D --> W2
+D --> W3
+D --> W4
+@enduml
+```
+
+**Basis.** The requirements baseline is sound and complete. Twelve declared requirements map one-to-one to twelve use cases, each carrying its `Source: FR-NNN`; no phantom use case exists; no cross-cutting mechanism was promoted to a use case; no use case was split per actor. The candidate architecture is sound: ten subsystems, ten interfaces, six architecture decision records, all four-plus-one views, every subsystem traced to a declared element, and the two `Volatility: High` areas each isolated behind a seam. The risk record is sound: R001 to R010 classified with strategy, owner, mitigation, contingency and an observable indicator, and every accepted risk naming its CON-024 basis. The Development Case's tailoring is baseline-conformant: the roster is not redefined, no CORE artifact is omitted, no ownership is reassigned, no artifact outside the CORE plus OPTIONAL universe is listed, the intensity equals the canonical matrix, and all six optional triggers were re-audited against their §5.2 conditions and none fired.
+
+**Why not Approved.** Two Major findings are open. Both are statements about observable state: the Supplementary Specification's element-level traceability is not registered in the graph, and the Test Evaluation Summary's issue-tracker row records no issue while the artifact's own Traceability section cites Issue #1. Each is a statement a downstream role would act on and be misled by.
+
+**Why not Rejected.** No Critical finding exists. No scope hallucination, no phantom use case, no baseline redefinition, no ownership reassignment, no invented technology, no fabricated quantitative claim, no unsourced financial figure. The defects are corrections to statements about observable state, not defects in the requirements, the architecture or the risk treatment.
+
+**LCO exit criteria, from this lens.** The technical artifacts collectively satisfy the LCO conditions: the scope is agreed and complete with no open scope question, the initial risks are identified and classified, and the architecture is first-cut and confronts the highest-magnitude technical risks rather than deferring them. The two Major findings are corrections to be made within this iteration, not conditions the project cannot meet.
+
+**This is the Reviewer's technical-lens disposition on the artifacts. The LCO milestone verdict is the ReviewCoordinator's, and the milestone is not achieved until that verdict is recorded.**
+
 ### Business Reviewer lens
 #### Iteration 1
 
