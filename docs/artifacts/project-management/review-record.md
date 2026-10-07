@@ -981,6 +981,32 @@ BIZ -[hidden]- SYS
 
 **This is the Reviewer's technical-lens disposition on the artifacts. The LCO milestone verdict is the ReviewCoordinator's, and the milestone is not achieved until that verdict is recorded.**
 
+### Business Reviewer lens
+#### Iteration 1
+
+**Verdict: [BR-OK-INACTIVE] — Discipline NOT APPLICABLE per DC §4**
+
+**DC §4 trigger evaluation.** The project does not exhibit business-process-led characteristics. No ERP, BPM, workflow-redesign or M&A signal is present in the Vision. No Business Use Cases, business workers or business entities section is present in any artifact. No business-domain specialist term requiring a stakeholder-validated definition is present in the Glossary, and the Glossary optional trigger is NOT FIRED.
+
+**Conclusion.** The BusinessProcessAnalyst and the Business Reviewer are correctly INACTIVE for this engagement. No findings, no recommendations. Downstream reviewers (ManagementReviewer, ReviewCoordinator) may treat the Business Modeling discipline as out-of-scope for the LCO milestone.
+
+**Basis of the verdict — the four DC §4 tests, each re-derived independently.**
+
+| Test | Question | Result |
+|---|---|---|
+| Business actor | Is there an actor external to the organization that initiates a business process? | NONE — both roles (HR Administrator, Employee) are inside Cuba Corp |
+| End-to-end process | Is there a complete business process delivering measurable value to that actor? | NONE — the three declared processes are independent system interactions, not a process chain |
+| Workers and entities | Are there business workers and business entities required to execute the process end-to-end? | NONE — no worker, no entity model, no organizational unit |
+| Rules engine | Is there a business rules engine or workflow engine to model? | NONE — the invariants are database constraints (ADR-003), not a rules engine |
+
+**Why the INACTIVE verdict is not a rubber stamp.** Six candidate signals were examined and each was resolved: the three named processes are declared as system use cases (FR-001 to FR-012); the business rules (CON-007 to CON-016, CON-043) are stakeholder-declared constraints, not BPA-authored `BR-NNN` rules; the two organizational roles are system actors under a two-level authorization model (CON-018); the external systems (Keycloak, Active Directory) are a supporting actor of one use case and a cross-cutting mechanism, not business actors; the closed value lists are fixed enumerations, not a rules engine; and the offline retry (CON-040) is one client-side POST retry with one action, one queue and one entity, with nothing to orchestrate. The verdict is earned by evaluation.
+
+**The one business duty that survived the verdict, and it was discharged.** The architecture-centric pillar requires volatile business areas to be explicitly annotated, or they will not be encapsulated. That duty would normally fall to the Business Process Analyst. Here the SystemAnalyst marked FR-004 and FR-010 `Volatility: High` in the Vision, and the SoftwareArchitect gave each its own subsystem and interface (`COMP-002` behind `INT-002`, `COMP-004` behind `INT-004`, ADR-002), recording the encapsulation as R006. The annotation exists, is correct, and reached the architecture. No finding.
+
+**LCO exit criteria, from this lens.** The business dimension of the LCO conditions is satisfied: the scope is agreed and complete with no open scope question, no business process is in scope that would require a business model, and no business-modeling artifact is missing that the declared scope requires. This lens raises no condition on the milestone.
+
+**This is the Business Reviewer's business-lens disposition. The LCO milestone verdict is the ReviewCoordinator's, and the milestone is not achieved until that verdict is recorded.**
+
 ## Traceability
 ### Reviewer lens
 | Element | Traces From | Link Type | Traces To |
