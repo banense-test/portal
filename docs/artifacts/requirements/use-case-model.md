@@ -111,7 +111,6 @@ Twelve use cases, one per declared requirement. Every use case passes the ATM te
 **Detail level this iteration.** Per the 80/20 rule of Inception, the five architecturally significant use cases are detailed below. The remaining seven are surveyed only; the RequirementsSpecifier details them in Elaboration.
 
 ## Use-Case Specifications
-
 ### UC-002 Clock In and Clock Out
 
 | Field | Value |
@@ -324,6 +323,67 @@ end note
 - **A1 — Clock-out missing (step 3).** ClockOut and HoursWorked are written EMPTY, not zero, and the row is still exported (CON-008).
 - **A2 — A day with no clocking.** No row is produced (CON-010).
 - **A3 — No category assigned.** WorkerCategory is blank (CON-016).
+
+```plantuml
+@startuml
+title UC-004 Export Monthly Clocking Report as CSV — flow of events (Inception 1, architecturally significant)
+
+start
+:HR selects one calendar month;
+note right
+  FR-004
+  One calendar month, 00:00 on the first day
+  to 23:59:59 on the last day, Europe/Madrid.
+end note
+
+:Select the clockings of the month;
+note right
+  CON-006 stored in UTC,
+  selected and written in Europe/Madrid
+end note
+
+:Group by employee and calendar date;
+note right
+  CON-008 a pair never crosses midnight
+  CON-009 at most one pair per employee per day
+end note
+
+if (Day has at least one clocking?) then (no)
+  :No row is produced;
+  note right
+    CON-010 the portal records clockings,
+    not absences
+  end note
+else (yes)
+  :Write one row in the fixed column order;
+  note right
+    EmployeeId, FullName, WorkerCategory, Date,
+    ClockIn, ClockOut, HoursWorked, Corrected
+  end note
+  if (Clock-out recorded?) then (no)
+    :ClockOut and HoursWorked written EMPTY, not zero;
+    note right
+      CON-008 an incomplete day still exports
+    end note
+  else (yes)
+    :ClockIn and ClockOut as HH:mm, Europe/Madrid;
+    :HoursWorked as decimal hours, two decimals;
+    note right
+      Computed from the recorded clocking times,
+      not from the minute-rounded displayed values.
+    end note
+  endif
+  if (HR corrected or inserted any clocking of that day?) then (yes)
+    :Corrected = Y;
+  else (no)
+    :Corrected = N;
+  endif
+endif
+
+:Return the CSV file;
+stop
+@enduml
+```
 
 ### UC-010 Feature or Un-feature a News Item
 
