@@ -6,12 +6,11 @@
 - **Owner:** ProjectManager
 - **Date:** 2026-10-07
 ## Risk Classification
-
 Risk is the primary driver of iteration sequencing. Every risk below names the actor in its mechanism. In this project the executing actors are LLM agents and the only human is the stakeholder, so a candidate whose mechanism needs a development organization — staffing, skills, morale, friction between people — has no actor and is retired rather than classified.
 
 ```plantuml
 @startuml
-title Risk List structure — probability x impact = magnitude (Portal, Inception 1)
+title Risk List structure — probability x impact = magnitude (Portal, Inception 2)
 
 skinparam classAttributeIconSize 0
 
