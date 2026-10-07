@@ -83,17 +83,6 @@ end note
 @enduml
 ```
 
-### Inception iteration 2 — objectives
-
-| # | Objective | Exit evidence |
-|---|---|---|
-| O-1 | Close every finding the Inception 1 review raised, minor ones included, across all eight artifacts. | The Review Record's finding ledger carries no open finding. |
-| O-2 | Re-run the review with all three lenses, the management lens included, at the LCO gate. | Review Record entries from the Reviewer, the BusinessReviewer and the ManagementReviewer. |
-| O-3 | Conduct the Project Approval Review ahead of the LCO verdict. | The Review Record's Project Approval Review entry. |
-| O-4 | Re-assess LCO readiness against X-1 to X-5 on the corrected baseline and record the verdict. | The ReviewCoordinator's LCO verdict in the Review Record. |
-
-**Not an objective of this iteration.** No executable increment. Inception's output is the artifact scope and the risk record, not running code. No acceptance criterion is closed this iteration — see Evaluation Criteria. No use case is newly detailed: the selection made in Inception 1 stands.
-
 ### Inception iteration 3 — objectives
 
 | # | Objective | Exit evidence |
