@@ -483,6 +483,49 @@ stop
 
 **Business rules applied.** CON-007 (only HR corrects or inserts; the original is never overwritten in place and never deleted), CON-008, CON-009, NFR-001.
 
+```plantuml
+@startuml
+title UC-005 Correct or Insert a Clocking — flow of events (Inception 1, architecturally significant)
+
+start
+:Employee reports a missing or wrong clocking to HR;
+note right
+  CON-007 there is no self-service
+  correction screen for the employee
+end note
+
+:HR opens the clocking of the employee and the date concerned;
+:HR enters the corrected or inserted time and a free-text reason;
+
+if (A clocking exists for that date?) then (no)
+  :Create the pair for that date;
+  note right
+    CON-009 at most one pair per employee
+    per calendar day
+  end note
+else (yes)
+  :Record the new value;
+  note right
+    CON-007 the original record is never
+    overwritten in place and never deleted
+  end note
+endif
+
+:Write the audit record;
+note right
+  NFR-001 who, when, previous value,
+  free-text reason
+end note
+
+:Show the corrected clocking;
+note right
+  The day now exports with Corrected = Y
+  FR-004
+end note
+stop
+@enduml
+```
+
 ## Traceability
 
 | Element | Traces From | Link Type | Traces To |
