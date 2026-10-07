@@ -300,18 +300,16 @@ end note
 **No incident is recorded.** No test environment was stood up, no test was run and no external system was contacted. The real Keycloak and the real Active Directory were not touched, which is the declared working method (CON-035).
 
 ## Conclusions
-
 ### Recommendation
 
-**Proceed to Elaboration.** The test effort's contribution to the LCO decision is that the baseline is verifiable and the strategy is defined. Three conditions must hold before the first implementation task, and each has an owner:
+**Proceed to Elaboration.** The test effort's contribution to the LCO decision is that the baseline is verifiable and the strategy is defined. Two conditions must hold before the first implementation task, and each has an owner:
 
 | # | Condition | Owner | Risk if not met |
 |---|---|---|---|
 | 1 | The test OIDC issuer and the test directory stand-in are built and reachable, the directory carrying entries with empty job title and extension. | TestManager with Implementer | No scenario can be exercised; the blank-field path is never built and R001 is discovered late. |
 | 2 | The test conventions are written into `CONTRIBUTING.md`. | TestManager | The suite has no structure and no definition of a passing test. |
-| 3 | The CI workflow runs build and test on every push. | SoftwareArchitect with Implementer | The mandatory regression rule is run by hand and will be skipped under pressure. |
 
-These three are the Development Case's Elaboration iteration-preparation checkpoint and R009. They are the test effort's entry criteria E-4, E-5 and E-6.
+These two are the Development Case's Elaboration iteration-preparation checkpoint and R009. They are the test effort's entry criteria E-4 and E-5. The third condition previously listed here — the CI workflow — is **already satisfied**: `.github/workflows/ci.yml` is committed and green on `main` (`ci-run-37588175142`), and entry criterion E-6 is met.
 
 ### Risks to the test effort
 
@@ -321,7 +319,7 @@ These three are the Development Case's Elaboration iteration-preparation checkpo
 | R003 — the human validation gate on the real Keycloak and AD | The team's own testing is against stand-ins, so a late gate finding invalidates the LDAP read or the OIDC client after the suite is green. | The gate opens at the beginning of Elaboration 1, not at its end. The stand-ins keep the team unblocked while the gate is open. Ceiling 14 days, reported apart from agent time. |
 | R004 — client-supplied clocking timestamp | A skewed client clock records a time that did not happen. The test must assert that the skew is *detectable from the stored pair*, not that the press is rejected — CON-040 requires the press to be accepted. | The clocking test case asserts both timestamps are stored and that the skew is readable from the data. |
 | R008 — directory page load with a live LDAP read and no client cache | AC-001 measures the full page load, and the LDAP round trip is the one unbounded term in it. | The measurement is taken on the corporate network as the full page load. A finding is raised as a Change Request rather than met by caching, which CON-041 forbids. |
-| R009 — Elaboration tool gaps | The three conditions above. | The iteration-preparation checkpoint is the gate. |
+| R009 — Elaboration tool gaps | The two conditions above. | The iteration-preparation checkpoint is the gate. |
 | R010 — audit completeness | NFR-005 means no in-portal screen would reveal a missing audit record, so a gap is invisible to a user. | Every alternative flow that changes audited data gets a test case, not only the main flow. The audit table is inspected directly after each audited scenario. |
 
 ### Carried into Elaboration
