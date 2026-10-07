@@ -318,7 +318,6 @@ The system-wide business rules — CON-007 to CON-016 and CON-043 — are specif
 | CON-002 | Hosting platform | The internal Windows Server estate Infrastructure already operates. |
 
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | Supplementary Specification | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Refines | Software Architecture Document |
@@ -326,6 +325,6 @@ The system-wide business rules — CON-007 to CON-016 and CON-043 — are specif
 | Supplementary Specification | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | Test Case |
 | Supplementary Specification | R001 | Refines | Risk List |
 
-**Cross-cutting mechanism coverage.** Every one of the twelve use cases includes at least one mechanism specified here. Authentication is included by all twelve, UC-001 to UC-012. Authorization is included by the eight HR use cases — UC-003, UC-004, UC-005, UC-006, UC-008, UC-009, UC-010, UC-012. The audit trail is included by the five use cases that change audited data — UC-005, UC-006, UC-008, UC-009, UC-012; featuring is audited through UC-006 or UC-008, not as a separate class. No-connection handling is included by the three use cases that read over the network — UC-002, UC-007, UC-011. The Use-Case Model depends on this specification for those mechanisms; the dependency is registered on the Use-Case Model side, so the two artifacts are not linked in both directions.
+**Cross-cutting mechanism coverage.** Every one of the twelve use cases includes at least one mechanism specified here. Authentication is included by all twelve, UC-001 to UC-012. Authorization is included by the eight HR use cases — UC-003, UC-004, UC-005, UC-006, UC-008, UC-009, UC-010, UC-012. The audit trail is included by the six use cases that change audited data — UC-005, UC-006, UC-008, UC-009, UC-010, UC-012. No-connection handling is included by the three use cases that read over the network — UC-002, UC-007, UC-011. The Use-Case Model depends on this specification for those mechanisms; the dependency is registered on the Use-Case Model side, so the two artifacts are not linked in both directions.
 
 **Threshold quantification.** NFR-002 and NFR-003 carry declared thresholds (under 3 seconds, under 1 second) and AC-001 fixes how NFR-002 is measured. NFR-001, NFR-004 and NFR-005 are stated as declared and are not further quantified here; the RequirementsSpecifier owns any refinement in Elaboration.
