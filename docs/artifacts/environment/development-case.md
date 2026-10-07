@@ -399,7 +399,6 @@ BR -[hidden]- CD
 | User Documentation | TechnicalWriter | UserInterfaceDesigner (screen-accurate wording), SystemAnalyst (use-case flows) |
 
 ## Guidelines and Procedures
-
 ### Measurement policy
 
 Two quantities are tracked, and only two. Each is stated with the decision it enables and its reader.
@@ -424,11 +423,17 @@ The availability, configuration and ownership of Keycloak and Active Directory a
 
 ### Iteration preparation checkpoint
 
-Every iteration opens with an explicit environment-readiness check before development starts. For Inception iteration 1 the check is: repository present, design reference present, Development Case persisted. For Elaboration the check adds: `CONTRIBUTING.md` committed, lint configuration committed, CI workflow committed and green on an empty build, test stand-ins built and reachable, placeholder configuration values present in configuration and absent from code (CON-035).
+Every iteration opens with an explicit environment-readiness check before development starts.
+
+**Inception iteration 2.** Repository present; design reference present; CI workflow committed and green; Development Case persisted.
+
+**Elaboration.** The check adds: `CONTRIBUTING.md` committed; lint configuration committed; test stand-ins built and reachable; placeholder configuration values present in configuration and absent from code (CON-035). The CI workflow is **not** an outstanding condition — it is committed and triggers on every push and pull request, and the solution builds with its two scaffolding projects.
 
 ### Process support during the iteration
 
 Process support is continuous, not a one-time configuration. Process questions are answered within the iteration in which they are raised; a blocking process question is escalated immediately rather than carried. Tool configuration problems are logged with an improvement action and an owner, and are evaluated against process effectiveness at each iteration close.
+
+**Improvement carried out of Inception 1.** The S1 tool assessment was written from the assumption that a greenfield project has an empty repository, and it recorded the CI workflow, the solution and the two scaffolding projects as absent while all three were committed. The defect was found by review, not by the assessment. The corrective practice, effective from this iteration: the S1 tool baseline is read from the repository through the SCM tools and every claim in it cites the path and sha it was read from. An assessment statement about tool state that cites no observed artifact is not a finding of the assessment and does not enter the Development Case.
 
 ### Guideline ownership
 
