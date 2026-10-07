@@ -249,7 +249,6 @@ Intensity per discipline and phase is **per the canonical matrix**, unmodified. 
 **Environment** is one-time at project start, per the baseline. Its Inception work is this document; its Elaboration work is the iteration-preparation checkpoint and the guideline integration named in Guidelines and Procedures.
 
 ## Artifacts and Templates
-
 All 16 CORE artifacts are produced, with baseline ownership unchanged. No CORE artifact is omitted. No artifact outside the CORE + OPTIONAL universe is produced or referenced.
 
 ```plantuml
@@ -309,9 +308,10 @@ The Development Case references these; it does not author their content.
 | Source | Status | Content it carries |
 |---|---|---|
 | `docs/inputs/employee-portal-design.html` | Present, authoritative | Visual layer: layout, components, states, palette, typography, design tokens (CON-038). Mandatory for the UserInterfaceDesigner, Designer and Implementer. |
+| `.github/workflows/ci.yml` | Present — sha `0c2fd7cf47eeab68d19420fe3897d209258bd074` | Build and test on every push and pull request (CON-033). Regenerates the solution manifest from the `src/` and `tests/` tree on each run, so a merged subsystem cannot be silently disconnected from CI. |
+| `Portal.sln` | Present — sha `f554bf5bc04df43103677206c7727fcc62ea2bc4` | Solution manifest with two projects: `src/Portal.Web/Portal.Web.csproj` and `tests/Portal.Tests/Portal.Tests.csproj`. |
 | `CONTRIBUTING.md` | **Absent — gap** | Coding, UI, test and review conventions. Authored by the discipline experts named in the gap table, not by the ProcessEngineer. |
 | Lint and analyzer configuration | **Absent — gap** | Enforced style and static analysis. |
-| CI workflow under the hosted provider | **Absent — gap** | Build and test on every push (CON-033). |
 
 ## Optional Artifact Triggers
 
