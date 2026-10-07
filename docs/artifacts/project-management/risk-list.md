@@ -154,7 +154,6 @@ end note
 | R010 | Avoided by design: the audit record is written in the same transaction as the change it records, for every one of the three change classes, and the TestDesigner covers each alternative flow that changes audited data, not only the main flow. | None required — the strategy is avoidance. | An alternative flow that changes audited data with no corresponding test case. |
 
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | R001 | FR-011, CON-004, CON-032 | DependsOn | UC-011 |
@@ -167,6 +166,8 @@ end note
 | R008 | NFR-002, AC-001, CON-032, CON-041 | DependsOn | UC-011 |
 | R009 | CON-035, CON-033 | DependsOn | Iteration Plan |
 | R010 | NFR-001, NFR-005 | DependsOn | Supplementary Specification |
-| Risk List | R001, R002 | Refines | Iteration Plan |
 
 **Reading the table.** `Traces From` is the declared input each risk bears on — the constraint, requirement or goal copied from the Work Order. `Traces To` is the element the risk threatens, which is what makes the risk actionable in design rather than a note in a register. R001 and R002 are the two risks declared with the project; R003 to R010 are identified by the team and numbered from R003 in the order raised, per CON-023.
+
+**Direction of the plan link.** The Iteration Plan carries the link to this Risk List, not the reverse: the plan is sequenced by the risk list and is the more detailed artifact of the two. The reverse link is withdrawn so the graph holds no cycle.
+
