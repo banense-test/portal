@@ -275,29 +275,25 @@ The Test Evaluation Summary's mission verdict is that the requirements baseline 
 | No Change Request was raised. | No scope change. No new declared input. |
 | No external system was contacted. | The real Keycloak and the real Active Directory were not touched, which is the declared working method (CON-035). |
 ## Rework Required
+Six findings are open at the gate: 0 Critical, 4 Major, 2 Minor. Every one is correctable within Inception and none requires a Change Request — each restores an artifact's agreement with observable state or registers a declared link in the trace repository, and none changes declared scope.
 
-Eleven findings are open: 0 Critical, 5 Major, 6 Minor. Every one is correctable within Inception and none requires a Change Request — each restores an artifact's agreement with the declared scope, with observable state, or with the gate structure, and none changes declared scope.
+| Finding | Severity | Lens | Owner | Rework | Iteration |
+|---|---|---|---|---|---|
+| Supplementary Specification#F2 | Major | Reviewer | SystemAnalyst, trace steward | Register the element-level links for NFR-002 to NFR-005 and AC-001 to AC-006, or drop the element-level rows and state that the artifact-level link is the registered one. | Inception 3 |
+| Supplementary Specification#F1 | Major | ManagementReviewer | SystemAnalyst, trace steward | The gate condition on #F2. It closes when #F2 closes. | Inception 3 |
+| Test Evaluation Summary#F3 | Major | Reviewer | TestManager | Re-read the issue tracker in all states, replace the row with the observed value, and correct the reading. | Inception 3 |
+| Test Evaluation Summary#F1 | Major | ManagementReviewer | TestManager, SystemAnalyst | The gate condition on #F2 and #F3. It closes when both close. | Inception 3 |
+| Iteration Plan#F1 | Minor | BusinessReviewer | ProjectManager | Reconcile the role profile with the observed execution of the business lens, in the same pass as the Development Case's Roles and Ownership table. | Inception 3 |
+| Iteration Plan#F5 | Minor | ManagementReviewer | ProjectManager | The gate condition on Iteration Plan#F1. It closes when #F1 closes. | Inception 3 |
+| Test Evaluation Summary#F2 | Major | Reviewer | SystemAnalyst, trace steward | **Deferred** — the defect stands. Register the artifact's declared upstream links so the coverage the summary claims is machine-verifiable. Tracked by Issue #1. | Inception 3 |
 
-| Finding | Severity | Owner | Rework | Iteration |
-|---|---|---|---|---|
-| Iteration Plan#F2 | Major | ProjectManager | Add Inception 2 to the coarse roadmap with a fine plan closing every open finding; re-assess X-1 to X-5 there. | Inception 2 |
-| Iteration Plan#F1 | Major | ProjectManager | Add ManagementReviewer to the role profile for I1, E2 and C3, with the verdict at LCO, LCA and IOC. | Inception 2 |
-| Development Case#F1 | Major | ProcessEngineer | Rewrite the S1 tool assessment and the gap table against the repository; remove the CI workflow from the Elaboration checkpoint's outstanding conditions. | Inception 2 |
-| Test Evaluation Summary#F1 | Major | TestManager | Replace the cited run id and window with the observed build; correct the reading of E-6 to met. | Inception 2 |
-| Test Evaluation Summary#F2 | Major | TestManager, with SystemAnalyst as trace steward | Register the artifact's upstream links in the trace repository so its declared coverage is machine-verifiable. | Inception 2 |
-| Iteration Plan#F3 | Minor | ProjectManager | Schedule the Project Approval Review ahead of the LCO re-assessment, or record the determination that it does not apply with its basis. | Inception 2 |
-| Supplementary Specification#F1 | Minor | RequirementsSpecifier | Reconcile the audit mechanism's include list with UC-010's audit step. | Inception 2 |
-| Use-Case Model#F1 | Minor | SystemAnalyst | Reverse the UC-011 to Active Directory association so the portal is the initiating end. | Inception 2 |
-| Vision#F1 | Minor | SystemAnalyst | Reconcile A-1 with CON-035 and A-3. | Inception 2 |
-| Iteration Plan#F1 | Minor | ProjectManager | Remove the duration from the roadmap chart, or state the nominal unit inside the chart. | Inception 2 |
-| Iteration Plan#F4 | Minor | ProjectManager | Report the 14-day process bound on all three human gates, with measured queue time apart from agent time. | Inception 2 |
+**A Deferred resolution is not a closure.** Test Evaluation Summary#F2 has stood since Inception 1 and the gate continues to count it open. It is the oldest open item and the same defect class as Supplementary Specification#F2; both are the trace steward's act and both close in one pass.
 
-**Rework is not measured in a human-team unit.** No phase had closed before this iteration, so no measured actual existed; the first one now does. Rework performed in Inception 2 is reported in tokens and in measured elapsed time, split into agent time and human queue time, and the two are never added.
+**Rework is not measured in a human-team unit.** Two iterations have closed with a measured actual, and rework performed in Inception 3 is reported in tokens and in measured elapsed time, split into agent time and human queue time, and the two are never added.
 
 **Two artifacts require no rework.** The Software Architecture Document and the Risk List carry no finding from any lens and are approved. Silence is the verdict.
 
-**Closure discipline.** A finding is closed only by the lens that emitted it. The seven findings of the Reviewer's lens are closed by the Reviewer; the four of the ManagementReviewer's lens by the ManagementReviewer. A statement in this assessment that a finding is resolved does not close it.
-
+**Closure discipline.** A finding is closed only by the lens that emitted it. The Reviewer's findings are closed by the Reviewer; the ManagementReviewer's by the ManagementReviewer; the BusinessReviewer's by the BusinessReviewer. A statement in this assessment that a finding is resolved does not close it.
 ## Traceability
 
 | Element | Traces From | Link Type | Traces To |
