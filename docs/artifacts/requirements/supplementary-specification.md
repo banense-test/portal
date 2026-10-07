@@ -393,6 +393,64 @@ The system-wide business rules — CON-007 to CON-016 and CON-043 — are specif
 | Supplementary Specification | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | Test Case |
 | Supplementary Specification | R001 | Refines | Risk List |
 
+**Element-level registration.** The five non-functional requirements and the six acceptance criteria are registered individually in the trace repository, not only through the artifact-level link above: NFR-001 to NFR-005 each carry a `Refines` link to the Software Architecture Document, and AC-001 to AC-006 each carry a `Refines` link to the Test Case artifact. The Requirements Traceability Matrix therefore reports no Business-level LEAF node for either family. The declared constraints reach the architecture through the artifact-level link; they are not registered element by element, because the constraint family is not reported as LEAF when the artifact-level link is present.
+
+```plantuml
+@startuml
+title Supplementary Specification — registered traceability (Portal, Inception 3)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Declared input — Business level" as DECL {
+  class "NFR-001 .. NFR-005" as NFR <<declared>>
+  class "AC-001 .. AC-006" as AC <<declared>>
+  class "CON-001 .. CON-043" as CON <<declared>>
+  class "R001" as R <<declared>>
+}
+
+package "Supplementary Specification" as SS {
+  class "Supplementary Specification" as SSA <<artifact>>
+}
+
+package "Downstream" as DOWN {
+  class "Software Architecture Document" as SAD <<artifact>>
+  class "Test Case" as TC <<artifact>>
+  class "Risk List" as RL <<artifact>>
+}
+
+NFR --> SSA : Refines
+AC --> SSA : Refines
+CON --> SSA : Refines
+R --> SSA : Refines
+SSA --> SAD : Refines
+SSA --> TC : Refines
+SSA --> RL : Refines
+
+note bottom of NFR
+  Each of NFR-001 to NFR-005 carries a registered
+  link to the Software Architecture Document.
+  No Business-level LEAF node remains.
+end note
+
+note bottom of AC
+  Each of AC-001 to AC-006 carries a registered
+  link to the Test Case artifact.
+end note
+
+note bottom of CON
+  The declared constraints are specified here and
+  reach the architecture through the artifact-level
+  link; the element-level rows are registered for
+  the NFR and AC families, which the RTM reports
+  as LEAF nodes when unregistered.
+end note
+
+DECL -[hidden]- SS
+SS -[hidden]- DOWN
+@enduml
+```
+
 **Cross-cutting mechanism coverage.** Every one of the twelve use cases includes at least one mechanism specified here. Authentication is included by all twelve, UC-001 to UC-012. Authorization is included by the eight HR use cases — UC-003, UC-004, UC-005, UC-006, UC-008, UC-009, UC-010, UC-012. The audit trail is included by the six use cases that change audited data — UC-005, UC-006, UC-008, UC-009, UC-010, UC-012. No-connection handling is included by the three use cases that read over the network — UC-002, UC-007, UC-011. The Use-Case Model depends on this specification for those mechanisms; the dependency is registered on the Use-Case Model side, so the two artifacts are not linked in both directions.
 
 **Threshold quantification.** NFR-002 and NFR-003 carry declared thresholds (under 3 seconds, under 1 second) and AC-001 fixes how NFR-002 is measured. NFR-001, NFR-004 and NFR-005 are stated as declared and are not further quantified here; the RequirementsSpecifier owns any refinement in Elaboration.
