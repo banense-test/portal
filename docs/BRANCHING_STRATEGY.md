@@ -429,6 +429,57 @@ The tag body is the audit statement. It is terse and factual, and it carries:
 
 A tag message reading `baseline` alone is a defect: it claims a pedigree it does not record.
 
+### 5.3 Configuration audit
+
+Three audits run at every iteration close, before the tag. Each is a check against observable state, not a document.
+
+```plantuml
+@startuml
+title Configuration audit (Portal)
+
+|ConfigurationManager|
+start
+:Physical configuration audit;
+note right
+  The pre-tag gate of section 5:
+  the tag points to a commit whose
+  iteration-close PR was APPROVED
+  and whose main CI is green.
+end note
+
+:Functional configuration audit;
+note right
+  The trace graph: every declared FR
+  reaches a use case, every use case
+  reaches a component, and no
+  SUSPECT edge is left open.
+end note
+
+:Naming-convention sweep;
+note right
+  Every branch carries one of the
+  prefixes of section 1.1. A branch
+  that carries none is an SCM issue.
+end note
+
+if (any audit fails?) then (yes)
+  :scm_create_issue with the escalation labels;
+  :HALT - no tag is written;
+else (no)
+  :scm_create_tag;
+endif
+stop
+@enduml
+```
+
+| Audit | Question it answers | Evidence | Failure |
+|---|---|---|---|
+| Physical configuration audit | Does the baseline contain what the iteration claims it contains? | The iteration-close PR diff and the commit the tag points to | `severity:blocker`, `nature:defect`; no tag |
+| Functional configuration audit | Does every declared requirement reach a use case, and every use case a component? | The trace graph, read at the iteration close | `severity:blocker`, `nature:defect`; no tag |
+| Naming-convention sweep | Does every branch carry a prefix of §1.1? | `scm_list_branches_with_label` and the branch list | `severity:minor`, `nature:defect`, `naming-violation`; the tag is not blocked |
+
+No audit produces a document. The physical audit is the pre-tag gate; the functional audit is the trace graph; the naming sweep is the branch list. A configuration audit finding is an SCM issue, and the audit's result is the tag that was or was not written.
+
 ## 6. CI and Branch Protection
 
 ```plantuml
