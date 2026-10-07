@@ -7,12 +7,15 @@
 - **Date:** 2026-10-07
 
 ## Tailoring Overview
-
 This document is the **override delta** over the IARI Development Case baseline. It declares only what this project changes. The 25-role roster, the 16 CORE artifacts, the 6 OPTIONAL artifacts, the ownership allowlist and the discipline intensity matrix are baseline and are not restated here.
 
 ### Organization and tool assessment (S1, 2026-10-07)
 
-The project is greenfield: no artifact existed before this iteration. The repository holds the mandatory UI design reference at `docs/inputs/employee-portal-design.html` (CON-038) and nothing else. No CI workflow file, no `CONTRIBUTING.md`, no lint or analyzer configuration, and no open Change Requests.
+The project is greenfield in its artifacts: no RUP artifact existed before Inception 1. The repository is not empty, and the tool baseline is read from it directly.
+
+**Present in the repository.** The mandatory UI design reference at `docs/inputs/employee-portal-design.html` (CON-038). The CI workflow at `.github/workflows/ci.yml`, committed at sha `0c2fd7cf47eeab68d19420fe3897d209258bd074`, triggering on `push` and on `pull_request` for `main`, `iteration/**`, `chore/**`, `feature/**` and `hotfix/**`, with a build job and a dependent test job on the hosted provider's CI (CON-033). The solution manifest `Portal.sln`, committed at sha `f554bf5bc04df43103677206c7727fcc62ea2bc4`, carrying two projects: `src/Portal.Web/Portal.Web.csproj` and `tests/Portal.Tests/Portal.Tests.csproj`. A build has run on `main` (`ci-run-37583334371`). The workflow regenerates the solution manifest from the `src/` and `tests/` tree on every run, so a subsystem merged under `src/` cannot be silently disconnected from CI.
+
+**Absent.** `CONTRIBUTING.md` and the lint/analyzer configuration. No Change Request is open.
 
 ```plantuml
 @startuml
@@ -74,8 +77,13 @@ package "Not participating — 3 roles" as OFF {
 package "Tool baseline" as TOOLS {
   class "SCM and hosted CI" as T1 <<available>> {
     repository portal
+    CI workflow committed
     build and test on provider CI CON-033
-    no workflow file committed yet
+  }
+  class "Solution and scaffolding" as T7 <<available>> {
+    Portal.sln
+    src Portal.Web
+    tests Portal.Tests
   }
   class "UI design reference" as T2 <<available>> {
     docs inputs employee-portal-design.html
@@ -102,18 +110,21 @@ G3 --> T4
 G4 --> T5
 G8 --> T3
 G8 --> T6
+T1 --> T7
 BPA -[hidden]- BR
 BR -[hidden]- CD
 @enduml
 ```
 
-**Gaps carried into Elaboration.** Three tool gaps are open and each has a named owner. They do not block Inception, whose output is the artifact scope, not running code.
+**Gaps carried into Elaboration.** Two tool gaps are open and each has a named owner. They do not block Inception, whose output is the artifact scope, not running code.
 
 | Gap | Owner | Needed by |
 |---|---|---|
 | `CONTRIBUTING.md` absent — no coding, UI, test or review convention is written down | SoftwareArchitect (design and coding), UserInterfaceDesigner (UI), TestManager (test) | Elaboration, before the first implementation task |
 | Lint and analyzer configuration absent | SoftwareArchitect with Implementer | Elaboration, before the first implementation task |
 | Test OIDC issuer and test directory stand-ins not built | TestManager with Implementer | Elaboration, before the first integration test (CON-035) |
+
+**Satisfied before Elaboration starts.** The CI workflow is committed and triggers on every push and pull request, and the solution builds with its two scaffolding projects. The Elaboration iteration-preparation checkpoint therefore does not carry the CI workflow as an outstanding condition.
 
 ### Classification verdicts
 
