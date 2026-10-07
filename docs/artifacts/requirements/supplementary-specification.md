@@ -269,11 +269,13 @@ The clocking page carries a page-level script on an already-rendered page — th
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| Supplementary Specification | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Refines | (Elaboration: quantified thresholds by RequirementsSpecifier) |
+| Supplementary Specification | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Refines | Software Architecture Document |
 | Supplementary Specification | CON-001, CON-002, CON-003, CON-004, CON-005, CON-006, CON-008, CON-009, CON-010, CON-011, CON-012, CON-013, CON-014, CON-015, CON-016, CON-017, CON-018, CON-019, CON-020, CON-021, CON-022, CON-027, CON-028, CON-029, CON-030, CON-031, CON-032, CON-033, CON-035, CON-036, CON-037, CON-038, CON-039, CON-040, CON-041, CON-042, CON-043 | Refines | Software Architecture Document |
 | Supplementary Specification | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | Test Case |
 | Supplementary Specification | UC-001, UC-002, UC-003, UC-004, UC-005, UC-006, UC-007, UC-008, UC-009, UC-010, UC-011, UC-012 | Refines | Use-Case Model |
 | Supplementary Specification | R001 | Refines | Risk List |
 
-**Cross-cutting mechanism coverage.** Every one of the twelve use cases includes at least one mechanism specified here. Authentication is included by all twelve. Authorization is included by the seven HR use cases (UC-004, UC-005, UC-006, UC-008, UC-009, UC-010, UC-012) and by UC-003, which is HR-only. The audit trail is included by the six use cases that change audited data (UC-005, UC-006, UC-008, UC-009, UC-010, UC-012). No-connection handling is included by the three use cases that read over the network (UC-002, UC-007, UC-011).
+**Cross-cutting mechanism coverage.** Every one of the twelve use cases includes at least one mechanism specified here. Authentication is included by all twelve. Authorization is included by the eight HR use cases (UC-003, UC-004, UC-005, UC-006, UC-008, UC-009, UC-010, UC-012). The audit trail is included by the six use cases that change audited data (UC-005, UC-006, UC-008, UC-009, UC-010, UC-012). No-connection handling is included by the three use cases that read over the network (UC-002, UC-007, UC-011).
+
+**Threshold quantification.** NFR-002 and NFR-003 carry declared thresholds (under 3 seconds, under 1 second) and AC-001 fixes how NFR-002 is measured. NFR-001, NFR-004 and NFR-005 are stated as declared and are not further quantified here; the RequirementsSpecifier owns any refinement in Elaboration.
 
