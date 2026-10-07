@@ -950,6 +950,21 @@ BIZ -[hidden]- SYS
 
 **No action is deferred to a later iteration.** All seven are correctable within Inception 1 and none requires a Change Request: each restores the artifact's agreement with the declared scope or with observable state, and none changes declared scope.
 
+### Business Reviewer lens
+#### Iteration 1
+
+**No prior finding of this lens exists.** This is the first review pass of the project from the Business Reviewer lens. `read_artifact_findings` returned an empty list for all eight artifacts and for the Review Record, so no closure, deferral or rejection was available to record and no `resolve_artifact_finding` call was emitted. The closure state is consistent with the finding ledger.
+
+**No action is open from this lens.** Zero findings were emitted, so there is nothing to remediate, defer or carry forward. The Business Modeling discipline is inactive for the whole project (DC T-1) and no business-modeling work item exists to schedule.
+
+**No action is deferred to a later iteration.** The INACTIVE verdict is not a deferral: it is a determination that the discipline does not apply to this engagement. It is re-evaluated each iteration against the DC §4 trigger conditions, and a Change Request that introduced a business process into scope would re-open it.
+
+**Cross-lens actions are not mine to own.** The seven open findings recorded by the Reviewer's technical lens carry their own owners and remediations in that lens's block. This lens neither duplicates nor closes them.
+
+| Finding | Severity | Owner | Action | Blocks LCO |
+|---|---|---|---|---|
+| (none from this lens) | — | — | — | — |
+
 ## Disposition
 ### Reviewer lens
 #### Iteration 1
