@@ -3440,21 +3440,17 @@ The refusal is the sanctioning authority's and it is a condition, not a criteria
 ### Review Coordinator lens
 #### Prioritized action list
 
-Priority is assigned by the consequence of leaving the finding open, not by severity alone. All eleven actions are scheduled into Inception 2; none is deferred to a later phase and none requires a Change Request, because each restores an artifact's agreement with the declared scope, with observable state, or with the gate structure, and none changes declared scope.
+Priority is assigned by the consequence of leaving the finding open, not by severity alone. All six open findings and the deferred one are scheduled into the next Inception iteration; none is deferred to a later phase and none requires a Change Request, because each restores an artifact's agreement with observable state or registers a declared link in the trace repository, and none changes declared scope.
 
 | Priority | Finding | Severity | Owner | Action | Rationale for priority |
 |---|---|---|---|---|---|
-| P1 | Iteration Plan#F2 | Major | ProjectManager | Add Inception iteration 2 to the coarse roadmap with a fine plan whose work items are the closure of every open finding, and re-assess X-1 to X-5 there | Without it the CON-026 remedy the stakeholder invoked has no home and the refused gate has no planned path to re-assessment. Every other action depends on this one being scheduled. |
-| P2 | Iteration Plan#F1 | Major | ProjectManager | Add ManagementReviewer to the role profile for I1, E2 and C3, with the verdict at LCO, LCA and IOC | Three of the four lifecycle gates currently have no management lens. The gate being re-assessed in Inception 2 is one of them. |
-| P3 | Development Case#F1 | Major | ProcessEngineer | Rewrite the S1 tool assessment and the gap table against the repository; remove the CI workflow from the Elaboration checkpoint's outstanding conditions | The Elaboration checkpoint as written would send the next phase to close a gap that does not exist. |
-| P4 | Test Evaluation Summary#F1 | Major | TestManager | Replace the cited run id and window with the observed build; correct the reading of E-6 to met; remove the CI workflow from the recommendation and the carried-forward list | A false SCM reading is the defect class that most damages downstream trust. |
-| P5 | Test Evaluation Summary#F2 | Major | TestManager, with SystemAnalyst as trace steward | Register the artifact's upstream links in the trace repository so its declared coverage is machine-verifiable | The claimed coverage of 12 FR, 6 AC, 5 NFR and 10 risks cannot be verified from the graph until it is registered. |
-| P6 | Iteration Plan#F3 | Minor | ProjectManager | Schedule the Project Approval Review ahead of the LCO verdict, or record the determination that it does not apply with its basis | LCO exit criterion LCO-8 is unmet until the first formal project approval checkpoint has an evidence trail. |
-| P7 | Supplementary Specification#F1 | Minor | RequirementsSpecifier | Reconcile the audit mechanism's include list with UC-010's audit step | NFR-001 is mandatory; a downstream implementer currently has no single answer for whether the featuring path writes an audit record. |
-| P8 | Use-Case Model#F1 | Minor | SystemAnalyst | Reverse the UC-011 to Active Directory association so the portal is the initiating end | The diagram and the Actors table disagree about the direction of initiation. |
-| P9 | Vision#F1 | Minor | SystemAnalyst | Reconcile A-1 with CON-035 and A-3 | A downstream role can read A-1 as authorising team testing against the real Keycloak, which CON-035 forbids. |
-| P10 | Iteration Plan#F1 | Minor | ProjectManager | Remove the duration from the roadmap chart, or state the nominal unit inside the chart | A reader who reads the chart and not the caption sees a seven-day project. |
-| P11 | Iteration Plan#F4 | Minor | ProjectManager | Report the 14-day process bound on all three human gates, with measured queue time apart from agent time | Two of the three gates currently have no escalation trigger. |
+| P1 | Test Evaluation Summary#F2 (deferred) | Major | SystemAnalyst, trace steward | Register the artifact's declared upstream links in the trace repository so the coverage the summary claims is machine-verifiable. Tracked by Issue #1 | The defect has stood for two iterations and is the oldest open item. It is the trace steward's act and it blocks the same class of defect in the Supplementary Specification |
+| P2 | Supplementary Specification#F2 | Major | SystemAnalyst, trace steward | Register the element-level links for NFR-002 to NFR-005 and AC-001 to AC-006, or drop the element-level rows and state that the artifact-level link is the registered one | Same defect class as P1 and the same owner; registering both in one pass closes both |
+| P3 | Test Evaluation Summary#F3 | Major | TestManager | Re-read the issue tracker in all states, replace the row with the observed value (Issue #1 open), and correct the reading | A false SCM reading is the defect class that most damages downstream trust, and the artifact contradicts its own Traceability section |
+| P4 | Iteration Plan#F1 | Minor | ProjectManager | Reconcile the role profile with the observed execution of the business lens, in the same pass as the Development Case's Roles and Ownership table | The business lens is the only lens that re-derives the DC §4 INACTIVE verdict each iteration; leaving its execution unplanned means that re-derivation is not scheduled |
+| P5 | Supplementary Specification#F1 | Major | SystemAnalyst, trace steward | The gate condition on #F2. It closes when #F2 closes | It is a condition, not an independent defect; it has no separate remedy |
+| P6 | Test Evaluation Summary#F1 | Major | TestManager, SystemAnalyst | The gate condition on #F2 and #F3. It closes when both close | It is a condition, not an independent defect; it has no separate remedy |
+| P7 | Iteration Plan#F5 | Minor | ProjectManager | The gate condition on Iteration Plan#F1. It closes when #F1 closes | It is a condition, not an independent defect; it has no separate remedy |
 
 #### Finding lifecycle
 
@@ -3469,6 +3465,8 @@ InProgress --> Resolved : owner confirms the corrective action
 Resolved --> Verified : emitting lens verifies the action is adequate
 Verified --> Closed : resolve_artifact_finding by the emitting lens
 Resolved --> InProgress : verification fails, action inadequate
+Assigned --> Deferred : the remedy belongs to another role and the defect stands
+Deferred --> InProgress : the owning role performs the remedy
 Assigned --> Overdue : deadline passes with no resolution
 Overdue --> Escalated : escalation notice to the Project Manager
 Escalated --> InProgress : owner resumes the remediation
@@ -3481,10 +3479,10 @@ note right of Open
   without a deadline it is never prioritized.
 end note
 
-note bottom of Closed
-  Only the lens that emitted the finding
-  may close it. A Review Record sentence
-  saying "Resolved" is not a resolution.
+note bottom of Deferred
+  A Deferred resolution is not a closure.
+  The defect stands and the milestone gate
+  continues to count the finding as open.
 end note
 
 note bottom of Escalated
@@ -3496,9 +3494,7 @@ end note
 @enduml
 ```
 
-**Current state of the ledger.** All eleven findings are in state **Assigned**: each carries an owner and a deadline, and none has yet been remediated. No finding is Overdue — every deadline falls in Inception 2, which has not begun.
-
-**Closure discipline.** A finding is closed only by the lens that emitted it, via `resolve_artifact_finding`. The seven findings of the Reviewer's lens are closed by the Reviewer; the four findings of the ManagementReviewer's lens are closed by the ManagementReviewer. Markdown stating "Resolved" without the tool call leaves the state inconsistent and the milestone gate keeps counting the finding as open. The BusinessReviewer's lens emitted no finding and therefore has nothing to close.
+**Current state of the ledger.** Ten findings are in state **Closed** — resolved by the emitting lens against the corrected artifact. Six are in state **Assigned**: each carries an owner and a deadline, and none has yet been remediated. One is in state **Deferred**: the defect stands and the gate continues to count it open. No finding is Overdue — no deadline has passed.
 
 #### Escalation
 
@@ -3506,11 +3502,32 @@ end note
 |---|---|---|
 | Any unresolved Critical finding | Not triggered — 0 Critical findings | None required |
 | A finding past its deadline | Not triggered — no deadline has passed | None required |
-| More than 10% of findings overdue | Not triggered — 0 of 11 overdue | None required |
-| Non-compliance with review procedure | Triggered — R1 Project Approval Review and R2 Project Planning Review were not executed in Inception 1 and are not scheduled | Escalated to the ProjectManager as finding Iteration Plan#F3 |
-| Systemic process failure | Not triggered — no repeated architecture violation across iterations; this is the first review event | None required |
+| More than 10% of findings overdue | Not triggered — 0 of 6 overdue | None required |
+| A finding deferred for two iterations | Triggered — Test Evaluation Summary#F2 has stood since Inception 1 and its remedy belongs to a role that has not performed it | Escalated to the ProjectManager and to the SystemAnalyst as trace steward, with Issue #1 as the tracking reference |
+| Non-compliance with review procedure | Triggered — R1 Project Approval Review is scheduled as W-9 and has not been conducted in either Inception iteration, so LCO-8 is unmet | Escalated to the ProjectManager; the review event is outstanding |
+| Systemic process failure | Triggered — the same defect class (declared traceability not registered in the graph) appears in two artifacts and has survived two iterations | Escalated to the Configuration and Change Management Board as a process risk: the trace-registration step is not owned by any role's iteration work |
 
 **Escalation to the stakeholder.** No Critical finding exists, so no Critical escalation is required. The milestone sanction was nevertheless refused by the sanctioning authority, and the refusal is recorded in Disposition.
+
+#### Closure achieved this iteration
+
+Ten of the eleven findings raised in Inception 1 are closed as Resolved, each by the lens that emitted it, against the corrected artifact. One is deferred because the defect stands. The closure state is read from the finding ledger: a finding is closed only when its resolution object is populated by the emitting lens.
+
+| Finding | Severity | Lens | Disposition | What was verified |
+|---|---|---|---|---|
+| Development Case#F1 | Major | Reviewer | Resolved | The S1 tool assessment and the gap table are rewritten against the repository; the Elaboration checkpoint no longer carries the CI workflow as an outstanding condition |
+| Test Evaluation Summary#F1 | Major | Reviewer | Resolved | The SCM quality signal is re-read and the reading corrected: E-6 is recorded as met |
+| Test Evaluation Summary#F2 | Major | Reviewer | **Deferred** | The defect stands: `model_get_upstream('Test Evaluation Summary')` still returns no links and the artifact is still absent from the Business-level trace tree. The artifact now declares the gap and cites Issue #1, which is better disclosure but not a fix |
+| Vision#F1 | Minor | Reviewer | Resolved | A-1 now names the human validation gate and the stand-in OIDC issuer, with CON-035 and A-3 named |
+| Use-Case Model#F1 | Minor | Reviewer | Resolved | The UC-011 to Active Directory association is directed from the use case |
+| Supplementary Specification#F1 | Minor | Reviewer | Resolved | The audit mechanism's include list now carries UC-010 and the mechanism diagram draws the AUDIT edge from U10 |
+| Iteration Plan#F1 | Minor | Reviewer | Resolved | The nominal unit is stated inside the roadmap chart, in its title and in a note |
+| Iteration Plan#F1 | Major | ManagementReviewer | Resolved | The role profile now records the ManagementReviewer as participating in I1, I2, E2, C3 and T1, with the management lens's output named at each gate |
+| Iteration Plan#F2 | Major | ManagementReviewer | Resolved | The coarse roadmap carries eight iterations including Inception 2, with a fine plan W-1 to W-10 whose work items are the closure of the open findings |
+| Iteration Plan#F3 | Minor | ManagementReviewer | Resolved | The Project Approval Review is scheduled as fine-plan work item W-9, owner ReviewCoordinator |
+| Iteration Plan#F4 | Minor | ManagementReviewer | Resolved | All three human gates report the 14-day process bound as the ceiling, with measured queue time reported apart from agent time |
+
+**Closure discipline.** A finding is closed only by the lens that emitted it, via `resolve_artifact_finding`. The Reviewer's lens closes the Reviewer's findings; the ManagementReviewer's lens closes the ManagementReviewer's; the BusinessReviewer's lens closes the BusinessReviewer's. A statement in this record that a finding is resolved does not close it. The BusinessReviewer's lens emitted no finding in Inception 1 and therefore had nothing to close.
 
 ## Disposition
 ### Reviewer lens
