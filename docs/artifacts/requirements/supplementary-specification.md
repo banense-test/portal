@@ -393,7 +393,9 @@ The system-wide business rules — CON-007 to CON-016 and CON-043 — are specif
 | Supplementary Specification | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | Test Case |
 | Supplementary Specification | R001 | Refines | Risk List |
 
-**Element-level registration.** The five non-functional requirements and the six acceptance criteria are registered individually in the trace repository, not only through the artifact-level link above: NFR-001 to NFR-005 each carry a `Refines` link to the Software Architecture Document, and AC-001 to AC-006 each carry a `Refines` link to the Test Case artifact. The Requirements Traceability Matrix therefore reports no Business-level LEAF node for either family. The declared constraints reach the architecture through the artifact-level link; they are not registered element by element, because the constraint family is not reported as LEAF when the artifact-level link is present.
+**Element-level registration.** Every declared element this specification is accountable to is registered individually in the trace repository, not only through the artifact-level link above: NFR-001 to NFR-005 and CON-001 to CON-022 and CON-027 to CON-043 each carry a `Refines` link to the Software Architecture Document, and AC-001 to AC-006 each carry a `Refines` link to the Test Case artifact. The Requirements Traceability Matrix reports no Business-level LEAF node for any of them.
+
+**Constraints not specified here.** CON-023 to CON-026 and CON-034 govern the process rather than the system and are carried in the Vision and the Development Case; they are not rows of this specification and carry no link from it.
 
 ```plantuml
 @startuml
@@ -405,7 +407,7 @@ skinparam packageStyle rectangle
 package "Declared input — Business level" as DECL {
   class "NFR-001 .. NFR-005" as NFR <<declared>>
   class "AC-001 .. AC-006" as AC <<declared>>
-  class "CON-001 .. CON-043" as CON <<declared>>
+  class "CON-001 .. CON-022, CON-027 .. CON-043" as CON <<declared>>
   class "R001" as R <<declared>>
 }
 
@@ -439,11 +441,11 @@ note bottom of AC
 end note
 
 note bottom of CON
-  The declared constraints are specified here and
-  reach the architecture through the artifact-level
-  link; the element-level rows are registered for
-  the NFR and AC families, which the RTM reports
-  as LEAF nodes when unregistered.
+  Each declared constraint specified here carries
+  a registered link to the Software Architecture
+  Document. CON-023 to CON-026 and CON-034 govern
+  the process and are carried in the Vision and
+  the Development Case, not here.
 end note
 
 DECL -[hidden]- SS
