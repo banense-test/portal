@@ -99,7 +99,6 @@ end note
 **Not an objective of this iteration.** No executable increment. Inception's output is the artifact scope and the risk record, not running code. No acceptance criterion is closed this iteration — see Evaluation Criteria.
 
 ## Plan and Milestones
-
 ### Coarse roadmap — milestone sequence and iteration boundaries
 
 Seven iterations, distributed Inception 1, Elaboration 2, Construction 3, Transition 1. This sits inside the 6 ± 3 rule and is justified against the risk profile, not against the rubber profile's default shape.
@@ -135,16 +134,14 @@ title Portal — iteration sequence and human gates (unanchored ordinal axis)
 [IOC] happens at [C3 Construction 3]'s end
 [PR] happens at [T1 Transition 1]'s end
 
-[Gate 1 LCO approval] lasts 14 days
-[Gate 1 LCO approval] starts at [I1 Inception 1]'s end
 [Gate 2 real Keycloak and AD validation] lasts 14 days
 [Gate 2 real Keycloak and AD validation] starts at [E1 Elaboration 1]'s start
-[Gate 3 PR handover acceptance] lasts 5 days
-[Gate 3 PR handover acceptance] starts at [T1 Transition 1]'s end
+[Gate 1 LCO approval] happens at [I1 Inception 1]'s end
+[Gate 3 PR handover acceptance] happens at [T1 Transition 1]'s end
 @endgantt
 ```
 
-**Reading the chart.** The axis is ordinal, not calendar: one bar is one iteration and its width is a nominal unit, not a duration. No project start date is set and no calendar date is projected from an estimate — a date computed from an estimate reads downstream as an observation. The only measured quantity on this chart is the human gate, in days of queue time, and it is reported apart from agent time and never added to it.
+**Reading the chart.** The axis is ordinal, not calendar: one bar is one iteration and its width is a nominal unit, not a duration. No project start date is set and no calendar date is projected from an estimate — a date computed from an estimate reads downstream as an observation. The only measured quantity on this chart is the human gate, in days of queue time, and it is reported apart from agent time and never added to it. Only the real-Keycloak-and-AD gate carries a declared ceiling; the other two are drawn as milestone markers because no ceiling for them is declared anywhere, and none is invented here.
 
 **Why seven iterations, and why this distribution.**
 
@@ -212,7 +209,7 @@ end note
 note right
   Days of queue time, measured and
   reported apart from agent time.
-  Ceiling 14 days. Never added to it.
+  Never added to it.
 end note
 stop
 @enduml
@@ -224,9 +221,11 @@ stop
 
 | Gate | What is waited for | Ceiling | Remedy if it delays a milestone |
 |---|---|---|---|
-| LCO approval | The stakeholder's agreement that the scope is right and the project is viable. | 14 days | Another iteration (CON-026). |
-| Real Keycloak and AD validation | Infrastructure with HR validating the real identity provider and the real directory (CON-035). Human work, not team work to plan. | 14 days | Another iteration (CON-026). |
-| PR handover acceptance | Infrastructure accepting operation of the portal (CON-036). | 5 days | Another iteration (CON-026). |
+| LCO approval | The stakeholder's agreement that the scope is right and the project is viable. | None declared | Another iteration (CON-026). |
+| Real Keycloak and AD validation | Infrastructure with HR validating the real identity provider and the real directory (CON-035). Human work, not team work to plan. | 14 days, declared in the Development Case | Another iteration (CON-026). |
+| PR handover acceptance | Infrastructure accepting operation of the portal (CON-036). | None declared | Another iteration (CON-026). |
+
+**No ceiling is invented for a gate that has none.** The 14-day ceiling on the real-Keycloak-and-AD gate is the Development Case's, and it is a bound on a risk (R003), not an estimate of work. The other two gates are reported as measured queue time with no ceiling, because none is declared.
 
 ## Resources
 
