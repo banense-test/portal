@@ -434,7 +434,7 @@ The availability, configuration and ownership of Keycloak and Active Directory a
 
 Every iteration opens with an explicit environment-readiness check before development starts.
 
-**Inception iteration 2.** Repository present; design reference present; CI workflow committed and green; Development Case persisted.
+**Inception iteration 3.** Repository present; design reference present; CI workflow committed and green; Development Case persisted; trace registration current — every link an artifact declares in its Traceability table is registered in the trace repository, or the table states that the artifact-level link is the registered one.
 
 **Elaboration.** The check adds: `CONTRIBUTING.md` committed; lint configuration committed; test stand-ins built and reachable; placeholder configuration values present in configuration and absent from code (CON-035). The CI workflow is **not** an outstanding condition — it is committed and triggers on every push and pull request, and the solution builds with its two scaffolding projects.
 
@@ -442,7 +442,14 @@ Every iteration opens with an explicit environment-readiness check before develo
 
 Process support is continuous, not a one-time configuration. Process questions are answered within the iteration in which they are raised; a blocking process question is escalated immediately rather than carried. Tool configuration problems are logged with an improvement action and an owner, and are evaluated against process effectiveness at each iteration close.
 
-**Improvement carried out of Inception 1.** The S1 tool assessment was written from the assumption that a greenfield project has an empty repository, and it recorded the CI workflow, the solution and the two scaffolding projects as absent while all three were committed. The defect was found by review, not by the assessment. The corrective practice, effective from this iteration: the S1 tool baseline is read from the repository through the SCM tools and every claim in it cites the path and sha it was read from. An assessment statement about tool state that cites no observed artifact is not a finding of the assessment and does not enter the Development Case.
+**Improvement carried out of Inception 1 — the S1 tool baseline is read, not assumed.** The S1 tool assessment was written from the assumption that a greenfield project has an empty repository, and it recorded the CI workflow, the solution and the two scaffolding projects as absent while all three were committed. The defect was found by review, not by the assessment. The corrective practice, effective from Inception 2: the S1 tool baseline is read from the repository through the SCM tools and every claim in it cites the path and sha it was read from. An assessment statement about tool state that cites no observed artifact is not a finding of the assessment and does not enter the Development Case.
+
+**Improvement carried out of Inception 2 — trace registration is a named step with a named owner (T-8).** The same defect class appeared in two artifacts and survived two iterations: each declared element-level traceability in its Traceability table that was not registered in the trace repository, so the declared coverage could not be verified from the graph. The root cause is a process gap, not an artifact defect: no role's iteration work owned the registration step, so the declaration and the registration drifted apart and the drift was only visible at review. The corrective practice, effective from this iteration:
+
+- **Owner.** The SystemAnalyst is the trace steward. Registration is that role's act, performed in the iteration in which the declaring artifact is written, not deferred to review.
+- **Step.** The iteration-preparation checkpoint verifies that every link an artifact declares in its Traceability table is registered in the trace repository. A declared link that is not registered is a process defect at the checkpoint, before the iteration's artifacts are reviewed.
+- **Rule.** An artifact's Traceability table states what the graph carries. If an element-level link is judged redundant with the artifact-level link, the element-level row is dropped from the table rather than left declared and unregistered.
+- **Escalation.** A registration gap that survives one iteration is escalated to the Change Control Manager as a process risk, because it is a process failure rather than an artifact defect.
 
 ### Guideline ownership
 
