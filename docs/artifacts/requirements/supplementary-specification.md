@@ -111,15 +111,83 @@ end note
 
 Mandatory traceability of three change classes. Employee fields are read-only from AD, so there is nothing to audit there.
 
-| Change class | Recorded | Use cases |
-|---|---|---|
-| News publication, edit, unpublish and featuring | Author and timestamp in every case | UC-006, UC-008, UC-009, UC-010 |
-| Worker category assignment or clearing | Who and when | UC-012 |
-| Clocking corrected or inserted by HR | Who, when, previous value, free-text reason | UC-005 |
+```plantuml
+@startuml
+title Audit trail — three change classes, their writers, and the read path (NFR-001, NFR-005)
 
-The audit trail is append-only. The original clocking record is never overwritten in place and never deleted (CON-007); a news item is never deleted, only unpublished (CON-013).
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
 
-Featuring is not a fourth change class: the featured flag is an attribute of a news item, so a change to it is audited by the news-item change class above. UC-010 writes that record whenever it changes the flag. It cannot rely on UC-006 or UC-008 having run: HR can un-feature the current item and leave none without editing the item (FR-010, CON-012), so the featuring path is a news-item change in its own right. NFR-001 names three classes and this specification does not add a fourth.
+package "Writers — the use cases that change audited data" as W {
+  class "UC-005 Correct or Insert a Clocking" as U5 <<usecase>>
+  class "UC-006 Publish News Item" as U6 <<usecase>>
+  class "UC-008 Edit Published News Item" as U8 <<usecase>>
+  class "UC-009 Unpublish News Item" as U9 <<usecase>>
+  class "UC-010 Feature or Un-feature a News Item" as U10 <<usecase>>
+  class "UC-012 Assign Worker Category" as U12 <<usecase>>
+}
+
+package "Audit records — one per change class" as REC {
+  class "News item change\nauthor, timestamp" as NIC <<record>>
+  class "Worker category change\nwho, when" as WCC <<record>>
+  class "Clocking correction\nwho, when, previous value, reason" as CC <<record>>
+}
+
+class "Audit trail\nappend-only" as AUDIT <<database>>
+
+class "HR" as HR <<actor>>
+class "Infrastructure" as INFRA <<actor>>
+
+U6 --> NIC
+U8 --> NIC
+U9 --> NIC
+U10 --> NIC
+U12 --> WCC
+U5 --> CC
+NIC --> AUDIT
+WCC --> AUDIT
+CC --> AUDIT
+AUDIT --> HR : read directly from the database
+AUDIT --> INFRA : read directly from the database
+
+note bottom of NIC
+  Featuring is not a fourth change class:
+  the featured flag is an attribute of a
+  news item, so UC-010 writes this record
+  itself and does not depend on UC-006 or
+  UC-008 having run FR-010, CON-012.
+end note
+
+note bottom of AUDIT
+  Append-only. The original clocking record is
+  never overwritten in place and never deleted
+  CON-007; a news item is never deleted, only
+  unpublished CON-013. Employee fields are
+  read-only from AD, so there is nothing to
+  audit there.
+end note
+
+note bottom of HR
+  NFR-005: consumed directly from the database.
+  No in-portal audit view screen; building one
+  is out of scope.
+end note
+@enduml
+```
+
+| Change class | Recorded | Written by | Use cases |
+|---|---|---|---|
+| News item change — publication, edit, unpublish and featuring | Author and timestamp in every case | The use case that changes the item | UC-006, UC-008, UC-009, UC-010 |
+| Worker category change — assignment or clearing | Who and when | UC-012 | UC-012 |
+| Clocking correction or insertion | Who, when, previous value, free-text reason | UC-005 | UC-005 |
+
+**One writer per change, no delegation.** Each use case that changes audited data writes its own record, in the same transaction as the change. No use case relies on another having run.
+
+**Featuring is not a fourth change class.** The featured flag is an attribute of a news item, so a change to it is a news-item change and UC-010 writes that record itself. It cannot rely on UC-006 or UC-008 having run: HR can un-feature the current item and leave none without editing the item (FR-010, CON-012), so the featuring path is a news-item change in its own right. NFR-001 names three classes and this specification does not add a fourth.
+
+**Append-only.** The original clocking record is never overwritten in place and never deleted (CON-007); a news item is never deleted, only unpublished (CON-013).
+
+**Read path.** The audit trail is consumed directly from the database. There is no in-portal audit view screen and building one is out of scope (NFR-005).
 
 ### Authorization (CON-018)
 
