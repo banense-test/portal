@@ -254,7 +254,7 @@ All 16 CORE artifacts are produced, with baseline ownership unchanged. No CORE a
 
 ```plantuml
 @startuml
-title Artifact scope — CORE per baseline, OPTIONAL delta (Portal, Inception 1)
+title Artifact scope — CORE per baseline, OPTIONAL delta (Portal, Inception 2)
 
 skinparam classAttributeIconSize 0
 
@@ -301,18 +301,6 @@ DPM -[hidden]- UIP
 UIP -[hidden]- TP
 @enduml
 ```
-
-### Templates and guideline sources
-
-The Development Case references these; it does not author their content.
-
-| Source | Status | Content it carries |
-|---|---|---|
-| `docs/inputs/employee-portal-design.html` | Present, authoritative | Visual layer: layout, components, states, palette, typography, design tokens (CON-038). Mandatory for the UserInterfaceDesigner, Designer and Implementer. |
-| `.github/workflows/ci.yml` | Present — sha `0c2fd7cf47eeab68d19420fe3897d209258bd074` | Build and test on every push and pull request (CON-033). Regenerates the solution manifest from the `src/` and `tests/` tree on each run, so a merged subsystem cannot be silently disconnected from CI. |
-| `Portal.sln` | Present — sha `f554bf5bc04df43103677206c7727fcc62ea2bc4` | Solution manifest with two projects: `src/Portal.Web/Portal.Web.csproj` and `tests/Portal.Tests/Portal.Tests.csproj`. |
-| `CONTRIBUTING.md` | **Absent — gap** | Coding, UI, test and review conventions. Authored by the discipline experts named in the gap table, not by the ProcessEngineer. |
-| Lint and analyzer configuration | **Absent — gap** | Enforced style and static analysis. |
 
 ## Optional Artifact Triggers
 
