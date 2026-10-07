@@ -2,7 +2,7 @@
 
 - **Phase:** Inception
 - **Status:** Published — governs all iterations
-- **Iteration:** 1, Cycle 1
+- **Iteration:** 2, Cycle 1
 - **Owner:** ConfigurationManager
 - **Date:** 2026-10-07
 
@@ -248,6 +248,45 @@ end note
 
 Inception produces the artifact scope and the risk record, not running code. There is normally no implementation branch. A feasibility mechanism, if genuinely required for risk reduction, is built evolutionarily in `src/` on `feature/I1-<subject>` — never as throwaway sample code. **No baseline tag is written in Inception: the architecture is not stable.**
 
+```plantuml
+@startuml
+title Inception repository state - documentation and repository infrastructure (Portal)
+
+skinparam componentStyle rectangle
+
+package "main - protected" as MAIN {
+  component "docs/BRANCHING_STRATEGY.md" as BS <<config-as-code>>
+  component "docs/inputs/employee-portal-design.html" as UID <<authoritative CON-038>>
+  component "RUP artifacts" as ART <<artifact>>
+  component ".github/workflows/ci.yml" as CI <<repository infrastructure>>
+  component "Portal.sln" as SLN <<repository infrastructure>>
+  component "src/Portal.Web" as WEB <<scaffolding>>
+  component "tests/Portal.Tests" as TST <<scaffolding>>
+}
+
+package "Absent in Inception" as ABS {
+  component "iteration/E<n>" as IE <<integration>>
+  component "feature/E<n>-<risk-id>" as FE <<mechanism>>
+  component "baseline tag" as TAG <<tag>>
+}
+
+note bottom of MAIN
+  No implementation branch exists in Inception.
+  The CI workflow, the solution and the two
+  scaffolding projects are repository
+  infrastructure committed direct to main.
+  They are not a feasibility mechanism and
+  they are not an implementation branch.
+end note
+
+note bottom of ABS
+  The first integration branch and the first
+  baseline tag belong to Elaboration.
+  Inception writes no baseline tag.
+end note
+@enduml
+```
+
 ### 3.2 Elaboration — evolutionary architectural mechanism
 
 The architectural prototype is EVOLUTIONARY. It becomes the Construction baseline; it is not throwaway sample code. There is **no** `samples/poc/` directory and **no** ephemeral `poc/*` branch.
@@ -399,9 +438,10 @@ title CI pipeline and branch protection (Portal, CON-033)
 skinparam componentStyle rectangle
 
 package "Hosted SCM provider" as HOST {
-  component "Push to feature/* or iteration/*" as PUSH
+  component "Push to main, iteration/**, chore/**, feature/**, hotfix/**" as PUSH
   component "Pull request opened" as PRO
-  component "CI workflow" as WF {
+  component "CI workflow .github/workflows/ci.yml" as WF {
+    component "sync solution manifest" as S0
     component "restore" as S1
     component "build" as S2
     component "test" as S3
@@ -413,13 +453,13 @@ package "Hosted SCM provider" as HOST {
   }
 }
 
-package "Never in CI — CON-033" as NEVER {
+package "Never in CI - CON-033" as NEVER {
   component "production data" as ND <<forbidden>>
   component "production credentials" as NC <<forbidden>>
-  component "deployment" as NDP <<forbidden>>
+  component "deployment" as DEPF <<forbidden>>
 }
 
-package "Infrastructure — CON-036" as INFRA {
+package "Infrastructure - CON-036" as INFRA {
   component "deployment" as DEP
   component "monitoring" as MON
   component "patching" as PAT
@@ -427,7 +467,8 @@ package "Infrastructure — CON-036" as INFRA {
 
 PUSH --> WF
 PRO --> WF
-WF --> S1
+WF --> S0
+S0 --> S1
 S1 --> S2
 S2 --> S3
 S3 --> BP3
@@ -438,14 +479,25 @@ DEP --> MON
 MON --> PAT
 
 note bottom of WF
-  The workflow file is not yet committed.
-  It is an Elaboration entry criterion
-  (Development Case, iteration preparation checkpoint).
+  Committed at sha d801df1d88e18cd658b7c40ee02891e7fe56daaf.
+  The solution manifest is regenerated from the
+  src/ + tests/ tree on every run, so a subsystem
+  merged under src/ cannot be silently disconnected
+  from CI. The workflow is the per-push and
+  per-pull-request build-and-test.
+end note
+
+note bottom of INFRA
+  CI never deploys. Infrastructure deploys.
 end note
 @enduml
 ```
 
-`main` is protected: a pull request is required, an APPROVED review is required, and a green CI run is required. The CI workflow file is not yet committed — it is an Elaboration entry criterion, owned by the SoftwareArchitect with the Implementer.
+`main` is protected: a pull request is required, an APPROVED review is required, and a green CI run is required.
+
+The CI workflow is committed at `.github/workflows/ci.yml` and is green on `main`. It triggers on `push` and on `pull_request` for `main`, `iteration/**`, `chore/**`, `feature/**` and `hotfix/**`, and it regenerates the solution manifest from the `src/` and `tests/` tree on every run — a subsystem merged under `src/` cannot be silently disconnected from the build. The workflow is the per-push and per-pull-request build-and-test the regression rule requires (CON-033).
+
+The remaining Elaboration entry criteria are the test stand-ins and the test conventions in `CONTRIBUTING.md`; the CI workflow is not among them.
 
 ## 7. Configuration Management and Change Control Boundary
 
