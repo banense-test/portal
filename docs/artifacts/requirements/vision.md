@@ -281,10 +281,9 @@ title Employee Portal — feature derivation from declared requirements (Incepti
 **Volatility note for the Software Architect.** FR-004 (export format and column semantics) and FR-010 (banner policy) are the two High-volatility features: both encode a business decision that HR can restate without any change to the underlying data. They must be encapsulated so a change to the export layout or to the featuring policy does not reach the clocking or news core. The invariants behind them — CON-011, CON-012, CON-013 — are stable and are not the volatile part.
 
 ## Assumptions and Dependencies
-
 | # | Statement | Basis |
 |---|---|---|
-| A-1 | The portal's OIDC client is already registered in Keycloak and the credentials are with the development team, so login can be tested from day one. | STK-003 |
+| A-1 | The portal's OIDC client is already registered in Keycloak and the credentials are with the development team. That registration and those credentials exist for the human validation gate performed by Infrastructure with HR (A-2). Team build and test is against the stand-in OIDC issuer, never against the real Keycloak — CON-035 and A-3 govern the team's work. | STK-003, CON-035 |
 | A-2 | The real Keycloak and the real Active Directory are validated by people — Infrastructure with HR — and that feedback reaches the team before Elaboration closes. It is not team work to plan. | CON-035 |
 | A-3 | The team builds and tests against stand-ins it controls: a test OIDC issuer and a test directory carrying the declared attributes, including entries whose job title or extension is empty. | CON-035, R001 |
 | A-4 | The custom design at `docs/inputs/employee-portal-design.html` is committed to the repository with the project inputs and is authoritative for the UI visual layer. It is not pending and needs no confirmation that it will arrive. | CON-038 |
@@ -294,7 +293,6 @@ title Employee Portal — feature derivation from declared requirements (Incepti
 | A-8 | No external compliance regime applies to the audit trail and no retention period is mandated. HR or Infrastructure read it ad hoc. | CON-021 |
 
 **Dependencies.** Keycloak (authentication and authorization, CON-001, CON-030); Active Directory (people data, read-only, CON-003, CON-004, CON-032); the internal Windows Server estate and its PostgreSQL instance (CON-002, CON-029); the hosted SCM provider's CI for build and test (CON-033); Infrastructure for deployment and production operation (CON-036).
-
 ## Constraints
 
 | ID | Category | Constraint |
