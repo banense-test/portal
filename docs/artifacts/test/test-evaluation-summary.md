@@ -8,7 +8,6 @@
 - **Date:** 2026-10-07
 
 ## Test Scope
-
 ### Evaluation Mission — Inception 1
 
 The explicit agreement on the purpose, focus and acceptable outcome of the test effort for this iteration.
@@ -19,69 +18,9 @@ The explicit agreement on the purpose, focus and acceptable outcome of the test 
 | **Focus** | The five architecturally significant use cases (UC-002, UC-004, UC-005, UC-010, UC-011) and the quality attributes the Software Architecture Document commits to. These are where a defect found late costs the most. |
 | **Acceptable outcome** | Every declared requirement has a stated, observable verification method; the test strategy names its levels, its regression rule and its coverage measure; the test infrastructure the strategy needs is identified with an owner. **No test is executed and no defect is expected** — Inception 1 produces no executable increment. |
 | **Not the mission** | Closing an acceptance criterion. All six are deferred to a named later iteration. A zero-defect result is not the criterion and is not achievable in an iteration with no code. |
-| **Agreed with** | STK-001 (HR Director, project sponsor) — the mission is stated here for confirmation; see Conclusions. |
+| **Authority** | Proposed by the TestManager. The stakeholder's agreement to it is given at the LCO gate, through the ReviewCoordinator's verdict — not asserted here. |
 
 **The Test Plan is not produced.** `[OMITTED: Test Plan — trigger not fired; per-iteration testing scope lives in the Iteration Plan]`. The Development Case records the Test Plan trigger (formal delivery / regulatory audit / contractual test reporting) as NOT FIRED: no external compliance regime applies to the audit trail and no retention period is mandated (CON-021). The per-iteration testing scope is carried by the Iteration Plan's *Use Cases and Scenarios Addressed* and *Evaluation Criteria* sections. This summary is the CORE artifact and proceeds regardless.
-
-```plantuml
-@startuml
-title Inception 1 — test effort workflow and the Evaluation Mission (Portal)
-
-start
-:Read the Development Case and the optional artifact triggers;
-note right
-  Test Plan trigger NOT FIRED.
-  No formal delivery, no regulatory audit,
-  no contractual test reporting CON-021.
-  Per-iteration testing scope lives in the
-  Iteration Plan.
-end note
-
-:Read the Vision, the Use-Case Model, the Supplementary Specification;
-:Read the Risk List and the Iteration Plan;
-:Read the Software Architecture Document;
-note right
-  Architecture-centric: the quality attributes
-  in the SAD are the non-functional dimension
-  of the test strategy.
-end note
-
-:Define the Evaluation Mission for Inception 1;
-note right
-  Purpose, focus, acceptable outcome.
-  Agreed with the stakeholder, not assumed.
-end note
-
-:Outline the test strategy — levels, techniques, coverage measure;
-:Derive the entry and exit criteria of the test effort;
-:Assess the test infrastructure needs;
-note right
-  Stand-ins per CON-035: test OIDC issuer and
-  test directory carrying empty job title and
-  extension entries R001.
-end note
-
-:Read the SCM quality signals;
-note right
-  Build status on main and the issue tracker.
-  Recorded as observed, never inferred.
-end note
-
-if (Executable increment exists?) then (no)
-  :Record that no test was executed and no defect exists;
-  note right
-    Inception 1 produces no executable increment.
-    This is the correct state, not a shortfall.
-  end note
-else (yes)
-  :Execute the iteration's test cases;
-  :Record results and defects;
-endif
-
-:State the mission verdict and the recommendation;
-stop
-@enduml
-```
 
 ### In scope this iteration
 
