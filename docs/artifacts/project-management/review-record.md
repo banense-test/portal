@@ -2029,6 +2029,36 @@ This is the first review event of the project. No prior review exists, so no tre
 
 **No action is deferred to a later iteration.** All seven are correctable within Inception 1 and none requires a Change Request: each restores the artifact's agreement with the declared scope or with observable state, and none changes declared scope.
 
+#### Iteration 2
+
+**Prior findings of this lens — disposition.** Seven findings were emitted by this lens in Inception 1. Six are closed as Resolved; one is Deferred because the defect stands. Each closure was materialized by a `resolve_artifact_finding` call before this narrative was written.
+
+| Finding | Severity | Disposition | What was verified |
+|---|---|---|---|
+| Development Case#F1 | Major | **Resolved** | The S1 tool assessment and the gap table are rewritten against the repository: the CI workflow, the solution and the two scaffolding projects are recorded as present, and the Elaboration checkpoint no longer carries the CI workflow as an outstanding condition. Verified against `.github/workflows/ci.yml` (present, `on: push` and `on: pull_request`) and the build on `main`. |
+| Test Evaluation Summary#F1 | Major | **Resolved** | The SCM quality signal is re-read and the reading corrected: E-6 is recorded as met, and the CI workflow is removed from the recommendation's conditions and from the carried-forward list. Verified against the workflow file and the build status. |
+| Test Evaluation Summary#F2 | Major | **Deferred** | The defect stands. `model_get_upstream('Test Evaluation Summary')` still returns no links and the artifact is still absent from the Business-level trace tree. The artifact now declares the gap and cites Issue #1, which is better disclosure but not a fix. The remedy is the trace steward's act, not the TestManager's. Tracked by Issue #1. |
+| Vision#F1 | Minor | **Resolved** | A-1 now names the human validation gate performed by Infrastructure with HR and states that team testing is against the stand-in OIDC issuer, with CON-035 and A-3 named. |
+| Use-Case Model#F1 | Minor | **Resolved** | The UC-011 to Active Directory association is directed from the use case; the diagram and the Actors table agree on the direction of initiation. |
+| Supplementary Specification#F1 | Minor | **Resolved** | The audit mechanism's include list now carries UC-010 and the mechanism diagram draws the AUDIT edge from U10. |
+| Iteration Plan#F1 | Minor | **Resolved** | The nominal unit is stated inside the roadmap chart, in its title and in a note, so the chart cannot be read as a schedule. |
+
+**Findings of other lenses are not mine to close.** The four findings emitted by the Management Reviewer's lens against the Iteration Plan (Iteration Plan#F1 Major, #F2 Major, #F3 Minor, #F4 Minor) belong to that lens and are closed by it. They are recorded here only so the milestone verdict is read against the complete finding set.
+
+**New findings this iteration.** Two Major findings are open from this lens: Supplementary Specification#F2 and Test Evaluation Summary#F3. Both are statements about observable state that do not reconcile with the trace graph or with the artifact's own text.
+
+**Open actions.**
+
+| Finding | Severity | Owner | Action | Blocks LCO |
+|---|---|---|---|---|
+| Supplementary Specification#F2 | Major | SystemAnalyst, as trace steward | Register the element-level links for NFR-002 to NFR-005 and AC-001 to AC-006, or drop the element-level rows and state that the artifact-level link is the registered one. | No |
+| Test Evaluation Summary#F3 | Major | TestManager | Re-read the issue tracker in all states, replace the row with the observed value (Issue #1 open), and correct the reading. | No |
+| Test Evaluation Summary#F2 | Major | SystemAnalyst, as trace steward | Register the artifact's upstream links in the trace repository so its declared coverage is machine-verifiable. Tracked by Issue #1. | No |
+
+**No action is deferred to a later phase.** All three are correctable within Inception and none requires a Change Request: each restores an artifact's agreement with observable state, and none changes declared scope. The stakeholder has directed that the minor findings be closed as well, and none is open from this lens.
+
+**Closure discipline.** A finding is closed only by the lens that emitted it, via `resolve_artifact_finding`. Markdown stating "Resolved" without the tool call leaves the state inconsistent and the milestone gate keeps counting the finding as open.
+
 ### Business Reviewer lens
 #### Iteration 1
 
