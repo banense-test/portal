@@ -52,6 +52,247 @@
 
 **Entry criteria.** Met. All eight artifacts are complete and stable, no section is a placeholder, the upstream artifacts each artifact depends on are persisted, and the checklists were prepared before the artifacts were read.
 
+### Business Reviewer lens
+#### Iteration 1
+
+**Review type.** Business Modeling lens, at the Lifecycle Objectives review point. The evaluative lens is LCO EXIT CRITERIA applied to the business dimension: is the business modeling contribution to this milestone correct, complete and sufficient — and, where the discipline is inactive, is that inactivity EARNED rather than assumed.
+
+**Scenario assessment (stated first, per the decision heuristics).** Of the six business modeling scenarios, none applies. The engagement is not Organization Chart, Domain Modeling, One Business Many Systems, Generic Business Model, New Business or Revamp. The declared scope names three system use cases over a data-capture and information-publishing intranet; there is no business process to decompose, no business actor outside the organization, no business entity model and no business rules engine. The correct scenario outcome is **no business modeling scenario applies**, and the discipline is INACTIVE.
+
+**Independence of the verdict.** The ProcessEngineer's classification (`isBusinessProcessLed = false`, DC T-1) was not accepted on its face. It was re-derived from the declared scope and from the eight persisted artifacts, against the four DC §4 tests: (a) a business actor external to the organization — none, both roles are inside Cuba Corp; (b) an end-to-end process delivering value to that actor — none, the three declared processes are independent system interactions; (c) business workers and business entities realizing it — none; (d) a business rules engine or workflow engine — none, the invariants are database constraints (ADR-003). All four tests return NONE. The verdict is earned.
+
+**Artifacts in scope.** All eight artifacts persisted this iteration, read in full: Development Case, Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Risk List, Iteration Plan, Test Evaluation Summary. The Review Record was read for the Reviewer's technical-lens block and for prior BusinessReviewer findings.
+
+**Checklist applied.** The Business Modeling checklist, item by item, with N/A recorded where the discipline is inactive — an N/A is a recorded evaluation, not a skipped one.
+
+| # | Checklist item | Result |
+|---|---|---|
+| 1 | Scenario selection correct and explicit | Pass — no scenario applies; verdict re-derived independently |
+| 2 | BUC completeness (actor-initiated, value-delivering, end-to-end) | N/A — no BUC exists, correctly |
+| 3 | BUC realization adequacy (workers and entities) | N/A — no realization expected or required |
+| 4 | Derivation bridge (worker to system actor, entity to analysis class) | N/A — no business worker or entity exists to map |
+| 5 | Resource planning compliance (one resource per worker) | N/A — no worker, no entity, no resource allocation |
+| 6 | Same modeling technique at business level (business stereotypes) | N/A — no business-level model; no software stereotype misapplied at business level |
+| 7 | Stakeholder representation coverage | Pass — STK-001 to STK-004 all represented |
+| 8 | Business rules as formal constraints (ID, source, attachment, testable) | Pass — CON-007 to CON-016 and CON-043 each carry an ID and a named bearing |
+| 9 | UML presence and richness | Pass — eight artifacts, each carrying validated PlantUML |
+| 10 | Scope adherence — no business-modeling scope creep | Pass — zero BUC, zero BR-NNN, zero business stereotype |
+
+**Business Modeling artifact coverage.**
+
+```plantuml
+@startuml
+title Business Modeling artifact coverage — LCO Inception 1 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Business Modeling artifact set — expected only when the discipline is ACTIVE" as BM {
+  class "Business Use-Case Model\nBUC-NNN, business actors,\nbusiness workers, business entities" as A1 <<ABSENT>> {
+    Verdict: NOT APPLICABLE
+    Discipline inactive per DC T-1
+    DC 4 business-process-led = false
+  }
+  class "Business Rules document\nBR-NNN with source and\nworker or entity attachment" as A2 <<ABSENT>> {
+    Verdict: NOT APPLICABLE
+    CON-007 to CON-016 and CON-043 are
+    stakeholder-declared constraints,
+    not BPA-authored business rules
+  }
+  class "Business Object Model\nclass diagram, worker and\nentity realizations" as A3 <<ABSENT>> {
+    Verdict: NOT APPLICABLE
+    No business entity model in scope
+  }
+  class "Business Glossary\nspecialist vocabulary" as A4 <<ABSENT>> {
+    Verdict: NOT APPLICABLE
+    Optional trigger NOT FIRED
+  }
+}
+
+package "System-level artifacts present — Requirements, A and D, Test, PM, Environment" as SYS {
+  class "Vision" as V <<PRESENT>>
+  class "Use-Case Model\nUC-001 to UC-012, system actors" as U <<PRESENT>>
+  class "Supplementary Specification" as S <<PRESENT>>
+  class "Software Architecture Document" as D <<PRESENT>>
+  class "Risk List" as R <<PRESENT>>
+  class "Iteration Plan" as I <<PRESENT>>
+  class "Test Evaluation Summary" as T <<PRESENT>>
+  class "Development Case\nT-1 Business Modeling INACTIVE" as C <<PRESENT>>
+}
+
+package "Gate evaluation" as GATE {
+  class "DC 4 trigger\nbusiness-process-led" as G1 <<gate>> {
+    Value: false
+    No process modelled, automated
+    or orchestrated
+  }
+  class "DC 4 trigger\nBM sections in any artifact" as G2 <<gate>> {
+    Value: 0
+    No BUC, no business worker,
+    no business entity, no BR-NNN
+  }
+  class "Business Reviewer verdict" as G3 <<verdict>> {
+    BR-OK-INACTIVE
+    Discipline NOT APPLICABLE
+  }
+}
+
+G1 --> G3
+G2 --> G3
+A1 -[hidden]- A2
+A2 -[hidden]- A3
+A3 -[hidden]- A4
+V -[hidden]- U
+U -[hidden]- S
+S -[hidden]- D
+D -[hidden]- R
+R -[hidden]- I
+I -[hidden]- T
+T -[hidden]- C
+BM -[hidden]- SYS
+SYS -[hidden]- GATE
+
+note bottom of BM
+  Zero of four expected BM artifacts exist.
+  This is the CORRECT state for a
+  non-business-process-led engagement,
+  not a defect: the discipline is inactive
+  by the Development Case tailoring
+  decision T-1.
+end note
+
+note bottom of SYS
+  None of the eight artifacts carries a
+  business-modeling section. No
+  business actor, business worker,
+  business entity or business use case
+  stereotype appears anywhere.
+end note
+@enduml
+```
+
+**Trigger evaluation — the evidence the INACTIVE verdict rests on.**
+
+```plantuml
+@startuml
+title DC 4 trigger evaluation — candidate business-process signals, LCO Inception 1 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Candidate signals examined in the declared scope" as CAND {
+  class "Three processes named\nclocking, news, directory" as S1 <<candidate>> {
+    Declared as three USE CASES
+    FR-001 to FR-012
+    Each is a system interaction,
+    not an end-to-end business process
+  }
+  class "Business rules present\nCON-007 to CON-016, CON-043" as S2 <<candidate>> {
+    Declared by the STAKEHOLDER
+    as constraints, not authored
+    by a BPA as BR-NNN
+  }
+  class "Two organizational roles\nHR and Employee" as S3 <<candidate>> {
+    System actors of the portal
+    CON-018 two authorization levels
+    No business worker, no
+    organizational unit modelled
+  }
+  class "External systems\nKeycloak, Active Directory" as S4 <<candidate>> {
+    Supporting actor of UC-011 only
+    CON-030, CON-032
+    Not business actors
+  }
+  class "Closed value lists\nCON-015, CON-043" as S5 <<candidate>> {
+    Fixed enumerations of four values
+    System rules, not a
+    business rules engine
+  }
+  class "Offline retry CON-040" as S6 <<candidate>> {
+    One client-side POST retry
+    One action, one queue, one entity
+    No workflow to orchestrate
+  }
+}
+
+package "DC 4 test — is a business process modelled, automated or orchestrated?" as TEST {
+  class "Business actor outside\nthe organization" as T1 <<test>> {
+    Result: NONE
+    Both roles are inside Cuba Corp
+  }
+  class "End-to-end process\ndelivering value to that actor" as T2 <<test>> {
+    Result: NONE
+    Three independent system
+    interactions, no process chain
+  }
+  class "Business workers and\nbusiness entities to realize it" as T3 <<test>> {
+    Result: NONE
+    No worker, no entity model
+  }
+  class "Business rules engine\nor workflow engine" as T4 <<test>> {
+    Result: NONE
+    Invariants are DB constraints
+    ADR-003
+  }
+}
+
+package "Verdict" as V {
+  class "business-process-led" as V1 <<verdict>> {
+    FALSE
+    DC 4 trigger not fired
+  }
+  class "Business Modeling discipline" as V2 <<verdict>> {
+    INACTIVE
+    DC T-1
+  }
+  class "Business Reviewer lens" as V3 <<verdict>> {
+    BR-OK-INACTIVE
+    No findings, no recommendations
+  }
+}
+
+S1 --> T1
+S2 --> T4
+S3 --> T1
+S4 --> T1
+S5 --> T4
+S6 --> T2
+T1 --> V1
+T2 --> V1
+T3 --> V1
+T4 --> V1
+V1 --> V2
+V2 --> V3
+
+note bottom of CAND
+  Six candidate signals were examined.
+  Each resolves to a system-level
+  construct already owned by the
+  Requirements or Analysis and Design
+  discipline, not to a business process.
+end note
+
+note bottom of TEST
+  All four DC 4 tests return NONE.
+  The trigger condition does not hold
+  against the project's real facts.
+end note
+
+note bottom of V
+  The INACTIVE verdict is EARNED by
+  evaluation, not assumed from the
+  ProcessEngineer's claim. The
+  classification was independently
+  re-derived from the declared scope
+  and the eight persisted artifacts.
+end note
+@enduml
+```
+
+**Upstream consumption.** The declared scope in the Work Order was read as the ceiling. All eight persisted artifacts were read in full. The Development Case's classification verdicts, tailoring decisions T-1 to T-7, optional-trigger table and intensity statement were read against the DC §4 trigger conditions. The Review Record was read for the Reviewer's technical-lens block and for prior BusinessReviewer findings.
+
+**Entry criteria.** Met. All eight artifacts are complete and stable, no section is a placeholder, and the checklist was prepared before the artifacts were read.
+
 ## Findings
 ### Reviewer lens
 #### Iteration 1
