@@ -380,12 +380,11 @@ Inception 3 selects no use case for detail and changes no use case. The selectio
 
 **No use case is split per actor.** UC-003, UC-004 and UC-005 are three distinct HR goals over the same clocking data — viewing, exporting and correcting are separate outcomes with separate triggers.
 ## Evaluation Criteria
-
 Two layers, kept apart.
 
 ### (a) Declared acceptance criteria — every AC-NNN accounted for
 
-All six declared acceptance criteria are accounted for. **None is closed this iteration**, because Inception 2 produces no executable increment. Each is deferred to a named iteration and the evidence that will close it is named.
+All six declared acceptance criteria are accounted for. **None is closed this iteration**, because Inception 3 produces no executable increment. Each is deferred to a named iteration and the evidence that will close it is named.
 
 | AC | Criterion | This iteration | Deferred to | Evidence that will close it |
 |---|---|---|---|---|
@@ -398,17 +397,17 @@ All six declared acceptance criteria are accounted for. **None is closed this it
 
 ### (b) This iteration's own exit criteria
 
-X-1 to X-5 are re-assessed in Inception 2, not assumed met in Inception 1. Each now carries the closure of the findings that touch it.
+X-1 to X-5 are re-assessed in Inception 3, not assumed met in an earlier iteration. Each now carries the closure of the findings that touch it.
 
 | # | Exit criterion | Met when |
 |---|---|---|
-| X-1 | The requirements baseline is complete and reviewed: twelve declared requirements as twelve use cases, one-to-one, with no use case lacking a declared source, and no finding open against the Vision, the Use-Case Model or the Supplementary Specification. | Vision, Use-Case Model and Supplementary Specification corrected; Vision#F1, Use-Case Model#F1 and Supplementary Specification#F1 closed by the Reviewer. |
+| X-1 | The requirements baseline is complete and reviewed: twelve declared requirements as twelve use cases, one-to-one, with no use case lacking a declared source, and no finding open against the Vision, the Use-Case Model or the Supplementary Specification. | Vision, Use-Case Model and Supplementary Specification corrected; Supplementary Specification#F2 and its gate condition #F1 closed by their emitting lenses. |
 | X-2 | Every risk is classified with a strategy and an owner, and every accepted risk names the basis of its acceptance. | Risk List persisted; R001 to R010 each carry strategy, owner, mitigation, contingency and an observable indicator; each accepted risk names its CON-024 basis. |
-| X-3 | The coarse roadmap and this iteration's fine plan are composed, with no work item sized in a unit this system does not measure, and no finding open against the Iteration Plan. | This Iteration Plan; Iteration Plan#F1 (Major), #F2 (Major), #F1 (Minor), #F3 (Minor) and #F4 (Minor) closed by their emitting lenses. |
+| X-3 | The coarse roadmap and this iteration's fine plan are composed, with no work item sized in a unit this system does not measure, and no finding open against the Iteration Plan. | This Iteration Plan; Iteration Plan#F1 (Minor) and its gate condition #F5 closed by their emitting lenses. |
 | X-4 | The first-cut architecture confronts the highest-magnitude technical risks rather than deferring them. | Software Architecture Document persisted, addressing R001, R003, R004 and R008. |
 | X-5 | LCO readiness is re-assessed and the verdict recorded, with no finding open against any artifact. | The ReviewCoordinator's LCO verdict in the Review Record, following the Project Approval Review. |
 
-**LCO readiness assessment.** The project is viable to proceed to Elaboration. The scope is agreed and complete — twelve declared requirements, twelve use cases, no open scope question. The initial risks are identified and classified, and the three highest-magnitude ones (R001, R003, R004) are architectural and are confronted in Elaboration rather than deferred. The architecture is first-cut and its two external dependencies — the existing Keycloak and the read-only AD — are declared, bounded and validated by human work whose feedback lands before Elaboration closes. What Inception 1 did not deliver is a clean review: eleven findings were raised and the sanction was refused. Inception 2 exists to close them. **This assessment is the ProjectManager's; the milestone verdict is the ReviewCoordinator's, and the milestone is not achieved until that verdict is recorded.**
+**LCO readiness assessment.** The project is viable to proceed to Elaboration. The scope is agreed and complete — twelve declared requirements, twelve use cases, no open scope question. The initial risks are identified and classified, and the three highest-magnitude ones (R001, R003, R004) are architectural and are confronted in Elaboration rather than deferred. The architecture is first-cut and its two external dependencies — the existing Keycloak and the read-only AD — are declared, bounded and validated by human work whose feedback lands before Elaboration closes. What Inception 1 and Inception 2 did not deliver is a clean review: eleven findings were raised in the first iteration and six in the second, and the sanction was refused twice on the same condition. Inception 3 exists to close the remaining six. **This assessment is the ProjectManager's; the milestone verdict is the ReviewCoordinator's, and the milestone is not achieved until that verdict is recorded.**
 
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
