@@ -8,7 +8,6 @@
 - **Date:** 2026-10-07
 
 ## Functionality
-
 ```plantuml
 @startuml
 title Supplementary Specification — FURPS+ classification of every declared requirement (Portal, Inception 1)
@@ -122,7 +121,7 @@ Mandatory traceability of three change classes. Employee fields are read-only fr
 
 The audit trail is append-only. The original clocking record is never overwritten in place and never deleted (CON-007); a news item is never deleted, only unpublished (CON-013).
 
-Featuring is not a fourth change class: the flag is set at publication or on edit, so it is audited by UC-006 or UC-008. NFR-001 names three classes and this specification does not add a fourth.
+Featuring is not a fourth change class: the featured flag is an attribute of a news item, so a change to it is audited by the news-item change class above. UC-010 writes that record whenever it changes the flag. It cannot rely on UC-006 or UC-008 having run: HR can un-feature the current item and leave none without editing the item (FR-010, CON-012), so the featuring path is a news-item change in its own right. NFR-001 names three classes and this specification does not add a fourth.
 
 ### Authorization (CON-018)
 
