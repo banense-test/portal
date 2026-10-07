@@ -862,17 +862,11 @@ CLEAN -[hidden]- SUG
 
 #### Test Evaluation Summary — Major
 
-**F1 — The recorded SCM quality signal does not reconcile with the SCM, and the conclusion drawn from it is false.** The table cites "`ci-run-37581397618` — build and test completed, 2026-10-07 06:25:16Z to 06:26:16Z" and reads it as "No workflow file is committed, so this run is not the per-push build-and-test the regression rule needs (CON-033, E-6)." The run observed on `main` is `ci-run-37583334371`, 2026-10-07 06:45:58Z to 06:47:38Z; the cited run id and window do not match it. The inference is false independently of which run was read: `.github/workflows/ci.yml` is committed and triggers on `push` and on `pull_request`, so the run IS the per-push build-and-test. Entry criterion E-6 is met, not unmet, and the CI workflow appears wrongly in the three conditions of "Recommendation — Proceed to Elaboration" and in "Carried into Elaboration".
+**F3 — The recorded issue-tracker signal does not reconcile with the SCM, and it contradicts the artifact's own text.** The SCM quality signals table records `Issue tracker, all states | No issue is open or closed` and reads it as "No Change Request has been raised and no defect has been recorded." The issue tracker holds one open issue: Issue #1, "Trace registration — Test Evaluation Summary upstream links (Test Evaluation Summary#F2)", labelled `trace-registration`, `priority-high`, `no-scope-change`. The artifact's own Traceability section cites that same issue as the tracking reference for its unregistered links, so the artifact states the issue exists in one section and that no issue exists in another. The reading drawn from the false signal is also wrong: a defect has been recorded, and the issue tracker is the authoritative record for it — which the artifact's own Defect lifecycle section already states.
 
-*Remediation.* Re-read the build status and the workflow file, replace the cited run id and window with the observed values, and correct the reading: E-6 is met. Remove the CI workflow from the three conditions in "Recommendation — Proceed to Elaboration" and from "Carried into Elaboration", leaving the two genuine gaps — the test stand-ins and the test conventions in `CONTRIBUTING.md`.
+*Remediation.* Re-read the issue tracker in all states and replace the row with the observed value: Issue #1 open, labelled `trace-registration`, `priority-high`, `no-scope-change`, carrying the Test Evaluation Summary's unregistered upstream links. Correct the reading accordingly. Keep the build-status and CI-workflow rows, which reconcile with the provider.
 
-*Evidence.* TES: "`ci-run-37581397618` — build and test completed, 2026-10-07 06:25:16Z to 06:26:16Z" and "No workflow file is committed" against `scm_get_build_status(main)` = `ci-run-37583334371`, 2026-10-07 06:45:58Z to 06:47:38Z; `scm_get_file_content('.github/workflows/ci.yml')` present with `on: push` and `on: pull_request`.
-
-**F2 — The declared traceability is not registered in the trace repository.** The Traceability table declares `Refines` links to Test Case, Risk List, Development Case, Use-Case Model, Vision and Supplementary Specification, and `DependsOn` links to the Software Architecture Document, and the "Coverage" paragraph claims twelve requirements, six acceptance criteria, five non-functional requirements and ten risks are each accounted for. The graph carries none of it: `model_get_upstream('Test Evaluation Summary')` returns no links, and the artifact does not appear anywhere in the Business-level trace tree, which lists Development Case, Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan, Software Architecture Document and Test Case. The coverage the summary claims therefore cannot be verified from the graph.
-
-*Remediation.* Register the Test Evaluation Summary's upstream links in the trace repository — NFR-001 to NFR-005, AC-001 to AC-006, UC-001 to UC-012, R001 to R010, FR-001 to FR-012, CON-021/CON-033/CON-035/CON-040/CON-041, COMP-001 to COMP-010 and INT-001 to INT-010 — so the declared coverage is machine-verifiable. If the registration belongs to the SystemAnalyst as steward of the trace repository, raise it to that role rather than leaving the artifact unlinked.
-
-*Evidence.* `model_get_upstream(projectId, 'Test Evaluation Summary')` returns "No trace links found for 'Test Evaluation Summary' (direction: upstream)"; the Business-level trace tree contains no Test Evaluation Summary node.
+*Evidence.* Test Evaluation Summary, Defects and Incidents: `| Issue tracker, all states | No issue is open or closed | No Change Request has been raised and no defect has been recorded. |` against `scm_list_issues(state=all)` = `#1 [open] Trace registration — Test Evaluation Summary upstream links (Test Evaluation Summary#F2) — labels: [trace-registration, priority-high, no-scope-change]`; and against the artifact's own Traceability section: "Registration is the trace steward's act and is requested of the SystemAnalyst in Issue #1."
 
 #### Use-Case Model — Minor
 
@@ -918,7 +912,7 @@ No defect recorded. R001 and R002 are preserved with their declared probability 
 
 ```plantuml
 @startuml
-title Traceability compliance — declared scope to artifact, findings annotated (Portal, Inception 1)
+title Traceability compliance — declared scope to artifact, LEAF markers annotated (Portal, Inception 2)
 
 skinparam classAttributeIconSize 0
 skinparam packageStyle rectangle
@@ -973,56 +967,39 @@ COMP --> INT : DependsOn
 SAD --> TC : Refines
 TES --> TC : Refines
 
-note right of UCM
-  FINDING Minor F1
-  AD drawn as the initiating end
-  of the UC-011 association.
+note right of NFR
+  LEAF — NFR-002 to NFR-005 carry no registered
+  downstream link. NFR-001 reaches COMP-007.
+  Supplementary Specification#F2.
 end note
 
-note right of SS
-  FINDING Minor F1
-  Audit include list omits UC-010.
-end note
-
-note right of VIS
-  FINDING Minor F1
-  A-1 not reconciled with CON-035.
-end note
-
-note right of IP
-  FINDING Minor F1
-  Gantt asserts a one-day duration.
-end note
-
-note right of DC
-  FINDING Major F1
-  Tool baseline contradicts the repository.
+note right of AC
+  LEAF — AC-001 to AC-006 carry no registered
+  downstream link. The Test Case artifact is
+  empty this iteration, so no link can exist yet.
+  Not a defect.
 end note
 
 note right of TES
-  FINDING Major F1, F2
-  SCM signal does not reconcile;
-  traceability not registered in the graph.
+  The declared upstream links are not registered
+  in the graph. Test Evaluation Summary#F2.
+  The issue-tracker row does not reconcile with
+  the artifact's own Traceability section.
+  Test Evaluation Summary#F3.
 end note
 
-note bottom of SAD
-  No finding. Every subsystem traces to a
-  declared UC, FR or CON. No «LEAF» at
-  Business level: all 12 FR reach a use case.
-end note
-
-note bottom of RL
-  No finding. R001 to R010 each carry a
-  strategy, an owner, a mitigation, a
-  contingency and an observable indicator.
+note bottom of FR
+  No FR-NNN is a LEAF: all twelve reach a use
+  case, and all twelve use cases reach a
+  component. No declared functional requirement
+  is unrealized.
 end note
 
 note bottom of TC
-  «LEAF» by design, not by defect: the Test
-  Case artifact is empty because no use-case
-  realization exists in Inception. The
-  Iteration Plan defers test authoring to
-  Elaboration 2.
+  LEAF by design, not by defect: the Test Case
+  artifact is empty because no use-case
+  realization exists in Inception. The Iteration
+  Plan defers test authoring to Elaboration 2.
 end note
 
 DECL -[hidden]- BIZ
@@ -1031,11 +1008,252 @@ LOG -[hidden]- CODE
 @enduml
 ```
 
-**What the graph shows.** Every one of the twelve declared requirements reaches a use case — no `«LEAF»` at the Business level, so no requirement is unrealized. Every use case reaches a component in the Software Architecture Document. No `«SUSPECT → role»` edge exists anywhere in the tree, so no role is holding an unreviewed change. The `Test Case` node is a `«LEAF»` by design: the artifact is empty because no use-case realization exists in Inception, and the Iteration Plan defers test authoring to Elaboration 2.
+**What the graph shows.** Every one of the twelve declared requirements reaches a use case — no `«LEAF»` at the Business level for any `FR-NNN`, so no functional requirement is unrealized. Every use case reaches a component in the Software Architecture Document. No `«SUSPECT → role»` edge exists anywhere in the tree, so no role is holding an unreviewed change. The `Test Case` node is a `«LEAF»` by design: the artifact is empty because no use-case realization exists in Inception, and the Iteration Plan defers test authoring to Elaboration 2.
 
-**What the graph does not show.** The Test Evaluation Summary is absent from the tree entirely, which is finding F2 above. Its declared coverage of twelve requirements, six acceptance criteria, five non-functional requirements and ten risks is asserted in prose and unverifiable from the graph.
+**What the graph does not show.** The Test Evaluation Summary is absent from the tree entirely, which is Test Evaluation Summary#F2. Four of the five non-functional requirements are LEAF nodes, which is Supplementary Specification#F2. The declared coverage of the acceptance criteria is asserted in prose and unverifiable from the graph until the Test Case artifact carries elements.
 
 **Coverage of the declared input.** All twelve FR, five NFR, six AC, forty-three CON, three BG and two declared risks are cited by at least one artifact. No artifact cites an identifier outside the declared families. No artifact quotes the stakeholder in place of citing an identifier.
+
+#### Iteration 2
+
+Two findings: two Major, no Critical, no Minor. Six artifacts carry no new finding from this lens.
+
+```plantuml
+@startuml
+title Compliance matrix — LCO technical lens, Inception 2 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+
+class "Development Case" as DC <<artifact>> {
+  DC-1 Delta only, baseline not restated
+  DC-2 25-role roster not redefined
+  DC-3 16 CORE artifacts, none omitted
+  DC-4 CORE ownership not reassigned
+  DC-5 No artifact outside CORE + OPTIONAL
+  DC-6 Optional triggers audited, none fired
+  DC-7 Intensity equals canonical matrix
+  DC-8 Tool baseline matches the repository
+}
+
+class "Vision" as VIS <<artifact>> {
+  V-1 Problem statement traces to declared scope
+  V-2 STK-001 to STK-004 complete
+  V-3 Features equal the 12 declared FR
+  V-4 CON-001 to CON-043 complete
+  V-5 NFR, BG and AC complete
+  V-6 No unsourced quantitative claim
+  V-7 Assumptions reconciled with CON-035
+  V-8 UML present
+}
+
+class "Use-Case Model" as UCM <<artifact>> {
+  U-1 12 use cases to 12 declared FR
+  U-2 Every use case carries Source: FR-NNN
+  U-3 No phantom use case
+  U-4 No cross-cutting mechanism as a use case
+  U-5 No use case split per actor
+  U-6 5 architecturally significant use cases detailed
+  U-7 Actor association direction correct
+  U-8 UML present
+}
+
+class "Supplementary Specification" as SS <<artifact>> {
+  S-1 FURPS+ home for every declared NFR, AC and CON
+  S-2 Cross-cutting mechanisms specified, not use cases
+  S-3 Audit change classes equal NFR-001's three
+  S-4 Thresholds quantified where declared
+  S-5 No invented threshold
+  S-6 Mechanism include lists match the use-case specs
+  S-7 Declared NFR and AC links registered in the graph
+  S-8 UML present
+}
+
+class "Software Architecture Document" as SAD <<artifact>> {
+  A-1 Every subsystem maps to a declared element
+  A-2 No subsystem named after a layer
+  A-3 Each High-volatility area owns a seam
+  A-4 Keycloak inside the network
+  A-5 No Keycloak deployment work
+  A-6 AD read-only, no local copy
+  A-7 Invariants enforced as database constraints
+  A-8 No technology or version invented
+  A-9 UML present, 4+1 views
+}
+
+class "Risk List" as RL <<artifact>> {
+  R-1 R001 and R002 preserved
+  R-2 Team risks numbered from R003
+  R-3 Strategy, owner, mitigation, contingency
+  R-4 Acceptance basis named
+  R-5 CON-025 exclusions not registered
+  R-6 No human-team unit, no velocity
+  R-7 Early-warning indicator observable
+  R-8 UML present
+}
+
+class "Iteration Plan" as IP <<artifact>> {
+  I-1 Objectives carry exit evidence
+  I-2 No work item sized in an unmeasured unit
+  I-3 Human gate bounded as a risk
+  I-4 Two currencies never summed
+  I-5 All 6 AC accounted for, none closed
+  I-6 No calendar date projected
+  I-7 Roadmap chart carries no duration
+  I-8 UML present
+}
+
+class "Test Evaluation Summary" as TES <<artifact>> {
+  T-1 Every declared requirement has a verification method
+  T-2 No test executed, none claimed
+  T-3 Test Plan omission declared with trigger basis
+  T-4 Entry criteria stated with status
+  T-5 SCM signals read and recorded
+  T-6 SCM signal reconciles with the SCM
+  T-7 Traceability registered in the graph
+  T-8 UML present
+}
+
+note bottom of DC
+  All items PASS. The tool baseline is read from
+  the repository and cites the path and sha of
+  every claim it makes.
+end note
+
+note bottom of VIS
+  All items PASS. A-1 names the human validation
+  gate and the stand-in issuer.
+end note
+
+note bottom of UCM
+  All items PASS. The UC-011 to AD association is
+  directed from the use case.
+end note
+
+note bottom of SS
+  S-7 FAIL — NFR-002 to NFR-005 are Business-level
+  LEAF nodes: no downstream link is registered,
+  while NFR-001 reaches COMP-007.
+end note
+
+note bottom of TES
+  T-6 FAIL — the issue-tracker row records no issue
+  open or closed while the artifact's own
+  Traceability section cites Issue #1.
+  T-7 FAIL — the declared links are not registered
+  in the graph.
+end note
+
+note bottom of SAD
+  All items PASS. No finding recorded.
+end note
+
+note bottom of RL
+  All items PASS. No finding recorded.
+end note
+
+note bottom of IP
+  All items PASS. The roadmap chart states the
+  nominal unit inside the chart itself.
+end note
+
+DC -[hidden]- VIS
+VIS -[hidden]- UCM
+UCM -[hidden]- SS
+SS -[hidden]- SAD
+SAD -[hidden]- RL
+RL -[hidden]- IP
+IP -[hidden]- TES
+@enduml
+```
+
+```plantuml
+@startuml
+title Defect distribution — severity x artifact, LCO technical lens, Inception 2 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Critical — 0" as CRIT {
+  class "none" as C0 <<empty>> {
+    No LCO gate blocker.
+    No scope hallucination.
+    No phantom use case.
+    No baseline redefinition.
+  }
+}
+
+package "Major — 2" as MAJ {
+  class "Supplementary Specification#F2" as M1 <<artifact>> {
+    NFR-002 to NFR-005 are Business-level LEAF
+    nodes: no downstream link is registered,
+    while NFR-001 reaches COMP-007.
+  }
+  class "Test Evaluation Summary#F3" as M2 <<artifact>> {
+    The issue-tracker row records no issue open
+    or closed while the artifact's own
+    Traceability section cites Issue #1.
+  }
+}
+
+package "Minor — 0" as MIN {
+  class "none" as N0 <<empty>> {
+    No minor defect was found this iteration.
+  }
+}
+
+package "No new finding this iteration — 6 artifacts" as CLEAN {
+  class "Development Case" as K1 <<artifact>>
+  class "Vision" as K2 <<artifact>>
+  class "Use-Case Model" as K3 <<artifact>>
+  class "Iteration Plan" as K4 <<artifact>>
+  class "Software Architecture Document" as K5 <<artifact>>
+  class "Risk List" as K6 <<artifact>>
+}
+
+note bottom of MAJ
+  Both Major findings are statements about
+  observable state that do not reconcile with
+  the trace graph or with the artifact's own
+  text. Neither is a design disagreement.
+end note
+
+note bottom of CLEAN
+  No new defect was found in these six artifacts
+  this iteration. The Software Architecture
+  Document and the Risk List carry no finding
+  from any lens.
+end note
+
+CRIT -[hidden]- MAJ
+MAJ -[hidden]- MIN
+MIN -[hidden]- CLEAN
+@enduml
+```
+
+#### Supplementary Specification — Major
+
+**F2 — The declared element-level traceability is not registered in the trace repository.** The Traceability table declares `Supplementary Specification | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Refines | Software Architecture Document` and `Supplementary Specification | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | Test Case`. The graph carries the artifact-level links but not the element-level ones: the Requirements Traceability Matrix shows `NFR-002`, `NFR-003`, `NFR-004` and `NFR-005` as Business-level LEAF nodes with no downstream link, while `NFR-001` alone reaches `COMP-007`. The declared coverage of the five non-functional requirements therefore cannot be verified from the graph. This is the same defect class as Test Evaluation Summary#F2 and is recorded separately because the finding key is scoped per artifact.
+
+*Remediation.* Register the element-level upstream links in the trace repository — `NFR-002` to `NFR-005` to the Software Architecture Document, and `AC-001` to `AC-006` to the Test Case artifact — so the declared coverage is machine-verifiable. Registration is the trace steward's act: raise it to the SystemAnalyst, who already holds Issue #1 for the Test Evaluation Summary's links, and register both in the same pass. If the element-level link is judged redundant with the artifact-level link, say so in the Traceability table and drop the element-level rows, so the table states what the graph carries.
+
+*Evidence.* Supplementary Specification, Traceability: `Supplementary Specification | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Refines | Software Architecture Document` against `model_generate_rtm(sourceLevel=Business)`: `NFR-002 | Requirement | Business | (none) | - | - | - | -`, likewise `NFR-003`, `NFR-004`, `NFR-005`; `NFR-001` reaches `COMP-007`.
+
+#### Development Case — no new finding
+
+No defect recorded this iteration. The S1 tool assessment is read from the repository and every claim in it cites the path and sha it was read from: the CI workflow at `.github/workflows/ci.yml`, the solution manifest `Portal.sln` with its two projects, and the build on `main`. The gap table carries only `CONTRIBUTING.md`, the lint/analyzer configuration and the test stand-ins, each with a named owner. The Elaboration iteration-preparation checkpoint does not carry the CI workflow as an outstanding condition. The tailoring decisions T-1 to T-7, the classification verdicts, the optional-trigger table and the intensity statement are baseline-conformant: the roster is not redefined, no CORE artifact is omitted, no ownership is reassigned, no artifact outside the CORE plus OPTIONAL universe is listed, and the intensity equals the canonical matrix. All six optional triggers were re-audited against their §5.2 conditions and none fired. Approved from this lens.
+
+#### Vision — no new finding
+
+No defect recorded this iteration. A-1 now names the human validation gate performed by Infrastructure with HR and states that team build and test is against the stand-in OIDC issuer, with CON-035 and A-3 named as the governing rules. The problem statement, the stakeholder summary, the features table, the constraints and the non-functional requirements all trace to the declared scope; the twelve features equal the twelve declared requirements with no surplus; no unsourced quantitative claim appears. Approved from this lens.
+
+#### Use-Case Model — no new finding
+
+No defect recorded this iteration. The UC-011 to Active Directory association is directed from the use case to the external system, so the portal is the initiating end and the diagram agrees with the Actors table. Twelve declared requirements map one-to-one to twelve use cases, each carrying its `Source: FR-NNN`; no phantom use case exists; no cross-cutting mechanism was promoted to a use case; no use case was split per actor. Approved from this lens.
+
+#### Iteration Plan — no new finding
+
+No defect recorded this iteration. The roadmap chart states the nominal unit inside the chart itself, in its title and in a note, so it cannot be read as a schedule. No work item carries a size in a unit this system does not measure; the two currencies are reported apart and never summed; the human gates are bounded as risks; all six acceptance criteria are accounted for and none is closed; no calendar date is projected from an estimate. Approved from this lens.
 
 ### Business Reviewer lens
 #### Iteration 1
