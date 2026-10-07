@@ -2602,6 +2602,74 @@ D --> W4
 
 **This is the Business Reviewer's business-lens disposition. The LCO milestone verdict is the ReviewCoordinator's, and the milestone is not achieved until that verdict is recorded.**
 
+#### Iteration 2
+
+**Verdict: [BR-OK-INACTIVE] — Discipline NOT APPLICABLE per DC §4, with one Minor finding on the Iteration Plan.**
+
+**Disposition from this lens: Approved with Changes.**
+
+```plantuml
+@startuml
+title Disposition — LCO business lens, Inception 2 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+class "Disposition from this lens" as D <<verdict>> {
+  Approved with Changes
+  The business dimension of the LCO
+  conditions is satisfied. One Minor
+  finding is open against the plan.
+}
+
+class "Why not Approved" as W1 <<reason>> {
+  Iteration Plan#F1 is open: the role
+  profile records the BusinessReviewer as
+  non-participating while the business lens
+  executed at this gate.
+}
+
+class "Why not Rejected" as W2 <<reason>> {
+  No Critical finding exists.
+  No business use case, no BR-NNN rule and
+  no business stereotype was invented.
+  No undeclared business process entered
+  scope. The DC 4 verdict is correct.
+}
+
+class "LCO exit criteria, from this lens" as W3 <<reason>> {
+  The business dimension of the LCO
+  conditions is satisfied: the scope is
+  agreed and complete with no open scope
+  question, no business process is in scope
+  that would require a business model, and
+  no business-modeling artifact is missing
+  that the declared scope requires.
+}
+
+class "Milestone verdict" as W4 <<note>> {
+  The LCO milestone verdict is the
+  ReviewCoordinator's. The milestone is not
+  achieved until that verdict is recorded.
+}
+
+D --> W1
+D --> W2
+D --> W3
+D --> W4
+@enduml
+```
+
+**Basis.** The Business Modeling discipline is inactive and its inactivity is correct. The DC §4 verdict was re-derived this iteration, not carried forward: no business process is modelled, automated or orchestrated; no business actor, business worker or business entity model is in declared scope; the business rules (CON-007 to CON-016, CON-043) are stakeholder-declared system constraints, not a modelled business rule set; and the system's value is a single web application replacing fragmented manual tooling, not the automation of a modelled process. All four tests return NONE. The business dimension of the scope guard is clean: zero business use cases, zero `BR-NNN` business rules, zero business stereotypes, and no declared system use case promoted to a business use case. All four declared stakeholders are represented. The one business duty that survived the INACTIVE verdict — the annotation of volatile business areas — was discharged by the SystemAnalyst and consumed by the SoftwareArchitect, which gave each `Volatility: High` feature its own subsystem and interface.
+
+**Why not Approved.** One Minor finding is open: Iteration Plan#F1. The plan's role profile records the BusinessReviewer as non-participating in every iteration, while the business lens executed at this gate and is recorded as executed in the Review Coordinator's lens dispositions table. The business lens is the only lens that re-derives the DC §4 INACTIVE verdict each iteration and would catch a business process entering scope through a Change Request; leaving its execution unplanned means that re-derivation is not scheduled.
+
+**Why not Rejected.** No Critical finding exists. No business use case, no `BR-NNN` business rule and no business stereotype was invented; no undeclared business process entered scope; no declared system use case was promoted to a business use case. The defect is a statement about observable state in the plan's role profile, not a defect in the business dimension of the requirements baseline.
+
+**LCO exit criteria, from this lens.** The business dimension of the LCO conditions is satisfied: the scope is agreed and complete with no open scope question, no business process is in scope that would require a business model, and no business-modeling artifact is missing that the declared scope requires. The one Minor finding is a correction to be made within this iteration, not a condition the project cannot meet.
+
+**This is the Business Reviewer's business-lens disposition. The LCO milestone verdict is the ReviewCoordinator's, and the milestone is not achieved until that verdict is recorded.**
+
 ### Management Reviewer lens
 #### Iteration 1
 
