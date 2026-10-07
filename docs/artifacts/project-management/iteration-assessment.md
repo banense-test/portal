@@ -267,15 +267,13 @@ The Test Evaluation Summary's mission verdict is that the requirements baseline 
 
 **Defect register.** No defect is recorded. No test was executed, so there is no deviation from declared behaviour to record. A defect register with no entries is the correct state for this iteration — it is not evidence of quality and is not reported as such.
 ## External Changes
-
 | Change | Recorded as |
 |---|---|
-| The stakeholder refused the LCO sanction. | Stakeholder sanction: REFUSED. The gate is held, not opened. The remedy is another iteration (CON-026), and the stakeholder named it: the end of Iteration 2. |
-| The stakeholder directed that every finding be closed, minor ones included, before the next phase. | The closure of all eleven open findings is a condition on the LCO re-assessment, and Inception 2 is the iteration that carries it. This is the substance of variance V-1. |
-| STK-001 confirmed as Laura Gómez, HR Director and project sponsor, granting risk acceptance under CON-024 and sanctioning the milestone. | The `[DERIVED — from "HR Director (project sponsor)"]` marker on STK-001 is retired by that answer. No artifact carries the marker, so no artifact edit arises. |
-| No Change Request was raised. | No scope change. No new declared input. The declared scope is unchanged and is not cut or deferred by anything in this assessment. |
+| The stakeholder refused the LCO sanction a second time. | Stakeholder sanction: REFUSED. The gate is held, not opened. The remedy is another iteration (CON-026), and the stakeholder's own words name the standard: the findings from each iteration must be closed, without exception. |
+| The stakeholder directed that findings must not be left uncorrected and unclosed, and that it is acceptable for more to emerge. | The closure of the six open findings is a condition on the LCO re-assessment, and Inception 3 is the iteration that carries it. This is the substance of variance V-1 and V-2. |
+| The stakeholder confirmed that all doubts have been cleared up and that the findings need to be corrected. | No open scope question remains. The declared scope is unchanged and is not cut or deferred by anything in this assessment. |
+| No Change Request was raised. | No scope change. No new declared input. |
 | No external system was contacted. | The real Keycloak and the real Active Directory were not touched, which is the declared working method (CON-035). |
-
 ## Rework Required
 
 Eleven findings are open: 0 Critical, 5 Major, 6 Minor. Every one is correctable within Inception and none requires a Change Request — each restores an artifact's agreement with the declared scope, with observable state, or with the gate structure, and none changes declared scope.
