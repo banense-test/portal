@@ -2370,6 +2370,26 @@ This is the first review event of the project. No prior review exists, so no tre
 |---|---|---|---|---|
 | (none from this lens) | — | — | — | — |
 
+#### Iteration 2
+
+**Prior findings of this lens — disposition.** The business lens emitted zero findings in Inception 1. `read_artifact_findings` was called for all eight artifacts and for the Review Record; no finding carries `reviewerRole == BusinessReviewer` with `resolution == null` from a prior iteration. There is therefore nothing to close, defer or reject, and no `resolve_artifact_finding` call was emitted. The closure state is consistent with the finding ledger.
+
+**Findings of other lenses are not mine to close.** The findings emitted by the Reviewer's and the ManagementReviewer's lenses belong to those lenses and are closed by them. They are not restated here.
+
+**New finding this iteration.** One Minor finding is open from this lens: Iteration Plan#F1, the role profile records the BusinessReviewer as non-participating in every iteration while the business lens executed at this gate.
+
+**Open actions.**
+
+| Finding | Severity | Owner | Action | Blocks LCO |
+|---|---|---|---|---|
+| Iteration Plan#F1 | Minor | ProjectManager | Reconcile the role profile with the observed execution of the business lens: either record the BusinessReviewer as executing the business lens at the lifecycle gates (I2, E2, C3, T1), or state explicitly that the business lens is not required and reconcile the Development Case's Roles and Ownership table and the Review Record's lens dispositions table with that determination. | No |
+
+**No action is deferred to a later iteration.** The finding is correctable within Inception and requires no Change Request: it restores the plan's agreement with observable state and changes no declared scope. The stakeholder has directed that the minor findings be closed as well, so it is not deferred on severity grounds.
+
+**Closure discipline.** A finding is closed only by the lens that emitted it, via `resolve_artifact_finding`. This finding is closed by the Business Reviewer in the iteration that fixes it. Markdown stating "Resolved" without the tool call leaves the state inconsistent and the milestone gate keeps counting the finding as open.
+
+**Re-evaluation of the INACTIVE verdict.** The DC §4 determination is re-derived every iteration, not carried forward. This iteration it was re-derived against the declared scope and the eight persisted artifacts: no business process is modelled, automated or orchestrated; no business actor, business worker or business entity model is in declared scope; the business rules (CON-007 to CON-016, CON-043) are stakeholder-declared system constraints, not a modelled business rule set; and the system's value is a single web application replacing fragmented manual tooling, not the automation of a modelled process. All four tests return NONE. A Change Request that introduced a business process into scope would re-open the determination.
+
 ### Management Reviewer lens
 #### Iteration 1
 
