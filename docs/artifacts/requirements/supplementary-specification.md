@@ -8,7 +8,7 @@
 ## Functionality
 ```plantuml
 @startuml
-title Supplementary Specification — FURPS+ classification of every declared requirement (Portal, Inception 1)
+title Supplementary Specification — FURPS+ classification of every declared requirement (Portal, Inception 2)
 
 skinparam classAttributeIconSize 0
 skinparam packageStyle rectangle
