@@ -3028,40 +3028,269 @@ MIN -[hidden]- CLEAN
 
 | Conflict | Lenses | Resolution |
 |---|---|---|
-| Iteration Plan#F1 is recorded twice under the same key — once by the Reviewer (the roadmap chart asserts a one-day duration) and once by the ManagementReviewer (the Management Reviewer is omitted from three milestone gates) | Reviewer, ManagementReviewer | Not a conflict. The finding key is scoped per artifact AND per reviewer lens, so `Iteration Plan#F1` from two lenses is two distinct findings. Both are open and both are carried in the ledger as rows 4 and 9. No deduplication is applied. |
-| The Reviewer's lens records no finding against the Iteration Plan's gate structure; the ManagementReviewer's lens records two Major findings against it | Reviewer, ManagementReviewer | Not a conflict. The lenses evaluate different criteria: the technical lens evaluates plan quality (no unmeasured unit, two currencies never summed), the management lens evaluates gate structure (milestone coverage, remedy path). Both verdicts stand. |
-| The BusinessReviewer records zero findings while the other two lenses record eleven | BusinessReviewer, Reviewer, ManagementReviewer | Not a conflict. The Business Modeling discipline is inactive (DC T-1) and its inactivity was independently re-derived against the four DC §4 tests, all of which return NONE. A lens with no applicable criterion emits no finding. |
+| Supplementary Specification#F1 (ManagementReviewer) and Supplementary Specification#F2 (Reviewer) describe the same underlying defect | Reviewer, ManagementReviewer | Not a conflict and not a duplicate. The finding key is scoped per artifact AND per reviewer lens, so the two are distinct findings. #F2 is the defect; #F1 is the gate condition the stakeholder's refusal rests on. Both are carried, both are open, and both close when the trace steward registers the links. |
+| Test Evaluation Summary#F1 (ManagementReviewer) and Test Evaluation Summary#F3 (Reviewer) describe the same underlying defect | Reviewer, ManagementReviewer | Not a conflict. #F3 is the defect; #F1 is the gate condition. Both are carried and both are open. |
+| Iteration Plan#F5 (ManagementReviewer) and Iteration Plan#F1 (BusinessReviewer) describe the same underlying defect | BusinessReviewer, ManagementReviewer | Not a conflict. #F1 is the defect; #F5 is the gate condition. Both are carried and both are open. |
 | The Reviewer's lens dispositions the artifacts "Approved with Changes"; the ManagementReviewer's lens dispositions them "Conditional Go — NOT SANCTIONED" | Reviewer, ManagementReviewer | Not a conflict. The Reviewer dispositions the artifacts; the ManagementReviewer dispositions the gate. The ReviewCoordinator's milestone verdict is the binding one and is recorded in Disposition. |
+| The BusinessReviewer records one Minor finding while the other two lenses record five | BusinessReviewer, Reviewer, ManagementReviewer | Not a conflict. The Business Modeling discipline is inactive (DC T-1) and its inactivity was independently re-derived this iteration against the four DC §4 tests, all of which return NONE. The one finding is a governance defect in the plan's role profile, not a business-modeling defect. |
 
 **No finding was rejected, downgraded or merged.** Every finding emitted by an executing lens is carried into the ledger at the severity its emitting lens assigned.
 
 #### Review effectiveness metrics — this review event
 
-This is the first review event of the project. No prior review exists, so no trend is computed and no prior iteration or cycle is reported. Trend analysis begins once a second review has actually occurred.
+```plantuml
+@startuml
+title Review effectiveness — Inception 1 to Inception 2 (Portal)
 
-| Metric | Value | Basis |
-|---|---|---|
-| Artifacts planned for review | 8 | The eight artifacts persisted this iteration |
-| Artifacts formally reviewed | 8 | All eight read in full by all three executing lenses |
-| **Review coverage** | **100%** | 8 of 8 planned artifacts received formal review |
-| Findings raised | 11 | 0 Critical, 5 Major, 6 Minor |
-| **Defect density** | **1.38 findings per artifact** | 11 findings / 8 artifacts |
-| Defect density — Development Case | 1.00 per artifact | 1 Major |
-| Defect density — Test Evaluation Summary | 2.00 per artifact | 2 Major |
-| Defect density — Iteration Plan | 4.00 per artifact | 2 Major, 2 Minor from the management lens; 1 Minor from the technical lens |
-| Defect density — Vision | 1.00 per artifact | 1 Minor |
-| Defect density — Use-Case Model | 1.00 per artifact | 1 Minor |
-| Defect density — Supplementary Specification | 1.00 per artifact | 1 Minor |
-| Defect density — Software Architecture Document | 0.00 per artifact | No finding from any lens |
-| Defect density — Risk List | 0.00 per artifact | No finding from any lens |
-| **Defect removal efficiency** | **Not computable** | No test execution has occurred — Inception produces no executable increment, so there is no test-found defect count to compare against the review-found count. The metric becomes computable once the first test execution occurs in Elaboration. |
-| **Rework effort** | **Not measured** | No phase has closed, so no measured actual exists. Rework is reported in tokens and elapsed time once Inception 2 closes; no figure is invented here. |
-| Findings overdue | 0 | Every finding was raised this review event; no deadline has yet passed |
-| Findings without an owner | 0 | 11 of 11 carry a named owner |
-| Findings without a deadline | 0 | 11 of 11 carry a deadline |
-| **Trend** | **Not reported** | First review event of the project. No prior review exists to compare against. |
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
 
-**Interpretation.** Coverage is complete and the finding ledger is fully owned and dated, so the review process is operating as designed at this gate. The concentration of findings is informative: the Iteration Plan carries 5 of the 11 findings and the Test Evaluation Summary carries 2 Major findings, while the Software Architecture Document and the Risk List carry none. The Iteration Plan's load is structural rather than editorial — its gate structure and its remedy path are the two Major findings — and it is the artifact the refused sanction most directly implicates. The Test Evaluation Summary's two Major findings are both factual errors about observable state, which is the defect class that most damages downstream trust: a role acting on either would be misled. No metric indicates a review process losing rigor; the process surfaced the defects it was designed to surface.
+package "Coverage" as COV {
+  class "Artifacts planned" as C1 <<metric>> {
+    Inception 1: 8
+    Inception 2: 8
+  }
+  class "Artifacts formally reviewed" as C2 <<metric>> {
+    Inception 1: 8
+    Inception 2: 8
+  }
+  class "Review coverage" as C3 <<metric>> {
+    Inception 1: 100%
+    Inception 2: 100%
+    Trend: stable
+  }
+}
+
+package "Findings" as FND {
+  class "Findings raised" as F1 <<metric>> {
+    Inception 1: 11
+    Inception 2: 6
+    Trend: down
+  }
+  class "Findings closed" as F2 <<metric>> {
+    Inception 1: 0
+    Inception 2: 10
+    Trend: up
+  }
+  class "Open at the gate" as F3 <<metric>> {
+    Inception 1: 11
+    Inception 2: 6, plus 1 deferred
+    Trend: down
+  }
+  class "Defect density" as F4 <<metric>> {
+    Inception 1: 1.38 per artifact
+    Inception 2: 0.75 per artifact
+    Trend: down
+  }
+}
+
+package "Ledger discipline" as LED {
+  class "Findings overdue" as L1 <<metric>> {
+    Inception 1: 0
+    Inception 2: 0
+    Trend: stable
+  }
+  class "Findings without an owner" as L2 <<metric>> {
+    Inception 1: 0
+    Inception 2: 0
+    Trend: stable
+  }
+  class "Findings without a deadline" as L3 <<metric>> {
+    Inception 1: 0
+    Inception 2: 0
+    Trend: stable
+  }
+}
+
+package "Not computable" as NA {
+  class "Defect removal efficiency" as N1 <<n/a>> {
+    No test execution has occurred.
+    Inception produces no executable
+    increment, so there is no test-found
+    defect count to compare.
+  }
+  class "Rework effort" as N2 <<n/a>> {
+    Reported in tokens and elapsed time
+    once an iteration closes with a
+    measured actual. No figure is
+    invented here.
+  }
+}
+
+C1 -[hidden]- C2
+C2 -[hidden]- C3
+F1 -[hidden]- F2
+F2 -[hidden]- F3
+F3 -[hidden]- F4
+L1 -[hidden]- L2
+L2 -[hidden]- L3
+COV -[hidden]- FND
+FND -[hidden]- LED
+LED -[hidden]- NA
+
+note bottom of FND
+  Defect density fell from 1.38 to 0.75
+  findings per artifact while coverage held
+  at 100%. The process surfaced fewer defects
+  because the first iteration's defects were
+  corrected, not because the review weakened.
+end note
+
+note bottom of NA
+  A metric that cannot be computed is reported
+  as not computable, never as zero.
+end note
+@enduml
+```
+
+| Metric | Inception 1 | Inception 2 | Trend |
+|---|---|---|---|
+| Artifacts planned for review | 8 | 8 | Stable |
+| Artifacts formally reviewed | 8 | 8 | Stable |
+| **Review coverage** | **100%** | **100%** | Stable — every planned artifact received formal review in both iterations |
+| Findings raised | 11 | 6 | Down |
+| Findings closed | 0 | 10 | Up |
+| Open at the gate | 11 | 6, plus 1 deferred | Down |
+| **Defect density** | **1.38 per artifact** | **0.75 per artifact** | Down — the first iteration's defects were corrected, so fewer remained to find |
+| Defect density — Supplementary Specification | 1.00 | 2.00 | Up — one Major defect and its gate condition |
+| Defect density — Test Evaluation Summary | 2.00 | 2.00 | Stable — one Major defect and its gate condition, plus the deferred finding |
+| Defect density — Iteration Plan | 4.00 | 2.00 | Down |
+| Defect density — Development Case, Vision, Use-Case Model, Software Architecture Document, Risk List | 1.00, 1.00, 1.00, 0.00, 0.00 | 0.00 each | Down — no new finding from any lens |
+| **Defect removal efficiency** | **Not computable** | **Not computable** | No test execution has occurred — Inception produces no executable increment, so there is no test-found defect count to compare against the review-found count |
+| **Rework effort** | **Not measured** | **Not measured** | No phase has closed with a measured actual. Rework is reported in tokens and elapsed time once an iteration closes; no figure is invented here |
+| Findings overdue | 0 | 0 | Stable — no deadline has passed |
+| Findings without an owner | 0 | 0 | Stable — 6 of 6 open carry a named owner |
+| Findings without a deadline | 0 | 0 | Stable — 6 of 6 open carry a deadline |
+
+**Interpretation.** Coverage held at 100% across both iterations, so the review process is not losing rigor. Defect density fell from 1.38 to 0.75 findings per artifact, and the fall is explained by the closure of ten of the eleven Inception 1 findings rather than by a weaker review: the same three lenses read the same eight artifacts in full. The concentration moved from the Iteration Plan (4.00 to 2.00) to the two artifacts whose declared traceability is not registered in the graph — Supplementary Specification and Test Evaluation Summary — which is a single defect class appearing in two artifacts, not two independent quality failures. The ledger discipline is intact: no finding is overdue, and every open finding carries an owner and a deadline. The one metric that would show whether review is catching what test would catch — defect removal efficiency — remains not computable, because Inception produces no executable increment. It becomes computable at the first test execution in Elaboration.
+
+#### Consolidated finding ledger — LCO, end of Inception 2
+
+Six findings are open at the gate. Every one carries an owner, a severity and a resolution deadline. No finding is Critical. One further finding carries a Deferred resolution whose own text states the defect stands and the gate continues to count it open.
+
+| # | Finding | Severity | Lens | Owner | Deadline | Blocks LCO |
+|---|---|---|---|---|---|---|
+| 1 | Supplementary Specification#F2 — the declared element-level traceability (NFR-002 to NFR-005, AC-001 to AC-006) is not registered in the trace repository, so the declared coverage cannot be verified from the graph | Major | Reviewer | SystemAnalyst, trace steward | Next Inception iteration | No |
+| 2 | Supplementary Specification#F1 — the artifact is not releasable at the LCO gate while #F2 stands | Major | ManagementReviewer | SystemAnalyst, trace steward | Next Inception iteration | No |
+| 3 | Test Evaluation Summary#F3 — the issue-tracker row records no issue open or closed while Issue #1 is open and the artifact's own Traceability section cites it | Major | Reviewer | TestManager | Next Inception iteration | No |
+| 4 | Test Evaluation Summary#F1 — the artifact is not releasable at the LCO gate while #F2 and #F3 stand | Major | ManagementReviewer | TestManager, SystemAnalyst | Next Inception iteration | No |
+| 5 | Iteration Plan#F1 — the role profile records the BusinessReviewer as non-participating in every iteration while the business lens executed at this gate | Minor | BusinessReviewer | ProjectManager | Next Inception iteration | No |
+| 6 | Iteration Plan#F5 — the artifact is not releasable at the LCO gate while the business-lens finding stands | Minor | ManagementReviewer | ProjectManager | Next Inception iteration | No |
+| D | Test Evaluation Summary#F2 — the declared upstream links are not registered in the trace repository and the artifact is absent from the Business-level trace tree. Resolution status: **Deferred** — the defect stands | Major | Reviewer | SystemAnalyst, trace steward | Next Inception iteration | No |
+
+**Two artifacts carry no finding from any lens and are approved:** Software Architecture Document and Risk List. Silence is the verdict.
+
+```plantuml
+@startuml
+title Consolidated finding ledger — LCO milestone, end of Inception 2 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Open at the gate — 6 findings" as OPEN {
+  class "Supplementary Specification#F2" as O1 <<Major>> {
+    Lens: Reviewer
+    Element-level traceability declared
+    but not registered in the graph.
+    Owner: SystemAnalyst, trace steward
+  }
+  class "Supplementary Specification#F1" as O2 <<Major>> {
+    Lens: Management Reviewer
+    Gate condition: not releasable
+    while #F2 stands.
+    Owner: SystemAnalyst, trace steward
+  }
+  class "Test Evaluation Summary#F3" as O3 <<Major>> {
+    Lens: Reviewer
+    Issue-tracker row records no issue
+    while Issue #1 is open.
+    Owner: TestManager
+  }
+  class "Test Evaluation Summary#F1" as O4 <<Major>> {
+    Lens: Management Reviewer
+    Gate condition: not releasable
+    while #F2 and #F3 stand.
+    Owner: TestManager, SystemAnalyst
+  }
+  class "Iteration Plan#F1" as O5 <<Minor>> {
+    Lens: Business Reviewer
+    Role profile records the BusinessReviewer
+    as non-participating while the business
+    lens executed at this gate.
+    Owner: ProjectManager
+  }
+  class "Iteration Plan#F5" as O6 <<Minor>> {
+    Lens: Management Reviewer
+    Gate condition: not releasable while
+    the business-lens finding stands.
+    Owner: ProjectManager
+  }
+}
+
+package "Deferred — 1 finding, the defect stands" as DEF {
+  class "Test Evaluation Summary#F2" as D1 <<Major>> {
+    Lens: Reviewer
+    Declared upstream links not registered;
+    the artifact is absent from the trace tree.
+    Resolution status: Deferred.
+    Owner: SystemAnalyst, trace steward
+    Tracked by Issue #1
+  }
+}
+
+package "Closed this iteration — 10 findings" as CLOSED {
+  class "Inception 1 findings" as C1 <<closed>> {
+    11 findings raised in Inception 1.
+    10 closed as Resolved by the emitting lens.
+    1 deferred: Test Evaluation Summary#F2.
+  }
+  class "By lens" as C2 <<closed>> {
+    Reviewer: 7 raised, 6 closed, 1 deferred
+    Management Reviewer: 4 raised, 4 closed
+    Business Reviewer: 0 raised
+  }
+}
+
+package "Milestone verdict" as V {
+  class "LCO" as V1 <<verdict>> {
+    NOT SANCTIONED
+    Stakeholder sanction: REFUSED
+    Open Critical: 0
+    Open Major: 4, plus 1 deferred
+    Open Minor: 2
+  }
+}
+
+O1 --> V1
+O2 --> V1
+O3 --> V1
+O4 --> V1
+O5 --> V1
+O6 --> V1
+D1 --> V1
+C1 --> V1
+C2 --> V1
+
+note bottom of OPEN
+  Every open finding carries an owner and a
+  deadline. No finding is Critical, so no
+  Critical escalation is required.
+end note
+
+note bottom of DEF
+  A Deferred resolution is not a closure: the
+  defect stands and the gate continues to
+  count the finding as open.
+end note
+
+note bottom of CLOSED
+  Closure is materialized by resolve_artifact_finding
+  by the lens that emitted the finding. A Review
+  Record sentence saying "Resolved" is not a
+  resolution.
+end note
+@enduml
+```
 
 ## Resolutions and Actions
 ### Reviewer lens
