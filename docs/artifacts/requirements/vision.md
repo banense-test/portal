@@ -69,10 +69,9 @@ end note
 | Unlike | The shared Excel sheets, the mass-email distribution and the PDF phone list, which are separate, manual, unauditable and stale. |
 | Our product | Centralizes the three processes in one application, reads people data live from Active Directory so it cannot go stale, and records every change to clockings, news and worker category in an audit trail. |
 ## Stakeholder Summary
-
 ```plantuml
 @startuml
-title Employee Portal — stakeholder map and influence (Inception 1)
+title Employee Portal — stakeholder map and influence (Inception 2)
 
 skinparam classAttributeIconSize 0
 
@@ -135,7 +134,6 @@ end note
 | STK-002 | Miguel Torres | Software Engineer | Low | High | Does not build the system. Clarifies engineering-related doubts for the technical roles. |
 | STK-003 | Infrastructure team | Operates AD and Keycloak | Low | High | Not to be asked to modify AD (CON-003); not to take on a new kind of platform — the portal is a .NET application on the Windows Server estate they already run (CON-002); to operate it in production after handover (CON-036). |
 | STK-004 | Cuba Corp Employees | End users, 200 people, 3 offices | High | Medium | Clock in and out in one press with confirmation; read news and filter by category; find a colleague's phone and email in under 10 seconds (AC-004). |
-
 ## Product Overview
 The portal is a single .NET 10 web application (Razor Pages front end, REST API back end, PostgreSQL 18) reachable only from the internal corporate network on current Chrome and Edge. It authenticates through the existing Keycloak as an OIDC client and reads people data live from Active Directory over LDAP. It owns three processes and the audit trail they require.
 
