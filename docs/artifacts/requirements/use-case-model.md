@@ -544,6 +544,72 @@ stop
 | Use-Case Model | R001 | Refines | Risk List |
 | Use-Case Model | AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | Test Case |
 
-**Reading the table.** `Traces From` is the declared input each use case realizes — the `Source:` identifier copied from the Work Order. `Traces To` is the component in the Software Architecture Document that realizes the use case. All twelve use cases reach a component: the five detailed this iteration constrain the architecture directly, and the seven surveyed ones are carried by the subsystems the architect decomposed for their functional area.
+**Reading the table.** `Traces From` is the declared input each use case realizes — the `Source:` identifier copied from the Work Order. `Traces To` is the component in the Software Architecture Document that realizes the use case. All twelve use cases reach a component: the five detailed here constrain the architecture directly, and the seven surveyed ones are carried by the subsystems the architect decomposed for their functional area.
+
+**Element-level registration.** Every row above is registered individually in the trace repository, not only through the artifact-level link: each `FR-001` to `FR-012` carries a `Refines` link to its use case, and each `UC-001` to `UC-012` carries a `Derives` link to the component that realizes it. The Requirements Traceability Matrix reports no Business-level LEAF node for any `FR-NNN` and no use case without a downstream component.
+
+**AC-001 is not a row of this table.** AC-001 fixes how NFR-002 page load is measured — a performance criterion over the whole page, not a criterion over a use case. It is carried by the Supplementary Specification, which registers it against the Test Case artifact.
 
 **Coverage.** Twelve declared requirements, twelve use cases, one-to-one. No use case exists without a declared source, and no declared requirement is left without a use case. The cross-cutting mechanisms — authentication, authorization, audit trail, no-connection handling — are specified in the Supplementary Specification and included by the use cases that depend on them; they are not use cases and carry no identifier of the `UC-` family.
+
+```plantuml
+@startuml
+title Use-Case Model — registered traceability (Portal, Inception 3)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Declared input — Business level" as DECL {
+  class "FR-001 .. FR-012" as FR <<declared>>
+  class "CON-001, CON-018, CON-030, CON-031, CON-041" as CON <<declared>>
+  class "NFR-001" as NFR <<declared>>
+  class "AC-002 .. AC-006" as AC <<declared>>
+  class "R001" as R <<declared>>
+}
+
+package "Use-Case Model" as UCM {
+  class "UC-001 .. UC-012" as UC <<element>>
+  class "Use-Case Model" as UCMA <<artifact>>
+}
+
+package "Downstream" as DOWN {
+  class "COMP-001 .. COMP-009" as COMP <<element>>
+  class "Software Architecture Document" as SAD <<artifact>>
+  class "Supplementary Specification" as SS <<artifact>>
+  class "Risk List" as RL <<artifact>>
+  class "Test Case" as TC <<artifact>>
+}
+
+FR --> UC : Refines
+UC --> COMP : Derives
+UC --> SAD : Derives
+UCMA --> SS : DependsOn
+UCMA --> RL : Refines
+UCMA --> TC : Refines
+CON --> UCMA : DependsOn
+NFR --> UCMA : DependsOn
+AC --> UCMA : Refines
+R --> UCMA : Refines
+
+note bottom of FR
+  Each of the twelve declared requirements carries a
+  registered Refines link to its use case. No
+  Business-level LEAF node remains.
+end note
+
+note bottom of UC
+  Each of the twelve use cases carries a registered
+  Derives link to the component that realizes it.
+  No use case is a LEAF.
+end note
+
+note bottom of AC
+  AC-001 is not a row of this table: it fixes how
+  NFR-002 page load is measured and is carried by
+  the Supplementary Specification.
+end note
+
+DECL -[hidden]- UCM
+UCM -[hidden]- DOWN
+@enduml
+```
