@@ -583,13 +583,10 @@ package "Downstream" as DOWN {
 FR --> UC : Refines
 UC --> COMP : Derives
 UC --> SAD : Derives
+UCMA --> SAD : Derives
 UCMA --> SS : DependsOn
 UCMA --> RL : Refines
 UCMA --> TC : Refines
-CON --> UCMA : DependsOn
-NFR --> UCMA : DependsOn
-AC --> UCMA : Refines
-R --> UCMA : Refines
 
 note bottom of FR
   Each of the twelve declared requirements carries a
@@ -604,6 +601,9 @@ note bottom of UC
 end note
 
 note bottom of AC
+  AC-002 to AC-006 are declared inputs the model
+  traces from; the registered link runs from the
+  Use-Case Model to the Test Case artifact.
   AC-001 is not a row of this table: it fixes how
   NFR-002 page load is measured and is carried by
   the Supplementary Specification.
