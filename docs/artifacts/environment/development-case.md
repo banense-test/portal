@@ -267,7 +267,7 @@ All 16 CORE artifacts are produced, with baseline ownership unchanged. No CORE a
 
 ```plantuml
 @startuml
-title Artifact scope — CORE per baseline, OPTIONAL delta (Portal, Inception 2)
+title Artifact scope — CORE per baseline, OPTIONAL delta (Portal, Inception 3)
 
 skinparam classAttributeIconSize 0
 
