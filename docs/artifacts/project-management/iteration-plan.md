@@ -6,12 +6,11 @@
 - **Owner:** ProjectManager
 - **Date:** 2026-10-07
 ## Iteration Objectives
-
-This plan carries two levels. The **coarse roadmap** is cross-iteration: the milestone sequence and the iteration boundaries. The **fine plan** is bounded to Inception iteration 2: its work items and their owners. Planning beyond the next iteration in fine-grained detail is waste — no architectural baseline and no measured actual for Elaboration exist yet.
+This plan carries two levels. The **coarse roadmap** is cross-iteration: the milestone sequence and the iteration boundaries. The **fine plan** is bounded to Inception iteration 3: its work items and their owners. Planning beyond the next iteration in fine-grained detail is waste — no architectural baseline and no measured actual for Elaboration exist yet.
 
 ```plantuml
 @startuml
-title Iteration Plan structure — the two-level planning model (Portal, Inception 2)
+title Iteration Plan structure — the two-level planning model (Portal, Inception 3)
 
 skinparam classAttributeIconSize 0
 
@@ -92,6 +91,18 @@ end note
 | O-2 | Re-run the review with all three lenses, the management lens included, at the LCO gate. | Review Record entries from the Reviewer, the BusinessReviewer and the ManagementReviewer. |
 | O-3 | Conduct the Project Approval Review ahead of the LCO verdict. | The Review Record's Project Approval Review entry. |
 | O-4 | Re-assess LCO readiness against X-1 to X-5 on the corrected baseline and record the verdict. | The ReviewCoordinator's LCO verdict in the Review Record. |
+
+**Not an objective of this iteration.** No executable increment. Inception's output is the artifact scope and the risk record, not running code. No acceptance criterion is closed this iteration — see Evaluation Criteria. No use case is newly detailed: the selection made in Inception 1 stands.
+
+### Inception iteration 3 — objectives
+
+| # | Objective | Exit evidence |
+|---|---|---|
+| O-1 | Close every finding open at the end of Inception 2, minor ones included. | The Review Record's finding ledger carries no open finding. |
+| O-2 | Register the declared trace links in the trace repository so the coverage the artifacts claim is machine-verifiable. | The Requirements Traceability Matrix shows no Business-level LEAF for NFR-002 to NFR-005, and the Test Evaluation Summary appears in the trace tree. |
+| O-3 | Re-run the review with all three lenses at the LCO gate. | Review Record entries from the Reviewer, the BusinessReviewer and the ManagementReviewer. |
+| O-4 | Conduct the Project Approval Review ahead of the LCO verdict. | The Review Record's Project Approval Review entry. |
+| O-5 | Re-assess LCO readiness against X-1 to X-5 on the corrected baseline and record the verdict. | The ReviewCoordinator's LCO verdict in the Review Record. |
 
 **Not an objective of this iteration.** No executable increment. Inception's output is the artifact scope and the risk record, not running code. No acceptance criterion is closed this iteration — see Evaluation Criteria. No use case is newly detailed: the selection made in Inception 1 stands.
 
