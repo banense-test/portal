@@ -323,40 +323,41 @@ Inception 2 cost 1.73× Inception 1 in tokens and 1.85× in agent elapsed time, 
 **The 14-day bound is the process rule for any human gate, not a per-gate declaration.** It applies to all three gates. Where a gate has no declared ceiling of its own, the process bound applies and is reported; no per-gate ceiling is invented, and no gate is left without the process bound. Measured queue time is reported apart from agent time and is never added to it.
 
 ## Resources
+The agent role profile: which roles execute in which iteration. Roles not listed do not participate — BusinessProcessAnalyst (Business Modeling inactive, no business model is authored) and CapsuleDesigner (not a real-time system) do not participate in any iteration.
 
-The agent role profile: which roles execute in which iteration. Roles not listed do not participate — BusinessProcessAnalyst and BusinessReviewer (Business Modeling inactive) and CapsuleDesigner (not a real-time system) do not participate in any iteration.
+| Role | I1 | I2 | I3 | E1 | E2 | C1 | C2 | C3 | T1 |
+|---|---|---|---|---|---|---|---|---|---|
+| ProcessEngineer | author | correct | correct | prepare | prepare | — | — | — | — |
+| SystemAnalyst | author | correct | correct | detail | detail | — | — | — | — |
+| RequirementsSpecifier | author | correct | — | detail | detail | — | — | — | — |
+| SoftwareArchitect | author | — | — | author | stabilise | guide | guide | guide | — |
+| Designer | — | — | — | author | author | author | author | author | — |
+| UserInterfaceDesigner | — | — | — | author | author | author | author | author | — |
+| DatabaseDesigner | — | — | — | author | author | author | — | — | — |
+| Implementer | — | — | — | build | build | build | build | build | — |
+| Integrator | — | — | — | — | integrate | integrate | integrate | integrate | — |
+| TestManager | — | correct | correct | plan | plan | plan | plan | plan | — |
+| TestAnalyst | — | — | — | — | author | author | author | author | — |
+| TestDesigner | — | — | — | — | author | author | author | author | — |
+| Tester | — | — | — | — | execute | execute | execute | execute | execute |
+| DeploymentManager | — | — | — | — | — | — | — | prepare | deploy |
+| ConfigurationManager | — | — | — | configure | maintain | maintain | maintain | maintain | maintain |
+| ChangeControlManager | — | — | — | — | — | on CR | on CR | on CR | on CR |
+| ProjectManager | author | author | author | plan | plan | plan | plan | plan | plan |
+| TechnicalWriter | — | — | — | — | — | author | author | author | author |
+| Reviewer | review | review | review | review | review | review | review | review | review |
+| CodeReviewer | — | — | — | — | — | review | review | review | — |
+| ManagementReviewer | review | review | review | — | review | — | — | review | review |
+| BusinessReviewer | review | review | review | — | review | — | — | review | review |
+| ReviewCoordinator | verdict | verdict | verdict | verdict | verdict | verdict | verdict | verdict | verdict |
 
-| Role | I1 | I2 | E1 | E2 | C1 | C2 | C3 | T1 |
-|---|---|---|---|---|---|---|---|---|
-| ProcessEngineer | author | correct | prepare | prepare | — | — | — | — |
-| SystemAnalyst | author | correct | detail | detail | — | — | — | — |
-| RequirementsSpecifier | author | correct | detail | detail | — | — | — | — |
-| SoftwareArchitect | author | — | author | stabilise | guide | guide | guide | — |
-| Designer | — | — | author | author | author | author | author | — |
-| UserInterfaceDesigner | — | — | author | author | author | author | author | — |
-| DatabaseDesigner | — | — | author | author | author | — | — | — |
-| Implementer | — | — | build | build | build | build | build | — |
-| Integrator | — | — | — | integrate | integrate | integrate | integrate | — |
-| TestManager | — | correct | plan | plan | plan | plan | plan | — |
-| TestAnalyst | — | — | — | author | author | author | author | — |
-| TestDesigner | — | — | — | author | author | author | author | — |
-| Tester | — | — | — | execute | execute | execute | execute | execute |
-| DeploymentManager | — | — | — | — | — | — | prepare | deploy |
-| ConfigurationManager | — | — | configure | maintain | maintain | maintain | maintain | maintain |
-| ChangeControlManager | — | — | — | — | on CR | on CR | on CR | on CR |
-| ProjectManager | author | author | plan | plan | plan | plan | plan | plan |
-| TechnicalWriter | — | — | — | — | author | author | author | author |
-| Reviewer | review | review | review | review | review | review | review | review |
-| CodeReviewer | — | — | — | — | review | review | review | — |
-| ManagementReviewer | review | review | — | review | — | — | review | review |
-| ReviewCoordinator | verdict | verdict | verdict | verdict | verdict | verdict | verdict | verdict |
+**The business lens at every lifecycle gate.** The BusinessReviewer participates in I1, I2, I3, E2, C3 and T1 — the iterations that close the four lifecycle milestones LCO (I3), LCA (E2), IOC (C3) and PR (T1), plus the two earlier Inception iterations for the record. The business lens is the only lens that re-derives the Development Case §4 INACTIVE verdict each iteration, and that re-derivation is what would catch a business process entering scope through a Change Request. Leaving its execution unplanned would leave the re-derivation unscheduled. The lens's output at each gate is a Review Record entry: the re-derived §4 verdict, the business-volatility annotation check, and the business-dimension traceability compliance check. The BusinessProcessAnalyst remains non-participating: the discipline is inactive, so no business model, no `BUC-NNN` and no `BR-NNN` is authored. Executing the lens is not authoring the model, and the two are recorded separately here so the profile and the Development Case's Roles and Ownership table cannot disagree.
 
-**The management lens at every lifecycle gate.** The ManagementReviewer participates in I1, I2, E2, C3 and T1 — the iterations that close the four lifecycle milestones LCO (I2), LCA (E2), IOC (C3) and PR (T1), plus I1 for the record. The management lens supplies evidence at each gate: a compliance table against that milestone's exit criteria, a risk status chart with trend direction, and a four-axis health scorecard. The ReviewCoordinator remains the verdict owner — the management lens supplies evidence, it does not replace the coordinator. A gate verified only by the technical and business lenses has no assessment of feasibility, acceptability, four-axis health or risk-retirement trend, which is what LCO, LCA and IOC require.
+**The management lens at every lifecycle gate.** The ManagementReviewer participates in I1, I2, I3, E2, C3 and T1 — the iterations that close the four lifecycle milestones LCO (I3), LCA (E2), IOC (C3) and PR (T1), plus the two earlier Inception iterations for the record. The management lens supplies evidence at each gate: a compliance table against that milestone's exit criteria, a risk status chart with trend direction, and a four-axis health scorecard. The ReviewCoordinator remains the verdict owner — the management lens supplies evidence, it does not replace the coordinator. A gate verified only by the technical lens has no assessment of feasibility, acceptability, four-axis health or risk-retirement trend, which is what LCO, LCA and IOC require.
 
 **Parallelism discipline.** The profile above is the plan, not a lever. If an iteration slips, the remedy is another iteration — never more agent roles executing at once, and never cutting declared scope. Adding roles to a phase increases coordination overhead and artifact contention without proportional benefit, and declared scope is the stakeholder's to change, not the plan's.
 
 **Human resources.** One human participates: the stakeholder, at the three gates above. Infrastructure and HR perform the real-Keycloak and real-AD validation as human work (CON-035); it is bounded as a risk (R003), not as an estimate.
-
 ## Use Cases and Scenarios Addressed
 
 Inception 2 selects no use case for detail and changes no use case. The selection made in Inception 1 stands: all twelve surveyed one-to-one against the twelve declared requirements, five detailed because they force an architectural decision. Inception 2 closes findings against the artifacts that carry them; it does not re-scope the iteration.
