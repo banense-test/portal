@@ -143,7 +143,7 @@ Twelve use cases, one per declared requirement. Every use case passes the ATM te
 
 ```plantuml
 @startuml
-title UC-002 Clock In and Clock Out — flow of events (Inception 1, architecturally significant)
+title UC-002 Clock In and Clock Out — flow of events (Inception 2, architecturally significant)
 
 start
 :Employee opens the portal;
@@ -236,7 +236,7 @@ stop
 
 ```plantuml
 @startuml
-title UC-011 Search Employee Directory — interaction scenario (Inception 1)
+title UC-011 Search Employee Directory — interaction scenario (Inception 2)
 
 actor "Employee\nSTK-004" as EMP
 participant "Directory page\nRazor Pages" as UI
@@ -324,7 +324,7 @@ end note
 
 ```plantuml
 @startuml
-title UC-004 Export Monthly Clocking Report as CSV — flow of events (Inception 1, architecturally significant)
+title UC-004 Export Monthly Clocking Report as CSV — flow of events (Inception 2, architecturally significant)
 
 start
 :HR selects one calendar month;
@@ -412,7 +412,7 @@ stop
 
 ```plantuml
 @startuml
-title UC-010 Feature or Un-feature a News Item — invariant CON-011 / CON-012 (Inception 1)
+title UC-010 Feature or Un-feature a News Item — invariant CON-011 / CON-012 (Inception 2)
 
 start
 :HR opens a news item, at publication or on edit;
@@ -483,7 +483,7 @@ stop
 
 ```plantuml
 @startuml
-title UC-005 Correct or Insert a Clocking — flow of events (Inception 1, architecturally significant)
+title UC-005 Correct or Insert a Clocking — flow of events (Inception 2, architecturally significant)
 
 start
 :Employee reports a missing or wrong clocking to HR;
