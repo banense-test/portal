@@ -75,44 +75,34 @@ end note
 
 **The phase objectives against the iteration objectives.** Define Project Scope is O-1 and O-4: the baseline is complete and the scope is agreed, but the review that certifies it is not clean. Identify Critical Risks is discharged by the Risk List, which carries no finding from any lens. Tailor Development Process is discharged by the Development Case, whose one Major finding was closed this iteration, and by the Iteration Plan, which carries one Minor finding open. Establish Feasibility is O-2, O-3 and O-4: the architecture is sound and the review ran with all three lenses, but the Project Approval Review was not conducted and the milestone was not sanctioned. No phase objective was left unaddressed; two are met with variance.
 ## Adherence to Plan
-
-All nine fine-plan work items W-1 to W-9 were executed, in the planned order, each by its planned owner. The critical chain ran sequentially as planned and ended at the human gate. The plan's forecast discipline held: no work item carried a size and no spend figure was quoted anywhere, because no phase had closed.
+All ten fine-plan work items W-1 to W-10 were executed, in the planned order, each by its planned owner. The critical chain ran sequentially as planned and ended at the human gate. The plan's forecast discipline held: no work item carried a size, and the one spend figure quoted was the forecast built from Inception 1's measured actual.
 
 ```plantuml
 @startuml
-title Inception 1 — critical chain as executed, with the measured actual (Portal)
+title Inception 2 — critical chain as executed, with the measured actual (Portal)
 
 |ProcessEngineer|
 start
-:Development Case — tailoring, classification, optional triggers, version policy;
-note right
-  Measured actual for this iteration:
-  6,891,971 tokens
-  agent elapsed time 1:17:17.4186317
-  Seven sequential agent stretches
-  from iteration start to the gate.
-end note
-
+:Development Case F1 — S1 tool assessment and gap table rewritten against the repository;
 |SystemAnalyst|
-:Vision — problem statement, stakeholders, features, constraints;
-:Use-Case Model — 12 use cases surveyed, 5 detailed;
-
+:Vision F1 — A-1 reconciled with CON-035 and A-3;
+:Use-Case Model F1 — UC-011 to Active Directory association reversed;
 |RequirementsSpecifier|
-:Supplementary Specification — FURPS+ classification, cross-cutting mechanisms;
-
-|SoftwareArchitect|
-:Software Architecture Document — first cut, architectural mechanisms;
-
+:Supplementary Specification F1 — audit include list reconciled with UC-010;
 |ProjectManager|
-:Risk List — R001 to R010 classified;
-:Iteration Plan — coarse roadmap and fine plan;
-
+:Iteration Plan F1 Major, F2 Major, F3 Minor, F4 Minor — role profile, Inception 2 roadmap, Project Approval Review, gate bounds;
+:Risk List — carried unchanged, no finding from any lens;
+|TestManager|
+:Test Evaluation Summary F1 — SCM signal re-read, E-6 corrected to met;
+:Test Evaluation Summary F2 — upstream links not registered, deferred;
 |Reviewer|
-:Artifact review — 11 findings across 8 artifacts;
-
+:Re-review of every corrected artifact — 6 of 7 findings closed, 1 deferred;
+|ManagementReviewer|
+:Management lens re-review — 4 of 4 findings closed;
+|BusinessReviewer|
+:Business lens re-review — 1 new Minor finding on the role profile;
 |ReviewCoordinator|
 :LCO verdict — iteration REQUIRED;
-
 |Stakeholder|
 :Human gate — LCO sanction;
 note right
@@ -142,25 +132,24 @@ No phase had closed before this iteration, so no forecast existed and none was i
 
 ### Variance against the plan
 
-Six variances. Each is recorded with its root cause and the adjustment it forces in Inception 2, in the same breath — a variance recorded without its correction is left open for the next iteration's reviewers to find.
+Five variances. Each is recorded with its root cause and the adjustment it forces in Inception 3, in the same breath — a variance recorded without its correction is left open for the next iteration's reviewers to find.
 
-| # | Planned | Actual | Root cause | Adjustment in Inception 2 |
+| # | Planned | Actual | Root cause | Adjustment in Inception 3 |
 |---|---|---|---|---|
-| V-1 | Exit criteria X-1 to X-5 assumed the iteration closes the milestone. | The verdict is LCO — iteration REQUIRED. The milestone is not achieved. | The plan treated the LCO verdict as an outcome of the iteration rather than as a gate that can refuse. The plan had no Inception 2 to carry a refusal. | Add Inception 2 to the coarse roadmap with a fine plan whose work items are the closure of every open finding, and re-assess X-1 to X-5 there. Iteration Plan#F2. |
-| V-2 | The role profile marked ManagementReviewer as non-participating in I1, E2 and C3. | The management lens executed at this gate and raised two Major findings. | The profile was built from the discipline intensity matrix without checking which roles own the lifecycle milestone review. | Add ManagementReviewer to the role profile for I1, E2 and C3, with the verdict at LCO, LCA and IOC. Iteration Plan#F1. |
-| V-3 | The milestone table listed LCO, LCA, IOC and PR only. | No Project Approval Review was conducted and none is scheduled. | The review-event framework was not reconciled against the milestone sequence when the roadmap was composed. | Schedule the Project Approval Review ahead of the LCO re-assessment, or record the determination that it does not apply with its basis. Iteration Plan#F3. |
-| V-4 | The human-gate table reported "None declared" ceilings on the LCO and PR gates. | The 14-day bound is the process bound on any human gate, not a per-gate declaration. | The bound was read as a declaration to be made or withheld per gate, rather than as the process rule that applies to every gate. | Report the 14-day process bound on all three human gates, with measured queue time apart from agent time. Iteration Plan#F4. |
-| V-5 | The roadmap chart asserted "lasts 1 day" per iteration. | The caption declared the axis ordinal and the plan declared no duration measured. | The gantt diagram type requires a duration, so the chart asserted one the plan disclaims. | Replace the roadmap chart with a duration-free representation, or state the nominal unit inside the chart itself. Iteration Plan#F1 (Minor). |
-| V-6 | The plan quoted no spend figure, because no phase had closed. | The measured actual now exists: 6,891,971 tokens, agent 1:17:17.4186317, human queue 0:00:00. | Not a variance — the plan's forecast rule firing for the first time. | Build the Inception 2 forecast from this measured actual. No assumed share survives it. |
+| V-1 | O-1: every Inception 1 finding closed, minor ones included. | Ten of eleven closed; Test Evaluation Summary#F2 Deferred with the defect standing. | The remedy for #F2 is the trace steward's act, not the artifact owner's, and the plan assigned the work item to the TestManager with the SystemAnalyst named only as an accessory. The owner who could perform the remedy was not the owner of the work item. | W-1 and W-2 assign the trace-registration work to the SystemAnalyst as trace steward, with the TestManager as the artifact owner. The two are separated so the work item's owner is the role that can close it. |
+| V-2 | O-3: the Project Approval Review conducted ahead of the LCO verdict. | Not conducted in either Inception iteration; LCO-8 unmet. | The review-event framework was reconciled against the milestone sequence in Inception 2 and the review was scheduled as W-9, but W-9 was sequenced after the re-review and the iteration closed before it ran. The plan scheduled it; the iteration did not reach it. | W-7 sequences the Project Approval Review before the LCO verdict and after the re-review, and O-4 states it as an objective with the Review Record entry as its exit evidence. |
+| V-3 | The role profile recorded the BusinessReviewer as non-participating in every iteration. | The business lens executed at this gate and raised one Minor finding. | The profile was built from the discipline intensity matrix, which records the discipline as inactive, without separating the discipline's inactivity from the lens's execution. | The role profile now records the BusinessReviewer as executing the business lens at I1, I2, I3, E2, C3 and T1, with the BusinessProcessAnalyst still non-participating. Iteration Plan#F1 (Minor). |
+| V-4 | The plan forecast Inception 2's spend as "of the same order" as Inception 1's measured actual. | The measured actual is 1.73× in tokens and 1.85× in agent elapsed time. | The forecast treated the artifact surface as the cost driver. The actual cost driver is re-reading the accumulated surface to correct it, which grows with the number of iterations already closed, not with the number of artifacts. | The Inception 3 forecast is built from Inception 2's measured actual and states the growth mechanism explicitly, rather than from the artifact count. No per-stretch figure is derived from two observations. |
+| V-5 | The plan's forecast rule: no spend figure before a phase closes. | The rule fired for the first time in Inception 1 and holds. | Not a variance — the rule working as designed. | None. The rule is unchanged and is applied to Inception 3. |
 
 ```plantuml
 @startuml
-title Variance and adjustment — Inception 1 plan against the iteration's facts (Portal)
+title Variance and adjustment — Inception 2 plan against the iteration's facts (Portal)
 
 skinparam classAttributeIconSize 0
 
 class "PlannedWorkItem" as PWI <<plan>> {
-  + id : W-1 .. W-9
+  + id : W-1 .. W-10
   + owner : role
   + exitEvidence : text
 }
@@ -168,12 +157,12 @@ class "PlannedWorkItem" as PWI <<plan>> {
 class "ExecutedStretch" as EXE <<actual>> {
   + role : role
   + artifact : name
-  + measuredTokens : 6891971
-  + measuredAgentTime : 1:17:17.4186317
+  + measuredTokens : 11955748
+  + measuredAgentTime : 2:22:39.389271
 }
 
 class "Variance" as VAR <<record>> {
-  + id : V-1 .. V-6
+  + id : V-1 .. V-5
   + planned : text
   + actual : text
   + rootCause : text
@@ -181,13 +170,14 @@ class "Variance" as VAR <<record>> {
 }
 
 class "Finding" as FND <<record>> {
-  + key : artifact#Fn
-  + severity : Critical Major Minor
+  + key : artifact Fn
+  + severity : Major | Minor
+  + lens : Reviewer | ManagementReviewer | BusinessReviewer
   + owner : role
 }
 
 class "Adjustment" as ADJ <<plan>> {
-  + target : Inception 2
+  + target : Inception 3
   + workItem : text
   + owner : role
 }
@@ -205,13 +195,29 @@ note bottom of VAR
 end note
 
 note bottom of ADJ
-  Every adjustment lands in Inception 2.
+  Every adjustment lands in Inception 3.
   None cuts or defers declared scope.
 end note
 @enduml
 ```
 
-**No adjustment cuts or defers declared scope.** Every one of the six is a correction to the plan's own structure or to a statement about observable state. Declared scope is the stakeholder's to change, not the plan's.
+**No adjustment cuts or defers declared scope.** Every one of the five is a correction to the plan's own structure or to a statement about observable state. Declared scope is the stakeholder's to change, not the plan's.
+
+### Measured actuals — the second closed iteration
+
+Two iterations have now closed with a measured actual. The two currencies are reported side by side and are never added.
+
+| Quantity | Inception 1 | Inception 2 | Goal — the decision it enables |
+|---|---|---|---|
+| Token spend | 6,891,971 | 11,955,748 | Forecast Inception 3's spend. The ratio 1.73× is the measured cost of correcting an accumulated artifact surface rather than authoring it. |
+| Agent elapsed time | 1:17:17.4186317 | 2:22:39.389271 | Forecast the next iteration's agent time. The ratio 1.85× tracks the token ratio, so the two move together here. |
+| Human queue time | 0:00:00 | 0:00:00 | Detect whether a human gate has become the critical path. It has not. Excludes the end-of-iteration approval gate, which is not measured. |
+| Artifacts produced | 9 | 10 | Check the Development Case's CORE set is being produced at the rate the plan assumes. |
+| Agent invocations | 11 | 11 | Check the role profile against actual participation. The profile is a plan, and this is the second observation of it. |
+| User interactions | 11 | 10 | Detect whether the stakeholder is on the critical path. |
+| Average quality score | 10.0 | 9.9 | Detect a quality trend across iterations. **Not a substitute for the finding ledger** — six findings are open while this figure reads 9.9, so the figure does not measure review outcome and is not read as if it did. |
+
+**No budget is set and none is proposed.** CON-034 declares no budget or cap on token spend and none is to be set by the team. Declared scope is never cut or deferred to fit an estimate.
 
 ## Use Cases and Scenarios Implemented
 
