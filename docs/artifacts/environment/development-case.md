@@ -23,7 +23,7 @@ title S1 — Organization and tool baseline (Portal, assessed 2026-10-07)
 
 skinparam classAttributeIconSize 0
 
-package "Organization — 25-role roster, 22 participating" as ORG {
+package "Organization — 25-role roster, 23 participating" as ORG {
   class "Requirements" as G1 <<discipline>> {
     SystemAnalyst
     RequirementsSpecifier
@@ -62,15 +62,15 @@ package "Organization — 25-role roster, 22 participating" as ORG {
     CodeReviewer
     ManagementReviewer
     ReviewCoordinator
+    BusinessReviewer
   }
   class "Documentation" as G10 <<discipline>> {
     TechnicalWriter
   }
 }
 
-package "Not participating — 3 roles" as OFF {
+package "Not participating — 2 roles" as OFF {
   class "BusinessProcessAnalyst" as BPA <<inactive>>
-  class "BusinessReviewer" as BR <<inactive>>
   class "CapsuleDesigner" as CD <<inactive>>
 }
 
@@ -111,8 +111,14 @@ G4 --> T5
 G8 --> T3
 G8 --> T6
 T1 --> T7
-BPA -[hidden]- BR
-BR -[hidden]- CD
+BPA -[hidden]- CD
+
+note right of G9
+  BusinessReviewer executes the business lens
+  at the lifecycle gates I2, E2, C3 and T1.
+  Business Modeling is inactive as a
+  production discipline (T-1).
+end note
 @enduml
 ```
 
@@ -137,17 +143,18 @@ BR -[hidden]- CD
 
 | # | Decision | Type | Rationale |
 |---|---|---|---|
-| T-1 | Business Modeling INACTIVE; BusinessProcessAnalyst and BusinessReviewer do not participate | Structural | Classification verdict above. No business process exists to model. |
+| T-1 | Business Modeling INACTIVE as a **production** discipline; BusinessProcessAnalyst does not participate | Structural | Classification verdict above. No business process exists to model, so no BUC, no `BR-NNN` and no business object model is produced. The BusinessReviewer is **not** covered by this decision — it participates in its review capacity, see Roles and Ownership. |
 | T-2 | CapsuleDesigner does not participate | Structural | Real-time-system verdict above. No capsule, no state machine, no concurrent signal. |
 | T-3 | No OPTIONAL artifact is produced this iteration | Structural | All six triggers evaluated and none fired — see Optional Artifact Triggers. |
 | T-4 | Discipline intensity is the canonical matrix, unmodified | — | No deviation is proposed. The project's risk profile (R001, R002) is handled by the Requirements and Analysis & Design intensity the matrix already assigns, not by raising it. |
 | T-5 | Version policy pins .NET 10 and PostgreSQL 18 | Thin | CON-027, CON-029. Recorded via the version policy; the SoftwareArchitect anchors it in the Software Architecture Document. |
 | T-6 | The team builds and tests against stand-ins only; validation against the real Keycloak and AD is human work, not planned team work | Thin | CON-035. Placeholder configuration values are held in configuration, never in code. |
 | T-7 | CI runs on the hosted provider; it never holds production data or credentials and never deploys | Thin | CON-033. Infrastructure deploys (CON-036). |
+| T-8 | Trace registration is a named step of the iteration-preparation checkpoint, owned by the SystemAnalyst as trace steward | Thin | Process improvement carried out of Inception 2. The same defect class — declared traceability not registered in the trace repository — appeared in two artifacts and survived two iterations because no role's iteration work owned the registration step. See Guidelines and Procedures. |
 
 ```plantuml
 @startuml
-title Development Case workflow — active disciplines and artifact flow (Portal, Inception 2)
+title Development Case workflow — active disciplines and artifact flow (Portal, Inception 3)
 
 start
 :list_artifacts — eight artifacts exist from Inception 1;
@@ -191,6 +198,12 @@ partition "Disciplines active this project" {
 
 :Prepare Environment for Project (S3);
 :Verify tool configuration before iteration start;
+:Verify trace registration is current;
+note right
+  T-8 — the trace steward's step
+  in the iteration-preparation
+  checkpoint
+end note
 :Persist Development Case;
 stop
 @enduml
@@ -218,10 +231,11 @@ package "Thin Plug-Ins applied" as THIN {
   [Project tool references\nCONTRIBUTING.md and CI workflow] as P1
   [Version policy\nNET 10 and PostgreSQL 18] as P2
   [Measurement policy\ntokens and elapsed time] as P3
+  [Trace registration step\nin the iteration-preparation checkpoint] as P4
 }
 
 package "Structural Plug-Ins applied" as STRUCT {
-  [Business Modeling INACTIVE\nBPA and BusinessReviewer off] as S1
+  [Business Modeling INACTIVE\nas a production discipline] as S1
   [CapsuleDesigner off\nnot a real-time system] as S2
 }
 
