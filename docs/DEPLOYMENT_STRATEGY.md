@@ -5,7 +5,7 @@
 - **Phase:** Inception
 - **Status:** Draft — under review
 - **Milestone Target:** End of Inception (not yet achieved)
-- **Iteration:** 1, Cycle 1
+- **Iteration:** 2, Cycle 1
 - **Owner:** DeploymentManager
 - **Date:** 2026-10-07
 
@@ -46,7 +46,7 @@ Three environments, and only three. The Development Case records the multi-envir
 
 ```plantuml
 @startuml
-title Deployment environments and the promotion path (Portal, Inception 1)
+title Deployment environments and the promotion path (Portal, Inception 2)
 
 skinparam componentStyle rectangle
 
@@ -129,19 +129,12 @@ end note
 :Infrastructure installs PostgreSQL 18 and the application\non the Windows Server estate (CON-029, CON-036);
 :Infrastructure replaces the placeholder configuration values\nwith the real issuer, client id, secret, LDAP host,\nbind account and base DN (CON-035);
 note right
-  The OIDC client is already registered in Keycloak
-  and the credentials are with the team (STK-003).
-  The portal deploys nothing for Keycloak (CON-030).
+  The OIDC client is already registered in Keycloak and the\ncredentials exist for the human validation gate run by\nInfrastructure with HR (A-1, A-2).\n  Team build and test is against the stand-in issuer,\nnever against the real Keycloak (CON-035, A-3).\n  The portal deploys nothing for Keycloak (CON-030).
 end note
 
 :Gate 1 — development-site acceptance, against the stand-ins;
 note right
-  Team-run, before handover.
-  Use cases exercised end to end.
-  AC-002 and AC-006 exercised.
-  The audit trail verified for the three change classes.
-  AC-001 is NOT closable here: it is measured on the
-  corporate network, which the development site is not.
+  Team-run, before handover.\n  Use cases exercised end to end.\n  AC-002 and AC-006 exercised.\n  The audit trail verified for the three change classes.\n  AC-001 is NOT closable here: it is measured on the\n  corporate network, which the development site is not.
 end note
 
 if (Gate 1 passed?) then (no)
@@ -153,17 +146,11 @@ endif
 :Hand over to Infrastructure (CON-036);
 :Gate 2 — install-site acceptance, in production;
 note right
-  Infrastructure with HR, human work (CON-035).
-  AC-001 measured as the full page load on the
-  corporate network, including the clocking script.
-  AC-004 verified against the real AD.
-  Login verified against the real Keycloak.
-  A blank AD attribute renders blank, no default (CON-016).
+  Infrastructure with HR, human work (CON-035).\n  AC-001 measured as the full page load on the\n  corporate network, including the clocking script.\n  AC-004 verified against the real AD.\n  Login verified against the real Keycloak.\n  A blank AD attribute renders blank, no default (CON-016).\n  Process bound on this human gate: 14 days, reported\n  as queue time apart from agent time, never added to it.
 end note
 
 if (Gate 2 passed?) then (no)
-  :Infrastructure and HR report the finding;
-  :The remedy is another iteration (CON-026);
+  :Infrastructure and HR report the finding;\n  :The remedy is another iteration (CON-026);
   stop
 else (yes)
 endif
@@ -171,24 +158,16 @@ endif
 :Go-live to the declared population of 200 across 3 offices;
 :The shared Excel sheet is retired as a recording channel (BG-002);
 note right
-  The historical sheets stay on the shared drive
-  as a read-only archive (CON-037).
-  No data migration: the portal starts empty.
-  No training: AC-005 requires 80% to clock
-  with no prior training.
+  The historical sheets stay on the shared drive\n  as a read-only archive (CON-037).\n  No data migration: the portal starts empty.\n  No training: AC-005 requires 80% to clock\n  with no prior training.
 end note
 
 :Measure adoption against BG-003 — 80% within 3 months;
 :Read R002's early-warning indicator — clocking volume per working day;
 
 if (A rollback trigger fires?) then (yes)
-  :Suspend the portal as the recording channel;
-  :New clockings revert to the shared Excel sheet;
+  :Suspend the portal as the recording channel;\n  :New clockings revert to the shared Excel sheet;
   note right
-    Available at any time: no data migration (CON-037)
-    and no local copy of employee data (CON-017).
-    Clockings already recorded stay in PostgreSQL
-    and are read directly (NFR-005).
+    Available at any time: no data migration (CON-037)\n    and no local copy of employee data (CON-017).\n    Clockings already recorded stay in PostgreSQL\n    and are read directly (NFR-005).
   end note
   :Infrastructure with HR decide, as operator and process owner (CON-036);
 else (no)
@@ -252,7 +231,7 @@ Two gates, distinct criteria, distinct sites. The final site test is a formality
 | Gate 1 — development-site acceptance | Development, against the stand-ins | Development team | Every use case exercised end to end; AC-002 (clocking without help); AC-006 (a clocking made while the network is down for the full 5-minute window is not lost); the audit trail verified for the three change classes; the blank-attribute directory path exercised. | AC-001 — the full page load is measured on the corporate network, which the development site is not. AC-004 against the real AD. |
 | Gate 2 — install-site acceptance | Production, on the corporate network | Infrastructure with HR | AC-001 measured as the full page load including the clocking page's script; AC-004 against the real AD; login against the real Keycloak; a blank AD attribute renders blank with no default invented. | AC-003 and AC-005, which are exercised in Construction and measured after go-live. |
 
-**Gate 2 is human work, not team work to plan** (CON-035). It is bounded as R003, with a 14-day ceiling, and its feedback must reach the team before Elaboration closes. If it delays a milestone, the remedy is another iteration (CON-026).
+**Gate 2 is human work, not team work to plan** (CON-035). It is bounded as R003. Its process bound is 14 days — the bound the process places on any human gate, not a per-gate ceiling invented here — and its measured queue time is reported apart from agent time and never added to it. Its feedback must reach the team before Elaboration closes. If it delays a milestone, the remedy is another iteration (CON-026).
 
 ## Support Material and Bill of Materials
 
@@ -318,6 +297,57 @@ note bottom of INF
 end note
 @enduml
 ```
+
+## Deployment Discipline Across the Phases
+
+Deployment is a discipline that runs the whole arc, not a Transition-only activity. What each phase produces is fixed by the Development Case and by the declared constraints; nothing is pulled forward and nothing is deferred.
+
+```plantuml
+@startuml
+title Deployment discipline — what each phase produces (Portal)
+
+start
+:Inception — deployment mode and topology sketch;
+note right
+  Mode: custom-built, single-tenant, installed by the operator.
+  Topology: one network, one timezone, one database.
+  Output: this strategy. No release: no executable increment.
+end note
+
+:Elaboration — topology refined against the SAD Deployment View;
+note right
+  The SAD Deployment View is the target topology.
+  The Deployment Model trigger stays NOT FIRED:
+  single application, single database, single network.
+end note
+
+:Construction — the handover surface is prepared;
+note right
+  Configuration keys named, placeholders in the repository (CON-035).
+  User Documentation operations section authored (TechnicalWriter).
+  No deployment automation: Infrastructure installs (CON-036).
+end note
+
+:Transition — Release Notes drafted, evolved and finalised;
+note right
+  DC 5.1: Release Notes enter at Transition.
+  Features by use case, installation steps, known issues,
+  migration notes, BOM inline, acceptance verdict.
+end note
+
+:Transition — SCM release tagged; the two acceptance gates run;
+stop
+@enduml
+```
+
+| Phase | Deployment output | Not produced, and why |
+|---|---|---|
+| Inception | This strategy: mode, target community, target environments, rollout, rollback criteria, the two acceptance gates, the support-material plan. | No Release Notes (DC §5.1 — Transition). No User Documentation (DC §5.1 — Construction). No Deployment Model (trigger NOT FIRED). No SCM release: there is no executable increment to tag. |
+| Elaboration | The topology refined against the Software Architecture Document's Deployment View. | No new deployment artifact. The Deployment Model trigger is re-evaluated each iteration and stays NOT FIRED while the topology is one application, one database, one network. |
+| Construction | The handover surface: the configuration keys named and their placeholders in the repository (CON-035); the User Documentation operations section authored by the TechnicalWriter with this role contributing. | No deployment automation and no installer — Infrastructure installs (CON-036). No monitoring design and no backup design (CON-036, CON-039). |
+| Transition | The Release Notes, drafted, evolved and finalised within the phase; the SCM release tagged; the two acceptance gates run; the handover to Infrastructure. | No training material (AC-005 requires 80% to clock with no prior training). No migration guide (CON-037). |
+
+**The Deployment Model is not produced, and its absence is a recorded decision, not a gap.** The Development Case evaluates its trigger — distributed or multi-node topology, or non-trivial multi-environment — as NOT FIRED: one .NET application, one PostgreSQL instance, one internal network, one timezone (CON-002, CON-006, CON-019, CON-029). Deployment is therefore a section of the Software Architecture Document, and this strategy operationalises that section. Keycloak and Active Directory are external systems the portal consumes, not nodes this project deploys (CON-030).
 
 ## Traceability
 
