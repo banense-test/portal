@@ -218,10 +218,12 @@ note bottom of X
 end note
 
 note bottom of U10
-  Featuring is set at publication or on edit,
-  so it is audited by UC-006 or UC-008.
+  UC-010 writes the news-item change record
+  itself. It cannot rely on UC-006 or UC-008
+  having run: HR can un-feature the current
+  item without editing it FR-010, CON-012.
   NFR-001 names three change classes and
-  featuring is not one of them.
+  featuring is not a fourth.
 end note
 @enduml
 ```
