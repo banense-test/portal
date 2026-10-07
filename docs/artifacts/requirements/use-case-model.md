@@ -75,17 +75,15 @@ end note
 **Boundary.** The rectangle is the Portal. Actors sit on the boundary line. Keycloak is drawn outside the rectangle and is deliberately NOT an actor of any use case: authentication and authorization are cross-cutting mechanisms that every use case depends on, and they are specified in the Supplementary Specification with `<<include>>` from each dependent use case. Active Directory IS an actor of UC-011 because the directory search is a live read of a system of record the portal does not own.
 
 ## Actors
-
 | Actor | Type | Description | Use cases |
 |---|---|---|---|
 | Employee (STK-004) | Human, primary | A Cuba Corp employee — 200 people across 3 offices. Logs in with corporate credentials. Reads the directory and the news, and manages their own clockings. | UC-001, UC-002, UC-007, UC-011 |
 | HR Administrator (STK-001) | Human, primary | Member of the HR AD group (CON-018). Owns the clocking data, the news and the worker category. | UC-003, UC-004, UC-005, UC-006, UC-008, UC-009, UC-010, UC-012 |
-| Active Directory | External system | The system of record for people. Read-only over LDAP; never written to (CON-003, CON-004, CON-032). | UC-011 |
-| Keycloak | External system, cross-cutting | The internal OIDC provider, already running and maintained separately (CON-030). Not an actor of any use case — see the note below. | (none — cross-cutting) |
+| Active Directory | External system, supporting | The system of record for people. Read-only over LDAP; never written to (CON-003, CON-004, CON-032). | UC-011 |
 
-**Actor discovery completeness.** Human actors: Employee, HR Administrator. External systems: Active Directory, Keycloak. Time-trigger actors: **none** — no scheduled job, batch report or expiry rule is declared, and CON-011/CON-012 explicitly forbid a rule that features a news item by itself. Hardware devices: **none** — no biometric clocking (declared exclusion). Administrative actors: **none** — there is no permission administration screen, no role matrix and no audit view screen (CON-018, NFR-005); Infrastructure operates the portal but does not use it (CON-036).
+**Keycloak is not an actor.** It appears on the use-case diagram outside the system boundary to show that every use case is reached through it, and it is deliberately absent from the table above. Authentication and authorization are cross-cutting technical mechanisms: they deliver no observable value to an actor on their own, and the scope guard forbids a use case named "Authenticate". They are specified in the Supplementary Specification and included by every use case that depends on them (CON-001, CON-018, CON-030, CON-031).
 
-**Why Keycloak is not an actor.** Authentication and authorization are cross-cutting technical mechanisms. They deliver no observable value to an actor on their own, and the scope guard forbids a use case named "Authenticate". They are specified in the Supplementary Specification and included by every use case that depends on them.
+**Actor discovery completeness.** Human actors: Employee, HR Administrator. External systems: Active Directory (supporting actor of UC-011), Keycloak (cross-cutting mechanism, not an actor). Time-trigger actors: **none** — no scheduled job, batch report or expiry rule is declared, and CON-011/CON-012 explicitly forbid a rule that features a news item by itself. Hardware devices: **none** — no biometric clocking (declared exclusion). Administrative actors: **none** — there is no permission administration screen, no role matrix and no audit view screen (CON-018, NFR-005); Infrastructure operates the portal but does not use it (CON-036).
 
 ## Use-Case Survey
 
