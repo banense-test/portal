@@ -220,8 +220,7 @@ Two iterations have now closed with a measured actual. The two currencies are re
 **No budget is set and none is proposed.** CON-034 declares no budget or cap on token spend and none is to be set by the team. Declared scope is never cut or deferred to fit an estimate.
 
 ## Use Cases and Scenarios Implemented
-
-**None.** Inception 1 produces no executable increment, so no use case is implemented and no scenario is executed. This is the correct state for the iteration, not a shortfall: the iteration's output is the artifact scope and the risk record.
+**None.** Inception 2 produces no executable increment, so no use case is implemented and no scenario is executed. This is the correct state for the iteration, not a shortfall: the iteration's output is the corrected artifact scope and the risk record.
 
 | UC | Source | This iteration | Implemented | Realization |
 |---|---|---|---|---|
@@ -233,7 +232,6 @@ Two iterations have now closed with a measured actual. The two currencies are re
 | UC-001, UC-003, UC-006, UC-007, UC-008, UC-009, UC-012 | FR-001, FR-003, FR-006 to FR-009, FR-012 | Surveyed | No | None |
 
 **Scenarios named for the TestDesigner.** The alternative flows that carry a risk or an invariant are the ones that must be covered from Elaboration 2: UC-002 A1 (duplicate press), A2 (network unreachable), A3 (clock-out with no open pair); UC-004 A1 (clock-out missing), A2 (day with no clocking), A3 (no category); UC-005 A1 (insertion for a day with no clocking), A2 (employee attempts a correction); UC-010 A1 (clearing the flag on the featured item), A2 (no item featured); UC-011 A1 (empty attribute), A2 (no category), A3 (network unreachable), A4 (no match). None was executed this iteration.
-
 ## Results Relative to Evaluation Criteria
 
 ### (a) This iteration's own exit criteria
