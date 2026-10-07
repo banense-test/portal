@@ -1,0 +1,22 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+TestResults/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local configuration. Real issuer, client id, client secret, LDAP host, bind
+# account and base DN are supplied by Infrastructure at deployment (CON-035).
+appsettings.Development.json
+appsettings.Local.json
+*.env
