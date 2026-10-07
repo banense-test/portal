@@ -323,7 +323,6 @@ X-1 to X-5 are re-assessed in Inception 2, not assumed met in Inception 1. Each 
 **LCO readiness assessment.** The project is viable to proceed to Elaboration. The scope is agreed and complete — twelve declared requirements, twelve use cases, no open scope question. The initial risks are identified and classified, and the three highest-magnitude ones (R001, R003, R004) are architectural and are confronted in Elaboration rather than deferred. The architecture is first-cut and its two external dependencies — the existing Keycloak and the read-only AD — are declared, bounded and validated by human work whose feedback lands before Elaboration closes. What Inception 1 did not deliver is a clean review: eleven findings were raised and the sanction was refused. Inception 2 exists to close them. **This assessment is the ProjectManager's; the milestone verdict is the ReviewCoordinator's, and the milestone is not achieved until that verdict is recorded.**
 
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | Iteration Plan | R001, R002, R003, R004, R005, R006, R007, R008, R009, R010 | Refines | Risk List |
@@ -332,6 +331,5 @@ X-1 to X-5 are re-assessed in Inception 2, not assumed met in Inception 1. Each 
 | Iteration Plan | CON-023, CON-024, CON-025, CON-026, CON-034 | Refines | Development Case |
 | Iteration Plan | BG-001, BG-002, BG-003 | Refines | Vision |
 | Iteration Plan | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Refines | Supplementary Specification |
-| Iteration Plan | Iteration Assessment | Refines | Risk List |
 
-**Reading the table.** The Iteration Plan is sequenced by the Risk List, scoped by the Use-Case Model, and bounded by the Development Case's risk governance and measurement policy. Its acceptance criteria are verified by Test Cases that do not exist yet — the `Traces To` end is the artifact that will carry them, and it is empty of elements this iteration. The last row records that this plan is built from the Iteration Assessment's measured actual and variance analysis, which is the factual basis for the next iteration's plan.
+**Reading the table.** The Iteration Plan is sequenced by the Risk List, scoped by the Use-Case Model, and bounded by the Development Case's risk governance and measurement policy. Its acceptance criteria are verified by Test Cases that do not exist yet — the `Traces To` end is the artifact that will carry them, and it is empty of elements this iteration. The plan's forecast spend is built from the Iteration Assessment's measured actual, which the assessment records; the link is not duplicated here.
