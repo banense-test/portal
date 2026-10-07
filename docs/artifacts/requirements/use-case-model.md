@@ -10,7 +10,7 @@
 ## Use-Case Diagram
 ```plantuml
 @startuml
-title Employee Portal — system boundary, actors and use cases (Inception 1)
+title Employee Portal — system boundary, actors and use cases (Inception 2)
 
 left to right direction
 skinparam packageStyle rectangle
@@ -47,7 +47,7 @@ HR --> UC008
 HR --> UC009
 HR --> UC010
 HR --> UC012
-AD --> UC011
+UC011 --> AD
 
 note bottom of KC
   Cross-cutting, not an actor and not a use case.
@@ -67,14 +67,15 @@ end note
 note bottom of UC011
   Architecturally significant:
   live LDAP read, no local copy. R001, CON-032.
+  The portal initiates the read; AD never
+  initiates anything.
 end note
 @enduml
 ```
 
-**Boundary.** The rectangle is the Portal. Actors sit on the boundary line. Keycloak is drawn outside the rectangle and is deliberately NOT an actor of any use case: authentication and authorization are cross-cutting mechanisms that every use case depends on, and they are specified in the Supplementary Specification with `<<include>>` from each dependent use case. Active Directory IS an actor of UC-011 because the directory search is a live read of a system of record the portal does not own.
+**Boundary.** The rectangle is the Portal. Actors sit on the boundary line. Keycloak is drawn outside the rectangle and is deliberately NOT an actor of any use case: authentication and authorization are cross-cutting mechanisms that every use case depends on, and they are specified in the Supplementary Specification with `<<include>>` from each dependent use case. Active Directory IS an actor of UC-011 because the directory search is a live read of a system of record the portal does not own; the association is directed from UC-011 to AD, because the portal initiates the LDAP read and AD never initiates anything.
 
 **Architecturally significant use cases.** Five of the twelve force an architectural decision and are detailed in this iteration: UC-002 (client-trusted timestamp, idempotency key, offline retry — CON-040), UC-004 (High volatility: the fixed export contract — FR-004), UC-005 (append-only correction with audit — CON-007, NFR-001), UC-010 (High volatility: the at-most-one-featured invariant — CON-011, CON-012), UC-011 (live LDAP read with no local copy — CON-032, R001). The remaining seven are surveyed only.
-
 ## Actors
 | Actor | Type | Description | Use cases |
 |---|---|---|---|
