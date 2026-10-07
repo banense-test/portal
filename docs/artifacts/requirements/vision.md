@@ -1,12 +1,10 @@
 ## Document Control
-
 - **Phase:** Inception
 - **Status:** Draft — under review
 - **Milestone Target:** End of Inception (not yet achieved)
-- **Iteration:** 1, Cycle 1
+- **Iteration:** 2, Cycle 1
 - **Owner:** SystemAnalyst
 - **Date:** 2026-10-07
-
 ## Problem Statement
 
 Cuba Corp runs three internal processes on fragmented manual tooling: employee clock-in/clock-out is collected on shared Excel sheets, internal news is distributed by mass email, and the corporate phone list is an outdated PDF. The three processes have no common home, no single source of truth and no audit trail.
