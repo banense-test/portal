@@ -1475,6 +1475,302 @@ BIZ -[hidden]- SYS
 
 **Cross-lens note.** Seven findings are on record against this iteration's artifacts, all emitted by the Reviewer's technical lens: Development Case#F1 (Major), Test Evaluation Summary#F1 and #F2 (Major), Use-Case Model#F1, Supplementary Specification#F1, Vision#F1 and Iteration Plan#F1 (Minor). None is a business-modeling finding and none is mine to close. They are recorded here only so the milestone verdict is read against the complete finding set.
 
+#### Iteration 2
+
+One finding: one Minor, no Major, no Critical. Seven artifacts carry no new finding from this lens.
+
+```plantuml
+@startuml
+title Business Modeling coverage map — BUC realization status, LCO Inception 2 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Business level — exists only when business-process-led = true" as BIZ {
+  class "BUC-001 .. BUC-NNN" as BUC <<absent>> {
+    No business use case exists.
+    No business actor, worker or entity.
+    No BR-NNN business rule.
+  }
+  class "Realization coverage" as REAL <<n/a>> {
+    0 of 0 significant BUCs realized.
+    No realization is required: the
+    discipline is inactive, DC T-1.
+  }
+}
+
+package "System level — the level that exists" as SYS {
+  class "Use-Case Model" as UCM <<pass>> {
+    12 UC to 12 declared FR, one-to-one.
+    Every UC carries Source: FR-NNN.
+    UC-011 to AD directed from the use case.
+  }
+  class "Vision" as VIS <<pass>> {
+    Business context, 4 STK, 3 BG, 6 AC.
+    A-1 reconciled with CON-035 and A-3.
+  }
+  class "Supplementary Specification" as SS <<pass>> {
+    FURPS+ home for every NFR, AC, CON.
+    Business rules carry ID and bearing.
+  }
+  class "Software Architecture Document" as SAD <<pass>> {
+    Volatility: High areas own a seam:
+    COMP-002 behind INT-002,
+    COMP-004 behind INT-004.
+  }
+}
+
+package "Business duties that survived the INACTIVE verdict" as DUTY {
+  class "Volatility annotation" as VOL <<discharged>> {
+    FR-004 and FR-010 marked Volatility: High
+    in the Vision, consumed by the architect,
+    recorded as R006.
+  }
+  class "Stakeholder coverage" as STK <<pass>> {
+    STK-001 to STK-004 all represented.
+  }
+  class "Scope adherence" as SCP <<pass>> {
+    Zero BUC, zero BR-NNN, zero business
+    stereotype. No undeclared process invented.
+  }
+}
+
+BUC -[hidden]- REAL
+REAL -[hidden]- UCM
+UCM -[hidden]- VIS
+VIS -[hidden]- SS
+SS -[hidden]- SAD
+SAD -[hidden]- VOL
+VOL -[hidden]- STK
+STK -[hidden]- SCP
+
+note bottom of BIZ
+  The business level is empty by design, not by
+  omission. A coverage map with no red node is
+  the correct map for an inactive discipline:
+  there is no BUC whose realization could be
+  missing or incomplete.
+end note
+
+note bottom of DUTY
+  The architecture-centric pillar requires volatile
+  business areas to be annotated or they will not
+  be encapsulated. That duty was discharged by the
+  SystemAnalyst and consumed by the SoftwareArchitect.
+end note
+@enduml
+```
+
+```plantuml
+@startuml
+title Business Reviewer scoring — LCO Inception 2 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Applicable criteria — scored" as APP {
+  class "Scenario selection\ncorrect and explicit" as C1 <<criterion>> {
+    Score: 10 / 10
+    DC 4 verdict false, re-derived this
+    iteration against the declared scope
+    and the eight persisted artifacts
+  }
+  class "Stakeholder representation\ncoverage" as C7 <<criterion>> {
+    Score: 9 / 10
+    STK-001 to STK-004 all represented.
+    No organizational part in declared
+    scope is unmodelled
+  }
+  class "Business rules as formal\nconstraints" as C8 <<criterion>> {
+    Score: 9 / 10
+    CON-007 to CON-016 and CON-043 each
+    carry an ID, a named bearing and a
+    testable condition
+  }
+  class "UML presence and richness" as C9 <<criterion>> {
+    Score: 9 / 10
+    Eight artifacts, each carrying
+    validated PlantUML. No prose-only
+    model anywhere
+  }
+  class "Scope adherence\nno BM scope creep" as C10 <<criterion>> {
+    Score: 10 / 10
+    Zero BUC, zero BR-NNN, zero business
+    stereotype. No undeclared process
+    was invented
+  }
+  class "Business-lens governance\nat the lifecycle gates" as C11 <<criterion>> {
+    Score: 5 / 10
+    FAIL — the plan records the
+    BusinessReviewer as non-participating
+    in every iteration while the business
+    lens executed at this gate
+  }
+}
+
+package "Not applicable — the discipline is inactive" as NA {
+  class "BUC completeness test" as N1 <<n/a>>
+  class "BUC realization adequacy" as N2 <<n/a>>
+  class "Derivation bridge" as N3 <<n/a>>
+  class "Resource planning compliance" as N4 <<n/a>>
+  class "Same modeling technique" as N5 <<n/a>>
+}
+
+package "Aggregate" as AGG {
+  class "Weighted verdict" as A1 <<verdict>> {
+    Applicable criteria: 6
+    Mean: 8.7 / 10
+    N/A criteria: 5 of 11
+  }
+  class "Disposition" as A2 <<verdict>> {
+    BR-OK-INACTIVE — discipline NOT
+    APPLICABLE per DC 4, with one
+    Minor finding on the plan
+  }
+  class "Findings emitted" as A3 <<verdict>> {
+    Critical: 0
+    Major: 0
+    Minor: 1
+    Info: 0
+  }
+}
+
+C1 --> A1
+C7 --> A1
+C8 --> A1
+C9 --> A1
+C10 --> A1
+C11 --> A1
+A1 --> A2
+A2 --> A3
+
+note bottom of NA
+  Five criteria are N/A because the discipline
+  is inactive. Scoring them would be a false
+  defect: the anti-pattern of applying New
+  Business standards to a non-BPL engagement.
+end note
+
+note bottom of C11
+  The one defect this lens found. It is a
+  statement about observable state, not a
+  design disagreement: the plan and the
+  review record disagree about whether the
+  business lens runs.
+end note
+@enduml
+```
+
+#### Iteration Plan — Minor
+
+**F1 — The role profile records the BusinessReviewer as non-participating in every iteration, while the business lens executed at this gate.** The Resources section states "BusinessProcessAnalyst and BusinessReviewer (Business Modeling inactive) and CapsuleDesigner (not a real-time system) do not participate in any iteration", and the Development Case's Roles and Ownership table records the same ("BusinessReviewer | Not participating | Business Modeling inactive (T-1)"). The business lens nevertheless executed: the Review Record carries a Business Reviewer lens block with an Inception 1 entry, and the Review Coordinator's lens dispositions table records "BusinessReviewer (business) | Yes | BR-OK-INACTIVE — discipline NOT APPLICABLE per DC §4" and states "No lens is recorded as INACTIVE. All three lenses executed this review." Two statements about the same observable fact do not reconcile, and the consequence is that the business lens's execution at LCA, IOC and PR is unplanned and unaccounted for in the role profile. The DC §4 verdict itself is not in question: business-process-led = false is re-derived this iteration against the declared scope and the eight persisted artifacts, and the discipline is correctly inactive.
+
+*Remediation.* Reconcile the two statements. Either record the BusinessReviewer in the role profile as executing the business lens at the lifecycle gates (I2, E2, C3, T1) — the lens confirms that the DC §4 INACTIVE verdict still holds and that no business process has entered scope — or state explicitly in the plan that the business lens is not required, and reconcile the Development Case's Roles and Ownership table and the Review Record's lens dispositions table with that determination. The Development Case's Roles and Ownership table carries the same wording and must be reconciled in the same pass, or the two artifacts will disagree again next iteration. The DC §4 verdict, the tailoring decision T-1 and the intensity statement need no change.
+
+*Evidence.* Iteration Plan, Resources: "The agent role profile: which roles execute in which iteration. Roles not listed do not participate — BusinessProcessAnalyst and BusinessReviewer (Business Modeling inactive) and CapsuleDesigner (not a real-time system) do not participate in any iteration." against Review Record, Review Coordinator lens, Lens dispositions: "| BusinessReviewer (business) | Yes | BR-OK-INACTIVE — discipline NOT APPLICABLE per DC §4 | 0 |" and "No lens is recorded as INACTIVE. All three lenses executed this review."
+
+#### Criterion justification
+
+| Criterion | Score | Justification |
+|---|---|---|
+| Scenario selection | 10/10 | No business modeling scenario applies. The verdict was re-derived independently this iteration against the four DC §4 tests, all of which return NONE, and against the eight persisted artifacts. The ProcessEngineer's claim was audited, not accepted. |
+| BUC completeness | N/A | No business use case exists. The twelve declared requirements are system use cases over a data-capture and publishing intranet, each initiated by a system actor inside the organization. Modelling them as BUCs would be a false artifact. |
+| BUC realization adequacy | N/A | No realization is expected in Inception, and none is required by an inactive discipline. Penalizing their absence would be the anti-pattern of applying New Business standards to a non-BPL engagement. |
+| Derivation bridge | N/A | There is no business worker to map to a system actor and no business entity to map to an analysis class. The system actors are declared directly (STK-001, STK-004) and the candidate analysis classes are derived from the use cases by the SoftwareArchitect (COMP-001 to COMP-010). The bridge this criterion guards does not exist because the business level does not exist. |
+| Resource planning compliance | N/A | No business worker and no business entity exist, so no resource allocation can violate the single-resource principle. |
+| Same modeling technique at business level | N/A | No business-level model exists, so no software stereotype (`<<entity>>`, `<<service>>`, `<<controller>>`) was misapplied at the business level. The system-level models use system stereotypes correctly. |
+| Stakeholder representation coverage | 9/10 | All four declared stakeholders are represented: STK-001 and STK-004 as system actors, STK-003 as the operator of the external systems and of the portal in production, STK-002 as a supporting clarifier. No organizational part named in the declared scope is unmodelled. The score is not 10 because the coverage is bounded by the declared scope — no independent organizational survey was performed, and none is warranted for a 200-employee intranet with four declared stakeholders. |
+| Business rules as formal constraints | 9/10 | CON-007 to CON-016 and CON-043 each carry a unique identifier, a named bearing on the use cases that must honour them, and a testable condition (at most one pair per day, at most one featured item, a closed list of four values, a field that may be empty). Their source is the declared constraint itself, which is the stakeholder's own statement — the strongest available attribution. They are not BPA-authored `BR-NNN` rules, and they do not need to be: the discipline that would author them is inactive. |
+| UML presence and richness | 9/10 | All eight artifacts carry validated PlantUML. No artifact is a prose-only model. The Use-Case Model carries a use-case diagram and five activity and sequence diagrams; the Software Architecture Document carries all four-plus-one views; the Supplementary Specification carries a FURPS+ classification diagram and a mechanism-inclusion diagram. |
+| Scope adherence | 10/10 | Zero business use cases, zero `BR-NNN` business rules, zero business stereotypes. No undeclared business process was invented, and no declared system use case was promoted to a business use case. The business dimension of the scope guard is clean. |
+| Business-lens governance at the lifecycle gates | 5/10 | The plan and the Development Case record the BusinessReviewer as non-participating in every iteration, while the business lens executed at this gate and is recorded as executed in the Review Coordinator's lens dispositions table. The business lens is the only lens that re-derives the DC §4 INACTIVE verdict each iteration and would catch a business process entering scope through a Change Request; leaving its execution unplanned means the re-derivation is not scheduled. This is the one defect this lens found. |
+
+**Business-volatility annotation — the one business duty that survived the INACTIVE verdict.** The architecture-centric pillar of this lens requires that volatile business areas be explicitly annotated, because volatility that is not flagged will not be encapsulated. That duty would normally fall to the Business Process Analyst. Here it was discharged by the SystemAnalyst in the Vision's Features table — FR-004 (the export column contract and the empty-not-zero rule) and FR-010 (the featuring policy) are both marked `Volatility: High` — and consumed by the SoftwareArchitect, who gave each its own subsystem and interface (`COMP-002` behind `INT-002`, `COMP-004` behind `INT-004`, ADR-002) and recorded the encapsulation as R006. The annotation exists, it is correct, and it reached the architecture. No finding.
+
+**Traceability compliance — this iteration.**
+
+```plantuml
+@startuml
+title Traceability compliance — business dimension, LCO Inception 2 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Declared input — the ceiling" as DECL {
+  class "FR-001 to FR-012\n12 system use cases" as FR <<declared>>
+  class "NFR-001 to NFR-005" as NFR <<declared>>
+  class "CON-001 to CON-043" as CON <<declared>>
+  class "STK-001 to STK-004" as STK <<declared>>
+  class "BG-001 to BG-003" as BG <<declared>>
+  class "AC-001 to AC-006" as AC <<declared>>
+  class "R001, R002" as R <<declared>>
+}
+
+package "Business level — expected only when BM is ACTIVE" as BIZ {
+  class "BUC-NNN" as BUC <<ABSENT>>
+  class "BR-NNN" as BR <<ABSENT>>
+  class "business actor, worker, entity" as BE <<ABSENT>>
+}
+
+package "System level — present and traced" as SYS {
+  class "Vision" as VIS <<artifact>>
+  class "Use-Case Model" as UCM <<artifact>>
+  class "Supplementary Specification" as SS <<artifact>>
+  class "Software Architecture Document" as SAD <<artifact>>
+  class "Risk List" as RL <<artifact>>
+  class "Iteration Plan" as IP <<artifact>>
+  class "Test Evaluation Summary" as TES <<artifact>>
+  class "Development Case" as DC <<artifact>>
+}
+
+FR --> UCM : Refines
+NFR --> SS : Refines
+CON --> SS : Refines
+STK --> VIS : Refines
+BG --> VIS : Refines
+AC --> VIS : Refines
+R --> RL : Refines
+UCM --> SAD : Derives
+SS --> SAD : Refines
+VIS --> UCM : Refines
+RL --> IP : Refines
+DC --> IP : Refines
+
+note bottom of BIZ
+  Zero nodes. This is the correct state: the
+  business level does not exist because no
+  business process is in declared scope.
+  No LEAF and no SUSPECT edge exists at the
+  business level, because no business-level
+  element was created.
+end note
+
+note bottom of SYS
+  Every declared identifier is cited by at least
+  one artifact. No artifact cites an identifier
+  outside the declared families. No artifact
+  quotes the stakeholder in place of citing an
+  identifier.
+end note
+
+note bottom of IP
+  Iteration Plan#F1 — the role profile records the
+  BusinessReviewer as non-participating while the
+  business lens executed at this gate. The only
+  finding of this lens.
+end note
+
+DECL -[hidden]- BIZ
+BIZ -[hidden]- SYS
+@enduml
+```
+
+**What the graph shows.** The business level is empty by design, not by omission. Every declared identifier — twelve FR, five NFR, forty-three CON, four STK, three BG, six AC and two declared risks — is cited by at least one system-level artifact. No artifact cites an identifier outside the declared families. No `«SUSPECT → role»` edge exists at the business level, because no business-level element was created to carry one.
+
+**What the graph does not show.** The business dimension has no traceability obligation to discharge: with no BUC, no business worker and no business entity, there is no business element whose upstream or downstream link could be missing. The traceability compliance check for this lens is therefore satisfied vacuously and correctly. The one finding of this lens is a governance defect in the Iteration Plan's role profile, not a traceability defect.
+
+**Cross-lens note.** The findings of the Reviewer's and the ManagementReviewer's lenses are recorded in their own blocks and are not mine to close. They are not restated here.
+
 ### Management Reviewer lens
 #### Iteration 1
 
