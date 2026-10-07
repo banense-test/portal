@@ -45,7 +45,7 @@ HR --> UC008
 HR --> UC009
 HR --> UC010
 HR --> UC012
-UC011 --> AD
+UC011 --> AD : LDAP read, portal-initiated
 
 note bottom of KC
   Cross-cutting, not an actor and not a use case.
