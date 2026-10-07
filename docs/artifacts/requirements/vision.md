@@ -227,12 +227,11 @@ Declared exclusions, published here so the boundary can be policed:
 - No rule that features a news item by itself — no 'most recent', no 'most read', no expiry date on the banner; HR flags it and HR unflags it.
 
 ## Features
-
 Every feature below is a declared requirement, cited by its identifier. No feature is derived, inferred or added.
 
 ```plantuml
 @startuml
-title Employee Portal — feature derivation from declared requirements (Inception 1)
+title Employee Portal — feature derivation from declared requirements (Inception 2)
 
 @startwbs
 * Employee Portal
@@ -276,7 +275,6 @@ title Employee Portal — feature derivation from declared requirements (Incepti
 | FR-012 | Assign Worker Category — HR assigns or clears a worker's category from the directory screen; the only write the portal makes about a person; audited; the category also filters the directory. | Must | Medium | NFR-001, CON-014, CON-015, CON-016, CON-017, STK-001 |
 
 **Volatility note for the Software Architect.** FR-004 (export format and column semantics) and FR-010 (banner policy) are the two High-volatility features: both encode a business decision that HR can restate without any change to the underlying data. They must be encapsulated so a change to the export layout or to the featuring policy does not reach the clocking or news core. The invariants behind them — CON-011, CON-012, CON-013 — are stable and are not the volatile part.
-
 ## Assumptions and Dependencies
 | # | Statement | Basis |
 |---|---|---|
