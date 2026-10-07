@@ -382,7 +382,6 @@ end note
 ```
 
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | Test Evaluation Summary | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Refines | Test Case |
@@ -398,3 +397,6 @@ end note
 **Reading the table.** `Traces From` is the declared input the test effort is accountable to — the requirement, criterion, risk or constraint copied from the Work Order. `Traces To` is the artifact that will carry the elements this summary specifies: the Test Case artifact, which is empty this iteration because no use-case realization exists to test against, and the Risk List, whose early-warning indicators this summary verifies are observable. The `DependsOn` links to the Software Architecture Document are the architecture-centric dimension: the quality attributes and the ten interfaces are what the strategy is derived from, and the stand-ins are built to fit them.
 
 **Coverage.** Twelve declared requirements, six acceptance criteria, five non-functional requirements and ten risks are each accounted for. No element of the declared scope is left without a verification method, and no verification method is stated for an element that is not declared.
+
+**Registration in the trace repository.** The links above are declared here and are not yet registered in the graph: `model_get_upstream(projectId, 'Test Evaluation Summary')` returns no links and the artifact is absent from the Business-level trace tree. Registration is the trace steward's act and is requested of the SystemAnalyst in Issue #1. Until it is registered, the coverage stated above is asserted in this table and is not machine-verifiable.
+
