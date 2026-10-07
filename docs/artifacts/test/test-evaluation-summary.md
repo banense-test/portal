@@ -234,21 +234,21 @@ Inception produces no executable increment, so the verification performed is **r
 **This is the TestManager's assessment of the test effort. The LCO milestone verdict is the ReviewCoordinator's, and the milestone is not achieved until that verdict is recorded.**
 
 ## Defects and Incidents
-
 ### SCM quality signals
 
 Read from the SCM provider on 2026-10-07. Recorded as observed; nothing is inferred from them.
 
 | Signal | Observed | Reading |
 |---|---|---|
-| Build status, branch `main` | `ci-run-37581397618` — build and test completed, 2026-10-07 06:25:16Z to 06:26:16Z | The repository builds. No workflow file is committed, so this run is not the per-push build-and-test the regression rule needs (CON-033, E-6). |
+| Build status, branch `main` | `ci-run-37588175142` — build and test completed, 2026-10-07 07:34:36Z to 07:35:15Z | The repository builds and the test job runs. `.github/workflows/ci.yml` is committed and triggers on `push` and on `pull_request`, so this run **is** the per-push build-and-test the regression rule needs. Entry criterion E-6 is met (CON-033). |
+| CI workflow file | `.github/workflows/ci.yml` committed; `on: push` and `on: pull_request` over `main`, `iteration/**`, `chore/**`, `feature/**`, `hotfix/**`; jobs `build` then `test`; the solution manifest is regenerated from the `src/` and `tests/` tree on every run | The regression rule has its vehicle from the first implementation task. A subsystem merged under `src/` cannot be silently disconnected from CI. |
 | Issue tracker, all states | No issue is open or closed | No Change Request has been raised and no defect has been recorded. Consistent with an iteration that produced no executable increment. |
 
-**The build signal is not a quality signal for the portal.** It reports that the repository compiles. It says nothing about any declared requirement, because no requirement has an implementation yet. It is recorded here so that the first iteration with code has a baseline to compare against.
+**The build signal is not a quality signal for the portal.** It reports that the repository compiles and that the test job executes. It says nothing about any declared requirement, because no requirement has an implementation yet. It is recorded here so that the first iteration with code has a baseline to compare against.
 
 ### Defect register
 
-**No defect is recorded this iteration.** No test was executed and no executable increment exists, so there is no deviation from declared behaviour to record. A defect register with no entries is the correct state for Inception 1 — it is not evidence of quality, and it is not reported as such.
+**No defect is recorded this iteration.** No test was executed and no executable increment exists, so there is no deviation from declared behaviour to record. A defect register with no entries is the correct state for Inception — it is not evidence of quality, and it is not reported as such.
 
 ### Defect lifecycle
 
