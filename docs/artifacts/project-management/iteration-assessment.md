@@ -1,12 +1,10 @@
 ## Document Control
-
 - **Phase:** Inception
 - **Status:** Draft — under review
 - **Milestone Target:** End of Inception (not yet achieved)
-- **Iteration:** 1, Cycle 1
+- **Iteration:** 2, Cycle 1
 - **Owner:** ProjectManager
 - **Date:** 2026-10-07
-
 ## Iteration Objectives Reached
 
 The iteration's objectives were met. The milestone was not. Those are two different statements and this assessment keeps them apart: the objectives were to produce the artifact scope and the risk record and to assess readiness, and all of them were produced; the LCO verdict is the ReviewCoordinator's and it is that the iteration is required again.
