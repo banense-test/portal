@@ -359,8 +359,7 @@ The agent role profile: which roles execute in which iteration. Roles not listed
 
 **Human resources.** One human participates: the stakeholder, at the three gates above. Infrastructure and HR perform the real-Keycloak and real-AD validation as human work (CON-035); it is bounded as a risk (R003), not as an estimate.
 ## Use Cases and Scenarios Addressed
-
-Inception 2 selects no use case for detail and changes no use case. The selection made in Inception 1 stands: all twelve surveyed one-to-one against the twelve declared requirements, five detailed because they force an architectural decision. Inception 2 closes findings against the artifacts that carry them; it does not re-scope the iteration.
+Inception 3 selects no use case for detail and changes no use case. The selection made in Inception 1 stands: all twelve surveyed one-to-one against the twelve declared requirements, five detailed because they force an architectural decision. Inception 3 closes findings against the artifacts that carry them; it does not re-scope the iteration.
 
 | UC | Source | Selection | Changed this iteration |
 |---|---|---|---|
@@ -380,7 +379,6 @@ Inception 2 selects no use case for detail and changes no use case. The selectio
 **Scenarios.** The alternative flows that carry a risk or an invariant are the ones the TestDesigner must cover from Elaboration 2: UC-002 A1 (duplicate press), A2 (network unreachable), A3 (clock-out with no open pair); UC-004 A1 (clock-out missing), A2 (day with no clocking), A3 (no category); UC-005 A1 (insertion for a day with no clocking), A2 (employee attempts a correction); UC-010 A1 (clearing the flag on the featured item), A2 (no item featured); UC-011 A1 (empty attribute), A2 (no category), A3 (network unreachable), A4 (no match). None is executed this iteration.
 
 **No use case is split per actor.** UC-003, UC-004 and UC-005 are three distinct HR goals over the same clocking data — viewing, exporting and correcting are separate outcomes with separate triggers.
-
 ## Evaluation Criteria
 
 Two layers, kept apart.
