@@ -257,17 +257,15 @@ All six are accounted for. **None is addressed this iteration** — no executabl
 | AC-006 | A clocking made while the corporate network is down for up to 5 minutes is not lost. | Not addressed — no executable exists. | Construction 1 | UC-002 A2 exercised with the network down for the full window. |
 
 ## Test Results
-
 **No test was executed.** No executable increment exists, so no test case was authored, no scenario was run and no pass rate exists to report. None is invented.
 
 The Test Evaluation Summary's mission verdict is that the requirements baseline is **verifiable** — every declared requirement, acceptance criterion and non-functional requirement has a stated, observable verification method, and no requirement was found untestable. That verdict is met on its own scope, which was verifiability, not verification.
 
-**SCM signal, read directly this iteration.** Build on `main`: `ci-run-37583334371` — success, 2026-10-07 06:45:58Z to 06:47:38Z. The repository carries scaffolding only — a solution, two empty projects, a CI workflow, a README and the mandatory design reference. No productive code is present, which is consistent with Inception scope.
+**SCM signal, read directly this iteration.** Build on `main`: `ci-run-37588755525` — success, 2026-10-07 07:40:14Z to 07:41:20Z. The repository carries scaffolding only — a solution, two empty projects, a CI workflow, a README and the mandatory design reference. No productive code is present, which is consistent with Inception scope.
 
-**One correction the Test Evaluation Summary owes.** That artifact cites a different run id and window and reads entry criterion E-6 as unmet on the ground that no workflow file is committed. The observed build is green and the workflow is committed, so E-6 is met. That is Test Evaluation Summary#F1, owned by the TestManager; this assessment records the observed value and does not correct another role's artifact.
+**One correction the Test Evaluation Summary still owes.** That artifact's SCM quality signals table records the issue tracker as holding no issue open or closed, while Issue #1 is open and the artifact's own Traceability section cites it as the tracking reference for its unregistered links. The artifact states the issue exists in one section and that no issue exists in another. That is Test Evaluation Summary#F3, owned by the TestManager; this assessment records the observed value and does not correct another role's artifact.
 
 **Defect register.** No defect is recorded. No test was executed, so there is no deviation from declared behaviour to record. A defect register with no entries is the correct state for this iteration — it is not evidence of quality and is not reported as such.
-
 ## External Changes
 
 | Change | Recorded as |
