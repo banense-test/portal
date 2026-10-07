@@ -153,7 +153,7 @@ Invariants that hold wherever the change comes from, not only in the screen HR h
 
 ```plantuml
 @startuml
-title Cross-cutting mechanisms — included by every dependent use case (Portal, Inception 1)
+title Cross-cutting mechanisms — included by every dependent use case (Portal, Inception 2)
 
 skinparam packageStyle rectangle
 
@@ -205,6 +205,7 @@ U5 ..> AUDIT : include
 U6 ..> AUDIT : include
 U8 ..> AUDIT : include
 U9 ..> AUDIT : include
+U10 ..> AUDIT : include
 U12 ..> AUDIT : include
 
 U2 ..> NET : include
@@ -231,7 +232,7 @@ end note
 |---|---|---|
 | Authentication | OIDC client of the existing Keycloak: register a client, redirect for login, validate the token, read roles from its claims. Keycloak is already running and maintained separately; no realm design, no client provisioning, no hosting (CON-001, CON-030, CON-031). | Every use case — UC-001 to UC-012 |
 | Authorization | Two levels from AD group membership in the token claims (CON-018). | UC-003, UC-004, UC-005, UC-006, UC-008, UC-009, UC-010, UC-012 |
-| Audit trail | Append-only record of the three change classes (NFR-001). | UC-005, UC-006, UC-008, UC-009, UC-012 |
+| Audit trail | Append-only record of the three change classes (NFR-001). | UC-005, UC-006, UC-008, UC-009, UC-010, UC-012 |
 | No-connection handling | The directory and the news require the network and show a 'no connection' message; nothing is cached locally (CON-041). Clocking retries for up to 5 minutes (CON-040). | UC-002, UC-007, UC-011 |
 
 ## Usability
