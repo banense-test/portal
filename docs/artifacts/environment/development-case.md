@@ -509,7 +509,6 @@ BR --> APP
 ```
 
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | Development Case | CON-001, CON-002, CON-030, CON-031, CON-032, CON-033, CON-035, CON-036, CON-039 | Refines | Software Architecture Document |
@@ -521,3 +520,6 @@ BR --> APP
 | Development Case | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012 | Refines | Use-Case Model |
 | Development Case | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Refines | Test Case, Test Evaluation Summary |
 | Development Case | BG-001, BG-002, BG-003, AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | Vision |
+
+**Registration.** The links above are artifact-level: the Development Case refines the artifact named in the last column, and the declared identifiers in the second column are the constraints and requirements that tailoring decision rests on. Registration of a declared link in the trace repository is the trace steward's act, performed in the iteration in which the declaring artifact is written (T-8, Guidelines and Procedures). Where an element-level link is judged redundant with the artifact-level link, the element-level row is dropped rather than left declared and unregistered, so this table states what the graph carries.
+
