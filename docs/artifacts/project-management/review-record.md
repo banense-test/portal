@@ -3719,22 +3719,80 @@ D --> W4
 
 **LCO — NOT SANCTIONED. The Inception phase does not advance to Elaboration. The phase must auto-iterate.**
 
+```plantuml
+@startuml
+title Milestone verdict — LCO, end of Inception 2 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+class "Milestone" as M <<gate>> {
+  LCO — Lifecycle Objectives
+  Closes the Inception phase
+}
+
+class "Verdict" as V <<verdict>> {
+  NOT SANCTIONED
+  The Inception phase does not
+  advance to Elaboration.
+}
+
+class "Stakeholder sanction" as S <<verdict>> {
+  REFUSED
+  Sanctioning authority: STK-001,
+  Laura Gómez, HR Director and
+  project sponsor
+}
+
+class "Finding data the verdict rests on" as F <<evidence>> {
+  Artifacts read: 10 of 10, unread none
+  Open Critical: 0
+  Open Major: 4, plus 1 deferred
+  Open Minor: 2
+  Planned scope complete: No
+}
+
+class "Remedy" as R <<action>> {
+  Another iteration (CON-026).
+  The Inception phase auto-iterates;
+  the next Inception iteration carries
+  the closure work.
+}
+
+class "Why not a project stop" as W <<reason>> {
+  No Critical finding exists.
+  No scope hallucination, no phantom
+  use case, no baseline redefinition,
+  no invented technology, no fabricated
+  quantitative claim. The requirements
+  baseline, the candidate architecture
+  and the risk record are sound.
+}
+
+M --> V
+V --> S
+F --> V
+V --> R
+V --> W
+@enduml
+```
+
 | Field | Value |
 |---|---|
 | Milestone | LCO — Lifecycle Objectives |
 | Verdict | NOT SANCTIONED |
 | Stakeholder sanction | REFUSED |
-| Requires iteration | Yes — Inception iteration 2 |
-| Remedy | Another iteration (CON-026), named by the stakeholder as the end of Iteration 2 |
+| Requires iteration | Yes — the Inception phase auto-iterates |
+| Remedy | Another iteration (CON-026) |
 | Open Critical findings | 0 |
-| Open Major findings | 5 |
-| Open Minor findings | 6 |
-| Artifacts read | 8 of 8 — unread: none |
+| Open Major findings | 4, plus 1 deferred |
+| Open Minor findings | 2 |
+| Artifacts read | 10 of 10 — unread: none |
 | Planned scope complete | No — the finding closure work is not yet performed |
 
-**Basis of the verdict.** The verdict is anchored to the finding data, not to judgment. The consolidated ledger shows 0 open Critical findings, 5 open Major findings and 6 open Minor findings, all eleven in state Assigned with an owner and a deadline. The stakeholder's answer to the LCO sanction question was No, and their direction is that every finding be closed, minor ones included, before the next phase. The gate is held, not opened.
+**Basis of the verdict.** The verdict is anchored to the finding data, not to judgment. The consolidated ledger shows 0 open Critical findings, 4 open Major findings and 2 open Minor findings, all six in state Assigned with an owner and a deadline, plus one Major finding in state Deferred whose own resolution text states the defect stands and the gate continues to count it open. The stakeholder's answer to the LCO re-assessment sanction question was No, and their direction is that the findings of each iteration be closed without exception. The gate is held, not opened.
 
-**Why not sanctioned.** Five Major findings are open. Three are factual errors about observable state — the Development Case's tool baseline, the Test Evaluation Summary's SCM signal, and the Test Evaluation Summary's unregistered traceability claim. Two are structural: three of the four lifecycle milestone gates have no management lens, and the plan has no Inception 2 to carry the remedy the stakeholder invoked. Each is a statement a downstream role would act on and be misled by.
+**Why not sanctioned.** Four Major findings are open and one is deferred. The deferred finding — Test Evaluation Summary#F2 — has stood since Inception 1: the declared traceability is not registered in the trace repository, and the same defect class appears in the Supplementary Specification. Two further Major findings are statements about observable state that do not reconcile with the artifact's own text. Each is a statement a downstream role would act on and be misled by.
 
 **Why not a project stop.** No Critical finding exists. No scope hallucination, no phantom use case, no baseline redefinition, no ownership reassignment, no invented technology, no fabricated quantitative claim, no unsourced financial figure. The requirements baseline, the candidate architecture and the risk record are sound. The project is viable; the gate is not yet passable.
 
@@ -3742,9 +3800,9 @@ D --> W4
 
 | Lens | Executed | Disposition | Findings |
 |---|---|---|---|
-| Reviewer (technical) | Yes | Approved with Changes | 7 — 3 Major, 4 Minor |
-| BusinessReviewer (business) | Yes | BR-OK-INACTIVE — discipline NOT APPLICABLE per DC §4 | 0 |
-| ManagementReviewer (management) | Yes | Conditional Go — NOT SANCTIONED, stakeholder sanction REFUSED | 4 — 2 Major, 2 Minor |
+| Reviewer (technical) | Yes | Approved with Changes | 2 Major open, 1 Major deferred |
+| BusinessReviewer (business) | Yes | Approved with Changes — BR-OK-INACTIVE, discipline NOT APPLICABLE per DC §4 | 1 Minor |
+| ManagementReviewer (management) | Yes | Conditional Go — NOT SANCTIONED, stakeholder sanction REFUSED | 3 Major, 1 Minor |
 
 **No lens is recorded as INACTIVE.** All three lenses executed this review.
 
@@ -3752,19 +3810,18 @@ D --> W4
 
 | # | Condition | Owner | Evidence that will close it |
 |---|---|---|---|
-| C-1 | All eleven open findings closed by the lens that emitted each | ProcessEngineer, TestManager, ProjectManager, SystemAnalyst, RequirementsSpecifier | `resolve_artifact_finding` calls by the emitting lenses; the ledger shows 0 open findings |
-| C-2 | Inception iteration 2 added to the roadmap with a fine plan carrying the closure work | ProjectManager | Iteration Plan#F2 closed |
-| C-3 | The Project Approval Review conducted and on record | ReviewCoordinator | Iteration Plan#F3 closed; the Review Record carries the R1 outcome |
-| C-4 | The Management Reviewer present at the LCO re-assessment | ProjectManager | Iteration Plan#F1 closed; the role profile lists ManagementReviewer for I1 |
-| C-5 | The LCO exit criteria X-1 to X-5 re-assessed in Inception 2 | ReviewCoordinator | The re-assessment recorded in this Review Record |
+| C-1 | The six open findings closed by the lens that emitted each, and the deferred finding remedied | SystemAnalyst, TestManager, ProjectManager | `resolve_artifact_finding` calls by the emitting lenses; the ledger shows 0 open findings |
+| C-2 | The declared traceability registered in the graph for the Supplementary Specification and the Test Evaluation Summary | SystemAnalyst, trace steward | Issue #1 closed; `model_get_upstream` returns the declared links |
+| C-3 | The Project Approval Review conducted and on record | ReviewCoordinator | The Review Record carries the R1 outcome; LCO-8 met |
+| C-4 | The role profile reconciled with the business lens's execution, in the same pass as the Development Case's Roles and Ownership table | ProjectManager | Iteration Plan#F1 closed |
+| C-5 | The LCO exit criteria X-1 to X-5 re-assessed in the next Inception iteration | ReviewCoordinator | The re-assessment recorded in this Review Record |
 
 #### Stakeholder input recorded this review
 
 | Input | Recorded as |
 |---|---|
-| The LCO sanction question was answered No | Stakeholder sanction: REFUSED — recorded in the Management Reviewer lens block and in the milestone verdict above |
-| Laura Gómez is the HR Director and project sponsor who grants the risk acceptance under CON-024 and sanctions the milestone | STK-001 confirmed. The `[DERIVED — from "HR Director (project sponsor)"]` marker on STK-001 is retired by that answer. No artifact carries the marker — the Vision's Stakeholder Summary already states the confirmed value — so no artifact edit and no finding arise. |
-| Every finding is to be closed, minor ones included, before the next phase; the stakeholder expects the team at the end of Iteration 2 | Stakeholder finding: the closure of all eleven findings is a condition on the LCO re-assessment, and Inception 2 is the iteration that carries it. Verified against the artifacts: the finding ledger confirms eleven open findings and the Iteration Plan confirms no Inception 2 exists to carry them, which is finding Iteration Plan#F2. |
+| The LCO re-assessment sanction question was answered No | Stakeholder sanction: REFUSED — recorded in the Management Reviewer lens block and in the milestone verdict above |
+| Every finding from each iteration must be closed, without exception; more may emerge, but none may be left unclosed | Stakeholder finding: the closure of every finding raised in an iteration is a standing condition on the LCO re-assessment, and it is not satisfied while six findings are open and one is deferred. Verified against the artifacts: the finding ledger confirms six open findings and one deferred, and the Iteration Plan's fine plan W-1 to W-10 carries the closure work for the next iteration. |
 
 ## Traceability
 ### Reviewer lens
