@@ -31,6 +31,7 @@ The explicit agreement on the purpose, focus and acceptable outcome of the test 
 | AC-001 to AC-006 | Verify each names the evidence that will close it, and assign the iteration that closes it. |
 | R001 to R010 | Verify each risk has an early-warning indicator that a test can observe. A risk whose indicator no test can see is not monitored. |
 | The Software Architecture Document's quality attributes | Derive the non-functional dimension of the strategy from them. |
+| The SCM quality signals | Read the build status and the workflow file from the provider and record them as observed. A signal that does not reconcile with the provider is a defect in this summary, not a quality finding about the portal. |
 
 ### Out of scope this iteration
 
@@ -59,9 +60,10 @@ The strategy is stated once here and evolves iteration by iteration. It is archi
 title Test strategy across the seven iterations — levels, regression and the human gate (Portal)
 
 start
-partition "Inception 1" {
+partition "Inception 1 and 2" {
   :Evaluation Mission, strategy, entry and exit criteria;
   :Test infrastructure requirements identified;
+  :SCM quality signals read and reconciled with the provider;
   note right
     No test case, no execution.
     No executable increment exists.
@@ -150,9 +152,9 @@ The test effort does not start on a phase boundary. It starts when these hold.
 | E-3 | The architecture is available to derive the non-functional dimension from. | Met — Software Architecture Document persisted. |
 | E-4 | The test infrastructure is reachable: stand-ins for the OIDC issuer and the directory, and a test database. | **Not met** — the stand-ins are not built. Required before the first integration test in Elaboration 1 (CON-035). |
 | E-5 | Test conventions are written down. | **Not met** — `CONTRIBUTING.md` is absent; the test conventions are the TestManager's to author. Required before the first implementation task in Elaboration 1. |
-| E-6 | The CI workflow runs build and test on every push. | **Not met** — no workflow file is committed. Required before the first implementation task (CON-033). |
+| E-6 | The CI workflow runs build and test on every push. | **Met** — `.github/workflows/ci.yml` is committed and triggers on `push` and on `pull_request`; the build and test job ran green on `main` (`ci-run-37588175142`). CON-033. |
 
-E-4, E-5 and E-6 are the Development Case's iteration-preparation checkpoint for Elaboration, and R009 is the risk that they are not closed in time. They do not block Inception 1, whose output is the artifact scope, not running code.
+E-4 and E-5 are the Development Case's iteration-preparation checkpoint for Elaboration, and R009 is the risk that they are not closed in time. They do not block Inception, whose output is the artifact scope, not running code.
 
 ### Exit criteria
 
@@ -161,7 +163,7 @@ E-4, E-5 and E-6 are the Development Case's iteration-preparation checkpoint for
 | X-1 | Every declared requirement, acceptance criterion and non-functional requirement has a stated, observable verification method. | The table above is complete with no gap. |
 | X-2 | The test strategy names its levels, its coverage measure, its regression rule and its exit criterion. | The strategy table above. |
 | X-3 | The test infrastructure the strategy needs is identified, with an owner and the iteration it is needed by. | The infrastructure table below. |
-| X-4 | The SCM quality signals are read and recorded as observed. | Defects and Incidents. |
+| X-4 | The SCM quality signals are read and recorded as observed, and reconcile with the provider. | Defects and Incidents. |
 | X-5 | The Evaluation Mission verdict is stated, with the evidence behind it. | Conclusions. |
 
 **The exit criterion is the mission, not a pass rate.** No test is executed this iteration, so no pass rate exists to report and none is invented.
@@ -175,13 +177,27 @@ Every resource is justified against the mission. No environment is requested tha
 | Test OIDC issuer stand-in | Every use case is reached through authentication (CON-001, CON-018). Without a stand-in issuer no scenario can be exercised, and the real Keycloak is not the team's to test against (CON-035). | TestManager with Implementer | Elaboration 1, before the first integration test |
 | Test directory stand-in carrying entries with **empty** job title and extension | R001 is precisely the risk that the real attributes are inconsistently filled. If the stand-in has no blank entries, the blank-field path is never built and never tested. | TestManager with Implementer | Elaboration 1, before the first integration test |
 | Test PostgreSQL 18 instance | The invariants are database constraints (ADR-003): the one-pair-per-day rule, the at-most-one-featured index and the idempotency key are only testable against a real PostgreSQL. | Implementer | Elaboration 1 |
-| Hosted CI running build and test on every push | The regression rule is mandatory every iteration; without CI the regression suite is run by hand and will be skipped under pressure. | SoftwareArchitect with Implementer | Elaboration 1, before the first implementation task (CON-033) |
+| Hosted CI running build and test on every push | The regression rule is mandatory every iteration; without CI the regression suite is run by hand and will be skipped under pressure. **In place** — `.github/workflows/ci.yml` is committed and green on `main` (`ci-run-37588175142`). | SoftwareArchitect with Implementer | Elaboration 1, before the first implementation task (CON-033) |
 | Test conventions in `CONTRIBUTING.md` | The test conventions are the TestManager's to author. Without them the suite has no naming, no structure and no definition of a passing test. | TestManager | Elaboration 1, before the first implementation task |
 | Corporate-network measurement point for the full page load | AC-001 measures the full page load on the corporate network. A measurement taken anywhere else does not close AC-001. | Infrastructure (human) | Construction 1 |
 
 **No separate test environment is requested.** The declared topology is one application, one database and one internal network (CON-002, CON-019, CON-029). A second environment would be a resource the mission does not justify.
 
 **No load, capacity or stress tooling is requested.** No throughput, concurrency or capacity target is declared, and none is invented. The declared population is 200 employees across 3 offices (STK-004) and the declared window is Monday–Friday 7:00–19:00 (NFR-004).
+
+### Evaluation Mission — Inception 2
+
+The explicit agreement on the purpose, focus and acceptable outcome of the test effort for this iteration.
+
+| Field | Statement |
+|---|---|
+| **Purpose** | Establish that the requirements baseline the project is accountable to is *verifiable* — that every declared requirement, acceptance criterion and non-functional requirement can be tested by an observable outcome — and define the test strategy that will carry the project from Elaboration to Transition. |
+| **Focus** | The five architecturally significant use cases (UC-002, UC-004, UC-005, UC-010, UC-011) and the quality attributes the Software Architecture Document commits to. These are where a defect found late costs the most. |
+| **Acceptable outcome** | Every declared requirement has a stated, observable verification method; the test strategy names its levels, its regression rule and its coverage measure; the test infrastructure the strategy needs is identified with an owner; and every SCM quality signal recorded here reconciles with the provider. **No test is executed and no defect is expected** — Inception produces no executable increment. |
+| **Not the mission** | Closing an acceptance criterion. All six are deferred to a named later iteration. A zero-defect result is not the criterion and is not achievable in an iteration with no code. |
+| **Authority** | Proposed by the TestManager. The stakeholder's agreement to it is given at the LCO gate, through the ReviewCoordinator's verdict — not asserted here. |
+
+**The Test Plan is not produced.** `[OMITTED: Test Plan — trigger not fired; per-iteration testing scope lives in the Iteration Plan]`. The Development Case records the Test Plan trigger (formal delivery / regulatory audit / contractual test reporting) as NOT FIRED: no external compliance regime applies to the audit trail and no retention period is mandated (CON-021). The per-iteration testing scope is carried by the Iteration Plan's *Use Cases and Scenarios Addressed* and *Evaluation Criteria* sections. This summary is the CORE artifact and proceeds regardless.
 
 ## Test Summary
 
