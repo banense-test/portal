@@ -7,6 +7,14 @@
 - **Owner:** Reviewer
 - **Date:** 2026-10-07
 
+### Business Reviewer lens
+- **Phase:** Inception
+- **Status:** Draft — under review
+- **Milestone Target:** End of Inception (not yet achieved)
+- **Iteration:** 1, Cycle 1
+- **Owner:** BusinessReviewer
+- **Date:** 2026-10-07
+
 ## Review Scope and Criteria
 ### Reviewer lens
 #### Iteration 1
