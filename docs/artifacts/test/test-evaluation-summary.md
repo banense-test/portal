@@ -7,6 +7,8 @@
 - **Date:** 2026-10-07
 
 ## Test Scope
+The test effort's mission, scope, strategy, criteria and resources for this iteration.
+
 ### In scope this iteration
 
 | Item | What the test effort does with it |
