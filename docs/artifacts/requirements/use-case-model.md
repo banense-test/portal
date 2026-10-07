@@ -8,7 +8,6 @@
 - **Date:** 2026-10-07
 
 ## Use-Case Diagram
-
 ```plantuml
 @startuml
 title Employee Portal — system boundary, actors and use cases (Inception 1)
@@ -51,7 +50,7 @@ HR --> UC012
 AD --> UC011
 
 note bottom of KC
-  Cross-cutting, not a use case.
+  Cross-cutting, not an actor and not a use case.
   Every use case above is reached only
   through the Keycloak OIDC login; roles
   come from AD group membership in the token.
@@ -73,6 +72,8 @@ end note
 ```
 
 **Boundary.** The rectangle is the Portal. Actors sit on the boundary line. Keycloak is drawn outside the rectangle and is deliberately NOT an actor of any use case: authentication and authorization are cross-cutting mechanisms that every use case depends on, and they are specified in the Supplementary Specification with `<<include>>` from each dependent use case. Active Directory IS an actor of UC-011 because the directory search is a live read of a system of record the portal does not own.
+
+**Architecturally significant use cases.** Five of the twelve force an architectural decision and are detailed in this iteration: UC-002 (client-trusted timestamp, idempotency key, offline retry — CON-040), UC-004 (High volatility: the fixed export contract — FR-004), UC-005 (append-only correction with audit — CON-007, NFR-001), UC-010 (High volatility: the at-most-one-featured invariant — CON-011, CON-012), UC-011 (live LDAP read with no local copy — CON-032, R001). The remaining seven are surveyed only.
 
 ## Actors
 | Actor | Type | Description | Use cases |
