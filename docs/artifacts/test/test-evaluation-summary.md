@@ -200,10 +200,9 @@ The explicit agreement on the purpose, focus and acceptable outcome of the test 
 **The Test Plan is not produced.** `[OMITTED: Test Plan — trigger not fired; per-iteration testing scope lives in the Iteration Plan]`. The Development Case records the Test Plan trigger (formal delivery / regulatory audit / contractual test reporting) as NOT FIRED: no external compliance regime applies to the audit trail and no retention period is mandated (CON-021). The per-iteration testing scope is carried by the Iteration Plan's *Use Cases and Scenarios Addressed* and *Evaluation Criteria* sections. This summary is the CORE artifact and proceeds regardless.
 
 ## Test Summary
-
 ### What was verified this iteration
 
-Inception 1 produces no executable increment, so the verification performed is **review-based**, not execution-based. It is real verification: each item below was checked against the artifact that carries it.
+Inception produces no executable increment, so the verification performed is **review-based**, not execution-based. It is real verification: each item below was checked against the artifact that carries it.
 
 | Verified | Method | Result |
 |---|---|---|
@@ -215,6 +214,7 @@ Inception 1 produces no executable increment, so the verification performed is *
 | Every risk carries an early-warning indicator a test can observe | Read the Risk List mitigation table | Pass — R001, R002, R003, R004, R007, R008, R009, R010 each name an indicator; R005 and R006 name a trigger condition |
 | The architecture's quality attributes are testable through the declared interfaces | Read the Software Architecture Document Logical and Quality views | Pass — every external system is behind an interface with a stand-in implementation (INT-009, INT-008) |
 | The two `Volatility: High` areas are isolated behind a seam, so a restatement is regression-scoped | Read ADR-002 and the subsystem table | Pass — COMP-002 behind INT-002, COMP-004 behind INT-004 |
+| The recorded SCM quality signal reconciles with the provider | Read the build status and the CI workflow file from the provider | Pass — the run id, the window and the trigger set are as observed; the workflow triggers on `push` and on `pull_request`, so the run is the per-push build-and-test the regression rule needs (CON-033) |
 
 ### What was not tested, and why
 
@@ -227,7 +227,7 @@ Inception 1 produces no executable increment, so the verification performed is *
 
 ### Mission verdict
 
-**The Evaluation Mission for Inception 1 is met.** The requirements baseline is verifiable — every declared requirement, acceptance criterion and non-functional requirement has a stated, observable verification method, and no requirement was found untestable. The test strategy is defined with its levels, its coverage measure, its mandatory regression rule and its exit criterion. The test infrastructure the strategy needs is identified with an owner and a deadline.
+**The Evaluation Mission for Inception 2 is met.** The requirements baseline is verifiable — every declared requirement, acceptance criterion and non-functional requirement has a stated, observable verification method, and no requirement was found untestable. The test strategy is defined with its levels, its coverage measure, its mandatory regression rule and its exit criterion. The test infrastructure the strategy needs is identified with an owner and a deadline, and the one resource already in place — the CI workflow — is recorded as in place rather than as a gap.
 
 **The verdict is bounded by what the iteration could produce.** No test was executed, because no executable increment exists. The mission was scoped to verifiability, not to verification, and it is met on that scope. **This is not a statement that the system works** — nothing has been run.
 
