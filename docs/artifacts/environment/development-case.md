@@ -116,7 +116,7 @@ BR -[hidden]- CD
 @enduml
 ```
 
-**Gaps carried into Elaboration.** Two tool gaps are open and each has a named owner. They do not block Inception, whose output is the artifact scope, not running code.
+**Gaps carried into Elaboration.** Three tool gaps are open and each has a named owner. They do not block Inception, whose output is the artifact scope, not running code.
 
 | Gap | Owner | Needed by |
 |---|---|---|
