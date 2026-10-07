@@ -3822,6 +3822,7 @@ V --> W
 |---|---|
 | The LCO re-assessment sanction question was answered No | Stakeholder sanction: REFUSED — recorded in the Management Reviewer lens block and in the milestone verdict above |
 | Every finding from each iteration must be closed, without exception; more may emerge, but none may be left unclosed | Stakeholder finding: the closure of every finding raised in an iteration is a standing condition on the LCO re-assessment, and it is not satisfied while six findings are open and one is deferred. Verified against the artifacts: the finding ledger confirms six open findings and one deferred, and the Iteration Plan's fine plan W-1 to W-10 carries the closure work for the next iteration. |
+| No further doubt remains to be cleared; the findings are what must be corrected | Stakeholder finding: no new requirement, correction or priority is added for the next pass. The scope is settled and no scope question is open. The next Inception iteration's work is the correction and closure of the six open findings and the remedy of the deferred one — nothing else. Verified against the artifacts: the finding ledger carries the six open findings and the deferred finding, and the Iteration Plan's fine plan W-1 to W-10 is bounded to their closure. |
 
 ## Traceability
 ### Reviewer lens
