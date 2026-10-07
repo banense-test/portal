@@ -461,7 +461,7 @@ package "Development — team, against stand-ins" as DEV {
 
 package "Hosted SCM and CI — CON-033" as CI {
   [Repository portal] as REPO
-  [Build and test workflow\nnot yet committed] as WF
+  [Build and test workflow\ncommitted, on push and pull request] as WF
   [No production data,\nno credentials, no deploy] as RULE
 }
 
