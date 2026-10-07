@@ -233,16 +233,15 @@ Two iterations have now closed with a measured actual. The two currencies are re
 
 **Scenarios named for the TestDesigner.** The alternative flows that carry a risk or an invariant are the ones that must be covered from Elaboration 2: UC-002 A1 (duplicate press), A2 (network unreachable), A3 (clock-out with no open pair); UC-004 A1 (clock-out missing), A2 (day with no clocking), A3 (no category); UC-005 A1 (insertion for a day with no clocking), A2 (employee attempts a correction); UC-010 A1 (clearing the flag on the featured item), A2 (no item featured); UC-011 A1 (empty attribute), A2 (no category), A3 (network unreachable), A4 (no match). None was executed this iteration.
 ## Results Relative to Evaluation Criteria
-
 ### (a) This iteration's own exit criteria
 
 | # | Exit criterion | Verdict | Evidence |
 |---|---|---|---|
-| X-1 | The requirements baseline is complete and reviewed: twelve declared requirements as twelve use cases, one-to-one, with no use case lacking a declared source. | **Met with variance** | Vision, Use-Case Model and Supplementary Specification persisted and reviewed; twelve to twelve, no gap and no surplus. Three Minor findings open: Vision#F1, Use-Case Model#F1, Supplementary Specification#F1. |
+| X-1 | The requirements baseline is complete and reviewed: twelve declared requirements as twelve use cases, one-to-one, with no use case lacking a declared source, and no finding open against the Vision, the Use-Case Model or the Supplementary Specification. | **Not met** | Vision#F1, Use-Case Model#F1 and Supplementary Specification#F1 are closed. Supplementary Specification#F2 and its gate condition #F1 remain open: the declared element-level traceability is not registered in the trace repository, so the declared coverage cannot be verified from the graph. |
 | X-2 | Every risk is classified with a strategy and an owner, and every accepted risk names the basis of its acceptance. | **Met** | Risk List persisted; R001 to R010 each carry strategy, owner, mitigation, contingency and an observable indicator; each accepted risk names its CON-024 basis. No finding from any lens. |
-| X-3 | The coarse roadmap and this iteration's fine plan are composed, with no work item sized in a unit this system does not measure. | **Met with variance** | Iteration Plan persisted; no work item carries a size; the two currencies are reported apart. Five findings open on it: Iteration Plan#F1 and #F2 (Major), #F1, #F3 and #F4 (Minor). |
+| X-3 | The coarse roadmap and this iteration's fine plan are composed, with no work item sized in a unit this system does not measure, and no finding open against the Iteration Plan. | **Not met** | The plan is composed and no work item carries a size. Iteration Plan#F1 (Minor) and its gate condition #F5 remain open: the role profile records the BusinessReviewer as non-participating while the business lens executed at this gate. |
 | X-4 | The first-cut architecture confronts the highest-magnitude technical risks rather than deferring them. | **Met** | Software Architecture Document persisted, addressing R001, R003, R004 and R008. No finding from any lens. |
-| X-5 | LCO readiness is assessed and the verdict recorded. | **Met** | The ReviewCoordinator's verdict is recorded: LCO — iteration REQUIRED (scope incomplete). |
+| X-5 | LCO readiness is re-assessed and the verdict recorded, with no finding open against any artifact. | **Not met** | The verdict is recorded — LCO, iteration REQUIRED — but six findings remain open, so the second half of the criterion is not satisfied. |
 
 ### (b) Declared acceptance criteria
 
