@@ -3047,6 +3047,43 @@ D --> W4
 
 **No business-level element appears in this table.** There is no `BUC-NNN`, no `BR-NNN`, no business actor, business worker or business entity to trace, because the discipline is inactive and no such element was created. The absence is the verdict, not a gap.
 
+#### Iteration 1
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| Review Record | Development Case, Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Risk List, Iteration Plan, Test Evaluation Summary | Refines | — |
+| Review Record | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012 | Refines | — |
+| Review Record | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Refines | — |
+| Review Record | CON-001, CON-002, CON-003, CON-004, CON-005, CON-006, CON-007, CON-008, CON-009, CON-010, CON-011, CON-012, CON-013, CON-014, CON-015, CON-016, CON-017, CON-018, CON-019, CON-020, CON-021, CON-022, CON-023, CON-024, CON-025, CON-026, CON-027, CON-028, CON-029, CON-030, CON-031, CON-032, CON-033, CON-034, CON-035, CON-036, CON-037, CON-038, CON-039, CON-040, CON-041, CON-042, CON-043 | Refines | — |
+| Review Record | STK-001, STK-002, STK-003, STK-004 | Refines | — |
+| Review Record | BG-001, BG-002, BG-003 | Refines | — |
+| Review Record | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | — |
+| Review Record | R001, R002 | Refines | — |
+
+**Reading the table.** `Traces From` is the artifact or declared input this review is accountable to. The `Traces To` end is empty: the Review Record is a terminal quality-gate artifact, and the elements it feeds — the ReviewCoordinator's milestone verdict and the ManagementReviewer's business-value assessment — are produced by other roles after this review.
+
+**No business-level element appears in this table.** There is no `BUC-NNN`, no `BR-NNN`, no business actor, business worker or business entity to trace, because the discipline is inactive and no such element was created. The absence is the verdict, not a gap.
+
+#### Iteration 2
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| Review Record | Development Case, Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Risk List, Iteration Plan, Test Evaluation Summary | Refines | — |
+| Iteration Plan#F1 | Iteration Plan | Refines | — |
+| Review Record | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012 | Refines | — |
+| Review Record | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Refines | — |
+| Review Record | CON-001, CON-002, CON-003, CON-004, CON-005, CON-006, CON-007, CON-008, CON-009, CON-010, CON-011, CON-012, CON-013, CON-014, CON-015, CON-016, CON-017, CON-018, CON-019, CON-020, CON-021, CON-022, CON-023, CON-024, CON-025, CON-026, CON-027, CON-028, CON-029, CON-030, CON-031, CON-032, CON-033, CON-034, CON-035, CON-036, CON-037, CON-038, CON-039, CON-040, CON-041, CON-042, CON-043 | Refines | — |
+| Review Record | STK-001, STK-002, STK-003, STK-004 | Refines | — |
+| Review Record | BG-001, BG-002, BG-003 | Refines | — |
+| Review Record | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | — |
+| Review Record | R001, R002 | Refines | — |
+
+**Reading the table.** `Traces From` is the artifact or declared input this review is accountable to. The `Traces To` end is empty: the Review Record is a terminal quality-gate artifact, and the elements it feeds — the corrected artifacts and the ReviewCoordinator's milestone verdict — are produced by other roles after this review. The `Iteration Plan#F1` row is the finding of this lens, cited by its system-minted key; a remediation is not an entity and no action identifier is minted.
+
+**No business-level element appears in this table.** There is no `BUC-NNN`, no `BR-NNN`, no business actor, business worker or business entity to trace, because the Business Modeling discipline is inactive for the whole project (Development Case T-1) and no such element was created. The absence is the verdict, not a gap.
+
+**Traceability compliance — this iteration.** Every declared identifier — twelve FR, five NFR, forty-three CON, four STK, three BG, six AC and the two declared risks — is cited by at least one artifact. No artifact cites an identifier outside the declared families. No artifact quotes the stakeholder in place of citing an identifier. The business dimension has no traceability obligation to discharge: with no BUC, no business worker and no business entity, there is no business element whose upstream or downstream link could be missing. The one finding of this lens is a governance defect in the Iteration Plan's role profile, not a traceability defect.
+
 ### Management Reviewer lens
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
