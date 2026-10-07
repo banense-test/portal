@@ -316,8 +316,7 @@ All six OPTIONAL artifacts were evaluated against their §5.2 trigger condition.
 | Test Plan | Formal delivery / regulatory audit / contractual test reporting | **NOT FIRED** | No external compliance regime applies and no retention period is mandated (CON-021). The Iteration Plan defines per-iteration testing scope. |
 
 ## Roles and Ownership
-
-**22 of the 25 baseline roles participate. 3 do not.** No role is merged, renamed or re-scoped, and no CORE artifact changes primary owner.
+**23 of the 25 baseline roles participate. 2 do not.** No role is merged, renamed or re-scoped, and no CORE artifact changes primary owner.
 
 ```plantuml
 @startuml
@@ -325,7 +324,7 @@ title Role participation delta (Portal)
 
 skinparam classAttributeIconSize 0
 
-package "Participating — 22 of 25" as ON {
+package "Participating — 23 of 25" as ON {
   class "SystemAnalyst" as SA
   class "RequirementsSpecifier" as RS
   class "SoftwareArchitect" as SWA
@@ -348,17 +347,24 @@ package "Participating — 22 of 25" as ON {
   class "CodeReviewer" as CRV
   class "ManagementReviewer" as MR
   class "ReviewCoordinator" as RC
+  class "BusinessReviewer" as BR
 }
 
-package "Not participating — 3 of 25" as OFF {
+package "Not participating — 2 of 25" as OFF {
   class "BusinessProcessAnalyst" as BPA <<inactive>>
-  class "BusinessReviewer" as BR <<inactive>>
   class "CapsuleDesigner" as CD <<inactive>>
 }
 
 note right of BPA
-  Business Modeling INACTIVE
+  Business Modeling INACTIVE as a
+  production discipline
   business-process-led = false
+end note
+note right of BR
+  Participates: executes the business lens
+  at the lifecycle gates I2, E2, C3, T1.
+  Produces no BUC, no BR-NNN, no business
+  model — the discipline is inactive (T-1).
 end note
 note right of CD
   real-time-system = false
@@ -366,17 +372,18 @@ note right of CD
 end note
 
 SA -[hidden]- RS
-BPA -[hidden]- BR
-BR -[hidden]- CD
+BPA -[hidden]- CD
 @enduml
 ```
 
 | Role | Participation | Reason |
 |---|---|---|
-| BusinessProcessAnalyst | Not participating | Business Modeling inactive (T-1). |
-| BusinessReviewer | Not participating | Business Modeling inactive (T-1). |
+| BusinessProcessAnalyst | Not participating | Business Modeling inactive as a production discipline (T-1). No BUC, no `BR-NNN`, no business model is produced. |
+| BusinessReviewer | **Participating — business lens at the lifecycle gates** | The business lens executes at I2, E2, C3 and T1. It re-derives the DC §4 INACTIVE verdict each iteration against the declared scope and the persisted artifacts, and it would catch a business process entering scope through a Change Request. It produces no business model. |
 | CapsuleDesigner | Not participating | Not a real-time system (T-2). |
 | All other 22 roles | Participating | Per baseline. |
+
+**Why the BusinessReviewer participates while Business Modeling is inactive.** The two are not the same decision. Inactivating the discipline removes the *production* of business-modeling artifacts — no BUC, no business rule set, no business object model. It does not remove the *governance* duty that the business lens discharges: the DC §4 verdict is re-derived every iteration, not carried forward, and the lens is the only one that performs that re-derivation. Recording the role as non-participating while the lens executed left the re-derivation unscheduled. The role is therefore recorded as participating in its review capacity, and T-1 is restated to exclude only the production discipline.
 
 **Contributors this project adds to CORE artifacts** (primary ownership unchanged):
 
