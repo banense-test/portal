@@ -147,14 +147,15 @@ BR -[hidden]- CD
 
 ```plantuml
 @startuml
-title Development Case workflow — active disciplines and artifact flow (Portal, Inception 1)
+title Development Case workflow — active disciplines and artifact flow (Portal, Inception 2)
 
 start
-:list_artifacts — no prior artifacts exist;
+:list_artifacts — eight artifacts exist from Inception 1;
 :Assess organization and tools (S1);
 note right
   Tool baseline 2026-10-07
   SCM and hosted CI present CON-033
+  solution and two projects present
   UI design reference present CON-038
   CONTRIBUTING.md absent
   lint config absent
