@@ -688,7 +688,6 @@ stop
 | Background processing | None. No scheduler, no queue broker, no batch job is declared, and CON-011 and CON-012 forbid a rule that features a news item by itself. | CON-011, CON-012 |
 
 ## Deployment View
-
 ```plantuml
 @startuml
 title Initial deployment topology — one internal network, no cloud node (Portal, Inception 1)
@@ -704,7 +703,7 @@ node "Corporate network — internal only (CON-019)" as NET {
   }
 
   node "Windows Server estate — operated by Infrastructure (CON-002, CON-036)" as SRV {
-    node "IIS / ASP.NET Core host" as HOST {
+    node "Application host\nchosen by Infrastructure" as HOST {
       artifact "Portal web application\n.NET 10, Razor Pages + REST API (CON-027)" as A3
     }
     node "PostgreSQL 18 (CON-029)" as PGS {
@@ -741,6 +740,14 @@ note right of KC
   cloud node contradicts CON-031 and is wrong.
 end note
 
+note bottom of HOST
+  The specific host on the Windows Server estate
+  is Infrastructure's to choose: they operate it
+  (CON-036) and they accepted operating it as a
+  .NET application (CON-002). No host product is
+  named here, because none is declared.
+end note
+
 note bottom of AD
   Never written to (CON-003).
   No local copy of the employee (CON-017).
@@ -765,7 +772,7 @@ end note
 | Node | What runs there | Operated by | Basis |
 |---|---|---|---|
 | Employee workstation | The clocking page and its retry queue in browser localStorage. | The employee's own device. | CON-020, CON-040 |
-| IIS / ASP.NET Core host | The portal web application — Razor Pages and the REST API, one deployable. | Infrastructure. | CON-002, CON-027, CON-036 |
+| Application host on the Windows Server estate | The portal web application — Razor Pages and the REST API, one deployable. The specific host product is Infrastructure's to choose; none is declared and none is named here. | Infrastructure. | CON-002, CON-027, CON-036 |
 | PostgreSQL 18 | The portal database: clockings, news, audit, and the two-column category link. | Infrastructure. | CON-029, CON-036, CON-039 |
 | Keycloak | The existing internal OIDC provider. The portal registers a client; it deploys nothing here. | Infrastructure, separately. | CON-030, CON-031 |
 | Active Directory | The system of record for people, read over LDAP and never written to. | Infrastructure. | CON-003, CON-004, CON-032 |
@@ -773,6 +780,7 @@ end note
 
 **One network, one timezone, one database.** No node is placed outside the corporate network. Keycloak is drawn inside it because CON-031 places it there: the OIDC redirect is an intra-network call and login keeps working with no internet link. The hosted CI is drawn outside the runtime boundary and marked as the development toolchain, because CON-033 governs where the portal runs and who can reach it, not where the build runs.
 
+**No host product is named.** CON-002 declares the Windows Server estate and CON-036 leaves deployment and operation to Infrastructure. Which host runs the application is theirs to choose, and naming one here would be a technology the stakeholder did not declare.
 ## Implementation View
 
 ```plantuml
