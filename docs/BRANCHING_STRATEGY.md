@@ -153,13 +153,102 @@ end note
 
 `<patch>` starts at `1`. A re-tag with a higher patch number is justified only by an explicit rollback or by a post-baseline critical fix applied to the iteration branch. Routine iteration work targets the NEXT iteration's tag.
 
-## 2. Per-Phase Branching Model
+## 2. Configuration Item Identification Scheme
 
-### 2.1 Inception — documentation only
+Every configuration item is identified by a name that is stable across iterations, and versioned by the SCM commit that carries it. No item is identified by a phase name, an iteration number or a status qualifier.
+
+```plantuml
+@startuml
+title Configuration item identification scheme (Portal)
+
+skinparam classAttributeIconSize 0
+
+class "Configuration Item" as CI <<abstract>> {
+  identified by
+  versioned by
+  baselined by
+}
+
+class "RUP artifact" as ART {
+  canonical artifact name
+  element ids FR-NNN UC-NNN CON-NNN
+  CLS-NNN COMP-NNN TBL-NNN TC-NNN
+  versioned by the SCM commit
+}
+
+class "Source code" as SRC {
+  repository path src/...
+  versioned by the SCM commit
+}
+
+class "CI configuration" as CIC {
+  workflow file under the hosted provider
+  versioned by the SCM commit
+}
+
+class "UI design reference" as UID {
+  docs/inputs/employee-portal-design.html
+  authoritative CON-038
+  never edited by the team
+}
+
+class "Branch" as BR {
+  feature/* iteration/* hotfix/* chore/*
+  short-lived
+}
+
+class "Baseline tag" as TAG {
+  baseline-{phase}{n}-v{x}
+  immutable once written
+}
+
+class "Change Request" as CR {
+  SCM issue
+  owned by the ChangeControlManager
+}
+
+CI <|-- ART
+CI <|-- SRC
+CI <|-- CIC
+CI <|-- UID
+CI <|-- BR
+CI <|-- TAG
+CI <|-- CR
+
+note right of ART
+  An artifact is identified by its canonical
+  name, never by a phase or version suffix.
+  Its elements are identified by the ID
+  families in the RUP convention.
+end note
+
+note bottom of TAG
+  A tag is identified by its name alone.
+  Its content is the commit it points to.
+end note
+@enduml
+```
+
+| Configuration item | Identifier | Versioned by | Baselined by |
+|---|---|---|---|
+| RUP artifact | Its canonical artifact name — `Vision`, `Use-Case Model`, `Software Architecture Document`, `Design Model`, `Test Case`, `Iteration Plan`, `Risk List`, `Review Record`, `Development Case`, `Change Request`. Never a phase, iteration or status suffix. | The SCM commit of each `upsert_artifact` | The iteration baseline tag |
+| Artifact element | The ID family of its type: `FR-NNN`, `NFR-NNN`, `CON-NNN`, `UC-NNN`, `AC-NNN`, `BG-NNN`, `RNNN`, `CLS-NNN`, `COMP-NNN`, `TBL-NNN`, `TC-NNN`, `STK-NNN` | The artifact that carries it | The iteration baseline tag |
+| Source code | Its repository path, `src/...` | The SCM commit | The iteration baseline tag |
+| CI configuration | Its path under the hosted provider's workflow directory | The SCM commit | The iteration baseline tag |
+| UI design reference | `docs/inputs/employee-portal-design.html` — authoritative and read-only (CON-038) | The SCM commit that committed it | Not baselined by this project; it is an input |
+| Branch | Its name, per §1.1 | The SCM branch | Not baselined; short-lived |
+| Baseline tag | Its name, per §1.2 | Immutable once written | — |
+| Change Request | Its SCM issue number | The issue's own state machine, owned by the ChangeControlManager | — |
+
+**What is not a configuration item.** The historical Excel archive on the shared drive (CON-037) is a read-only input, not a CI of this project. The real Keycloak and the real Active Directory are external systems (CON-030, CON-003) — their configuration is not versioned here. No backup artefact is a CI (CON-039).
+
+## 3. Per-Phase Branching Model
+
+### 3.1 Inception — documentation only
 
 Inception produces the artifact scope and the risk record, not running code. There is normally no implementation branch. A feasibility mechanism, if genuinely required for risk reduction, is built evolutionarily in `src/` on `feature/I1-<subject>` — never as throwaway sample code. **No baseline tag is written in Inception: the architecture is not stable.**
 
-### 2.2 Elaboration — evolutionary architectural mechanism
+### 3.2 Elaboration — evolutionary architectural mechanism
 
 The architectural prototype is EVOLUTIONARY. It becomes the Construction baseline; it is not throwaway sample code. There is **no** `samples/poc/` directory and **no** ephemeral `poc/*` branch.
 
@@ -172,15 +261,15 @@ The Code Reviewer opens and reviews each mechanism PR (base `iteration/E<n>`) as
 
 At LAM close the Integrator opens `iteration/E<n> -> main`; the Deliver bookend merges the reviewed baseline.
 
-### 2.3 Construction — feature branches
+### 3.3 Construction — feature branches
 
 Use-case realizations are built on `feature/C<n>-<uc-id>-<subject>`, based on `iteration/C<n>`. The Code Reviewer reviews; the Integrator merges APPROVED work into `iteration/C<n>` and opens `iteration/C<n> -> main` at IOC.
 
-### 2.4 Transition — hotfixes
+### 3.4 Transition — hotfixes
 
 `hotfix/<issue-id>` branches from `main`, receives an express review, and merges to `main` with a patch baseline tag.
 
-## 3. Cross-Phase Invariants
+## 4. Cross-Phase Invariants
 
 These hold in every phase and are not negotiable per iteration.
 
@@ -194,7 +283,7 @@ These hold in every phase and are not negotiable per iteration.
 | CM-6 | No status report artifact is upserted. Status flows to dashboards that query the branch, PR, tag and Issue graph. |
 | CM-7 | The ConfigurationManager does not triage Change Requests and does not run the CR state machine. That is the ChangeControlManager's. |
 
-## 4. Baseline Pedigree — the Pre-Tag Gate
+## 5. Baseline Pedigree — the Pre-Tag Gate
 
 A tag is defensible only when every commit it points to came from an APPROVED pull request and a GREEN build. The gate is executed before every `scm_create_tag`.
 
@@ -239,7 +328,7 @@ Tag --> [*]
 @enduml
 ```
 
-### 4.1 Iteration-close procedure
+### 5.1 Iteration-close procedure
 
 ```plantuml
 @startuml
@@ -290,7 +379,7 @@ stop
 @enduml
 ```
 
-### 4.2 Tag message — the audit record
+### 5.2 Tag message — the audit record
 
 The tag body is the audit statement. It is terse and factual, and it carries:
 
@@ -301,7 +390,7 @@ The tag body is the audit statement. It is terse and factual, and it carries:
 
 A tag message reading `baseline` alone is a defect: it claims a pedigree it does not record.
 
-## 5. CI and Branch Protection
+## 6. CI and Branch Protection
 
 ```plantuml
 @startuml
@@ -358,7 +447,7 @@ end note
 
 `main` is protected: a pull request is required, an APPROVED review is required, and a green CI run is required. The CI workflow file is not yet committed — it is an Elaboration entry criterion, owned by the SoftwareArchitect with the Implementer.
 
-## 6. Configuration Management and Change Control Boundary
+## 7. Configuration Management and Change Control Boundary
 
 ```plantuml
 @startuml
@@ -423,7 +512,7 @@ end note
 
 The ChangeControlManager owns the Change Request state machine (`cr:new` -> `cr:approved` -> `cr:complete`) and the CCB decisions. The ConfigurationManager does not triage CRs and does not evaluate impact. It consumes the CCM-triaged outcomes indirectly, through the branches and pull requests those decisions authorize.
 
-## 7. Escalation Labels
+## 8. Escalation Labels
 
 | Situation | Labels |
 |---|---|
@@ -433,7 +522,7 @@ The ChangeControlManager owns the Change Request state machine (`cr:new` -> `cr:
 
 A gate failure is never silent. It produces an issue and no tag.
 
-## 8. Traceability
+## 9. Traceability
 
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
