@@ -540,8 +540,9 @@ stop
 | UC-010 | FR-010 | Refines | Software Architecture Document |
 | UC-011 | FR-011 | Refines | Software Architecture Document |
 | UC-012 | FR-012 | Refines | — |
-| Use-Case Model | STK-001, STK-004, CON-001, CON-018, CON-030, CON-031 | Refines | Supplementary Specification |
+| Use-Case Model | STK-001, STK-004 | Refines | Supplementary Specification |
 | Use-Case Model | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012 | Derives | Software Architecture Document |
+| Use-Case Model | CON-001, CON-018, CON-030, CON-031, NFR-001, CON-041 | DependsOn | Supplementary Specification |
 | Use-Case Model | R001 | Refines | Risk List |
 | Use-Case Model | AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | Test Case |
 
