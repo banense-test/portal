@@ -113,7 +113,7 @@ Mandatory traceability of three change classes. Employee fields are read-only fr
 
 | Change class | Recorded | Use cases |
 |---|---|---|
-| News publication, edit and unpublish | Author and timestamp in every case | UC-006, UC-008, UC-009 |
+| News publication, edit, unpublish and featuring | Author and timestamp in every case | UC-006, UC-008, UC-009, UC-010 |
 | Worker category assignment or clearing | Who and when | UC-012 |
 | Clocking corrected or inserted by HR | Who, when, previous value, free-text reason | UC-005 |
 
