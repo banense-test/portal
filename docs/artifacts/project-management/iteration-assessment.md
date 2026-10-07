@@ -114,22 +114,6 @@ stop
 @enduml
 ```
 
-### Measured actuals — the first this project has
-
-No phase had closed before this iteration, so no forecast existed and none was invented. Inception 1 is now the first closed phase, and these measured values replace every assumed share in every forecast made from here on. The two currencies are reported side by side and are never added.
-
-| Quantity | Measured | Goal — the decision it enables |
-|---|---|---|
-| Token spend | 6,891,971 | Forecast Inception 2's spend. This is the first measured actual; it replaces the rubber profile's assumed share for Inception. |
-| Agent elapsed time | 1:17:17.4186317 | Forecast the next iteration's agent time. |
-| Human queue time | 0:00:00 | Detect whether a human gate has become the critical path. Excludes the end-of-iteration approval gate, which is not measured. |
-| Artifacts produced | 9 | Check the Development Case's CORE set is being produced at the rate the plan assumes. |
-| Agent invocations | 11 | Check the role profile against actual participation — the profile is a plan, and this is the first observation of it. |
-| User interactions | 11 | Detect whether the stakeholder is on the critical path. |
-| Average quality score | 10.0 | Detect a quality trend across iterations. **Not a substitute for the finding ledger** — eleven findings are open while this figure reads 10.0, so the figure does not measure review outcome and is not read as if it did. |
-
-**No budget is set and none is proposed.** CON-034 declares no budget or cap on token spend and none is to be set by the team. Declared scope is never cut or deferred to fit an estimate.
-
 ### Variance against the plan
 
 Five variances. Each is recorded with its root cause and the adjustment it forces in Inception 3, in the same breath — a variance recorded without its correction is left open for the next iteration's reviewers to find.
