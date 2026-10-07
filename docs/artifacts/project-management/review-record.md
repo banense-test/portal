@@ -23,6 +23,14 @@
 - **Owner:** ManagementReviewer
 - **Date:** 2026-10-07
 
+### Review Coordinator lens
+- **Phase:** Inception
+- **Status:** Draft — under review
+- **Milestone Target:** End of Inception (not yet achieved)
+- **Iteration:** 1, Cycle 1
+- **Owner:** ReviewCoordinator
+- **Date:** 2026-10-07
+
 ## Review Scope and Criteria
 ### Reviewer lens
 #### Iteration 1
@@ -326,6 +334,245 @@ end note
 **Entry criteria.** Met. All eight artifacts are complete and stable, no section is a placeholder, and the checklists were prepared before the artifacts were read.
 
 **Prior findings of this lens.** None. This is the first Management Reviewer pass of the project; `read_artifact_findings` returned no finding with `reviewerRole == ManagementReviewer` on any artifact, so no closure was available to record.
+
+### Review Coordinator lens
+#### Review event
+
+**R7 Lifecycle Milestone Review — Lifecycle Objectives (LCO).** This is the first review event of the project. It is the phase gate for Inception: the point at which the stakeholder sanctions or refuses progression to Elaboration.
+
+| Field | Value |
+|---|---|
+| Review type | R7 Lifecycle Milestone Review (LCO) |
+| Triggering workflow activity | Close-Out Phase — Inception |
+| Verdict owner | ReviewCoordinator |
+| Sanctioning authority | STK-001, Laura Gómez, HR Director and project sponsor |
+| Artifacts in scope | 8 — Development Case, Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Risk List, Iteration Plan, Test Evaluation Summary |
+| Lenses executed | Reviewer (technical), BusinessReviewer (business), ManagementReviewer (management) |
+| Lenses not executed | None — all three executed |
+| Findings consolidated | 11 — 0 Critical, 5 Major, 6 Minor |
+
+#### Entry criteria — verified before the review began
+
+| # | Entry criterion | Status | Evidence |
+|---|---|---|---|
+| E-1 | Every artifact in scope is in its target state, not a draft placeholder | Met | All eight artifacts read in full; no section is a placeholder |
+| E-2 | Every upstream artifact each artifact depends on is persisted | Met | All eight persisted this iteration |
+| E-3 | Reviewers assigned with expertise matched to the artifact domain | Met | Technical lens on all eight; business lens on the business dimension; management lens on the gate |
+| E-4 | Agenda and evaluation criteria distributed at least 48 hours in advance | Met | Checklists prepared per artifact type before the artifacts were read |
+| E-5 | Finding ledger readable and complete | Met | `read_artifact_findings` returned the full ledger for all nine artifacts |
+
+#### Exit criteria — the conditions this review must satisfy to close
+
+| # | Exit criterion | Status |
+|---|---|---|
+| X-1 | Every finding carries an owner, a severity and a resolution deadline | Met — 11 of 11 |
+| X-2 | The Review Record is signed and archived | Met — this document |
+| X-3 | The milestone verdict is recorded | Met — Disposition |
+| X-4 | Every Critical finding is escalated to the stakeholder | Met vacuously — 0 Critical findings |
+| X-5 | The phase gate is sanctioned or refused by the sanctioning authority | Met — refused |
+
+#### Review process framework — the eight review event types
+
+| # | Review type | Triggering workflow activity | Required participants | Entry criteria | Exit criteria | Primary artifact output |
+|---|---|---|---|---|---|---|
+| R1 | Project Approval Review | Project initiation — scope feasibility against the Vision and the Risk List | STK-001, STK-003, ProjectManager, SystemAnalyst, ReviewCoordinator | Vision and Risk List in target state; agenda distributed 48h ahead | Review Record signed; every finding owned and dated | Review Record |
+| R2 | Project Planning Review | Development Case tailoring and Iteration Plan roadmap composed | STK-001, STK-003, ProcessEngineer, ProjectManager, ReviewCoordinator | Development Case and Iteration Plan in target state | Review Record signed; every finding owned and dated | Review Record |
+| R3 | Iteration Plan Review | Plan for Next Iteration | ProjectManager, SoftwareArchitect, TestManager, ReviewCoordinator | Iteration objectives and exit criteria stated; every work item owned | Review Record signed; every finding owned and dated | Review Record |
+| R4 | PRA Review | Manage Iteration — project health during execution | ProjectManager, SoftwareArchitect, TestManager, ReviewCoordinator | Iteration in progress; artifacts available for assessment | Review Record signed; every finding owned and dated | Review Record |
+| R5 | Iteration Evaluation Criteria Review | Manage Iteration — exit criteria verified before the iteration closes | ProjectManager, TestManager, ReviewCoordinator | Iteration artifacts complete | Review Record signed; every finding owned and dated | Review Record |
+| R6 | Iteration Acceptance Review | Manage Iteration — formal acceptance of the iteration deliverables | STK-001, ProjectManager, ReviewCoordinator | Evaluation criteria review passed | Review Record signed; every finding owned and dated | Review Record |
+| R7 | Lifecycle Milestone Review | Close-Out Phase — LCO, LCA, IOC, PR | STK-001, ManagementReviewer, Reviewer, BusinessReviewer, ReviewCoordinator | All phase artifacts reviewed; finding ledger complete | Milestone verdict recorded; sanction granted or refused | Review Record |
+| R8 | Project Acceptance Review | Close-Out Phase — final project-level acceptance | STK-001, STK-003, ProjectManager, ReviewCoordinator | PR milestone review passed; handover accepted | Review Record signed; project closed | Review Record |
+
+```plantuml
+@startuml
+title Review Process Framework — eight review event types and their triggering workflow activities (Portal)
+
+start
+
+:Project initiated;
+note right
+  Trigger: project charter and Quick Start
+end note
+
+partition "R1 Project Approval Review" {
+  :Rule on scope feasibility against the Vision and the Risk List;
+  :Participants: STK-001, STK-003, ProjectManager, SystemAnalyst, ReviewCoordinator;
+  :Entry: Vision and Risk List in target state, agenda distributed 48h ahead;
+  :Exit: Review Record signed, every finding owned and dated;
+}
+
+partition "R2 Project Planning Review" {
+  :Rule on Development Case tailoring and the Iteration Plan roadmap;
+  :Participants: STK-001, STK-003, ProcessEngineer, ProjectManager, ReviewCoordinator;
+  :Entry: Development Case and Iteration Plan in target state;
+  :Exit: Review Record signed, every finding owned and dated;
+}
+
+partition "R3 Iteration Plan Review" {
+  :Rule on the iteration plan before the iteration begins;
+  :Participants: ProjectManager, SoftwareArchitect, TestManager, ReviewCoordinator;
+  :Entry: objectives and exit criteria stated, work items owned;
+  :Exit: Review Record signed, every finding owned and dated;
+}
+
+partition "R4 PRA Review" {
+  :Monitor project health during execution;
+  :Participants: ProjectManager, SoftwareArchitect, TestManager, ReviewCoordinator;
+  :Entry: iteration in progress, artifacts available;
+  :Exit: Review Record signed, every finding owned and dated;
+}
+
+partition "R5 Iteration Evaluation Criteria Review" {
+  :Verify the iteration exit criteria before the iteration closes;
+  :Participants: ProjectManager, TestManager, ReviewCoordinator;
+  :Entry: iteration artifacts complete;
+  :Exit: Review Record signed, every finding owned and dated;
+}
+
+partition "R6 Iteration Acceptance Review" {
+  :Formally accept the iteration deliverables;
+  :Participants: STK-001, ProjectManager, ReviewCoordinator;
+  :Entry: evaluation criteria review passed;
+  :Exit: Review Record signed, every finding owned and dated;
+}
+
+partition "R7 Lifecycle Milestone Review" {
+  :Rule on the phase gate — LCO, LCA, IOC, PR;
+  :Participants: STK-001, ManagementReviewer, Reviewer, BusinessReviewer, ReviewCoordinator;
+  :Entry: all phase artifacts reviewed, finding ledger complete;
+  :Exit: milestone verdict recorded, sanction granted or refused;
+}
+
+partition "R8 Project Acceptance Review" {
+  :Final project-level acceptance at close-out;
+  :Participants: STK-001, STK-003, ProjectManager, ReviewCoordinator;
+  :Entry: PR milestone review passed, handover accepted;
+  :Exit: Review Record signed, project closed;
+}
+
+stop
+@enduml
+```
+
+#### Review calendar — review events mapped to iteration boundaries
+
+Reviews are iteration-driven, not calendar-driven. Every review event is triggered by a workflow activity completion; if the iteration slips, the review slips with it. The axis below is ordinal — one block is one iteration, not a duration.
+
+```plantuml
+@startuml
+title Review calendar — review events mapped to iteration boundaries (Portal)
+
+|#AntiqueWhite|Inception 1|
+start
+:Artifacts authored — Development Case, Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Risk List, Iteration Plan, Test Evaluation Summary;
+:R1 Project Approval Review — scope feasibility against the Vision and the Risk List;
+:R2 Project Planning Review — Development Case tailoring and Iteration Plan roadmap;
+:R3 Iteration Plan Review — iteration objectives and exit criteria;
+:R4 PRA Review — project health during execution;
+:R5 Iteration Evaluation Criteria Review — X-1 to X-5;
+:R6 Iteration Acceptance Review — iteration deliverables;
+:R7 LCO Lifecycle Milestone Review — phase gate;
+note right
+  EXECUTED this iteration.
+  Lenses: Reviewer, BusinessReviewer,
+  ManagementReviewer — all three.
+  Verdict: NOT SANCTIONED.
+end note
+
+|#LightYellow|Inception 2|
+:R1 Project Approval Review — re-run, LCO-8;
+:R3 Iteration Plan Review — closure plan for the open findings;
+:R5 Iteration Evaluation Criteria Review — X-1 to X-5 re-assessed;
+:R6 Iteration Acceptance Review;
+:R7 LCO Lifecycle Milestone Review — re-assessment;
+note right
+  SCHEDULED, not yet executed.
+  Carries the CON-026 remedy the
+  stakeholder invoked.
+end note
+
+|#LightBlue|Elaboration 1|
+:R3 Iteration Plan Review;
+:R4 PRA Review;
+:R5 Iteration Evaluation Criteria Review;
+:R6 Iteration Acceptance Review;
+
+|#LightBlue|Elaboration 2|
+:R3 Iteration Plan Review;
+:R4 PRA Review;
+:R5 Iteration Evaluation Criteria Review;
+:R6 Iteration Acceptance Review;
+:R7 LCA Lifecycle Milestone Review — phase gate;
+
+|#LightGreen|Construction 1 to 3|
+:R3 Iteration Plan Review — per iteration;
+:R4 PRA Review — per iteration;
+:R5 Iteration Evaluation Criteria Review — per iteration;
+:R6 Iteration Acceptance Review — per iteration;
+:R7 IOC Lifecycle Milestone Review — phase gate at Construction 3;
+
+|#Pink|Transition 1|
+:R3 Iteration Plan Review;
+:R5 Iteration Evaluation Criteria Review;
+:R6 Iteration Acceptance Review;
+:R7 PR Lifecycle Milestone Review — phase gate;
+:R8 Project Acceptance Review — final project-level acceptance;
+stop
+@enduml
+```
+
+**Milestone review coverage.** All four RUP lifecycle milestones have a scheduled R7 review: LCO closes Inception, LCA closes Elaboration 2, IOC closes Construction 3, PR closes Transition 1. No phase transition is unsanctioned.
+
+**Gap carried into Inception 2.** R1 Project Approval Review and R2 Project Planning Review were not executed in Inception 1 and are not scheduled in the Iteration Plan's fine plan. This is finding Iteration Plan#F3 and is a condition on the LCO re-assessment.
+
+#### Review event interaction
+
+```plantuml
+@startuml
+title Review event — coordinator, reviewers, authors and the sanctioning authority (Portal)
+
+actor "ReviewCoordinator" as RC
+actor "Stakeholder\nSTK-001" as STK
+participant "Artifact author\n(role owner)" as AU
+participant "Reviewer\n(technical lens)" as RV
+participant "BusinessReviewer" as BR
+participant "ManagementReviewer" as MR
+database "SCM repository" as SCM
+
+RC -> AU : request artifacts in target state
+AU -> SCM : persist artifacts
+RC -> SCM : list_artifacts, read_artifact
+RC -> RV : agenda and evaluation criteria, 48h ahead
+RC -> BR : agenda and evaluation criteria, 48h ahead
+RC -> MR : agenda and evaluation criteria, 48h ahead
+RV -> SCM : read artifacts and SCM signals
+RV -> SCM : record_artifact_finding per defect
+BR -> SCM : record_artifact_finding per defect
+MR -> SCM : record_artifact_finding per defect
+RC -> SCM : read_artifact_findings — consolidate the ledger
+RC -> RC : resolve conflicts, prioritize actions
+RC -> SCM : upsert_artifact(Review Record)
+RC -> STK : request the milestone sanction
+STK --> RC : sanction GRANTED or REFUSED
+RC -> SCM : record_milestone_auto_iterate
+RC -> AU : return findings with owner and deadline
+@enduml
+```
+
+#### Checklists applied
+
+| Artifact | Checklist applied | Lens |
+|---|---|---|
+| Development Case | DC Baseline Conformance (roster, CORE catalog, ownership, artifact universe, intensity) + Optional Trigger Justification against each §5.2 condition + tool-baseline verification against the repository | Reviewer, ManagementReviewer |
+| Vision | Requirements quality: complete, consistent, unambiguous, traceable, no unsourced quantitative claim; scope adherence against the declared ceiling | Reviewer, ManagementReviewer |
+| Use-Case Model | One-to-one with declared requirements; `Source: FR-NNN` on every use case; no phantom use case; no cross-cutting mechanism as a use case; no per-actor split; UML formal correctness | Reviewer, ManagementReviewer |
+| Supplementary Specification | FURPS+ coverage of every declared NFR, AC and CON; cross-cutting mechanisms specified and not promoted to use cases; threshold quantification | Reviewer, ManagementReviewer |
+| Software Architecture Document | Every subsystem traces to a declared element; no layer- or feature-named subsystem; one seam per High-volatility area; external-system placement; invariants as constraints; no invented technology | Reviewer, ManagementReviewer |
+| Risk List | Declared risks preserved; team risks numbered per CON-023; strategy and owner per risk; acceptance basis named; no human-team unit | Reviewer, ManagementReviewer |
+| Iteration Plan | Objectives carry exit evidence; no unmeasured unit; human gate bounded as a risk; two currencies never summed; all acceptance criteria accounted for; gate structure complete | Reviewer, ManagementReviewer |
+| Test Evaluation Summary | Every declared requirement has an observable verification method; no execution claimed; SCM signals read and recorded; traceability registered | Reviewer, ManagementReviewer |
+| Business Modeling dimension | Scenario selection; BUC completeness; realization adequacy; derivation bridge; resource planning; business-level technique; stakeholder coverage; business rules as formal constraints; UML richness; scope adherence | BusinessReviewer |
 
 ## Findings
 ### Reviewer lens
@@ -1345,6 +1592,159 @@ MIN -[hidden]- EXCL
 
 **Traceability compliance — this iteration.** Every one of the twelve declared requirements reaches a use case; every use case reaches a component in the Software Architecture Document; no `«SUSPECT → role»` edge exists. The Test Evaluation Summary is absent from the trace tree, which is the Reviewer's finding Test Evaluation Summary#F2 and is independently confirmed by `model_get_upstream`. The declared input — 12 FR, 5 NFR, 6 AC, 43 CON, 3 BG, 2 R — is cited by at least one artifact, and no artifact cites an identifier outside the declared families.
 
+### Review Coordinator lens
+#### Consolidated finding ledger
+
+Eleven findings are open. Every one carries an owner, a severity and a resolution deadline. No finding is Critical.
+
+| # | Finding | Severity | Lens | Owner | Deadline | Blocks LCO |
+|---|---|---|---|---|---|---|
+| 1 | Development Case#F1 — the S1 tool assessment and the gap table contradict the repository: the CI workflow, the solution and the two scaffolding projects are committed and the build is green, yet the Development Case records them as absent | Major | Reviewer | ProcessEngineer | Inception 2 | No |
+| 2 | Test Evaluation Summary#F1 — the cited run id and window do not match the observed build, and the reading drawn from them is false: E-6 is met, not unmet | Major | Reviewer | TestManager | Inception 2 | No |
+| 3 | Test Evaluation Summary#F2 — the declared traceability is not registered in the trace repository, so the claimed coverage is not machine-verifiable | Major | Reviewer | TestManager, with SystemAnalyst as trace steward | Inception 2 | No |
+| 4 | Iteration Plan#F1 — the role profile omits the Management Reviewer from three of the four lifecycle milestone gates (LCO, LCA, IOC) | Major | ManagementReviewer | ProjectManager | Inception 2 | No |
+| 5 | Iteration Plan#F2 — the plan declares Inception as a single iteration and provides no home for the CON-026 remedy the stakeholder invoked | Major | ManagementReviewer | ProjectManager | Inception 2 | No |
+| 6 | Vision#F1 — assumption A-1 is not reconciled with CON-035 and A-3 | Minor | Reviewer | SystemAnalyst | Inception 2 | No |
+| 7 | Use-Case Model#F1 — Active Directory is drawn as the initiating end of the association to UC-011 | Minor | Reviewer | SystemAnalyst | Inception 2 | No |
+| 8 | Supplementary Specification#F1 — the audit mechanism's include list omits UC-010, while UC-010's own specification audits the change | Minor | Reviewer | RequirementsSpecifier | Inception 2 | No |
+| 9 | Iteration Plan#F1 — the roadmap chart asserts a one-day duration the plan itself declares unmeasured | Minor | Reviewer | ProjectManager | Inception 2 | No |
+| 10 | Iteration Plan#F3 — the Project Approval Review is not scheduled, so LCO exit criterion LCO-8 is unmet | Minor | ManagementReviewer | ProjectManager | Inception 2 | No |
+| 11 | Iteration Plan#F4 — the LCO approval gate and the PR handover gate are reported with no ceiling, while the process bounds a human gate at 14 days | Minor | ManagementReviewer | ProjectManager | Inception 2 | No |
+
+**Two artifacts carry no finding from any lens and are approved:** Software Architecture Document and Risk List. Silence is the verdict.
+
+```plantuml
+@startuml
+title Finding severity distribution — LCO Inception 1 (Portal)
+
+skinparam packageStyle rectangle
+
+package "Critical — 0" as CRIT {
+  class "none" as C0 <<empty>> {
+    No LCO gate blocker.
+    No scope hallucination.
+    No phantom use case.
+    No baseline redefinition.
+  }
+}
+
+package "Major — 5" as MAJ {
+  class "Development Case#F1" as M1 <<Reviewer>> {
+    Tool baseline contradicts the repository.
+    Owner: ProcessEngineer
+  }
+  class "Test Evaluation Summary#F1" as M2 <<Reviewer>> {
+    SCM signal does not reconcile;
+    E-6 reported unmet when it is met.
+    Owner: TestManager
+  }
+  class "Test Evaluation Summary#F2" as M3 <<Reviewer>> {
+    Traceability not registered in the graph.
+    Owner: TestManager with SystemAnalyst
+  }
+  class "Iteration Plan#F1" as M4 <<ManagementReviewer>> {
+    ManagementReviewer omitted from three
+    of the four lifecycle milestone gates.
+    Owner: ProjectManager
+  }
+  class "Iteration Plan#F2" as M5 <<ManagementReviewer>> {
+    No Inception 2 to carry the CON-026
+    remedy the stakeholder invoked.
+    Owner: ProjectManager
+  }
+}
+
+package "Minor — 6" as MIN {
+  class "Vision#F1" as N1 <<Reviewer>> {
+    A-1 not reconciled with CON-035.
+  }
+  class "Use-Case Model#F1" as N2 <<Reviewer>> {
+    AD drawn as the initiating end of UC-011.
+  }
+  class "Supplementary Specification#F1" as N3 <<Reviewer>> {
+    Audit include list omits UC-010.
+  }
+  class "Iteration Plan#F1" as N4 <<Reviewer>> {
+    Roadmap chart asserts a one-day duration.
+  }
+  class "Iteration Plan#F3" as N5 <<ManagementReviewer>> {
+    Project Approval Review not scheduled.
+  }
+  class "Iteration Plan#F4" as N6 <<ManagementReviewer>> {
+    LCO and PR gates carry no process bound.
+  }
+}
+
+package "Clean — 2 artifacts, no finding from any lens" as CLEAN {
+  class "Software Architecture Document" as K1 <<artifact>> {
+    Every subsystem traces to a declared element.
+  }
+  class "Risk List" as K2 <<artifact>> {
+    R001 to R010 classified, CON-024 basis named.
+  }
+}
+
+note bottom of MAJ
+  All five Major findings are corrections to
+  statements about observable state or to the
+  gate structure, not design disagreements.
+end note
+
+note bottom of MIN
+  The stakeholder directed that the minor
+  findings be closed too.
+end note
+
+note bottom of CLEAN
+  An artifact with no finding is approved from
+  the lens that reviewed it. Silence is the verdict.
+end note
+
+CRIT -[hidden]- MAJ
+MAJ -[hidden]- MIN
+MIN -[hidden]- CLEAN
+@enduml
+```
+
+#### Conflict resolution across lenses
+
+| Conflict | Lenses | Resolution |
+|---|---|---|
+| Iteration Plan#F1 is recorded twice under the same key — once by the Reviewer (the roadmap chart asserts a one-day duration) and once by the ManagementReviewer (the Management Reviewer is omitted from three milestone gates) | Reviewer, ManagementReviewer | Not a conflict. The finding key is scoped per artifact AND per reviewer lens, so `Iteration Plan#F1` from two lenses is two distinct findings. Both are open and both are carried in the ledger as rows 4 and 9. No deduplication is applied. |
+| The Reviewer's lens records no finding against the Iteration Plan's gate structure; the ManagementReviewer's lens records two Major findings against it | Reviewer, ManagementReviewer | Not a conflict. The lenses evaluate different criteria: the technical lens evaluates plan quality (no unmeasured unit, two currencies never summed), the management lens evaluates gate structure (milestone coverage, remedy path). Both verdicts stand. |
+| The BusinessReviewer records zero findings while the other two lenses record eleven | BusinessReviewer, Reviewer, ManagementReviewer | Not a conflict. The Business Modeling discipline is inactive (DC T-1) and its inactivity was independently re-derived against the four DC §4 tests, all of which return NONE. A lens with no applicable criterion emits no finding. |
+| The Reviewer's lens dispositions the artifacts "Approved with Changes"; the ManagementReviewer's lens dispositions them "Conditional Go — NOT SANCTIONED" | Reviewer, ManagementReviewer | Not a conflict. The Reviewer dispositions the artifacts; the ManagementReviewer dispositions the gate. The ReviewCoordinator's milestone verdict is the binding one and is recorded in Disposition. |
+
+**No finding was rejected, downgraded or merged.** Every finding emitted by an executing lens is carried into the ledger at the severity its emitting lens assigned.
+
+#### Review effectiveness metrics — this review event
+
+This is the first review event of the project. No prior review exists, so no trend is computed and no prior iteration or cycle is reported. Trend analysis begins once a second review has actually occurred.
+
+| Metric | Value | Basis |
+|---|---|---|
+| Artifacts planned for review | 8 | The eight artifacts persisted this iteration |
+| Artifacts formally reviewed | 8 | All eight read in full by all three executing lenses |
+| **Review coverage** | **100%** | 8 of 8 planned artifacts received formal review |
+| Findings raised | 11 | 0 Critical, 5 Major, 6 Minor |
+| **Defect density** | **1.38 findings per artifact** | 11 findings / 8 artifacts |
+| Defect density — Development Case | 1.00 per artifact | 1 Major |
+| Defect density — Test Evaluation Summary | 2.00 per artifact | 2 Major |
+| Defect density — Iteration Plan | 4.00 per artifact | 2 Major, 2 Minor from the management lens; 1 Minor from the technical lens |
+| Defect density — Vision | 1.00 per artifact | 1 Minor |
+| Defect density — Use-Case Model | 1.00 per artifact | 1 Minor |
+| Defect density — Supplementary Specification | 1.00 per artifact | 1 Minor |
+| Defect density — Software Architecture Document | 0.00 per artifact | No finding from any lens |
+| Defect density — Risk List | 0.00 per artifact | No finding from any lens |
+| **Defect removal efficiency** | **Not computable** | No test execution has occurred — Inception produces no executable increment, so there is no test-found defect count to compare against the review-found count. The metric becomes computable once the first test execution occurs in Elaboration. |
+| **Rework effort** | **Not measured** | No phase has closed, so no measured actual exists. Rework is reported in tokens and elapsed time once Inception 2 closes; no figure is invented here. |
+| Findings overdue | 0 | Every finding was raised this review event; no deadline has yet passed |
+| Findings without an owner | 0 | 11 of 11 carry a named owner |
+| Findings without a deadline | 0 | 11 of 11 carry a deadline |
+| **Trend** | **Not reported** | First review event of the project. No prior review exists to compare against. |
+
+**Interpretation.** Coverage is complete and the finding ledger is fully owned and dated, so the review process is operating as designed at this gate. The concentration of findings is informative: the Iteration Plan carries 5 of the 11 findings and the Test Evaluation Summary carries 2 Major findings, while the Software Architecture Document and the Risk List carry none. The Iteration Plan's load is structural rather than editorial — its gate structure and its remedy path are the two Major findings — and it is the artifact the refused sanction most directly implicates. The Test Evaluation Summary's two Major findings are both factual errors about observable state, which is the defect class that most damages downstream trust: a role acting on either would be misled. No metric indicates a review process losing rigor; the process surfaced the defects it was designed to surface.
+
 ## Resolutions and Actions
 ### Reviewer lens
 #### Iteration 1
@@ -1411,6 +1811,81 @@ MIN -[hidden]- EXCL
 
 **Closure discipline.** A finding is closed only by the lens that emitted it, via `resolve_artifact_finding`. The four findings of this lens are closed by the Management Reviewer in the iteration that fixes them; the seven findings of the Reviewer's lens are closed by the Reviewer. Markdown stating "Resolved" without the tool call leaves the state inconsistent and the gate keeps counting the finding as open.
 
+### Review Coordinator lens
+#### Prioritized action list
+
+Priority is assigned by the consequence of leaving the finding open, not by severity alone. All eleven actions are scheduled into Inception 2; none is deferred to a later phase and none requires a Change Request, because each restores an artifact's agreement with the declared scope, with observable state, or with the gate structure, and none changes declared scope.
+
+| Priority | Finding | Severity | Owner | Action | Rationale for priority |
+|---|---|---|---|---|---|
+| P1 | Iteration Plan#F2 | Major | ProjectManager | Add Inception iteration 2 to the coarse roadmap with a fine plan whose work items are the closure of every open finding, and re-assess X-1 to X-5 there | Without it the CON-026 remedy the stakeholder invoked has no home and the refused gate has no planned path to re-assessment. Every other action depends on this one being scheduled. |
+| P2 | Iteration Plan#F1 | Major | ProjectManager | Add ManagementReviewer to the role profile for I1, E2 and C3, with the verdict at LCO, LCA and IOC | Three of the four lifecycle gates currently have no management lens. The gate being re-assessed in Inception 2 is one of them. |
+| P3 | Development Case#F1 | Major | ProcessEngineer | Rewrite the S1 tool assessment and the gap table against the repository; remove the CI workflow from the Elaboration checkpoint's outstanding conditions | The Elaboration checkpoint as written would send the next phase to close a gap that does not exist. |
+| P4 | Test Evaluation Summary#F1 | Major | TestManager | Replace the cited run id and window with the observed build; correct the reading of E-6 to met; remove the CI workflow from the recommendation and the carried-forward list | A false SCM reading is the defect class that most damages downstream trust. |
+| P5 | Test Evaluation Summary#F2 | Major | TestManager, with SystemAnalyst as trace steward | Register the artifact's upstream links in the trace repository so its declared coverage is machine-verifiable | The claimed coverage of 12 FR, 6 AC, 5 NFR and 10 risks cannot be verified from the graph until it is registered. |
+| P6 | Iteration Plan#F3 | Minor | ProjectManager | Schedule the Project Approval Review ahead of the LCO verdict, or record the determination that it does not apply with its basis | LCO exit criterion LCO-8 is unmet until the first formal project approval checkpoint has an evidence trail. |
+| P7 | Supplementary Specification#F1 | Minor | RequirementsSpecifier | Reconcile the audit mechanism's include list with UC-010's audit step | NFR-001 is mandatory; a downstream implementer currently has no single answer for whether the featuring path writes an audit record. |
+| P8 | Use-Case Model#F1 | Minor | SystemAnalyst | Reverse the UC-011 to Active Directory association so the portal is the initiating end | The diagram and the Actors table disagree about the direction of initiation. |
+| P9 | Vision#F1 | Minor | SystemAnalyst | Reconcile A-1 with CON-035 and A-3 | A downstream role can read A-1 as authorising team testing against the real Keycloak, which CON-035 forbids. |
+| P10 | Iteration Plan#F1 | Minor | ProjectManager | Remove the duration from the roadmap chart, or state the nominal unit inside the chart | A reader who reads the chart and not the caption sees a seven-day project. |
+| P11 | Iteration Plan#F4 | Minor | ProjectManager | Report the 14-day process bound on all three human gates, with measured queue time apart from agent time | Two of the three gates currently have no escalation trigger. |
+
+#### Finding lifecycle
+
+```plantuml
+@startuml
+title Finding lifecycle — Open to Closed (Portal review governance)
+
+[*] --> Open : record_artifact_finding by the emitting lens
+Open --> Assigned : owner named and deadline set at review close
+Assigned --> InProgress : owner begins the remediation
+InProgress --> Resolved : owner confirms the corrective action
+Resolved --> Verified : emitting lens verifies the action is adequate
+Verified --> Closed : resolve_artifact_finding by the emitting lens
+Resolved --> InProgress : verification fails, action inadequate
+Assigned --> Overdue : deadline passes with no resolution
+Overdue --> Escalated : escalation notice to the Project Manager
+Escalated --> InProgress : owner resumes the remediation
+Closed --> [*]
+
+note right of Open
+  Severity assigned at emission:
+  Critical, Major, Minor, Enhancement.
+  A finding without an owner drifts;
+  without a deadline it is never prioritized.
+end note
+
+note bottom of Closed
+  Only the lens that emitted the finding
+  may close it. A Review Record sentence
+  saying "Resolved" is not a resolution.
+end note
+
+note bottom of Escalated
+  Overdue findings escalate within one
+  business day of the missed deadline.
+  More than 10% overdue means the review
+  process has become ceremonial.
+end note
+@enduml
+```
+
+**Current state of the ledger.** All eleven findings are in state **Assigned**: each carries an owner and a deadline, and none has yet been remediated. No finding is Overdue — every deadline falls in Inception 2, which has not begun.
+
+**Closure discipline.** A finding is closed only by the lens that emitted it, via `resolve_artifact_finding`. The seven findings of the Reviewer's lens are closed by the Reviewer; the four findings of the ManagementReviewer's lens are closed by the ManagementReviewer. Markdown stating "Resolved" without the tool call leaves the state inconsistent and the milestone gate keeps counting the finding as open. The BusinessReviewer's lens emitted no finding and therefore has nothing to close.
+
+#### Escalation
+
+| Trigger | Status | Action |
+|---|---|---|
+| Any unresolved Critical finding | Not triggered — 0 Critical findings | None required |
+| A finding past its deadline | Not triggered — no deadline has passed | None required |
+| More than 10% of findings overdue | Not triggered — 0 of 11 overdue | None required |
+| Non-compliance with review procedure | Triggered — R1 Project Approval Review and R2 Project Planning Review were not executed in Inception 1 and are not scheduled | Escalated to the ProjectManager as finding Iteration Plan#F3 |
+| Systemic process failure | Not triggered — no repeated architecture violation across iterations; this is the first review event | None required |
+
+**Escalation to the stakeholder.** No Critical finding exists, so no Critical escalation is required. The milestone sanction was nevertheless refused by the sanctioning authority, and the refusal is recorded in Disposition.
+
 ## Disposition
 ### Reviewer lens
 #### Iteration 1
@@ -1470,6 +1945,58 @@ MIN -[hidden]- EXCL
 
 **This is the Management Reviewer's management-lens disposition. The LCO milestone verdict is the ReviewCoordinator's, and the milestone is not achieved until that verdict is recorded.**
 
+### Review Coordinator lens
+#### Milestone verdict
+
+**LCO — NOT SANCTIONED. The Inception phase does not advance to Elaboration. The phase must auto-iterate.**
+
+| Field | Value |
+|---|---|
+| Milestone | LCO — Lifecycle Objectives |
+| Verdict | NOT SANCTIONED |
+| Stakeholder sanction | REFUSED |
+| Requires iteration | Yes — Inception iteration 2 |
+| Remedy | Another iteration (CON-026), named by the stakeholder as the end of Iteration 2 |
+| Open Critical findings | 0 |
+| Open Major findings | 5 |
+| Open Minor findings | 6 |
+| Artifacts read | 8 of 8 — unread: none |
+| Planned scope complete | No — the finding closure work is not yet performed |
+
+**Basis of the verdict.** The verdict is anchored to the finding data, not to judgment. The consolidated ledger shows 0 open Critical findings, 5 open Major findings and 6 open Minor findings, all eleven in state Assigned with an owner and a deadline. The stakeholder's answer to the LCO sanction question was No, and their direction is that every finding be closed, minor ones included, before the next phase. The gate is held, not opened.
+
+**Why not sanctioned.** Five Major findings are open. Three are factual errors about observable state — the Development Case's tool baseline, the Test Evaluation Summary's SCM signal, and the Test Evaluation Summary's unregistered traceability claim. Two are structural: three of the four lifecycle milestone gates have no management lens, and the plan has no Inception 2 to carry the remedy the stakeholder invoked. Each is a statement a downstream role would act on and be misled by.
+
+**Why not a project stop.** No Critical finding exists. No scope hallucination, no phantom use case, no baseline redefinition, no ownership reassignment, no invented technology, no fabricated quantitative claim, no unsourced financial figure. The requirements baseline, the candidate architecture and the risk record are sound. The project is viable; the gate is not yet passable.
+
+#### Lens dispositions
+
+| Lens | Executed | Disposition | Findings |
+|---|---|---|---|
+| Reviewer (technical) | Yes | Approved with Changes | 7 — 3 Major, 4 Minor |
+| BusinessReviewer (business) | Yes | BR-OK-INACTIVE — discipline NOT APPLICABLE per DC §4 | 0 |
+| ManagementReviewer (management) | Yes | Conditional Go — NOT SANCTIONED, stakeholder sanction REFUSED | 4 — 2 Major, 2 Minor |
+
+**No lens is recorded as INACTIVE.** All three lenses executed this review.
+
+#### Conditions to close before the LCO gate is re-assessed
+
+| # | Condition | Owner | Evidence that will close it |
+|---|---|---|---|
+| C-1 | All eleven open findings closed by the lens that emitted each | ProcessEngineer, TestManager, ProjectManager, SystemAnalyst, RequirementsSpecifier | `resolve_artifact_finding` calls by the emitting lenses; the ledger shows 0 open findings |
+| C-2 | Inception iteration 2 added to the roadmap with a fine plan carrying the closure work | ProjectManager | Iteration Plan#F2 closed |
+| C-3 | The Project Approval Review conducted and on record | ReviewCoordinator | Iteration Plan#F3 closed; the Review Record carries the R1 outcome |
+| C-4 | The Management Reviewer present at the LCO re-assessment | ProjectManager | Iteration Plan#F1 closed; the role profile lists ManagementReviewer for I1 |
+| C-5 | The LCO exit criteria X-1 to X-5 re-assessed in Inception 2 | ReviewCoordinator | The re-assessment recorded in this Review Record |
+
+#### Stakeholder input recorded this review
+
+| Input | Recorded as |
+|---|---|
+| The LCO sanction question was answered No | Stakeholder sanction: REFUSED — recorded in the Management Reviewer lens block and in the milestone verdict above |
+| Laura Gómez is the HR Director and project sponsor who grants the risk acceptance under CON-024 and sanctions the milestone | STK-001 confirmed. The `[DERIVED — from "HR Director (project sponsor)"]` marker on STK-001 is retired by that answer. No artifact carries the marker — the Vision's Stakeholder Summary already states the confirmed value — so no artifact edit and no finding arise. |
+| Every finding is to be closed, minor ones included, before the next phase; the stakeholder expects the team at the end of Iteration 2 | Stakeholder finding: the closure of all eleven findings is a condition on the LCO re-assessment, and Inception 2 is the iteration that carries it. Verified against the artifacts: the finding ledger confirms eleven open findings and the Iteration Plan confirms no Inception 2 exists to carry them, which is finding Iteration Plan#F2. |
+
 ## Traceability
 ### Reviewer lens
 | Element | Traces From | Link Type | Traces To |
@@ -1523,6 +2050,33 @@ MIN -[hidden]- EXCL
 | Review Record | R001, R002, R003, R004, R005, R006, R007, R008, R009, R010 | Refines | — |
 
 **Reading the table.** `Traces From` is the artifact or declared input this review is accountable to. The `Traces To` end is empty: the Review Record is a terminal quality-gate artifact, and the elements it feeds — the corrected artifacts, the Project Approval Review and the ReviewCoordinator's milestone verdict — are produced by other roles after this review. The four `Iteration Plan#F1` to `#F4` rows are the findings of this lens, cited by their system-minted keys.
+
+**No business-level element appears in this table.** There is no `BUC-NNN`, no `BR-NNN`, no business actor, business worker or business entity to trace, because the Business Modeling discipline is inactive and no such element was created. The absence is the verdict, not a gap.
+
+### Review Coordinator lens
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| Review Record | Development Case, Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Risk List, Iteration Plan, Test Evaluation Summary | Refines | — |
+| Development Case#F1 | Development Case | Refines | — |
+| Test Evaluation Summary#F1 | Test Evaluation Summary | Refines | — |
+| Test Evaluation Summary#F2 | Test Evaluation Summary | Refines | — |
+| Iteration Plan#F1 | Iteration Plan | Refines | — |
+| Iteration Plan#F2 | Iteration Plan | Refines | — |
+| Iteration Plan#F3 | Iteration Plan | Refines | — |
+| Iteration Plan#F4 | Iteration Plan | Refines | — |
+| Vision#F1 | Vision | Refines | — |
+| Use-Case Model#F1 | Use-Case Model | Refines | — |
+| Supplementary Specification#F1 | Supplementary Specification | Refines | — |
+| Review Record | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012 | Refines | — |
+| Review Record | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Refines | — |
+| Review Record | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | — |
+| Review Record | CON-023, CON-024, CON-025, CON-026, CON-034 | Refines | — |
+| Review Record | STK-001, STK-002, STK-003, STK-004 | Refines | — |
+| Review Record | BG-001, BG-002, BG-003 | Refines | — |
+| Review Record | R001, R002, R003, R004, R005, R006, R007, R008, R009, R010 | Refines | — |
+| Review Record | `ci-run-37583334371` | DependsOn | — |
+
+**Reading the table.** `Traces From` is the artifact or declared input this review is accountable to. The `Traces To` end is empty: the Review Record is a terminal quality-gate artifact, and the elements it feeds — the corrected artifacts, the Project Approval Review and the milestone re-assessment — are produced by other roles after this review. The `ci-run-37583334371` row is the observed build the SCM-evidence reconciliation rests on. The finding rows cite their system-minted keys; a remediation is not an entity and no action identifier is minted.
 
 **No business-level element appears in this table.** There is no `BUC-NNN`, no `BR-NNN`, no business actor, business worker or business entity to trace, because the Business Modeling discipline is inactive and no such element was created. The absence is the verdict, not a gap.
 
