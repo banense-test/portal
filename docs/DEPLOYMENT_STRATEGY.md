@@ -211,6 +211,20 @@ stop
 | 7 | Go-live; retire the shared Excel sheet as a recording channel. | HR | BG-002 |
 | 8 | Measure adoption against BG-003; read R002's early-warning indicator. | ProjectManager | BG-003, R002 |
 
+### Beta and pilot feedback
+
+**No beta programme is declared, and none is planned.** The declared feedback mechanism is the two acceptance gates plus the BG-003 adoption measurement. Transition is one compressed iteration with no training (AC-005) and no migration (CON-037), so there is no beta stage for a programme to occupy.
+
+`[RECOMMENDATION — requires CR]` A one-office pilot before the other two offices go live.
+
+| Field | Value |
+|---|---|
+| Participants | One of the three offices, with HR and Infrastructure |
+| Feedback mechanism | R002's early-warning indicator — clocking volume per working day against the declared population of that office — read weekly, plus a defect channel to HR |
+| Success criteria | AC-002 and AC-006 hold for the pilot office, and clocking volume per working day reaches that office's declared population |
+| Rationale | R002 (exposure 6) is the one declared risk a pilot would bound, and the pilot costs no data movement: there is no migration (CON-037) and no local copy of employee data (CON-017) |
+| Status | Not in declared scope. It adds a rollout stage the stakeholder did not declare, so it requires a Change Request and is not planned here. |
+
 ## Rollback Criteria
 
 Rollback is cheap here, and that is a property of the declared scope rather than a design achievement: there is no data migration (CON-037), no local copy of employee data (CON-017), and the historical Excel sheets remain on the shared drive as a read-only archive. Reverting the recording channel costs no data movement.
