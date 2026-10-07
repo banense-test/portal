@@ -3934,16 +3934,13 @@ V --> W
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | Review Record | Development Case, Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Risk List, Iteration Plan, Test Evaluation Summary | Refines | — |
-| Development Case#F1 | Development Case | Refines | — |
-| Test Evaluation Summary#F1 | Test Evaluation Summary | Refines | — |
-| Test Evaluation Summary#F2 | Test Evaluation Summary | Refines | — |
-| Iteration Plan#F1 | Iteration Plan | Refines | — |
-| Iteration Plan#F2 | Iteration Plan | Refines | — |
-| Iteration Plan#F3 | Iteration Plan | Refines | — |
-| Iteration Plan#F4 | Iteration Plan | Refines | — |
-| Vision#F1 | Vision | Refines | — |
-| Use-Case Model#F1 | Use-Case Model | Refines | — |
+| Supplementary Specification#F2 | Supplementary Specification | Refines | — |
 | Supplementary Specification#F1 | Supplementary Specification | Refines | — |
+| Test Evaluation Summary#F2 | Test Evaluation Summary | Refines | — |
+| Test Evaluation Summary#F3 | Test Evaluation Summary | Refines | — |
+| Test Evaluation Summary#F1 | Test Evaluation Summary | Refines | — |
+| Iteration Plan#F1 | Iteration Plan | Refines | — |
+| Iteration Plan#F5 | Iteration Plan | Refines | — |
 | Review Record | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012 | Refines | — |
 | Review Record | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Refines | — |
 | Review Record | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | — |
@@ -3951,9 +3948,9 @@ V --> W
 | Review Record | STK-001, STK-002, STK-003, STK-004 | Refines | — |
 | Review Record | BG-001, BG-002, BG-003 | Refines | — |
 | Review Record | R001, R002, R003, R004, R005, R006, R007, R008, R009, R010 | Refines | — |
-| Review Record | `ci-run-37583334371` | DependsOn | — |
+| Review Record | Issue #1 | DependsOn | — |
 
-**Reading the table.** `Traces From` is the artifact or declared input this review is accountable to. The `Traces To` end is empty: the Review Record is a terminal quality-gate artifact, and the elements it feeds — the corrected artifacts, the Project Approval Review and the milestone re-assessment — are produced by other roles after this review. The `ci-run-37583334371` row is the observed build the SCM-evidence reconciliation rests on. The finding rows cite their system-minted keys; a remediation is not an entity and no action identifier is minted.
+**Reading the table.** `Traces From` is the artifact or declared input this review is accountable to. The `Traces To` end is empty: the Review Record is a terminal quality-gate artifact, and the elements it feeds — the corrected artifacts, the Project Approval Review and the milestone re-assessment — are produced by other roles after this review. The finding rows cite their system-minted keys; a remediation is not an entity and no action identifier is minted. The `Issue #1` row is the observed tracking reference the trace-registration findings are carried by.
 
-**No business-level element appears in this table.** There is no `BUC-NNN`, no `BR-NNN`, no business actor, business worker or business entity to trace, because the Business Modeling discipline is inactive and no such element was created. The absence is the verdict, not a gap.
+**No business-level element appears in this table.** There is no `BUC-NNN`, no `BR-NNN`, no business actor, business worker or business entity to trace, because the Business Modeling discipline is inactive for the whole project (Development Case T-1) and no such element was created. The absence is the verdict, not a gap.
 
