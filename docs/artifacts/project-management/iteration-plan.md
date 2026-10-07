@@ -3,17 +3,17 @@
 - **Phase:** Inception
 - **Status:** Draft — under review
 - **Milestone Target:** End of Inception (not yet achieved)
-- **Iteration:** 1, Cycle 1
+- **Iteration:** 2, Cycle 1
 - **Owner:** ProjectManager
 - **Date:** 2026-10-07
 
 ## Iteration Objectives
 
-This plan carries two levels. The **coarse roadmap** is cross-iteration: the milestone sequence and the iteration boundaries. The **fine plan** is bounded to Inception iteration 1: its work items and their owners. Planning beyond the next iteration in fine-grained detail is waste — no architectural baseline and no measured actual exist yet.
+This plan carries two levels. The **coarse roadmap** is cross-iteration: the milestone sequence and the iteration boundaries. The **fine plan** is bounded to Inception iteration 2: its work items and their owners. Planning beyond the next iteration in fine-grained detail is waste — no architectural baseline and no measured actual for Elaboration exist yet.
 
 ```plantuml
 @startuml
-title Iteration Plan structure — the two-level planning model (Portal, Inception 1)
+title Iteration Plan structure — the two-level planning model (Portal, Inception 2)
 
 skinparam classAttributeIconSize 0
 
@@ -60,7 +60,7 @@ class "WorkItem" as WI <<entity>> {
 
 class "HumanGate" as GATE <<entity>> {
   + queue time in days
-  + ceiling
+  + ceiling : process bound 14 days
   + never added to agent time
 }
 
@@ -86,175 +86,183 @@ end note
 @enduml
 ```
 
-### Inception iteration 1 — objectives
+### Inception iteration 2 — objectives
 
 | # | Objective | Exit evidence |
 |---|---|---|
-| O-1 | Establish the requirements baseline the whole project is accountable to: the twelve declared requirements as twelve use cases, the five architecturally significant ones detailed, the non-functional requirements and constraints classified. | Vision, Use-Case Model, Supplementary Specification persisted and reviewed. |
-| O-2 | Identify and classify the project's risks, with a strategy and an owner for each, and retire the candidates whose mechanism has no actor in this system. | Risk List persisted; R001 to R010 classified; retired candidates recorded with their reason. |
-| O-3 | Compose the coarse roadmap — milestone sequence, iteration boundaries, agent role profile — and this iteration's fine plan. | This Iteration Plan. |
-| O-4 | Reach a first-cut architecture that confronts the highest-magnitude technical risks rather than deferring them. | Software Architecture Document persisted; R001, R003, R004, R008 addressed in it. |
-| O-5 | Assess LCO readiness: is the project viable to proceed to Elaboration? | The ReviewCoordinator's LCO verdict, recorded in the Review Record. |
+| O-1 | Close every finding the Inception 1 review raised, minor ones included, across all eight artifacts. | The Review Record's finding ledger carries no open finding. |
+| O-2 | Re-run the review with all three lenses, the management lens included, at the LCO gate. | Review Record entries from the Reviewer, the BusinessReviewer and the ManagementReviewer. |
+| O-3 | Conduct the Project Approval Review ahead of the LCO verdict. | The Review Record's Project Approval Review entry. |
+| O-4 | Re-assess LCO readiness against X-1 to X-5 on the corrected baseline and record the verdict. | The ReviewCoordinator's LCO verdict in the Review Record. |
 
-**Not an objective of this iteration.** No executable increment. Inception's output is the artifact scope and the risk record, not running code. No acceptance criterion is closed this iteration — see Evaluation Criteria.
+**Not an objective of this iteration.** No executable increment. Inception's output is the artifact scope and the risk record, not running code. No acceptance criterion is closed this iteration — see Evaluation Criteria. No use case is newly detailed: the selection made in Inception 1 stands.
 
 ## Plan and Milestones
 ### Coarse roadmap — milestone sequence and iteration boundaries
 
-Seven iterations, distributed Inception 1, Elaboration 2, Construction 3, Transition 1. This sits inside the 6 ± 3 rule and is justified against the risk profile, not against the rubber profile's default shape.
+Eight iterations, distributed Inception 2, Elaboration 2, Construction 3, Transition 1. This sits inside the 6 ± 3 rule and is justified against the risk profile, not against the rubber profile's default shape.
 
 | Milestone | Closes | Exit criteria | Verdict owner |
 |---|---|---|---|
-| **LCO** — Lifecycle Objectives | Inception 1 | Stakeholders agree on the scope; the project is viable to proceed; the initial risks are identified and classified. | ReviewCoordinator |
+| **LCO** — Lifecycle Objectives | Inception 2 | Stakeholders agree on the scope; the project is viable to proceed; the initial risks are identified and classified; no finding from the Inception 1 review remains open. | ReviewCoordinator |
 | **LCA** — Lifecycle Architecture | Elaboration 2 | The architecture is stable and validated against the real Keycloak and the real AD; the highest-magnitude risks are retired or bounded; the plan for Construction is credible. | ReviewCoordinator |
 | **IOC** — Initial Operational Capability | Construction 3 | The declared scope is implemented, integrated and tested; the system is ready for handover to Infrastructure. | ReviewCoordinator |
 | **PR** — Product Release | Transition 1 | The product is released to the declared population; Infrastructure has accepted operation. | ReviewCoordinator |
 
 ```plantuml
 @startgantt
-title Portal — iteration sequence and human gates (unanchored ordinal axis)
-
+title Portal — iteration sequence and human gates. Ordinal axis: one bar = one iteration, width is a nominal unit, NOT a duration.
 [I1 Inception 1] lasts 1 day
+[I2 Inception 2] lasts 1 day
 [E1 Elaboration 1] lasts 1 day
 [E2 Elaboration 2] lasts 1 day
 [C1 Construction 1] lasts 1 day
 [C2 Construction 2] lasts 1 day
 [C3 Construction 3] lasts 1 day
 [T1 Transition 1] lasts 1 day
-
-[E1 Elaboration 1] starts at [I1 Inception 1]'s end
+[I2 Inception 2] starts at [I1 Inception 1]'s end
+[E1 Elaboration 1] starts at [I2 Inception 2]'s end
 [E2 Elaboration 2] starts at [E1 Elaboration 1]'s end
 [C1 Construction 1] starts at [E2 Elaboration 2]'s end
 [C2 Construction 2] starts at [C1 Construction 1]'s end
 [C3 Construction 3] starts at [C2 Construction 2]'s end
 [T1 Transition 1] starts at [C3 Construction 3]'s end
-
-[LCO] happens at [I1 Inception 1]'s end
+[LCO] happens at [I2 Inception 2]'s end
 [LCA] happens at [E2 Elaboration 2]'s end
 [IOC] happens at [C3 Construction 3]'s end
 [PR] happens at [T1 Transition 1]'s end
-
 [Gate 2 real Keycloak and AD validation] lasts 14 days
 [Gate 2 real Keycloak and AD validation] starts at [E1 Elaboration 1]'s start
-[Gate 1 LCO approval] happens at [I1 Inception 1]'s end
+[Gate 1 LCO approval] happens at [I2 Inception 2]'s end
 [Gate 3 PR handover acceptance] happens at [T1 Transition 1]'s end
+note bottom
+  ORDINAL AXIS, NO CALENDAR. One bar is one iteration and its width is a nominal unit, not a
+  duration. The "1 day" token is PlantUML's syntax for that nominal unit: it is not a measured
+  or estimated duration, and no calendar date is projected from it. No project start date is set.
+  The only measured quantity on this chart is the human gate, in days of queue time, reported
+  apart from agent time and never added to it.
+end note
 @endgantt
 ```
 
-**Reading the chart.** The axis is ordinal, not calendar: one bar is one iteration and its width is a nominal unit, not a duration. No project start date is set and no calendar date is projected from an estimate — a date computed from an estimate reads downstream as an observation. The only measured quantity on this chart is the human gate, in days of queue time, and it is reported apart from agent time and never added to it. Only the real-Keycloak-and-AD gate carries a declared ceiling; the other two are drawn as milestone markers because no ceiling for them is declared anywhere, and none is invented here.
+**Reading the chart.** The axis is ordinal, not calendar: one bar is one iteration and its width is a nominal unit, not a duration. No project start date is set and no calendar date is projected from an estimate — a date computed from an estimate reads downstream as an observation. The only measured quantity on this chart is the human gate, in days of queue time, and it is reported apart from agent time and never added to it. The 14-day bar is the process bound on a human gate, not an estimate of work.
 
-**Why seven iterations, and why this distribution.**
+**Why eight iterations, and why this distribution.**
 
 | Phase | Iterations | Justification against the risk profile |
 |---|---|---|
-| Inception | 1 | The domain is ordinary intranet and HR vocabulary; the requirements baseline is complete and no scope question is open. A second Inception iteration would re-derive a baseline that already exists. |
+| Inception | 2 | The first iteration produced the requirements baseline, the risk record and the first-cut architecture; its review raised eleven findings and the stakeholder refused the LCO sanction, directing that every finding be closed, minor ones included, before the next phase. Inception 2 is not a re-derivation of the baseline — it is the closure of those findings and the re-assessment of LCO readiness. CON-026 names another iteration as the remedy for a milestone delayed at a human gate, and the same remedy applies to a refused sanction. |
 | Elaboration | 2 | **Stretched.** Three of the highest-magnitude risks are architectural and are retired only by building and validating: R001 (live LDAP read against inconsistently filled attributes), R003 (the human validation gate on the real Keycloak and AD, whose feedback must land before Elaboration closes), R004 (client-supplied clocking timestamp). Elaboration 1 builds the architecture and starts the human gate; Elaboration 2 absorbs the gate's feedback and stabilises. One iteration would leave the gate's feedback with nowhere to land. |
 | Construction | 3 | Twelve use cases over three processes, with the audit trail and the two closed value lists. Three iterations let the increment be integrated and tested per iteration rather than in one terminal test phase. |
 | Transition | 1 | **Compressed.** Internal deployment to a declared population of 200, no user training required (AC-005 requires 80% to clock with no prior training), no data migration (CON-037), and Infrastructure already operates the platform (CON-036). There is no user-training or migration work to spread over a second iteration. |
 
-**The spend split is not assumed from this shape.** The rubber profile's 5/20/65/10 distribution is a starting point for iteration COUNT only. The moment one phase closes, its recorded token spend and measured elapsed time replace every assumed share in every forecast made afterwards. No phase has closed, so no spend figure appears anywhere in this plan.
+**The spend split is measured, not assumed.** Inception 1 closed with a measured actual — 6,891,971 tokens and 1:17:17.4186317 of agent elapsed time, recorded in the Iteration Assessment. That measured value replaces the rubber profile's assumed share for Inception in every forecast made from here on. No other phase has closed, so no other phase carries a spend figure, and the rubber profile's 5/20/65/10 shape is not used as a spend forecast anywhere in this plan.
 
-### Fine plan — Inception iteration 1
+### Fine plan — Inception iteration 2
 
-Work items, one owner each. **No work item carries a size.** No phase has closed, so no measured actual exists and no forecast can be derived from one. A size in hours, days, weeks or person-anything would be a unit this system does not measure.
+Work items, one owner each. **No work item carries a size.** A size in hours, days, weeks or person-anything would be a unit this system does not measure. The iteration-level forecast is stated once, below the critical chain, and traces to Inception 1's measured actual.
 
 | # | Work item | Owner | Depends on | Exit evidence |
 |---|---|---|---|---|
-| W-1 | Author the Development Case: tailoring, classification verdicts, optional artifact triggers, version policy, measurement policy, risk governance. | ProcessEngineer | — | Development Case persisted. |
-| W-2 | Author the Vision: problem statement, product position, stakeholder summary, features, constraints, non-functional requirements, business goals, acceptance criteria. | SystemAnalyst | W-1 | Vision persisted. |
-| W-3 | Author the Use-Case Model: twelve use cases surveyed one-to-one against the twelve declared requirements; the five architecturally significant ones detailed. | SystemAnalyst | W-2 | Use-Case Model persisted. |
-| W-4 | Author the Supplementary Specification: FURPS+ classification of every declared requirement and constraint; the cross-cutting mechanisms specified and included by each dependent use case. | RequirementsSpecifier | W-3 | Supplementary Specification persisted. |
-| W-5 | Author the first-cut Software Architecture Document: the architectural mechanisms for the LDAP read, the OIDC client, the audit trail, the offline retry and the two closed value lists. | SoftwareArchitect | W-4 | Software Architecture Document persisted. |
-| W-6 | Identify and classify the project's risks; retire the candidates whose mechanism has no actor; assign a strategy, an owner, a mitigation and a contingency to each. | ProjectManager | W-2 | Risk List persisted. |
-| W-7 | Compose the coarse roadmap and this iteration's fine plan; assess LCO readiness. | ProjectManager | W-6 | This Iteration Plan. |
-| W-8 | Review every artifact produced this iteration and record findings per artifact. | Reviewer | W-5, W-7 | Review Record. |
-| W-9 | Rule on the LCO milestone. | ReviewCoordinator | W-8 | LCO verdict in the Review Record. |
+| W-1 | Close Development Case#F1: rewrite the S1 tool assessment and the gap table against the repository — the CI workflow, the solution and the two scaffolding projects are present and the build is green; keep only `CONTRIBUTING.md` and the lint/analyzer configuration as open gaps; remove the CI workflow from the Elaboration checkpoint's outstanding conditions. | ProcessEngineer | — | Development Case corrected; finding closed by the Reviewer. |
+| W-2 | Close Vision#F1: reconcile A-1 with CON-035 and A-3 — the registered OIDC client and its credentials exist for the human validation gate performed by Infrastructure with HR, and team testing is against the stand-in issuer. | SystemAnalyst | — | Vision corrected; finding closed by the Reviewer. |
+| W-3 | Close Use-Case Model#F1: reverse the UC-011 to Active Directory association so the portal is the initiating end. | SystemAnalyst | — | Use-Case Model corrected; finding closed by the Reviewer. |
+| W-4 | Close Supplementary Specification#F1: reconcile the audit mechanism's include list with UC-010's audit step. | RequirementsSpecifier | — | Supplementary Specification corrected; finding closed by the Reviewer. |
+| W-5 | Close Iteration Plan#F1 (Major), #F2 (Major), #F1 (Minor), #F3 (Minor) and #F4 (Minor): the management lens in the role profile, Inception 2 in the coarse roadmap with this fine plan, the Project Approval Review scheduled, the process bound on all three human gates, and the duration-free roadmap chart. | ProjectManager | — | This Iteration Plan. |
+| W-6 | Close Test Evaluation Summary#F1: re-read the build status and the workflow file; replace the cited run id and window with the observed values; correct the reading of entry criterion E-6 to met. | TestManager | — | Test Evaluation Summary corrected; finding closed by the Reviewer. |
+| W-7 | Close Test Evaluation Summary#F2: register the artifact's upstream links in the trace repository so its declared coverage is machine-verifiable. | TestManager, with SystemAnalyst as trace steward | W-6 | Links registered; finding closed by the Reviewer. |
+| W-8 | Re-review every corrected artifact and close each finding from the lens that emitted it. | Reviewer, ManagementReviewer | W-1, W-2, W-3, W-4, W-5, W-6, W-7 | Review Record — no open finding. |
+| W-9 | Conduct the Project Approval Review. | ReviewCoordinator | W-8 | Review Record — Project Approval Review entry. |
+| W-10 | Rule on the LCO milestone. | ReviewCoordinator | W-9 | LCO verdict in the Review Record. |
 
 ```plantuml
 @startuml
-title Inception Iteration 1 — critical chain from iteration start to the LCO gate (Portal)
+title Inception Iteration 2 — critical chain from iteration start to the LCO gate (Portal)
 
 |ProcessEngineer|
 start
-:Development Case — tailoring, classification, optional triggers, version policy;
-note right
-  No phase has closed.
-  No measured actual exists, so no
-  forecast spend is quoted for any
-  agent stretch on this chain.
-end note
+:Development Case#F1 — S1 tool assessment and gap table rewritten against the repository;
 
 |SystemAnalyst|
-:Vision — problem statement, stakeholders, features, constraints;
-:Use-Case Model — 12 use cases surveyed, 5 architecturally significant detailed;
+:Vision#F1 — A-1 reconciled with CON-035 and A-3;
+:Use-Case Model#F1 — UC-011 to Active Directory association reversed;
 
 |RequirementsSpecifier|
-:Supplementary Specification — FURPS+ classification, cross-cutting mechanisms;
-
-|SoftwareArchitect|
-:Software Architecture Document — first cut, architectural mechanisms;
+:Supplementary Specification#F1 — audit include list reconciled with UC-010;
 
 |ProjectManager|
-:Risk List — R001 and R002 classified, R003 to R010 identified;
-:Iteration Plan — coarse roadmap and this iteration's fine plan;
+:Iteration Plan#F1, #F2, #F3, #F4 — role profile, Inception 2 roadmap, Project Approval Review, gate bounds;
+:Risk List — carried unchanged, no finding from any lens;
+
+|TestManager|
+:Test Evaluation Summary#F1 — SCM signal re-read, E-6 corrected to met;
+:Test Evaluation Summary#F2 — upstream links registered in the trace repository;
 
 |Reviewer|
-:Artifact review — findings recorded per artifact;
+:Re-review of every corrected artifact — findings closed by the emitting lens;
+
+|ManagementReviewer|
+:Management lens re-review — findings closed by the emitting lens;
 
 |ReviewCoordinator|
+:Project Approval Review;
 :LCO milestone verdict;
 
 |Stakeholder|
 :Human gate — LCO approval;
 note right
-  Days of queue time, measured and
-  reported apart from agent time.
-  Never added to it.
+  Days of queue time, measured and reported
+  apart from agent time. Never added to it.
+  Process bound 14 days.
 end note
 stop
 @enduml
 ```
 
-**The critical chain.** The chain is sequential, not parallel: each stretch consumes the artifact the previous one produced, and the depth of the chain is the count of sequential agent stretches from iteration start to the gate. The chain ends at a human gate, not at an agent — the LCO verdict is the ReviewCoordinator's, and the approval behind it is the stakeholder's. **No stretch on this chain carries a spend figure**, because no phase has closed and no measured actual exists. The first forecast this plan will carry is the one built from Inception 1's own measured spend, recorded in the Iteration Assessment.
+**The critical chain.** The chain is sequential, not parallel: each stretch consumes the artifact the previous one produced, and the depth of the chain is the count of sequential agent stretches from iteration start to the gate — eight stretches here, against seven in Inception 1. The chain ends at a human gate, not at an agent: the LCO verdict is the ReviewCoordinator's, and the approval behind it is the stakeholder's.
+
+**Forecast spend for this iteration.** Inception 1 is the first closed phase and its measured actual is the only basis a forecast may rest on: **6,891,971 tokens** and **1:17:17.4186317 of agent elapsed time**, over seven sequential agent stretches. Inception 2 carries eight sequential agent stretches over a comparable artifact surface — the same eight artifacts, corrected rather than authored — so the forecast is of the same order as the measured actual. No per-stretch figure is derived: one measured iteration does not yield a per-stretch distribution, and inventing one would be a fabricated observation. The forecast is revised against Inception 2's own measured actual when the iteration closes. **No budget is set and none is proposed** — CON-034 declares no budget or cap on token spend and none is to be set by the team, and declared scope is never cut or deferred to fit an estimate.
 
 **Human gates.** Reported in days of queue time, apart from agent time, never summed with it.
 
-| Gate | What is waited for | Ceiling | Remedy if it delays a milestone |
-|---|---|---|---|
-| LCO approval | The stakeholder's agreement that the scope is right and the project is viable. | None declared | Another iteration (CON-026). |
-| Real Keycloak and AD validation | Infrastructure with HR validating the real identity provider and the real directory (CON-035). Human work, not team work to plan. | 14 days, declared in the Development Case | Another iteration (CON-026). |
-| PR handover acceptance | Infrastructure accepting operation of the portal (CON-036). | None declared | Another iteration (CON-026). |
+| Gate | What is waited for | Process bound | Measured queue time | Remedy if it delays a milestone |
+|---|---|---|---|---|
+| LCO approval | The stakeholder's agreement that the scope is right and the project is viable. | 14 days — the process bound on any human gate | 0:00:00, measured in Inception 1 | Another iteration (CON-026). |
+| Real Keycloak and AD validation | Infrastructure with HR validating the real identity provider and the real directory (CON-035). Human work, not team work to plan. | 14 days — the process bound on any human gate, and the ceiling declared in the Development Case | Not yet opened; opens at the start of Elaboration 1 | Another iteration (CON-026). |
+| PR handover acceptance | Infrastructure accepting operation of the portal (CON-036). | 14 days — the process bound on any human gate | Not yet reached | Another iteration (CON-026). |
 
-**No ceiling is invented for a gate that has none.** The 14-day ceiling on the real-Keycloak-and-AD gate is the Development Case's, and it is a bound on a risk (R003), not an estimate of work. The other two gates are reported as measured queue time with no ceiling, because none is declared.
+**The 14-day bound is the process rule for any human gate, not a per-gate declaration.** It applies to all three gates. Where a gate has no declared ceiling of its own, the process bound applies and is reported; no per-gate ceiling is invented, and no gate is left without the process bound. Measured queue time is reported apart from agent time and is never added to it.
 
 ## Resources
 
 The agent role profile: which roles execute in which iteration. Roles not listed do not participate — BusinessProcessAnalyst and BusinessReviewer (Business Modeling inactive) and CapsuleDesigner (not a real-time system) do not participate in any iteration.
 
-| Role | I1 | E1 | E2 | C1 | C2 | C3 | T1 |
-|---|---|---|---|---|---|---|---|
-| ProcessEngineer | author | prepare | prepare | — | — | — | — |
-| SystemAnalyst | author | detail | detail | — | — | — | — |
-| RequirementsSpecifier | author | detail | detail | — | — | — | — |
-| SoftwareArchitect | author | author | stabilise | guide | guide | guide | — |
-| Designer | — | author | author | author | author | author | — |
-| UserInterfaceDesigner | — | author | author | author | author | author | — |
-| DatabaseDesigner | — | author | author | author | — | — | — |
-| Implementer | — | build | build | build | build | build | — |
-| Integrator | — | — | integrate | integrate | integrate | integrate | — |
-| TestManager | — | plan | plan | plan | plan | plan | — |
-| TestAnalyst | — | — | author | author | author | author | — |
-| TestDesigner | — | — | author | author | author | author | — |
-| Tester | — | — | execute | execute | execute | execute | execute |
-| DeploymentManager | — | — | — | — | — | prepare | deploy |
-| ConfigurationManager | — | configure | maintain | maintain | maintain | maintain | maintain |
-| ChangeControlManager | — | — | — | on CR | on CR | on CR | on CR |
-| ProjectManager | author | plan | plan | plan | plan | plan | plan |
-| TechnicalWriter | — | — | — | author | author | author | author |
-| Reviewer | review | review | review | review | review | review | review |
-| CodeReviewer | — | — | — | review | review | review | — |
-| ManagementReviewer | — | — | — | — | — | — | review |
-| ReviewCoordinator | verdict | verdict | verdict | verdict | verdict | verdict | verdict |
+| Role | I1 | I2 | E1 | E2 | C1 | C2 | C3 | T1 |
+|---|---|---|---|---|---|---|---|---|
+| ProcessEngineer | author | correct | prepare | prepare | — | — | — | — |
+| SystemAnalyst | author | correct | detail | detail | — | — | — | — |
+| RequirementsSpecifier | author | correct | detail | detail | — | — | — | — |
+| SoftwareArchitect | author | — | author | stabilise | guide | guide | guide | — |
+| Designer | — | — | author | author | author | author | author | — |
+| UserInterfaceDesigner | — | — | author | author | author | author | author | — |
+| DatabaseDesigner | — | — | author | author | author | — | — | — |
+| Implementer | — | — | build | build | build | build | build | — |
+| Integrator | — | — | — | integrate | integrate | integrate | integrate | — |
+| TestManager | — | correct | plan | plan | plan | plan | plan | — |
+| TestAnalyst | — | — | — | author | author | author | author | — |
+| TestDesigner | — | — | — | author | author | author | author | — |
+| Tester | — | — | — | execute | execute | execute | execute | execute |
+| DeploymentManager | — | — | — | — | — | — | prepare | deploy |
+| ConfigurationManager | — | — | configure | maintain | maintain | maintain | maintain | maintain |
+| ChangeControlManager | — | — | — | — | on CR | on CR | on CR | on CR |
+| ProjectManager | author | author | plan | plan | plan | plan | plan | plan |
+| TechnicalWriter | — | — | — | — | author | author | author | author |
+| Reviewer | review | review | review | review | review | review | review | review |
+| CodeReviewer | — | — | — | — | review | review | review | — |
+| ManagementReviewer | review | review | — | review | — | — | review | review |
+| ReviewCoordinator | verdict | verdict | verdict | verdict | verdict | verdict | verdict | verdict |
+
+**The management lens at every lifecycle gate.** The ManagementReviewer participates in I1, I2, E2, C3 and T1 — the iterations that close the four lifecycle milestones LCO (I2), LCA (E2), IOC (C3) and PR (T1), plus I1 for the record. The management lens supplies evidence at each gate: a compliance table against that milestone's exit criteria, a risk status chart with trend direction, and a four-axis health scorecard. The ReviewCoordinator remains the verdict owner — the management lens supplies evidence, it does not replace the coordinator. A gate verified only by the technical and business lenses has no assessment of feasibility, acceptability, four-axis health or risk-retirement trend, which is what LCO, LCA and IOC require.
 
 **Parallelism discipline.** The profile above is the plan, not a lever. If an iteration slips, the remedy is another iteration — never more agent roles executing at once, and never cutting declared scope. Adding roles to a phase increases coordination overhead and artifact contention without proportional benefit, and declared scope is the stakeholder's to change, not the plan's.
 
@@ -262,24 +270,24 @@ The agent role profile: which roles execute in which iteration. Roles not listed
 
 ## Use Cases and Scenarios Addressed
 
-The scope of an iteration is a selected set of use cases, not a set of technical tasks. Inception 1 selects all twelve for **survey** and five for **detail** — the five that force an architectural decision.
+Inception 2 selects no use case for detail and changes no use case. The selection made in Inception 1 stands: all twelve surveyed one-to-one against the twelve declared requirements, five detailed because they force an architectural decision. Inception 2 closes findings against the artifacts that carry them; it does not re-scope the iteration.
 
-| UC | Source | Use case | This iteration | Why |
-|---|---|---|---|---|
-| UC-002 | FR-002 | Clock In and Clock Out | **Detailed** | Client-supplied timestamp, idempotency key, 5-minute offline retry (CON-040, NFR-003, AC-006). |
-| UC-004 | FR-004 | Export Monthly Clocking Report as CSV | **Detailed** | High volatility: the fixed column contract and the empty-not-zero semantics (FR-004). |
-| UC-005 | FR-005 | Correct or Insert a Clocking | **Detailed** | Append-only correction with audit; the original is never overwritten in place (CON-007, NFR-001). |
-| UC-010 | FR-010 | Feature or Un-feature a News Item | **Detailed** | High volatility: the at-most-one-featured invariant (CON-011, CON-012). |
-| UC-011 | FR-011 | Search Employee Directory | **Detailed** | Live LDAP read with no local copy (CON-032, R001). |
-| UC-001 | FR-001 | View Own Clocking History | Surveyed | No architectural decision. Detailed in Elaboration. |
-| UC-003 | FR-003 | View All Employee Clockings | Surveyed | No architectural decision. Detailed in Elaboration. |
-| UC-006 | FR-006 | Publish News Item | Surveyed | No architectural decision. Detailed in Elaboration. |
-| UC-007 | FR-007 | Read News | Surveyed | No architectural decision. Detailed in Elaboration. |
-| UC-008 | FR-008 | Edit Published News Item | Surveyed | No architectural decision. Detailed in Elaboration. |
-| UC-009 | FR-009 | Unpublish News Item | Surveyed | No architectural decision. Detailed in Elaboration. |
-| UC-012 | FR-012 | Assign Worker Category | Surveyed | No architectural decision. Detailed in Elaboration. |
+| UC | Source | Selection | Changed this iteration |
+|---|---|---|---|
+| UC-002 | FR-002 | Detailed (Inception 1) | No |
+| UC-004 | FR-004 | Detailed (Inception 1) | No |
+| UC-005 | FR-005 | Detailed (Inception 1) | No |
+| UC-010 | FR-010 | Detailed (Inception 1) | No |
+| UC-011 | FR-011 | Detailed (Inception 1) | No |
+| UC-001 | FR-001 | Surveyed (Inception 1) | No |
+| UC-003 | FR-003 | Surveyed (Inception 1) | No |
+| UC-006 | FR-006 | Surveyed (Inception 1) | No |
+| UC-007 | FR-007 | Surveyed (Inception 1) | No |
+| UC-008 | FR-008 | Surveyed (Inception 1) | No |
+| UC-009 | FR-009 | Surveyed (Inception 1) | No |
+| UC-012 | FR-012 | Surveyed (Inception 1) | No |
 
-**Scenarios.** The alternative flows that carry a risk or an invariant are named in the Use-Case Model and are the ones the TestDesigner must cover: UC-002 A1 (duplicate press), A2 (network unreachable), A3 (clock-out with no open pair); UC-004 A1 (clock-out missing), A2 (day with no clocking), A3 (no category); UC-005 A1 (insertion for a day with no clocking), A2 (employee attempts a correction); UC-010 A1 (clearing the flag on the featured item), A2 (no item featured); UC-011 A1 (empty attribute), A2 (no category), A3 (network unreachable), A4 (no match).
+**Scenarios.** The alternative flows that carry a risk or an invariant are the ones the TestDesigner must cover from Elaboration 2: UC-002 A1 (duplicate press), A2 (network unreachable), A3 (clock-out with no open pair); UC-004 A1 (clock-out missing), A2 (day with no clocking), A3 (no category); UC-005 A1 (insertion for a day with no clocking), A2 (employee attempts a correction); UC-010 A1 (clearing the flag on the featured item), A2 (no item featured); UC-011 A1 (empty attribute), A2 (no category), A3 (network unreachable), A4 (no match). None is executed this iteration.
 
 **No use case is split per actor.** UC-003, UC-004 and UC-005 are three distinct HR goals over the same clocking data — viewing, exporting and correcting are separate outcomes with separate triggers.
 
@@ -289,7 +297,7 @@ Two layers, kept apart.
 
 ### (a) Declared acceptance criteria — every AC-NNN accounted for
 
-All six declared acceptance criteria are accounted for. **None is closed this iteration**, because Inception 1 produces no executable increment. Each is deferred to a named iteration and the evidence that will close it is named.
+All six declared acceptance criteria are accounted for. **None is closed this iteration**, because Inception 2 produces no executable increment. Each is deferred to a named iteration and the evidence that will close it is named.
 
 | AC | Criterion | This iteration | Deferred to | Evidence that will close it |
 |---|---|---|---|---|
@@ -302,15 +310,17 @@ All six declared acceptance criteria are accounted for. **None is closed this it
 
 ### (b) This iteration's own exit criteria
 
+X-1 to X-5 are re-assessed in Inception 2, not assumed met in Inception 1. Each now carries the closure of the findings that touch it.
+
 | # | Exit criterion | Met when |
 |---|---|---|
-| X-1 | The requirements baseline is complete and reviewed: twelve declared requirements as twelve use cases, one-to-one, with no use case lacking a declared source. | Vision, Use-Case Model and Supplementary Specification persisted and reviewed. |
-| X-2 | Every risk is classified with a strategy and an owner, and every accepted risk names the basis of its acceptance. | Risk List persisted. |
-| X-3 | The coarse roadmap and this iteration's fine plan are composed, with no work item sized in a unit this system does not measure. | This Iteration Plan. |
+| X-1 | The requirements baseline is complete and reviewed: twelve declared requirements as twelve use cases, one-to-one, with no use case lacking a declared source, and no finding open against the Vision, the Use-Case Model or the Supplementary Specification. | Vision, Use-Case Model and Supplementary Specification corrected; Vision#F1, Use-Case Model#F1 and Supplementary Specification#F1 closed by the Reviewer. |
+| X-2 | Every risk is classified with a strategy and an owner, and every accepted risk names the basis of its acceptance. | Risk List persisted; R001 to R010 each carry strategy, owner, mitigation, contingency and an observable indicator; each accepted risk names its CON-024 basis. |
+| X-3 | The coarse roadmap and this iteration's fine plan are composed, with no work item sized in a unit this system does not measure, and no finding open against the Iteration Plan. | This Iteration Plan; Iteration Plan#F1 (Major), #F2 (Major), #F1 (Minor), #F3 (Minor) and #F4 (Minor) closed by their emitting lenses. |
 | X-4 | The first-cut architecture confronts the highest-magnitude technical risks rather than deferring them. | Software Architecture Document persisted, addressing R001, R003, R004 and R008. |
-| X-5 | LCO readiness is assessed and the verdict recorded. | The ReviewCoordinator's LCO verdict in the Review Record. |
+| X-5 | LCO readiness is re-assessed and the verdict recorded, with no finding open against any artifact. | The ReviewCoordinator's LCO verdict in the Review Record, following the Project Approval Review. |
 
-**LCO readiness assessment.** The project is viable to proceed to Elaboration. The scope is agreed and complete — twelve declared requirements, twelve use cases, no open scope question. The initial risks are identified and classified, and the three highest-magnitude ones (R001, R003, R004) are architectural and are confronted in Elaboration rather than deferred. The architecture is first-cut and its two external dependencies — the existing Keycloak and the read-only AD — are declared, bounded and validated by human work whose feedback lands before Elaboration closes. **This assessment is the ProjectManager's; the milestone verdict is the ReviewCoordinator's, and the milestone is not achieved until that verdict is recorded.**
+**LCO readiness assessment.** The project is viable to proceed to Elaboration. The scope is agreed and complete — twelve declared requirements, twelve use cases, no open scope question. The initial risks are identified and classified, and the three highest-magnitude ones (R001, R003, R004) are architectural and are confronted in Elaboration rather than deferred. The architecture is first-cut and its two external dependencies — the existing Keycloak and the read-only AD — are declared, bounded and validated by human work whose feedback lands before Elaboration closes. What Inception 1 did not deliver is a clean review: eleven findings were raised and the sanction was refused. Inception 2 exists to close them. **This assessment is the ProjectManager's; the milestone verdict is the ReviewCoordinator's, and the milestone is not achieved until that verdict is recorded.**
 
 ## Traceability
 
@@ -322,5 +332,6 @@ All six declared acceptance criteria are accounted for. **None is closed this it
 | Iteration Plan | CON-023, CON-024, CON-025, CON-026, CON-034 | Refines | Development Case |
 | Iteration Plan | BG-001, BG-002, BG-003 | Refines | Vision |
 | Iteration Plan | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Refines | Supplementary Specification |
+| Iteration Plan | Iteration Assessment | Refines | Risk List |
 
-**Reading the table.** The Iteration Plan is sequenced by the Risk List, scoped by the Use-Case Model, and bounded by the Development Case's risk governance and measurement policy. Its acceptance criteria are verified by Test Cases that do not exist yet — the `Traces To` end is the artifact that will carry them, and it is empty of elements this iteration.
+**Reading the table.** The Iteration Plan is sequenced by the Risk List, scoped by the Use-Case Model, and bounded by the Development Case's risk governance and measurement policy. Its acceptance criteria are verified by Test Cases that do not exist yet — the `Traces To` end is the artifact that will carry them, and it is empty of elements this iteration. The last row records that this plan is built from the Iteration Assessment's measured actual and variance analysis, which is the factual basis for the next iteration's plan.
