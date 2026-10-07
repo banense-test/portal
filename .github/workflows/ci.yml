@@ -11,26 +11,43 @@
 # a subsystem merged under src/ can never be silently disconnected from CI.
 #
 # Integration order follows the subsystem dependency hierarchy of the Software
-# Architecture Document, bottom-up. Provisional at Inception:
+# Architecture Document (Logical View), bottom-up: a subsystem is merged only after
+# every subsystem it depends on is already on the iteration branch. The hierarchy
+# below is the Software Architecture Document's, not a provisional sketch.
 #
 #   @startuml
-#   title Portal — provisional subsystem dependency hierarchy (integration order)
+#   title Portal — subsystem dependency hierarchy (integration order)
 #   skinparam componentStyle rectangle
-#   component "Portal host" as HOST
-#   component "Clocking" as CLK
-#   component "News" as NEWS
-#   component "Directory" as DIR
-#   component "Audit trail" as AUDIT
-#   component "Identity and authorization" as IDENT
-#   HOST --> CLK
-#   HOST --> NEWS
-#   HOST --> DIR
-#   CLK --> AUDIT
-#   NEWS --> AUDIT
-#   CLK --> IDENT
-#   NEWS --> IDENT
-#   DIR --> IDENT
+#   component "COMP-007 Audit Trail" as C7
+#   component "COMP-008 Identity and Access" as C8
+#   component "COMP-009 People Directory Port" as C9
+#   component "COMP-010 Clocking Retry Queue" as C10
+#   component "COMP-001 Clocking" as C1
+#   component "COMP-004 News Featuring" as C4
+#   component "COMP-006 Worker Category" as C6
+#   component "COMP-002 Clocking Reporting" as C2
+#   component "COMP-003 News" as C3
+#   component "COMP-005 Directory" as C5
+#   C1 --> C7
+#   C1 --> C8
+#   C2 --> C1
+#   C2 --> C6
+#   C2 --> C9
+#   C2 --> C8
+#   C3 --> C4
+#   C3 --> C7
+#   C3 --> C8
+#   C4 --> C7
+#   C4 --> C8
+#   C5 --> C9
+#   C5 --> C6
+#   C5 --> C8
+#   C6 --> C7
+#   C6 --> C8
 #   @enduml
+#
+# Merge order, leaves first: COMP-007, COMP-008, COMP-009, COMP-010, then
+# COMP-001, COMP-004, COMP-006, then COMP-002, COMP-003, COMP-005.
 #
 # Target build frequency: at least one build per day toward iteration close, one
 # per week minimum — the Integrator's merge cadence.
