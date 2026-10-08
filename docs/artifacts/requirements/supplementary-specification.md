@@ -392,14 +392,17 @@ The system-wide business rules — CON-007 to CON-016 and CON-043 — are specif
 | Supplementary Specification | CON-001, CON-002, CON-003, CON-004, CON-005, CON-006, CON-007, CON-008, CON-009, CON-010, CON-011, CON-012, CON-013, CON-014, CON-015, CON-016, CON-017, CON-018, CON-019, CON-020, CON-021, CON-022, CON-027, CON-028, CON-029, CON-030, CON-031, CON-032, CON-033, CON-035, CON-036, CON-037, CON-038, CON-039, CON-040, CON-041, CON-042, CON-043 | Refines | Software Architecture Document |
 | Supplementary Specification | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | Test Case |
 | Supplementary Specification | R001 | Refines | Risk List |
+| NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Declared input | Refines | Software Architecture Document |
+| CON-001 to CON-022, CON-027 to CON-033, CON-035 to CON-043 | Declared input | Refines | Software Architecture Document |
+| AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Declared input | Refines | Test Case |
 
-**Element-level registration.** Every declared element this specification is accountable to is registered individually in the trace repository, not only through the artifact-level link above: NFR-001 to NFR-005 and CON-001 to CON-022 and CON-027 to CON-043 each carry a `Refines` link to the Software Architecture Document, and AC-001 to AC-006 each carry a `Refines` link to the Test Case artifact. The Requirements Traceability Matrix reports no Business-level LEAF node for any of them.
+**Element-level registration.** The rows above are registered in the trace repository, not only declared here. Each of NFR-001 to NFR-005 carries its own `Refines` link to the Software Architecture Document; each of CON-001 to CON-022 and CON-027 to CON-043 carries its own `Refines` link to the Software Architecture Document; and each of AC-001 to AC-006 carries its own `Refines` link to the Test Case artifact. The Requirements Traceability Matrix reports no Business-level LEAF node for any of them.
 
 **Constraints not specified here.** CON-023 to CON-026 and CON-034 govern the process rather than the system and are carried in the Vision and the Development Case; they are not rows of this specification and carry no link from it.
 
 ```plantuml
 @startuml
-title Supplementary Specification — registered traceability (Portal, Inception 3)
+title Supplementary Specification — registered traceability, artifact level and element level (Portal, Inception 3)
 
 skinparam classAttributeIconSize 0
 skinparam packageStyle rectangle
@@ -407,13 +410,11 @@ skinparam packageStyle rectangle
 package "Declared input — Business level" as DECL {
   class "NFR-001 .. NFR-005" as NFR <<declared>>
   class "AC-001 .. AC-006" as AC <<declared>>
-  class "CON-001 .. CON-022, CON-027 .. CON-043" as CON <<declared>>
+  class "CON-001 .. CON-022\nCON-027 .. CON-033\nCON-035 .. CON-043" as CON <<declared>>
   class "R001" as R <<declared>>
 }
 
-package "Supplementary Specification" as SS {
-  class "Supplementary Specification" as SSA <<artifact>>
-}
+class "Supplementary Specification" as SSA <<artifact>>
 
 package "Downstream" as DOWN {
   class "Software Architecture Document" as SAD <<artifact>>
@@ -424,32 +425,42 @@ package "Downstream" as DOWN {
 NFR --> SSA : Refines
 AC --> SSA : Refines
 CON --> SSA : Refines
-R --> SSA : Refines
+NFR --> SAD : Refines
+CON --> SAD : Refines
+AC --> TC : Refines
+R --> RL : Refines
 SSA --> SAD : Refines
 SSA --> TC : Refines
 SSA --> RL : Refines
 
 note bottom of NFR
-  Each of NFR-001 to NFR-005 carries a registered
-  link to the Software Architecture Document.
-  No Business-level LEAF node remains.
+  Element level: each of NFR-001 to NFR-005 carries
+  a registered Refines link to the Software
+  Architecture Document. No Business-level LEAF
+  node remains.
 end note
 
 note bottom of AC
-  Each of AC-001 to AC-006 carries a registered
-  link to the Test Case artifact.
+  Element level: each of AC-001 to AC-006 carries a
+  registered Refines link to the Test Case artifact.
 end note
 
 note bottom of CON
-  Each declared constraint specified here carries
-  a registered link to the Software Architecture
-  Document. CON-023 to CON-026 and CON-034 govern
-  the process and are carried in the Vision and
-  the Development Case, not here.
+  Element level: each declared constraint specified
+  here carries a registered Refines link to the
+  Software Architecture Document. CON-023 to CON-026
+  and CON-034 govern the process and are carried in
+  the Vision and the Development Case, not here.
 end note
 
-DECL -[hidden]- SS
-SS -[hidden]- DOWN
+note bottom of SSA
+  Artifact level: the specification itself carries
+  Refines links to the Software Architecture
+  Document, the Test Case artifact and the Risk List.
+end note
+
+DECL -[hidden]- SSA
+SSA -[hidden]- DOWN
 @enduml
 ```
 
