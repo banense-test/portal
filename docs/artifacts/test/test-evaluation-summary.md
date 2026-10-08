@@ -203,6 +203,7 @@ Inception produces no executable increment, so the verification performed is **r
 | The architecture's quality attributes are testable through the declared interfaces | Read the Software Architecture Document Logical and Quality views | Pass — every external system is behind an interface with a stand-in implementation (INT-009, INT-008) |
 | The two `Volatility: High` areas are isolated behind a seam, so a restatement is regression-scoped | Read ADR-002 and the subsystem table | Pass — COMP-002 behind INT-002, COMP-004 behind INT-004 |
 | The recorded SCM quality signal reconciles with the provider | Read the build status and the CI workflow file from the provider | Pass — the run id, the window and the trigger set are as observed; the workflow triggers on `push` and on `pull_request`, so the run is the per-push build-and-test the regression rule needs (CON-033) |
+| The declared coverage is registered in the trace repository | Read the trace graph for this artifact, upstream and downstream | Pass — 53 upstream links and 76 downstream links are registered; the artifact is present in the trace tree |
 
 ### What was not tested, and why
 
@@ -215,7 +216,7 @@ Inception produces no executable increment, so the verification performed is **r
 
 ### Mission verdict
 
-**The Evaluation Mission for Inception 2 is met.** The requirements baseline is verifiable — every declared requirement, acceptance criterion and non-functional requirement has a stated, observable verification method, and no requirement was found untestable. The test strategy is defined with its levels, its coverage measure, its mandatory regression rule and its exit criterion. The test infrastructure the strategy needs is identified with an owner and a deadline, and the one resource already in place — the CI workflow — is recorded as in place rather than as a gap.
+**The Evaluation Mission for Inception 3 is met.** The requirements baseline is verifiable — every declared requirement, acceptance criterion and non-functional requirement has a stated, observable verification method, and no requirement was found untestable. The test strategy is defined with its levels, its coverage measure, its mandatory regression rule and its exit criterion. The test infrastructure the strategy needs is identified with an owner and a deadline, and the one resource already in place — the CI workflow — is recorded as in place rather than as a gap. The declared coverage is registered in the trace repository and is machine-verifiable.
 
 **The verdict is bounded by what the iteration could produce.** No test was executed, because no executable increment exists. The mission was scoped to verifiability, not to verification, and it is met on that scope. **This is not a statement that the system works** — nothing has been run.
 
