@@ -804,6 +804,37 @@ end note
 @enduml
 ```
 
+#### Iteration 3
+
+**Review type.** R7 Lifecycle Milestone Review — Lifecycle Objectives (LCO), re-assessment. The evaluative lens is LCO EXIT CRITERIA: do the artifacts collectively satisfy the conditions for phase transition? Inception produces no executable increment, so no completion lens applies and no acceptance criterion is closable.
+
+**Artifacts in scope.** All eight artifacts persisted this phase, read in full: Development Case, Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Risk List, Iteration Plan, Test Evaluation Summary. The Iteration Assessment is not a review input at this gate — the ProjectManager authors it in the Assess touchpoint that runs after this review.
+
+**Criteria applied.** The twelve LCO exit criteria, evaluated against the artifacts and against the trace graph. The lens supplies evidence: a compliance table per criterion, a risk status chart with magnitude and trend, a four-axis health scorecard, and a defect distribution. The ReviewCoordinator remains the verdict owner; the management lens does not replace it.
+
+| # | Criterion | Status |
+|---|---|---|
+| LCO-1 | Stakeholders agree on the scope | MET |
+| LCO-2 | Project viable to proceed | MET |
+| LCO-3 | Initial risks identified and classified | MET |
+| LCO-4 | Requirements baseline complete and reviewed | MET |
+| LCO-5 | Architecture confronts the top risks | MET |
+| LCO-6 | Plan composed, no unmeasured unit | MET |
+| LCO-7 | Verifiability established | MET |
+| LCO-8 | Project Approval Review conducted | NOT MET |
+| LCO-9 | No open Critical finding | MET |
+| LCO-10 | No unretired scope marker | MET |
+| LCO-11 | No finding from a prior iteration open | MET |
+| LCO-12 | No finding from this iteration open | NOT MET |
+
+**Upstream consumption.** Every artifact was read in full before any finding was recorded. The declared scope in the Work Order was read as the ceiling. The trace graph was projected from the Business level and read against each artifact's declared traceability, and the Requirements Traceability Matrix was generated to check element-level coverage. The finding ledger was read for all ten artifacts.
+
+**Entry criteria.** Met. All eight artifacts are complete and stable, no section is a placeholder, the upstream artifacts each artifact depends on are persisted, and the checklists were prepared before the artifacts were read.
+
+**Prior findings of this lens.** Three findings were open at the start of this iteration — Supplementary Specification#F1, Iteration Plan#F5 and Test Evaluation Summary#F1. All three are closed as Resolved; the disposition of each is recorded in Resolutions and Actions.
+
+**Excluded from this lens.** The technical, requirements, architecture, test and business findings are the Reviewer's and the BusinessReviewer's; they are recorded in their own blocks and are not restated, re-scored or closed here. The milestone verdict is the ReviewCoordinator's.
+
 ### Review Coordinator lens
 #### Review event
 
