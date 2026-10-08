@@ -390,5 +390,73 @@ end note
 
 **Coverage.** Twelve declared requirements, six acceptance criteria, five non-functional requirements and ten risks are each accounted for. No element of the declared scope is left without a verification method, and no verification method is stated for an element that is not declared.
 
-**Registration in the trace repository.** The links above are declared here and are not yet registered in the graph: `model_get_upstream(projectId, 'Test Evaluation Summary')` returns no links and the artifact is absent from the Business-level trace tree. Registration is the trace steward's act and is requested of the SystemAnalyst in Issue #1. Until it is registered, the coverage stated above is asserted in this table and is not machine-verifiable.
+**Registration in the trace repository.** The links above are registered in the graph. `model_get_upstream(projectId, 'Test Evaluation Summary')` returns 53 links — every declared FR, NFR, AC, CON, BG and R this summary is accountable to — and `model_get_downstream` returns the artifact-level links to the Vision, the Use-Case Model, the Supplementary Specification's home, the Risk List, the Development Case, the Software Architecture Document and the Test Case artifact, together with the element-level verification-coverage links to COMP-001 to COMP-010 and INT-001 to INT-010. The declared coverage is therefore machine-verifiable, and the artifact is present in the trace tree.
 
+```plantuml
+@startuml
+title Declared coverage of the Test Evaluation Summary — registered in the trace graph (Portal, Inception 3)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Declared input — the ceiling" as DECL {
+  class "FR-001 to FR-012" as FR <<declared>>
+  class "NFR-001 to NFR-005" as NFR <<declared>>
+  class "AC-001 to AC-006" as AC <<declared>>
+  class "CON-021, CON-033, CON-035,\nCON-040, CON-041" as CON <<declared>>
+  class "BG-001 to BG-003" as BG <<declared>>
+  class "R001 to R010" as R <<declared>>
+}
+
+package "Test effort" as TEST {
+  class "Test Evaluation Summary" as TES <<artifact>> {
+    Verification method per declared
+    requirement, acceptance criterion
+    and non-functional requirement.
+  }
+}
+
+package "Downstream — what carries the elements" as DOWN {
+  class "Test Case" as TC <<artifact>> {
+    Empty this iteration.
+    No use-case realization exists.
+  }
+  class "Risk List" as RL <<artifact>>
+  class "Use-Case Model" as UCM <<artifact>>
+  class "Vision" as VIS <<artifact>>
+  class "Development Case" as DC <<artifact>>
+  class "Software Architecture Document" as SAD <<artifact>>
+  class "COMP-001 to COMP-010" as COMP <<element>>
+  class "INT-001 to INT-010" as INT <<element>>
+}
+
+FR --> TES : Refines
+NFR --> TES : Refines
+AC --> TES : Refines
+CON --> TES : Refines
+BG --> TES : Refines
+R --> TES : Refines
+
+TES --> TC : Refines
+TES --> RL : Refines
+TES --> UCM : Refines
+TES --> VIS : Refines
+TES --> DC : Refines
+TES --> SAD : DependsOn
+TES --> COMP : DependsOn
+TES --> INT : DependsOn
+
+note bottom of DECL
+  53 upstream links are registered. Every declared
+  identifier this summary is accountable to reaches
+  it in the graph, so the coverage is machine-verifiable.
+end note
+
+note bottom of TC
+  LEAF by design, not by defect: the Test Case artifact
+  is empty because no use-case realization exists in
+  Inception. The Iteration Plan defers test authoring
+  to Elaboration 2.
+end note
+@enduml
+```
