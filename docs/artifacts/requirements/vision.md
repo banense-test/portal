@@ -373,13 +373,77 @@ title Employee Portal — feature derivation from declared requirements (Incepti
 | R002 | Digital clocking adoption: some employees may keep using Excel out of habit if the change is not communicated well. | 3 | 2 | 6 | BG-002 and BG-003 depend on it. Mitigation is communication, not a portal feature. |
 
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | Vision | STK-001, STK-002, STK-003, STK-004 | Refines | Use-Case Model |
 | Vision | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012 | Refines | Use-Case Model |
 | Vision | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Refines | Supplementary Specification |
-| Vision | CON-001, CON-002, CON-003, CON-004, CON-005, CON-006, CON-007, CON-008, CON-009, CON-010, CON-011, CON-012, CON-013, CON-014, CON-015, CON-016, CON-017, CON-018, CON-019, CON-020, CON-021, CON-022, CON-023, CON-024, CON-025, CON-026, CON-027, CON-028, CON-029, CON-030, CON-031, CON-032, CON-033, CON-034, CON-035, CON-036, CON-037, CON-038, CON-039, CON-040, CON-041, CON-042, CON-043 | Refines | Supplementary Specification |
+| Vision | CON-001, CON-002, CON-003, CON-004, CON-005, CON-006, CON-007, CON-008, CON-009, CON-010, CON-011, CON-012, CON-013, CON-014, CON-015, CON-016, CON-017, CON-018, CON-019, CON-020, CON-021, CON-022, CON-027, CON-028, CON-029, CON-030, CON-031, CON-032, CON-033, CON-035, CON-036, CON-037, CON-038, CON-039, CON-040, CON-041, CON-042, CON-043 | Refines | Supplementary Specification |
 | Vision | BG-001, BG-002, BG-003 | Refines | Use-Case Model |
 | Vision | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | Test Case |
 | Vision | R001, R002 | Refines | Risk List |
+
+**Element-level registration.** Every declared element this Vision is accountable to is registered individually in the trace repository, not only through the artifact-level link: STK-001 to STK-004, FR-001 to FR-012 and BG-001 to BG-003 each carry a `Refines` link to the Use-Case Model; NFR-001 to NFR-005 and CON-001 to CON-022 and CON-027 to CON-043 each carry a `Refines` link to the Supplementary Specification; AC-001 to AC-006 each carry a `Refines` link to the Test Case artifact; and R001 and R002 each carry a `Refines` link to the Risk List. The Requirements Traceability Matrix reports no Business-level LEAF node for any of them.
+
+**Constraints not carried here.** CON-023 to CON-026 and CON-034 govern the process rather than the system. They are stated in this Vision's Constraints section and carried by the Development Case; they are not rows of the Supplementary Specification and carry no link from it.
+
+```plantuml
+@startuml
+title Vision — registered traceability (Portal, Inception 3)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Declared input — Business level" as DECL {
+  class "STK-001 .. STK-004" as STK <<declared>>
+  class "FR-001 .. FR-012" as FR <<declared>>
+  class "NFR-001 .. NFR-005" as NFR <<declared>>
+  class "CON-001 .. CON-022, CON-027 .. CON-043" as CON <<declared>>
+  class "CON-023 .. CON-026, CON-034" as CONP <<declared>>
+  class "BG-001 .. BG-003" as BG <<declared>>
+  class "AC-001 .. AC-006" as AC <<declared>>
+  class "R001, R002" as R <<declared>>
+}
+
+package "Vision" as VIS {
+  class "Vision" as VISA <<artifact>>
+}
+
+package "Downstream" as DOWN {
+  class "Use-Case Model" as UCM <<artifact>>
+  class "Supplementary Specification" as SS <<artifact>>
+  class "Test Case" as TC <<artifact>>
+  class "Risk List" as RL <<artifact>>
+}
+
+STK --> VISA : Refines
+FR --> VISA : Refines
+NFR --> VISA : Refines
+CON --> VISA : Refines
+BG --> VISA : Refines
+AC --> VISA : Refines
+R --> VISA : Refines
+VISA --> UCM : Refines
+VISA --> SS : Refines
+VISA --> TC : Refines
+VISA --> RL : Refines
+
+note bottom of CONP
+  CON-023 to CON-026 and CON-034 govern the
+  process, not the system. They are carried in
+  the Vision and the Development Case and are
+  not rows of the Supplementary Specification,
+  so no link runs from them to it.
+end note
+
+note bottom of STK
+  Each of the four declared stakeholders carries a
+  registered link. No Business-level LEAF node
+  remains for any declared element this artifact
+  is accountable to.
+end note
+
+DECL -[hidden]- VIS
+VIS -[hidden]- DOWN
+@enduml
+```
