@@ -10,7 +10,7 @@ Risk is the primary driver of iteration sequencing. Every risk below names the a
 
 ```plantuml
 @startuml
-title Risk List structure — probability x impact = magnitude (Portal, Inception 2)
+title Risk List structure — probability x impact = magnitude (Portal, Inception 3)
 
 skinparam classAttributeIconSize 0
 
@@ -98,7 +98,7 @@ end note
 
 | Strategy | Meaning here |
 |---|---|
-| avoid | The treatment removes the mechanism. Chosen where the mechanism is inside the team's control — a design decision, a checkpoint, a test. |
+| avoid | The treatment removes the mechanism. Chosen where the mechanism is inside the team's control — a design decision, a checkpoint, a test, an assigned owner. |
 | transfer | The consequence is shifted to a party that already carries it. No candidate in this project qualifies: no vendor delivers anything, no insurance applies, and CON-039 places backups with Infrastructure outside this project. |
 | accept | The consequence is carried. Where the mechanism is set by the declared constraints or lies outside the team's control (Infrastructure, HR, the stakeholders) and cannot be transferred, acceptance is granted in advance by the project sponsor under CON-024 and is not asked again. |
 
@@ -113,7 +113,7 @@ end note
 | Budget overrun or cost cap breach | CON-034: there is no budget or cap on token spend and none is set by the team. |
 | Keycloak availability, configuration or ownership | CON-025: not a risk of this project and not registered. |
 | Active Directory availability or ownership | CON-025: not a risk of this project and not registered. |
-| Backup or restore failure | CON-039: covered by Infrastructure's existing server-backup practice, confirmed in writing with a verified restore test. No backup design, tooling or restore procedure is part of this project. |
+| Backup or restore failure | CON-039: covered by Infrastructure's existing server-backup practice, confirmed in writing with a verified restore test. No backup design, tooling or restore procedure are part of this project. |
 | Data migration corruption or reconciliation conflict | CON-037: there is no migration. The portal starts empty. |
 | Third-party or vendor delivery slippage | No vendor delivers any element of this project. |
 | Regulatory or compliance regime change | CON-021: no external compliance regime applies to the audit trail and no retention period is mandated. |
