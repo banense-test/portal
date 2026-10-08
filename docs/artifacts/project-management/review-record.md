@@ -3889,6 +3889,83 @@ D --> W4
 
 **This is the Reviewer's technical-lens disposition on the artifacts. The LCO milestone verdict is the ReviewCoordinator's, and the milestone is not achieved until that verdict is recorded.**
 
+#### Iteration 3
+
+**Disposition from this lens: Approved with Changes.**
+
+```plantuml
+@startuml
+title Disposition — LCO technical lens, Inception 3 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+class "Disposition from this lens" as D <<verdict>> {
+  Approved with Changes
+  The requirements baseline, the candidate
+  architecture and the risk record are sound.
+  Two Major findings and one Minor are open.
+}
+
+class "Why not Approved" as W1 <<reason>> {
+  Two Major findings are open, both against the
+  Development Case: its declared traceability is
+  not registered in the graph, and its S1
+  assessment records no Change Request open while
+  Issue #1 is open. One Minor finding is open
+  against the Software Architecture Document.
+}
+
+class "Why not Rejected" as W2 <<reason>> {
+  No Critical finding exists.
+  No scope hallucination, no phantom use case,
+  no baseline redefinition, no ownership
+  reassignment, no invented technology,
+  no fabricated quantitative claim.
+}
+
+class "Closed this iteration" as W3 <<reason>> {
+  Supplementary Specification#F2 and
+  Test Evaluation Summary#F3 are Resolved.
+  The declared element-level traceability of the
+  Supplementary Specification is registered, and
+  the issue-tracker row reconciles with the SCM.
+}
+
+class "LCO exit criteria, from this lens" as W4 <<reason>> {
+  The technical artifacts collectively satisfy
+  the LCO conditions: the scope is agreed and
+  complete, the initial risks are identified and
+  classified, and the architecture confronts the
+  highest-magnitude technical risks.
+}
+
+class "Milestone verdict" as W5 <<note>> {
+  The LCO milestone verdict is the
+  ReviewCoordinator's. The milestone is not
+  achieved until that verdict is recorded.
+}
+
+D --> W1
+D --> W2
+D --> W3
+D --> W4
+D --> W5
+@enduml
+```
+
+**Basis.** The requirements baseline is sound and complete. Twelve declared requirements map one-to-one to twelve use cases, each carrying its `Source: FR-NNN`; no phantom use case exists; no cross-cutting mechanism was promoted to a use case; no use case was split per actor. The candidate architecture is sound: ten subsystems, ten interfaces, six architecture decision records, all four-plus-one views, every subsystem traced to a declared element, and the two `Volatility: High` areas each isolated behind a seam. The risk record is sound: R001 to R011 classified with strategy, owner, mitigation, contingency and an observable indicator, and every accepted risk naming its CON-024 basis. The Development Case's tailoring is baseline-conformant: the roster is not redefined, no CORE artifact is omitted, no ownership is reassigned, no artifact outside the CORE plus OPTIONAL universe is listed, the intensity equals the canonical matrix, and all six optional triggers were re-audited against their §5.2 conditions and none fired.
+
+**Why not Approved.** Two Major findings and one Minor are open. Both Major findings are against the Development Case and both are statements about observable state: its nine declared artifact-level trace links are not registered in the graph, so the graph shows it as a Business-level LEAF node, and its S1 assessment records "No Change Request is open" while Issue #1 is open. The Minor finding is against the Software Architecture Document: two of its twenty declared element-level rows are not carried as declared. Each is a statement a downstream role would act on and be misled by.
+
+**Why not Rejected.** No Critical finding exists. No scope hallucination, no phantom use case, no baseline redefinition, no ownership reassignment, no invented technology, no fabricated quantitative claim, no unsourced financial figure. The defects are corrections to statements about observable state, not defects in the requirements, the architecture or the risk treatment.
+
+**Closed this iteration.** Supplementary Specification#F2 and Test Evaluation Summary#F3 are Resolved, each materialized by a `resolve_artifact_finding` call by this lens. The declared element-level traceability of the Supplementary Specification is registered — NFR-002 to NFR-005 to the Software Architecture Document and AC-001 to AC-006 to the Test Case artifact, all in state OK — and the Test Evaluation Summary's issue-tracker row now records Issue #1 open with its labels, matching the SCM.
+
+**LCO exit criteria, from this lens.** The technical artifacts collectively satisfy the LCO conditions: the scope is agreed and complete with no open scope question, the initial risks are identified and classified, and the architecture is first-cut and confronts the highest-magnitude technical risks rather than deferring them. The three open findings are corrections to be made within this iteration, not conditions the project cannot meet.
+
+**This is the Reviewer's technical-lens disposition on the artifacts. The LCO milestone verdict is the ReviewCoordinator's, and the milestone is not achieved until that verdict is recorded.**
+
 ### Business Reviewer lens
 #### Iteration 1
 
