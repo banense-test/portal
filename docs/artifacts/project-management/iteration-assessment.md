@@ -427,8 +427,10 @@ end note
 | Iteration Assessment | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Refines | Supplementary Specification |
 | Iteration Assessment | CON-023, CON-024, CON-026, CON-034 | Refines | Development Case |
 | Iteration Assessment | BG-001, BG-002, BG-003 | Refines | Vision |
+| Iteration Assessment | Test Evaluation Summary | Refines | Test Case |
 | Iteration Assessment | `ci-run-37770804165` | DependsOn | — |
 
-**Reading the table.** `Traces From` is the artifact or declared input this assessment is accountable to — the plan it assesses, the risks it carries forward, the use cases and criteria it reports on, and the constraints that govern its own measurement and risk policy. `Traces To` is the artifact that will carry the elements this assessment specifies: the Risk List, whose entries this assessment carries forward unchanged, and the Test Case artifact, which is empty this iteration because no use-case realization exists to test against. The `ci-run-37770804165` row is the observed build the Test Results section rests on.
+**Reading the table.** `Traces From` is the artifact or declared input this assessment is accountable to — the plan it assesses, the risks it carries forward, the use cases and criteria it reports on, and the constraints that govern its own measurement and risk policy. `Traces To` is the artifact that will carry the elements this assessment specifies: the Risk List, whose entries this assessment carries forward unchanged, and the Test Case artifact, which is empty this iteration because no use-case realization exists to test against. The Test Evaluation Summary row is the verifiability verdict the Test Results section rests on. The `ci-run-37770804165` row is the observed build the Test Results section rests on.
 
 **No business-level element appears in this table.** There is no `BUC-NNN` and no `BR-NNN` to trace, because the Business Modeling discipline is inactive for the whole project (Development Case T-1) and no such element was created. The absence is the verdict, not a gap.
+
