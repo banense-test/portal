@@ -2,9 +2,9 @@
 
 - **Phase:** Inception
 - **Status:** Published — governs all iterations
-- **Iteration:** 2, Cycle 1
+- **Iteration:** 3, Cycle 1
 - **Owner:** ConfigurationManager
-- **Date:** 2026-10-07
+- **Date:** 2026-10-08
 
 This file is the workspace hierarchy expressed as code. It is documentation/config-as-code: it is committed direct to `main` and is never opened as a pull request. CI does not validate it. Every role reads it; the Integrator and the Implementer follow it; the ConfigurationManager owns it.
 
@@ -231,7 +231,7 @@ end note
 
 | Configuration item | Identifier | Versioned by | Baselined by |
 |---|---|---|---|
-| RUP artifact | Its canonical artifact name — `Vision`, `Use-Case Model`, `Software Architecture Document`, `Design Model`, `Test Case`, `Iteration Plan`, `Risk List`, `Review Record`, `Development Case`, `Change Request`. Never a phase, iteration or status suffix. | The SCM commit of each `upsert_artifact` | The iteration baseline tag |
+| RUP artifact | Its canonical artifact name — `Vision`, `Use-Case Model`, `Supplementary Specification`, `Software Architecture Document`, `Design Model`, `Test Case`, `Iteration Plan`, `Risk List`, `Review Record`, `Development Case`, `Change Request`. Never a phase, iteration or status suffix. | The SCM commit of each `upsert_artifact` | The iteration baseline tag |
 | Artifact element | The ID family of its type: `FR-NNN`, `NFR-NNN`, `CON-NNN`, `UC-NNN`, `AC-NNN`, `BG-NNN`, `RNNN`, `CLS-NNN`, `COMP-NNN`, `TBL-NNN`, `TC-NNN`, `STK-NNN` | The artifact that carries it | The iteration baseline tag |
 | Source code | Its repository path, `src/...` | The SCM commit | The iteration baseline tag |
 | CI configuration | Its path under the hosted provider's workflow directory | The SCM commit | The iteration baseline tag |
@@ -546,7 +546,7 @@ end note
 
 `main` is protected: a pull request is required, an APPROVED review is required, and a green CI run is required.
 
-The CI workflow is committed at `.github/workflows/ci.yml` and is green on `main`. It triggers on `push` and on `pull_request` for `main`, `iteration/**`, `chore/**`, `feature/**` and `hotfix/**`, and it regenerates the solution manifest from the `src/` and `tests/` tree on every run — a subsystem merged under `src/` cannot be silently disconnected from the build. The workflow is the per-push and per-pull-request build-and-test the regression rule requires (CON-033).
+The CI workflow is committed at `.github/workflows/ci.yml` at sha `d801df1d88e18cd658b7c40ee02891e7fe56daaf`, and the build on `main` is `ci-run-37770516297`. It triggers on `push` and on `pull_request` for `main`, `iteration/**`, `chore/**`, `feature/**` and `hotfix/**`, and it regenerates the solution manifest from the `src/` and `tests/` tree on every run — a subsystem merged under `src/` cannot be silently disconnected from the build. The workflow is the per-push and per-pull-request build-and-test the regression rule requires (CON-033).
 
 The remaining Elaboration entry criteria are the test stand-ins and the test conventions in `CONTRIBUTING.md`; the CI workflow is not among them.
 
