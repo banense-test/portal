@@ -6,7 +6,6 @@
 - **Owner:** SoftwareArchitect
 - **Date:** 2026-10-08
 ## Architectural Representation
-
 This document is the architecture of the Employee Portal, expressed in the 4+1 view model. Each view is a slice cut through the model, illuminating only the elements with system-wide impact. Everything else is design detail and belongs to the Design Model.
 
 | View | Primary diagram in this document | Addressed this iteration |
@@ -15,13 +14,12 @@ This document is the architecture of the Employee Portal, expressed in the 4+1 v
 | Process | Activity diagram — concurrency, transactions, fault tolerance | Yes — candidate |
 | Deployment | Deployment diagram — nodes and component placement | Yes — candidate |
 | Implementation | Component diagram — source organization and build structure | Yes — candidate |
-| Use-Case | Sequence diagrams for the architecturally significant scenarios | Yes — four scenarios |
+| Use-Case | Sequence diagrams for the architecturally significant scenarios | Yes — five scenarios |
 | Data | Class diagram — the portal's own tables | Yes — candidate |
 
 **Notation.** UML 2.5. Components are `<<component>>`; interfaces use ball-and-socket notation; external systems are drawn outside the system boundary. Identifiers are stable: `COMP-NNN` for components, `INT-NNN` for interfaces, `ADR-NNN` for decisions.
 
 **Scope of this iteration.** Inception produces a CANDIDATE architecture — a sketch sufficient to surface architectural risk and to guide Elaboration planning. It is not a baseline. The baseline is produced in Elaboration and validated by an executable prototype against the stand-ins (CON-035).
-
 ## Architectural Goals and Constraints
 
 ### Goals
