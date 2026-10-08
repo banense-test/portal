@@ -5595,13 +5595,94 @@ end note
 ### Management Reviewer lens
 **LCO milestone: NOT SANCTIONED. Stakeholder sanction: REFUSED.**
 
-**Management lens verdict: Conditional Go.** The project is viable to proceed to Elaboration and the gate structure is sound. Eight of the ten LCO criteria are met or met with findings; zero Critical findings exist across the eight artifacts; the requirements baseline is complete and one-to-one; the risk record is classified with a strategy, an owner and an observable indicator for every risk; the candidate architecture confronts the highest-magnitude technical risks rather than deferring them; and the four findings of this lens are closed. The conditions are named and each has an owner.
+**Management lens verdict: Conditional Go.** The project is viable to proceed to Elaboration and the gate structure is sound. Ten of the twelve LCO criteria are met; zero Critical findings exist across the eight artifacts; the requirements baseline is complete and one-to-one; the risk record is classified with a strategy, an owner and an observable indicator for every risk; the candidate architecture confronts the highest-magnitude technical risks rather than deferring them; and every finding raised in Inception 1 and Inception 2 is closed, including the one that was deferred. The conditions are named and each has an owner.
 
-**Why the gate is held.** The stakeholder refused the sanction on the condition that the findings of each iteration be closed without exception. Four findings remain open at this gate — Supplementary Specification#F2, Test Evaluation Summary#F2, Test Evaluation Summary#F3 and Iteration Plan#F1 from the business lens — and the Project Approval Review is scheduled but not conducted, so LCO-8 is not met. The remedy is another iteration (CON-026).
+**Why the gate is held.** The stakeholder refused the sanction on the standing condition that the findings of each iteration be closed without exception. Two findings raised this iteration remain open — Development Case#F1 (Major) and Software Architecture Document#F1 (Minor) — and the Project Approval Review is scheduled but not conducted, so LCO-8 is not met. The remedy is another iteration (CON-026).
 
-**What the next iteration must close.** The five actions above. None changes declared scope, the architecture or the risk record; each restores an artifact's agreement with observable state or registers a declared link in the trace repository.
+**What the next iteration must close.** The six actions in Resolutions and Actions. None changes declared scope, the architecture or the risk record; each restores an artifact's agreement with observable state or registers a declared link in the trace repository.
 
 **What this verdict is not.** It is not a finding that the project is unviable, and it is not a criteria failure. It is the sanctioning authority's decision, recorded verbatim, that the iteration's findings be closed before the phase advances.
+
+```plantuml
+@startuml
+title Milestone verdict — LCO, end of Inception 3 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+class "Milestone" as M <<gate>> {
+  LCO — Lifecycle Objectives
+  Closes the Inception phase
+}
+
+class "Verdict" as V <<verdict>> {
+  NOT SANCTIONED
+  The Inception phase does not
+  advance to Elaboration.
+}
+
+class "Stakeholder sanction" as S <<verdict>> {
+  REFUSED
+  Sanctioning authority: STK-001,
+  Laura Gómez, HR Director and
+  project sponsor
+}
+
+class "Finding data the verdict rests on" as F <<evidence>> {
+  Artifacts read: 10 of 10, unread none
+  Open Critical: 0
+  Open Major: 1
+  Open Minor: 1
+  Findings from prior iterations open: 0
+  Planned scope complete: No
+}
+
+class "Remedy" as R <<action>> {
+  Another iteration (CON-026).
+  The Inception phase auto-iterates;
+  the next Inception iteration carries
+  the closure work.
+}
+
+class "Why not a project stop" as W <<reason>> {
+  No Critical finding exists.
+  No scope hallucination, no phantom
+  use case, no baseline redefinition,
+  no invented technology, no fabricated
+  quantitative claim. The requirements
+  baseline, the candidate architecture
+  and the risk record are sound.
+}
+
+M --> V
+V --> S
+F --> V
+V --> R
+V --> W
+@enduml
+```
+
+| Field | Value |
+|---|---|
+| Milestone | LCO — Lifecycle Objectives |
+| Verdict | NOT SANCTIONED |
+| Stakeholder sanction | REFUSED |
+| Requires iteration | Yes — the Inception phase auto-iterates |
+| Remedy | Another iteration (CON-026) |
+| Open Critical findings | 0 |
+| Open Major findings | 1 |
+| Open Minor findings | 1 |
+| Findings from prior iterations open | 0 — every Inception 1 and Inception 2 finding is closed |
+| Artifacts read | 10 of 10 — unread: none |
+| Planned scope complete | No — the finding closure work is not yet performed |
+
+**Basis of the verdict.** The verdict is anchored to the finding data, not to judgment. The ledger shows 0 open Critical findings, 1 open Major finding and 1 open Minor finding, both raised this iteration and both carrying an owner and a deadline. No finding from a prior iteration remains open: the seventeen findings raised in Inception 1 and Inception 2 are all closed, including the one that was deferred. The stakeholder's answer to the LCO sanction question was No, and their direction is that every finding be fixed and closed. The gate is held, not opened.
+
+**Why not sanctioned.** Two findings raised this iteration are open. Development Case#F1 is the gate condition resting on two Major defects: the artifact's nine declared artifact-level trace links are not registered in the graph, so the graph shows it as a Business-level LEAF node while its own table states that it states what the graph carries; and its S1 assessment records "No Change Request is open" while Issue #1 is open. Software Architecture Document#F1 is the gate condition resting on two of its twenty declared element-level rows not being carried as declared. Each is a statement a downstream role would act on and be misled by.
+
+**Why not a project stop.** No Critical finding exists. No scope hallucination, no phantom use case, no baseline redefinition, no ownership reassignment, no invented technology, no fabricated quantitative claim, no unsourced financial figure. The requirements baseline, the candidate architecture and the risk record are sound. The project is viable; the gate is not yet passable.
+
+**This is the Management Reviewer's management-lens disposition on the gate. The LCO milestone verdict is the ReviewCoordinator's, and the milestone is not achieved until that verdict is recorded.**
 
 ### Review Coordinator lens
 #### Milestone verdict
