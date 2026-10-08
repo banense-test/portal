@@ -5,9 +5,9 @@
 - **Phase:** Inception
 - **Status:** Draft — under review
 - **Milestone Target:** End of Inception (not yet achieved)
-- **Iteration:** 2, Cycle 1
+- **Iteration:** 3, Cycle 1
 - **Owner:** DeploymentManager
-- **Date:** 2026-10-07
+- **Date:** 2026-10-08
 
 ## Deployment Mode
 
@@ -46,7 +46,7 @@ Three environments, and only three. The Development Case records the multi-envir
 
 ```plantuml
 @startuml
-title Deployment environments and the promotion path (Portal, Inception 2)
+title Deployment environments and the promotion path (Portal, Inception 3)
 
 skinparam componentStyle rectangle
 
