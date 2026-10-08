@@ -2850,6 +2850,314 @@ BIZ -[hidden]- SYS
 
 **Cross-lens note.** The findings of the Reviewer's and the ManagementReviewer's lenses are recorded in their own blocks and are not mine to close. They are not restated here.
 
+#### Iteration 3
+
+**Zero findings from this lens.** No Critical, Major, Minor or Info finding is recorded against any artifact this iteration. One prior finding of this lens — Iteration Plan#F1 — is closed in `Resolutions and Actions`. An artifact with no finding is Approved from this lens.
+
+```plantuml
+@startuml
+title Business Modeling coverage map — BUC realization status, LCO Inception 3 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Business level — exists only when business-process-led = true" as BIZ {
+  class "BUC-001 .. BUC-NNN" as BUC <<absent>> {
+    No business use case exists.
+    No business actor, worker or entity.
+    No BR-NNN business rule.
+  }
+  class "Realization coverage" as REAL <<n/a>> {
+    0 of 0 significant BUCs realized.
+    No realization is required: the
+    discipline is inactive, DC T-1.
+  }
+}
+
+package "System level — the level that exists" as SYS {
+  class "Use-Case Model" as UCM <<pass>> {
+    12 UC to 12 declared FR, one-to-one.
+    Every UC carries Source: FR-NNN.
+    UC-011 to AD directed from the use case.
+  }
+  class "Vision" as VIS <<pass>> {
+    Business context, 4 STK, 3 BG, 6 AC.
+    A-1 reconciled with CON-035 and A-3.
+  }
+  class "Supplementary Specification" as SS <<pass>> {
+    FURPS+ home for every NFR, AC, CON.
+    Business rules carry ID and bearing.
+    Audit include list carries UC-010.
+  }
+  class "Software Architecture Document" as SAD <<pass>> {
+    Volatility: High areas own a seam:
+    COMP-002 behind INT-002,
+    COMP-004 behind INT-004.
+  }
+}
+
+package "Business duties that survived the INACTIVE verdict" as DUTY {
+  class "Volatility annotation" as VOL <<discharged>> {
+    FR-004 and FR-010 marked Volatility: High
+    in the Vision, consumed by the architect,
+    recorded as R006.
+  }
+  class "Stakeholder coverage" as STK <<pass>> {
+    STK-001 to STK-004 all represented.
+  }
+  class "Scope adherence" as SCP <<pass>> {
+    Zero BUC, zero BR-NNN, zero business
+    stereotype. No undeclared process invented.
+  }
+  class "Business-lens governance" as GOV <<pass>> {
+    Iteration Plan#F1 closed: the role profile
+    and the Development Case now agree that
+    the business lens runs at the gates.
+  }
+}
+
+BUC -[hidden]- REAL
+REAL -[hidden]- UCM
+UCM -[hidden]- VIS
+VIS -[hidden]- SS
+SS -[hidden]- SAD
+SAD -[hidden]- VOL
+VOL -[hidden]- STK
+STK -[hidden]- SCP
+SCP -[hidden]- GOV
+
+note bottom of BIZ
+  The business level is empty by design, not by
+  omission. A coverage map with no red node is
+  the correct map for an inactive discipline:
+  there is no BUC whose realization could be
+  missing or incomplete.
+end note
+
+note bottom of DUTY
+  The architecture-centric pillar requires volatile
+  business areas to be annotated or they will not
+  be encapsulated. That duty was discharged by the
+  SystemAnalyst and consumed by the SoftwareArchitect.
+end note
+@enduml
+```
+
+```plantuml
+@startuml
+title Business Reviewer scoring — LCO Inception 3 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Applicable criteria — scored" as APP {
+  class "Scenario selection\ncorrect and explicit" as C1 <<criterion>> {
+    Score: 10 / 10
+    DC 4 verdict false, re-derived this
+    iteration against the declared scope
+    and the persisted artifacts
+  }
+  class "Stakeholder representation\ncoverage" as C7 <<criterion>> {
+    Score: 9 / 10
+    STK-001 to STK-004 all represented.
+    No organizational part in declared
+    scope is unmodelled
+  }
+  class "Business rules as formal\nconstraints" as C8 <<criterion>> {
+    Score: 9 / 10
+    CON-007 to CON-016 and CON-043 each
+    carry an ID, a named bearing and a
+    testable condition
+  }
+  class "UML presence and richness" as C9 <<criterion>> {
+    Score: 9 / 10
+    Every artifact carries validated
+    PlantUML. No prose-only model anywhere
+  }
+  class "Scope adherence\nno BM scope creep" as C10 <<criterion>> {
+    Score: 10 / 10
+    Zero BUC, zero BR-NNN, zero business
+    stereotype. No undeclared process
+    was invented
+  }
+  class "Business-lens governance\nat the lifecycle gates" as C11 <<criterion>> {
+    Score: 9 / 10
+    PASS — Iteration Plan#F1 is closed.
+    The role profile and the Development
+    Case now agree that the business lens
+    runs at I1, I2, I3, E2, C3 and T1
+  }
+}
+
+package "Not applicable — the discipline is inactive" as NA {
+  class "BUC completeness test" as N1 <<n/a>>
+  class "BUC realization adequacy" as N2 <<n/a>>
+  class "Derivation bridge" as N3 <<n/a>>
+  class "Resource planning compliance" as N4 <<n/a>>
+  class "Same modeling technique" as N5 <<n/a>>
+}
+
+package "Aggregate" as AGG {
+  class "Weighted verdict" as A1 <<verdict>> {
+    Applicable criteria: 6
+    Mean: 9.3 / 10
+    N/A criteria: 5 of 11
+  }
+  class "Disposition" as A2 <<verdict>> {
+    BR-OK-INACTIVE — discipline NOT
+    APPLICABLE per DC 4
+  }
+  class "Findings emitted" as A3 <<verdict>> {
+    Critical: 0
+    Major: 0
+    Minor: 0
+    Info: 0
+  }
+  class "Prior findings closed" as A4 <<verdict>> {
+    Iteration Plan#F1 — Resolved
+  }
+}
+
+C1 --> A1
+C7 --> A1
+C8 --> A1
+C9 --> A1
+C10 --> A1
+C11 --> A1
+A1 --> A2
+A2 --> A3
+A2 --> A4
+
+note bottom of NA
+  Five criteria are N/A because the discipline
+  is inactive. Scoring them would be a false
+  defect: the anti-pattern of applying New
+  Business standards to a non-BPL engagement.
+end note
+
+note bottom of C11
+  The one defect this lens found in Inception 2,
+  now closed. The re-derivation of the DC 4
+  verdict is scheduled at every lifecycle gate.
+end note
+@enduml
+```
+
+**Criterion justification.**
+
+| Criterion | Score | Justification |
+|---|---|---|
+| Scenario selection | 10/10 | No business modeling scenario applies. The verdict was re-derived independently this iteration against the four DC §4 tests, all of which return NONE, and against the persisted artifacts. The ProcessEngineer's claim was audited, not accepted. |
+| BUC completeness | N/A | No business use case exists. The twelve declared requirements are system use cases over a data-capture and publishing intranet, each initiated by a system actor inside the organization. Modelling them as BUCs would be a false artifact. |
+| BUC realization adequacy | N/A | No realization is expected in Inception, and none is required by an inactive discipline. Penalizing their absence would be the anti-pattern of applying New Business standards to a non-BPL engagement. |
+| Derivation bridge | N/A | There is no business worker to map to a system actor and no business entity to map to an analysis class. The system actors are declared directly (STK-001, STK-004) and the candidate analysis classes are derived from the use cases by the SoftwareArchitect (COMP-001 to COMP-010). The bridge this criterion guards does not exist because the business level does not exist. |
+| Resource planning compliance | N/A | No business worker and no business entity exist, so no resource allocation can violate the single-resource principle. |
+| Same modeling technique at business level | N/A | No business-level model exists, so no software stereotype (`<<entity>>`, `<<service>>`, `<<controller>>`) was misapplied at the business level. The system-level models use system stereotypes correctly. |
+| Stakeholder representation coverage | 9/10 | All four declared stakeholders are represented: STK-001 and STK-004 as system actors, STK-003 as the operator of the external systems and of the portal in production, STK-002 as a supporting clarifier. No organizational part named in the declared scope is unmodelled. The score is not 10 because the coverage is bounded by the declared scope — no independent organizational survey was performed, and none is warranted for a 200-employee intranet with four declared stakeholders. |
+| Business rules as formal constraints | 9/10 | CON-007 to CON-016 and CON-043 each carry a unique identifier, a named bearing on the use cases that must honour them, and a testable condition (at most one pair per day, at most one featured item, a closed list of four values, a field that may be empty). Their source is the declared constraint itself, which is the stakeholder's own statement — the strongest available attribution. They are not BPA-authored `BR-NNN` rules, and they do not need to be: the discipline that would author them is inactive. |
+| UML presence and richness | 9/10 | Every artifact carries validated PlantUML. No artifact is a prose-only model. The Use-Case Model carries a use-case diagram and five activity and sequence diagrams; the Software Architecture Document carries all four-plus-one views; the Supplementary Specification carries a FURPS+ classification diagram, an audit-trail diagram and a mechanism-inclusion diagram. |
+| Scope adherence | 10/10 | Zero business use cases, zero `BR-NNN` business rules, zero business stereotypes. No undeclared business process was invented, and no declared system use case was promoted to a business use case. The business dimension of the scope guard is clean. |
+| Business-lens governance at the lifecycle gates | 9/10 | Iteration Plan#F1 is closed. The Iteration Plan's Resources section records the BusinessReviewer as participating in I1, I2, I3, E2, C3 and T1, names the four lifecycle gates (I3 LCO, E2 LCA, C3 IOC, T1 PR), and states the lens's output at each gate: the re-derived DC §4 verdict, the business-volatility annotation check and the business-dimension traceability compliance check. The Development Case's Roles and Ownership table carries the same determination in the same pass. The re-derivation of the DC §4 verdict is therefore scheduled at every gate. The score is not 10 because the reconciliation is one iteration old and has not yet been exercised at a second gate. |
+
+**Per-artifact verdicts from this lens.**
+
+| Artifact | Verdict | Basis |
+|---|---|---|
+| Vision | Approved | Business context, four STK, three measurable BG, six AC; FR-004 and FR-010 carry `Volatility: High`; A-1 reconciled with CON-035 and A-3. |
+| Use-Case Model | Approved | Twelve declared FR to twelve UC one-to-one, each carrying `Source: FR-NNN`; UC-011 to AD directed from the use case; no cross-cutting mechanism promoted to a use case; no use case split per actor. |
+| Supplementary Specification | Approved | FURPS+ home for every declared NFR, AC and CON; the audit include list carries UC-010; the business rules carry ID, bearing and testable condition. |
+| Software Architecture Document | Approved | Each `Volatility: High` area owns a seam (`COMP-002` behind `INT-002`, `COMP-004` behind `INT-004`); AD read-only with no local copy. |
+| Risk List | Approved | R001 and R002 preserved with declared P and I; R003 onwards numbered in the order raised per CON-023; CON-025 exclusions not registered. |
+| Iteration Plan | Approved | Iteration Plan#F1 closed; the business lens is scheduled at every lifecycle gate. |
+| Development Case | Approved | The Roles and Ownership table records the BusinessReviewer as participating in its review capacity, reconciled with the Iteration Plan in the same pass; the Glossary trigger is correctly NOT FIRED. |
+| Test Evaluation Summary | Approved | No business-modeling defect. |
+
+**Business-volatility annotation — the one business duty that survived the INACTIVE verdict.** The architecture-centric pillar of this lens requires that volatile business areas be explicitly annotated, because volatility that is not flagged will not be encapsulated. That duty would normally fall to the Business Process Analyst. Here it was discharged by the SystemAnalyst in the Vision's Features table — FR-004 (the export column contract and the empty-not-zero rule) and FR-010 (the featuring policy) are both marked `Volatility: High` — and consumed by the SoftwareArchitect, who gave each its own subsystem and interface (`COMP-002` behind `INT-002`, `COMP-004` behind `INT-004`, ADR-002) and recorded the encapsulation as R006. The annotation exists, it is correct, and it reached the architecture. No finding.
+
+**Traceability compliance — this iteration.**
+
+```plantuml
+@startuml
+title Traceability compliance — business dimension, LCO Inception 3 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Declared input — the ceiling" as DECL {
+  class "FR-001 to FR-012\n12 system use cases" as FR <<declared>>
+  class "NFR-001 to NFR-005" as NFR <<declared>>
+  class "CON-001 to CON-043" as CON <<declared>>
+  class "STK-001 to STK-004" as STK <<declared>>
+  class "BG-001 to BG-003" as BG <<declared>>
+  class "AC-001 to AC-006" as AC <<declared>>
+  class "R001, R002" as R <<declared>>
+}
+
+package "Business level — expected only when BM is ACTIVE" as BIZ {
+  class "BUC-NNN" as BUC <<ABSENT>>
+  class "BR-NNN" as BR <<ABSENT>>
+  class "business actor, worker, entity" as BE <<ABSENT>>
+}
+
+package "System level — present and traced" as SYS {
+  class "Vision" as VIS <<artifact>>
+  class "Use-Case Model" as UCM <<artifact>>
+  class "Supplementary Specification" as SS <<artifact>>
+  class "Software Architecture Document" as SAD <<artifact>>
+  class "Risk List" as RL <<artifact>>
+  class "Iteration Plan" as IP <<artifact>>
+  class "Test Evaluation Summary" as TES <<artifact>>
+  class "Development Case" as DC <<artifact>>
+}
+
+FR --> UCM : Refines
+NFR --> SS : Refines
+CON --> SS : Refines
+STK --> VIS : Refines
+BG --> VIS : Refines
+AC --> VIS : Refines
+R --> RL : Refines
+UCM --> SAD : Derives
+SS --> SAD : Refines
+VIS --> UCM : Refines
+RL --> IP : Refines
+DC --> IP : Refines
+
+note bottom of BIZ
+  Zero nodes. This is the correct state: the
+  business level does not exist because no
+  business process is in declared scope.
+  No LEAF and no SUSPECT edge exists at the
+  business level, because no business-level
+  element was created.
+end note
+
+note bottom of SYS
+  Every declared identifier is cited by at least
+  one artifact. No artifact cites an identifier
+  outside the declared families. No artifact
+  quotes the stakeholder in place of citing an
+  identifier.
+end note
+
+note bottom of IP
+  Iteration Plan#F1 is closed: the role profile
+  and the Development Case now agree that the
+  business lens executes at I1, I2, I3, E2, C3
+  and T1. No finding of this lens remains open.
+end note
+
+DECL -[hidden]- BIZ
+BIZ -[hidden]- SYS
+@enduml
+```
+
+**What the graph shows.** The business level is empty by design, not by omission. Every declared identifier — twelve FR, five NFR, forty-three CON, four STK, three BG, six AC and two declared risks — is cited by at least one system-level artifact. No artifact cites an identifier outside the declared families. No `«SUSPECT → role»` edge exists at the business level, because no business-level element was created to carry one.
+
+**What the graph does not show.** The business dimension has no traceability obligation to discharge: with no BUC, no business worker and no business entity, there is no business element whose upstream or downstream link could be missing. The traceability compliance check for this lens is therefore satisfied vacuously and correctly. No finding of this lens remains open at this gate.
+
+**Cross-lens note.** The findings of the Reviewer's and the ManagementReviewer's lenses are recorded in their own blocks and are not mine to close. They are not restated here.
+
 ### Management Reviewer lens
 #### Iteration 1
 
