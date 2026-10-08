@@ -652,6 +652,36 @@ end note
 
 **Entry criteria.** Met. All eight artifacts are complete and stable, no section is a placeholder, and the checklist was prepared before the artifacts were read.
 
+#### Iteration 3
+
+**Lens:** Business Reviewer — Business Modeling discipline.
+**Review point:** Lifecycle Objectives (LCO) milestone review, end of Inception iteration 3.
+**Scope:** the business dimension of every artifact produced or refined this phase — the business context and business goals in the Vision, the business-rule home in the Supplementary Specification, the actor classification and use-case survey in the Use-Case Model, the volatility annotation reaching the Software Architecture Document, and the business-lens governance recorded in the Iteration Plan and the Development Case.
+
+**Scenario assessment.** No business modeling scenario applies. The Development Case classifies the project `business-process-led = false` (T-1), and that verdict was re-derived this iteration against the four DC §4 tests, all of which return NONE. The engagement is a single web application replacing fragmented manual tooling — not an Organization Chart, Domain Modeling, One Business Many Systems, Generic Business Model, New Business or Revamp engagement. The review therefore applies the standards of an **inactive discipline**: the business level is expected to be empty, and the primary finding category is whether that emptiness is correct and whether the business duties that survive the INACTIVE verdict were discharged.
+
+**Checklist applied.**
+
+| # | Criterion | Applicable | Result |
+|---|---|---|---|
+| C1 | Scenario selection correct and explicit | Yes | Pass — 10/10 |
+| C2 | BUC completeness test (actor-initiated, value-delivering, end-to-end) | N/A — no BUC exists | Not scored |
+| C3 | BUC realization adequacy (workers and entities) | N/A — no realization required | Not scored |
+| C4 | Derivation bridge (worker to system actor mapping) | N/A — no business worker exists | Not scored |
+| C5 | Resource planning compliance (one resource per worker) | N/A — no business worker or entity | Not scored |
+| C6 | Same modeling technique at business level | N/A — no business-level model exists | Not scored |
+| C7 | Stakeholder representation coverage | Yes | Pass — 9/10 |
+| C8 | Business rules as formal constraints (ID, source, bearing, testable condition) | Yes | Pass — 9/10 |
+| C9 | UML presence and richness | Yes | Pass — 9/10 |
+| C10 | Scope adherence — no BM scope creep | Yes | Pass — 10/10 |
+| C11 | Business-lens governance at the lifecycle gates | Yes | Pass — 9/10 |
+
+**Entry criteria.** All artifacts complete and stable at Draft; the Development Case classification available and re-derivable; the Review Record's prior Business Reviewer entries readable; the declared scope and the persisted artifacts available for the independent re-derivation. All met.
+
+**Excluded from this lens.** The technical, requirements, architecture, test and management findings are the Reviewer's and the ManagementReviewer's; they are recorded in their own blocks and are not restated, re-scored or closed here. The milestone verdict is the ReviewCoordinator's.
+
+**Method.** The DC §4 verdict was re-derived from the declared scope and the persisted artifacts rather than read from the classification record. Each applicable criterion was scored against the artifact that carries the evidence, and the score is justified in the `Findings` entry. The business-dimension traceability check was performed against the declared identifier families.
+
 ### Management Reviewer lens
 The management lens at the Lifecycle Objectives gate, Inception iteration 2. Eight artifacts reviewed in full: Development Case, Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Risk List, Iteration Plan, Test Evaluation Summary. The Iteration Assessment is not a review input at this gate — the ProjectManager authors it in the Assess touchpoint that runs after this review.
 
