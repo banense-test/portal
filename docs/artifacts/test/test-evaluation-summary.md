@@ -225,19 +225,22 @@ Inception produces no executable increment, so the verification performed is **r
 ## Defects and Incidents
 ### SCM quality signals
 
-Read from the SCM provider on 2026-10-07. Recorded as observed; nothing is inferred from them.
+Read from the SCM provider on 2026-10-08. Recorded as observed; nothing is inferred from them.
 
 | Signal | Observed | Reading |
 |---|---|---|
-| Build status, branch `main` | `ci-run-37588175142` — build and test completed, 2026-10-07 07:34:36Z to 07:35:15Z | The repository builds and the test job runs. `.github/workflows/ci.yml` is committed and triggers on `push` and on `pull_request`, so this run **is** the per-push build-and-test the regression rule needs. Entry criterion E-6 is met (CON-033). |
+| Build status, branch `main` | `ci-run-37588755525` — build and test completed, 2026-10-07 07:40:14Z to 07:41:20Z | The repository builds and the test job runs. `.github/workflows/ci.yml` is committed and triggers on `push` and on `pull_request`, so this run **is** the per-push build-and-test the regression rule needs. Entry criterion E-6 is met (CON-033). |
 | CI workflow file | `.github/workflows/ci.yml` committed; `on: push` and `on: pull_request` over `main`, `iteration/**`, `chore/**`, `feature/**`, `hotfix/**`; jobs `build` then `test`; the solution manifest is regenerated from the `src/` and `tests/` tree on every run | The regression rule has its vehicle from the first implementation task. A subsystem merged under `src/` cannot be silently disconnected from CI. |
-| Issue tracker, all states | No issue is open or closed | No Change Request has been raised and no defect has been recorded. Consistent with an iteration that produced no executable increment. |
+| Issue tracker, all states | Issue #1 open — "Trace registration — Test Evaluation Summary upstream links (Test Evaluation Summary#F2)", labels `trace-registration`, `priority-high`, `no-scope-change` | One Change Request is open. It carries the registration of this artifact's declared upstream links, which the trace steward has since performed; the issue is the tracking reference for that act and is not a defect against the portal. No defect against the portal is recorded. |
+| Trace repository, this artifact | 53 upstream links and 76 downstream links registered | The declared coverage is machine-verifiable. The artifact is present in the trace tree. |
 
 **The build signal is not a quality signal for the portal.** It reports that the repository compiles and that the test job executes. It says nothing about any declared requirement, because no requirement has an implementation yet. It is recorded here so that the first iteration with code has a baseline to compare against.
 
 ### Defect register
 
-**No defect is recorded this iteration.** No test was executed and no executable increment exists, so there is no deviation from declared behaviour to record. A defect register with no entries is the correct state for Inception — it is not evidence of quality, and it is not reported as such.
+**No defect against the portal is recorded this iteration.** No test was executed and no executable increment exists, so there is no deviation from declared behaviour to record. A defect register with no entries is the correct state for Inception — it is not evidence of quality, and it is not reported as such.
+
+The one open issue, Issue #1, is a Change Request for trace registration, not a defect against the portal. It is recorded in the SCM quality signals table above and is the authoritative record for that act.
 
 ### Defect lifecycle
 
