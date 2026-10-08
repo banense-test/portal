@@ -1294,11 +1294,11 @@ CLEAN -[hidden]- SUG
 
 #### Development Case — Major
 
-**F1 — The tool baseline contradicts the repository.** The section "Organization and tool assessment (S1, 2026-10-07)" states the repository holds the design reference "and nothing else. No CI workflow file, no `CONTRIBUTING.md`, no lint or analyzer configuration, and no open Change Requests." The gap table repeats it: "CI workflow under the hosted provider | Absent — gap". The SCM contradicts this. `.github/workflows/ci.yml` is committed at sha `0c2fd7cf47eeab68d19420fe3897d209258bd074`; `Portal.sln` is committed with two projects, `src/Portal.Web/Portal.Web.csproj` and `tests/Portal.Tests/Portal.Tests.csproj`; and a build ran on `main` (`ci-run-37583334371`). The two other gap claims — `CONTRIBUTING.md` and the lint/analyzer configuration — are correct. The consequence is operational: the Elaboration iteration-preparation checkpoint demands "CI workflow committed and green on an empty build" as an outstanding condition, and that condition is already satisfied, so the checkpoint as written would send Elaboration to close a gap that does not exist.
+**F3 — The S1 tool assessment records "No Change Request is open" while the issue tracker holds Issue #1 open.** The section "Organization and tool assessment (S1, 2026-10-07)" closes its Absent paragraph with "No Change Request is open." The issue tracker holds Issue #1, "Trace registration — Test Evaluation Summary upstream links (Test Evaluation Summary#F2)", labelled `trace-registration`, `priority-high`, `no-scope-change`. The artifact asserts a current fact about the issue tracker, which is the authoritative record for Change Requests, and the fact is false as of this review. The same defect class was recorded against the Test Evaluation Summary in Inception 2 as Test Evaluation Summary#F3, and the Development Case is the artifact that carries the trace-registration process rule (T-8) the open issue is tracking.
 
-*Remediation.* Rewrite the S1 tool assessment and the gap table against the repository: record the CI workflow as present, the solution and the two scaffolding projects as present, and keep only `CONTRIBUTING.md` and the lint/analyzer configuration as open gaps. Remove "CI workflow committed and green on an empty build" from the Elaboration checkpoint's outstanding conditions, or restate it as already satisfied. The tailoring decisions T-1 to T-7, the classification verdicts, the optional-trigger table and the intensity statement are unaffected and stand.
+*Remediation.* Re-read the issue tracker in all states and replace the claim with the observed value: Issue #1 open, labelled `trace-registration`, `priority-high`, `no-scope-change`, carrying the trace-registration work. If the sentence is intended as a point-in-time record of the S1 assessment, date it and state the observed value at that date, so the artifact does not assert a current fact that is false.
 
-*Evidence.* DC: "The repository holds the mandatory UI design reference at `docs/inputs/employee-portal-design.html` (CON-038) and nothing else. No CI workflow file..." against `scm_get_file_content('.github/workflows/ci.yml')` sha `0c2fd7cf47eeab68d19420fe3897d209258bd074`; `scm_get_file_content('Portal.sln')` sha `f554bf5bc04df43103677206c7727fcc62ea2bc4`; `scm_get_build_status(main)` `ci-run-37583334371`.
+*Evidence.* Development Case, Organization and tool assessment: "**Absent.** `CONTRIBUTING.md` and the lint/analyzer configuration. No Change Request is open." against `scm_list_issues(state=all)` = `#1 [open] Trace registration — Test Evaluation Summary upstream links (Test Evaluation Summary#F2) — labels: [trace-registration, priority-high, no-scope-change]`.
 
 #### Test Evaluation Summary — Major
 
@@ -1352,7 +1352,7 @@ No defect recorded. R001 and R002 are preserved with their declared probability 
 
 ```plantuml
 @startuml
-title Traceability compliance — declared scope to artifact, LEAF markers annotated (Portal, Inception 2)
+title Traceability compliance — declared scope to artifact, LEAF markers annotated (Portal, Inception 3)
 
 skinparam classAttributeIconSize 0
 skinparam packageStyle rectangle
@@ -1383,10 +1383,7 @@ package "Logical level — candidate architecture" as LOG {
 
 package "Code level" as CODE {
   class "Test Evaluation Summary" as TES <<artifact>>
-  class "Test Case" as TC <<artifact>> {
-    Empty this iteration.
-    No use-case realization exists.
-  }
+  class "Test Case" as TC <<artifact>>
 }
 
 FR --> UCM : Refines
@@ -1400,7 +1397,7 @@ UCM --> SAD : Derives
 SS --> SAD : Refines
 VIS --> UCM : Refines
 RL --> IP : Refines
-DC --> IP : Refines
+IP --> DC : Refines
 
 SAD --> COMP : Derives
 COMP --> INT : DependsOn
@@ -1408,24 +1405,28 @@ SAD --> TC : Refines
 TES --> TC : Refines
 
 note right of NFR
-  LEAF — NFR-002 to NFR-005 carry no registered
-  downstream link. NFR-001 reaches COMP-007.
-  Supplementary Specification#F2.
+  No LEAF. NFR-001 to NFR-005 each carry a
+  registered Refines link to the Software
+  Architecture Document. Supplementary
+  Specification#F2 is closed.
 end note
 
 note right of AC
-  LEAF — AC-001 to AC-006 carry no registered
-  downstream link. The Test Case artifact is
-  empty this iteration, so no link can exist yet.
-  Not a defect.
+  No LEAF. AC-001 to AC-006 each carry a
+  registered Refines link to the Test Case
+  artifact.
 end note
 
 note right of TES
-  The declared upstream links are not registered
-  in the graph. Test Evaluation Summary#F2.
-  The issue-tracker row does not reconcile with
-  the artifact's own Traceability section.
-  Test Evaluation Summary#F3.
+  Present in the tree with 53 upstream and
+  76 downstream links. Test Evaluation
+  Summary#F2 and #F3 are closed.
+end note
+
+note bottom of DC
+  LEAF — the Development Case carries no
+  registered downstream link. Development
+  Case#F2.
 end note
 
 note bottom of FR
@@ -1450,7 +1451,7 @@ LOG -[hidden]- CODE
 
 **What the graph shows.** Every one of the twelve declared requirements reaches a use case — no `«LEAF»` at the Business level for any `FR-NNN`, so no functional requirement is unrealized. Every use case reaches a component in the Software Architecture Document. No `«SUSPECT → role»` edge exists anywhere in the tree, so no role is holding an unreviewed change. The `Test Case` node is a `«LEAF»` by design: the artifact is empty because no use-case realization exists in Inception, and the Iteration Plan defers test authoring to Elaboration 2.
 
-**What the graph does not show.** The Test Evaluation Summary is absent from the tree entirely, which is Test Evaluation Summary#F2. Four of the five non-functional requirements are LEAF nodes, which is Supplementary Specification#F2. The declared coverage of the acceptance criteria is asserted in prose and unverifiable from the graph until the Test Case artifact carries elements.
+**What the graph does not show.** The Development Case carries no registered downstream link, which is Development Case#F2. Two of the Software Architecture Document's twenty declared element-level rows are not carried as declared, which is Software Architecture Document#F1. The declared coverage of the acceptance criteria is asserted in prose and unverifiable from the graph until the Test Case artifact carries elements.
 
 **Coverage of the declared input.** All twelve FR, five NFR, six AC, forty-three CON, three BG and two declared risks are cited by at least one artifact. No artifact cites an identifier outside the declared families. No artifact quotes the stakeholder in place of citing an identifier.
 
@@ -1685,15 +1686,269 @@ No defect recorded this iteration. The S1 tool assessment is read from the repos
 
 #### Vision — no new finding
 
-No defect recorded this iteration. A-1 now names the human validation gate performed by Infrastructure with HR and states that team build and test is against the stand-in OIDC issuer, with CON-035 and A-3 named as the governing rules. The problem statement, the stakeholder summary, the features table, the constraints and the non-functional requirements all trace to the declared scope; the twelve features equal the twelve declared requirements with no surplus; no unsourced quantitative claim appears. Approved from this lens.
+No defect recorded this iteration. A-1 names the human validation gate performed by Infrastructure with HR and states that team build and test is against the stand-in OIDC issuer, with CON-035 and A-3 named as the governing rules. The problem statement, the stakeholder summary, the features table, the constraints and the non-functional requirements all trace to the declared scope; the twelve features equal the twelve declared requirements with no surplus; no unsourced quantitative claim appears; and the declared element-level links are registered in the graph. Approved from this lens.
 
 #### Use-Case Model — no new finding
 
-No defect recorded this iteration. The UC-011 to Active Directory association is directed from the use case to the external system, so the portal is the initiating end and the diagram agrees with the Actors table. Twelve declared requirements map one-to-one to twelve use cases, each carrying its `Source: FR-NNN`; no phantom use case exists; no cross-cutting mechanism was promoted to a use case; no use case was split per actor. Approved from this lens.
+No defect recorded this iteration. The UC-011 to Active Directory association is directed from the use case to the external system, so the portal is the initiating end and the diagram agrees with the Actors table. Twelve declared requirements map one-to-one to twelve use cases, each carrying its `Source: FR-NNN`; no phantom use case exists; no cross-cutting mechanism was promoted to a use case; no use case was split per actor; and each of the twelve use cases carries a registered `Derives` link to the component that realizes it. Approved from this lens.
 
 #### Iteration Plan — no new finding
 
-No defect recorded this iteration. The roadmap chart states the nominal unit inside the chart itself, in its title and in a note, so it cannot be read as a schedule. No work item carries a size in a unit this system does not measure; the two currencies are reported apart and never summed; the human gates are bounded as risks; all six acceptance criteria are accounted for and none is closed; no calendar date is projected from an estimate. Approved from this lens.
+No defect recorded this iteration. The roadmap chart states the nominal unit inside the chart itself, in its title and in a note, so it cannot be read as a schedule. No work item carries a size in a unit this system does not measure; the two currencies are reported apart and never summed; the human gates are bounded as risks with the 14-day process bound; all six acceptance criteria are accounted for and none is closed; no calendar date is projected from an estimate; and the role profile records the ManagementReviewer and the BusinessReviewer at the lifecycle gates. Approved from this lens.
+
+#### Iteration 3
+
+Three findings: two Major, one Minor, no Critical. Six artifacts carry no new finding from this lens. Two prior findings of this lens are closed this iteration.
+
+```plantuml
+@startuml
+title Compliance matrix — LCO technical lens, Inception 3 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+
+class "Development Case" as DC <<artifact>> {
+  DC-1 Delta only, baseline not restated
+  DC-2 25-role roster not redefined
+  DC-3 16 CORE artifacts, none omitted
+  DC-4 CORE ownership not reassigned
+  DC-5 No artifact outside CORE + OPTIONAL
+  DC-6 Optional triggers audited, none fired
+  DC-7 Intensity equals canonical matrix
+  DC-8 Tool baseline matches the repository
+  DC-9 Issue-tracker claim matches the SCM
+  DC-10 Declared traceability registered
+}
+
+class "Vision" as VIS <<artifact>> {
+  V-1 Problem statement traces to declared scope
+  V-2 STK-001 to STK-004 complete
+  V-3 Features equal the 12 declared FR
+  V-4 CON-001 to CON-043 complete
+  V-5 NFR, BG and AC complete
+  V-6 No unsourced quantitative claim
+  V-7 Assumptions reconciled with CON-035
+  V-8 Declared traceability registered
+  V-9 UML present
+}
+
+class "Use-Case Model" as UCM <<artifact>> {
+  U-1 12 use cases to 12 declared FR
+  U-2 Every use case carries Source: FR-NNN
+  U-3 No phantom use case
+  U-4 No cross-cutting mechanism as a use case
+  U-5 No use case split per actor
+  U-6 5 architecturally significant use cases detailed
+  U-7 Actor association direction correct
+  U-8 Declared traceability registered
+  U-9 UML present
+}
+
+class "Supplementary Specification" as SS <<artifact>> {
+  S-1 FURPS+ home for every declared NFR, AC and CON
+  S-2 Cross-cutting mechanisms specified, not use cases
+  S-3 Audit change classes equal NFR-001's three
+  S-4 Thresholds quantified where declared
+  S-5 No invented threshold
+  S-6 Mechanism include lists match the use-case specs
+  S-7 Declared NFR and AC links registered
+  S-8 UML present
+}
+
+class "Software Architecture Document" as SAD <<artifact>> {
+  A-1 Every subsystem maps to a declared element
+  A-2 No subsystem named after a layer
+  A-3 Each High-volatility area owns a seam
+  A-4 Keycloak inside the network
+  A-5 No Keycloak deployment work
+  A-6 AD read-only, no local copy
+  A-7 Invariants enforced as database constraints
+  A-8 No technology or version invented
+  A-9 Declared element-level rows carried by the graph
+  A-10 UML present, 4+1 views
+}
+
+class "Risk List" as RL <<artifact>> {
+  R-1 R001 and R002 preserved
+  R-2 Team risks numbered from R003
+  R-3 Strategy, owner, mitigation, contingency
+  R-4 Acceptance basis named
+  R-5 CON-025 exclusions not registered
+  R-6 No human-team unit, no velocity
+  R-7 Early-warning indicator observable
+  R-8 Declared traceability registered
+  R-9 UML present
+}
+
+class "Iteration Plan" as IP <<artifact>> {
+  I-1 Objectives carry exit evidence
+  I-2 No work item sized in an unmeasured unit
+  I-3 Human gate bounded as a risk
+  I-4 Two currencies never summed
+  I-5 All 6 AC accounted for, none closed
+  I-6 No calendar date projected
+  I-7 Roadmap chart carries no duration
+  I-8 Declared traceability registered
+  I-9 UML present
+}
+
+class "Test Evaluation Summary" as TES <<artifact>> {
+  T-1 Every declared requirement has a verification method
+  T-2 No test executed, none claimed
+  T-3 Test Plan omission declared with trigger basis
+  T-4 Entry criteria stated with status
+  T-5 SCM signals read and recorded
+  T-6 SCM signal reconciles with the SCM
+  T-7 Declared traceability registered
+  T-8 UML present
+}
+
+note bottom of DC
+  DC-9 FAIL — the S1 assessment records "No Change
+  Request is open" while Issue #1 is open.
+  DC-10 FAIL — the nine declared artifact-level rows
+  are not registered; the graph shows the Development
+  Case as a Business-level LEAF node.
+end note
+
+note bottom of SAD
+  A-9 FAIL — two of twenty declared element-level rows
+  are not carried: COMP-009's declared source and
+  COMP-001 to INT-001.
+end note
+
+note bottom of VIS
+  All items PASS. No finding recorded.
+end note
+
+note bottom of UCM
+  All items PASS. No finding recorded.
+end note
+
+note bottom of SS
+  All items PASS. Supplementary Specification#F2 is
+  closed: NFR-002 to NFR-005 and AC-001 to AC-006 now
+  carry registered links.
+end note
+
+note bottom of RL
+  All items PASS. No finding recorded.
+end note
+
+note bottom of IP
+  All items PASS. No finding recorded from this lens.
+end note
+
+note bottom of TES
+  All items PASS. Test Evaluation Summary#F3 is closed:
+  the issue-tracker row now records Issue #1 open.
+end note
+
+DC -[hidden]- VIS
+VIS -[hidden]- UCM
+UCM -[hidden]- SS
+SS -[hidden]- SAD
+SAD -[hidden]- RL
+RL -[hidden]- IP
+IP -[hidden]- TES
+@enduml
+```
+
+```plantuml
+@startuml
+title Defect distribution — severity x artifact, LCO technical lens, Inception 3 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Critical — 0" as CRIT {
+  class "none" as C0 <<empty>> {
+    No LCO gate blocker.
+    No scope hallucination.
+    No phantom use case.
+    No baseline redefinition.
+    No fabricated quantitative claim.
+  }
+}
+
+package "Major — 2" as MAJ {
+  class "Development Case#F2" as M1 <<artifact>> {
+    The nine declared artifact-level trace links
+    are not registered; the graph shows the
+    Development Case as a Business-level LEAF.
+  }
+  class "Development Case#F3" as M2 <<artifact>> {
+    The S1 assessment records "No Change Request
+    is open" while Issue #1 is open.
+  }
+}
+
+package "Minor — 1" as MIN {
+  class "Software Architecture Document#F1" as N1 <<artifact>> {
+    Two of twenty declared element-level rows are
+    not carried: COMP-009's declared source and
+    COMP-001 to INT-001.
+  }
+}
+
+package "No new finding this iteration — 6 artifacts" as CLEAN {
+  class "Vision" as K1 <<artifact>>
+  class "Use-Case Model" as K2 <<artifact>>
+  class "Supplementary Specification" as K3 <<artifact>>
+  class "Risk List" as K4 <<artifact>>
+  class "Iteration Plan" as K5 <<artifact>>
+  class "Test Evaluation Summary" as K6 <<artifact>>
+}
+
+package "Closed this iteration — 2, this lens" as CLOSED {
+  class "Supplementary Specification#F2" as C1 <<closed>> {
+    Resolved. NFR-002 to NFR-005 and AC-001 to
+    AC-006 now carry registered links.
+  }
+  class "Test Evaluation Summary#F3" as C2 <<closed>> {
+    Resolved. The issue-tracker row now records
+    Issue #1 open with its labels.
+  }
+}
+
+note bottom of MAJ
+  Both Major findings are statements about observable
+  state that do not reconcile with the SCM or with the
+  trace graph. Neither is a design disagreement, and
+  neither changes declared scope.
+end note
+
+note bottom of CLEAN
+  No new defect was found in these six artifacts this
+  iteration. Silence is the verdict.
+end note
+
+CRIT -[hidden]- MAJ
+MAJ -[hidden]- MIN
+MIN -[hidden]- CLEAN
+CLEAN -[hidden]- CLOSED
+@enduml
+```
+
+#### Software Architecture Document — Minor
+
+**F1 — Two declared element-level rows of the Traceability table are not carried by the graph as declared.** The table declares `COMP-009 | CON-032, R001 | Derives` and `INT-001 | COMP-001 | DependsOn`. The graph carries no link from CON-032 or R001 to COMP-009 — `model_get_downstream('CON-032')` returns the Supplementary Specification and the Software Architecture Document only, and `model_get_downstream('R001')` returns the Risk List, the Test Evaluation Summary and UC-011 — and no link from COMP-001 to INT-001: `model_get_upstream('INT-001')` returns the Test Evaluation Summary only. The registered source of COMP-009 is UC-011, not the declared CON-032 and R001. The other eighteen element-level rows verify against the graph. The artifact's own T-8 rule requires the Traceability table to state what the graph carries.
+
+*Remediation.* Align the two rows with the graph: state COMP-009's registered source as UC-011, and either register COMP-001 to INT-001 or drop the row. The remaining eighteen element-level rows and the two artifact-level rows need no change.
+
+*Evidence.* Software Architecture Document, Traceability: `COMP-009 | CON-032, R001 | Derives | —` and `INT-001 | COMP-001 | DependsOn | —` against `model_get_downstream('CON-032')` = Supplementary Specification, Software Architecture Document; `model_get_downstream('R001')` = Risk List, Test Evaluation Summary, UC-011; `model_get_upstream('INT-001')` = Test Evaluation Summary; `model_get_upstream('COMP-009')` = Test Evaluation Summary, INT-009, UC-011.
+
+#### Supplementary Specification — no new finding
+
+No defect recorded this iteration. Supplementary Specification#F2 is closed: `model_generate_rtm(sourceLevel=Business)` reports a `Refines` link to the Software Architecture Document for each of NFR-002, NFR-003, NFR-004 and NFR-005, and a `Refines` link to the Test Case artifact for each of AC-001 to AC-006, all in state OK, so no Business-level LEAF node remains for any of the nine elements the finding named. The FURPS+ classification gives every declared NFR, acceptance criterion and constraint exactly one home; the cross-cutting mechanisms are specified as mechanisms and included by the use cases that depend on them; the audit change classes equal NFR-001's three; and no threshold is invented. Approved from this lens.
+
+#### Risk List — no new finding
+
+No defect recorded this iteration. R001 and R002 are preserved with their declared probability and impact; R003 to R011 are numbered in the order raised per CON-023; every risk carries a strategy, an owner, a mitigation, a contingency and an observable early-warning indicator; every accepted risk names its CON-024 basis; R011 is adopted under CON-023 and avoided, so no acceptance basis is claimed for it; the CON-025 exclusions are not registered; and no human-team unit or velocity appears. Approved from this lens.
+
+#### Test Evaluation Summary — no new finding
+
+No defect recorded this iteration. Test Evaluation Summary#F3 is closed: the SCM quality signals table records Issue #1 open with its labels, which matches `scm_list_issues(state=all)`, and the reading drawn from it is corrected — one Change Request is open, it is the tracking reference for the registration act and is not a defect against the portal. The build-status row cites an observed run and reads it as the per-push build-and-test the regression rule needs, with entry criterion E-6 recorded as met. The declared upstream links are registered: `model_get_upstream(projectId, 'Test Evaluation Summary')` returns 53 links and the artifact is present in the trace tree. Approved from this lens.
 
 ### Business Reviewer lens
 #### Iteration 1
