@@ -135,14 +135,13 @@ No version is quoted from memory. The two framework pins come from the enterpris
 | Consequences | The early-warning indicator for R004 is readable from the data: recorded times clustering at implausible minutes, or a clocking whose client timestamp precedes the previous day's clock-out. |
 
 ## Use-Case View
-
-The Use-Case view validates every other view: each architecturally significant scenario is traced through the components, the interfaces, the transactions and the nodes that carry it. Five use cases are architecturally significant this iteration; four carry a realization diagram.
+The Use-Case view validates every other view: each architecturally significant scenario is traced through the components, the interfaces, the transactions and the nodes that carry it. Five use cases are architecturally significant this iteration; each carries a realization diagram.
 
 | UC | Source | Why architecturally significant | Views exercised |
 |---|---|---|---|
 | UC-002 Clock In and Clock Out | FR-002 | Client-supplied timestamp, idempotency key, 5-minute offline retry (CON-040, NFR-003, AC-006) | Logical, Process, Deployment, Implementation |
 | UC-004 Export Monthly Clocking Report as CSV | FR-004 | High volatility: the fixed column contract and the empty-not-zero semantics | Logical, Data, Use-Case |
-| UC-005 Correct or Insert a Clocking | FR-005 | Append-only correction with audit; the original is never overwritten in place (CON-007, NFR-001) | Logical, Process, Data |
+| UC-005 Correct or Insert a Clocking | FR-005 | Append-only correction with audit; the original is never overwritten in place (CON-007, NFR-001) | Logical, Process, Data, Use-Case |
 | UC-010 Feature or Un-feature a News Item | FR-010 | High volatility: the at-most-one-featured invariant (CON-011, CON-012) | Logical, Process, Data |
 | UC-011 Search Employee Directory | FR-011 | Live LDAP read with no local copy (CON-032, R001, R008) | Logical, Deployment, Data |
 
@@ -300,6 +299,84 @@ end note
 
 ```plantuml
 @startuml
+title UC-005 Correct or Insert a Clocking — append-only correction with audit (Portal, Inception 3)
+
+actor "HR Administrator\nSTK-001" as HR
+participant "HR clocking screens\nRazor Pages" as UI
+participant "COMP-008 Identity\nOIDC client" as ID
+participant "COMP-001 Clocking" as CLK
+participant "COMP-007 Audit\nappend-only" as AUD
+database "PostgreSQL 18" as DB
+
+HR -> UI : open the clocking screen for an employee and a date
+UI -> ID : validate the token, read the role from the claims
+ID --> UI : HR role
+note right of ID
+  CON-018 two levels. Only HR corrects or
+  inserts a clocking (CON-007). There is no
+  self-service correction screen for the employee.
+end note
+
+UI -> CLK : read the clocking for (employee, date)
+CLK -> DB : select by (ad_user_id, work_date)
+DB --> CLK : the pair, or none
+CLK --> UI : the current values, or an empty day
+UI --> HR : the current values
+
+HR -> UI : enter the corrected times and a free-text reason
+UI -> CLK : correct or insert with the new values and the reason
+
+CLK -> ID : confirm the caller is HR
+ID --> CLK : authorized
+
+CLK -> DB : begin transaction
+CLK -> DB : read the previous value before writing
+note right of DB
+  CON-007 the original is never overwritten in
+  place and never deleted. The previous value is
+  captured here and preserved in the audit record.
+end note
+
+alt a pair already exists for the day
+  CLK -> DB : write the corrected clock-in and clock-out, set is_corrected
+else no pair exists
+  CLK -> DB : insert the pair, set is_corrected
+  note right of DB
+    CON-009 at most one pair per employee per
+    calendar day: the unique constraint on
+    (ad_user_id, work_date) admits the insert
+    only if the day is empty.
+    CON-008 a pair never crosses midnight.
+  end note
+end
+
+CLK -> AUD : append the audit record in the same transaction
+note right of AUD
+  NFR-001 who corrected it, when, the previous
+  value and the free-text reason. On an insert
+  there is no previous value and the field is
+  empty. One append-only record shape for the
+  three audited change classes.
+  R010 avoided: a committed change without its
+  audit record is not representable.
+end note
+
+CLK -> DB : commit
+DB --> CLK : committed
+CLK --> UI : the corrected clocking
+UI --> HR : confirmation
+
+note over CLK, DB
+  CON-006 stored in UTC, displayed in Europe/Madrid.
+  The corrected value is the one the export reads
+  (FR-004 Corrected = Y for that day), and the
+  previous value survives in the audit record.
+end note
+@enduml
+```
+
+```plantuml
+@startuml
 title UC-010 Feature a News Item — the at-most-one invariant under concurrent HR requests (Portal, Inception 1)
 
 actor "HR Administrator A\nSTK-001" as HRA
@@ -421,10 +498,7 @@ end note
 @enduml
 ```
 
-### UC-005 realization — append-only correction
-
-UC-005 carries no sequence diagram of its own: its realization is the audit mechanism in the Logical view and the clocking-write transaction in the Process view. The correction path is the clocking write with one addition — the previous value and the free-text reason are captured before the new value is written, and both are written in the same transaction as the change. The original record is never overwritten in place and never deleted (CON-007), which is why `clocking_pair` carries `is_corrected` and the audit record carries `previous_value` and `reason`.
-
+**What the five realizations establish.** Each architecturally significant use case is traced through the components, interfaces, transactions and nodes that carry it, so no view of this document exists without a scenario exercising it. UC-002 exercises the Logical, Process, Deployment and Implementation views; UC-004 the volatile export seam and the Data view; UC-005 the append-only correction and the audit transaction; UC-010 the at-most-one-featured invariant under two concurrent HR requests; UC-011 the `INT-009 IPeopleDirectory` seam and the R001 blank-attribute path. The Deployment view is exercised by UC-002 and UC-011, the Process view by UC-002, UC-005 and UC-010, and the Data view by UC-004, UC-005 and UC-010.
 ## Logical View
 
 ```plantuml
