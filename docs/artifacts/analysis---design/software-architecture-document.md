@@ -2,9 +2,9 @@
 - **Phase:** Inception
 - **Status:** Draft — under review
 - **Milestone Target:** End of Inception (not yet achieved)
-- **Iteration:** 2, Cycle 1
+- **Iteration:** 3, Cycle 1
 - **Owner:** SoftwareArchitect
-- **Date:** 2026-10-07
+- **Date:** 2026-10-08
 ## Architectural Representation
 
 This document is the architecture of the Employee Portal, expressed in the 4+1 view model. Each view is a slice cut through the model, illuminating only the elements with system-wide impact. Everything else is design detail and belongs to the Design Model.
