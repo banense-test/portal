@@ -3597,6 +3597,31 @@ end note
 
 **Closure discipline.** A finding is closed only by the lens that emitted it, via `resolve_artifact_finding`. Markdown stating "Resolved" without the tool call leaves the state inconsistent and the milestone gate keeps counting the finding as open.
 
+#### Iteration 3
+
+**Prior findings of this lens — disposition.** Two findings of this lens were open at the start of this iteration. Both are closed as Resolved, each materialized by a `resolve_artifact_finding` call before this narrative was written.
+
+| Finding | Severity | Disposition | What was verified |
+|---|---|---|---|
+| Supplementary Specification#F2 | Major | **Resolved** | The declared element-level traceability is registered. `model_generate_rtm(sourceLevel=Business)` reports a `Refines` link to the Software Architecture Document for each of NFR-002, NFR-003, NFR-004 and NFR-005, and a `Refines` link to the Test Case artifact for each of AC-001 to AC-006, all in state OK. No Business-level LEAF node remains for any of the nine elements the finding named. |
+| Test Evaluation Summary#F3 | Major | **Resolved** | The issue-tracker row now reconciles with the SCM and with the artifact's own text. The SCM quality signals table records Issue #1 open with its labels, matching `scm_list_issues(state=all)` exactly, and the reading drawn from it is corrected: one Change Request is open, it is the tracking reference for the registration act and is not a defect against the portal. |
+
+**Findings of other lenses are not mine to close.** The findings emitted by the ManagementReviewer's and the BusinessReviewer's lenses belong to those lenses and are closed by them. They are not restated here.
+
+**New findings this iteration.** Two Major findings and one Minor finding are open from this lens: Development Case#F2, Development Case#F3 and Software Architecture Document#F1. All three are statements about observable state that do not reconcile with the SCM or with the trace graph.
+
+**Open actions.**
+
+| Finding | Severity | Owner | Action | Blocks LCO |
+|---|---|---|---|---|
+| Development Case#F2 | Major | SystemAnalyst, as trace steward | Register the nine declared artifact-level links in the trace repository, or drop the rows and state that the Development Case carries no registered trace link, so the table states what the graph carries. | No |
+| Development Case#F3 | Major | ProcessEngineer | Re-read the issue tracker in all states and replace "No Change Request is open" with the observed value — Issue #1 open, labelled `trace-registration`, `priority-high`, `no-scope-change` — or date the sentence as a point-in-time record of the S1 assessment. | No |
+| Software Architecture Document#F1 | Minor | SoftwareArchitect | Align the two rows with the graph: state COMP-009's registered source as UC-011, and either register COMP-001 to INT-001 or drop the row. | No |
+
+**No action is deferred to a later phase.** All three are correctable within Inception and none requires a Change Request: each restores an artifact's agreement with observable state or with the trace graph, and none changes declared scope. The stakeholder has directed that the minor findings be closed as well, so none is deferred on severity grounds.
+
+**Closure discipline.** A finding is closed only by the lens that emitted it, via `resolve_artifact_finding`. Markdown stating "Resolved" without the tool call leaves the state inconsistent and the milestone gate keeps counting the finding as open.
+
 ### Business Reviewer lens
 #### Iteration 1
 
