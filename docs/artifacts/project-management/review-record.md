@@ -5176,7 +5176,7 @@ Three prior findings of this lens were open at the start of this iteration. All 
 | Input | Recorded as |
 |---|---|
 | The LCO sanction question was answered No | Stakeholder sanction: REFUSED — recorded in the Disposition section and in the milestone verdict. |
-| Every finding is to be fixed and closed | Stakeholder finding: the closure of every finding raised in an iteration remains a standing condition on the LCO re-assessment, and it is not satisfied while two findings raised this iteration are open. Verified against the artifacts: the finding ledger carries Development Case#F1 and Software Architecture Document#F1 open, and the Iteration Plan's fine plan carries the closure work. |
+| "Let's try to fix all the findings and close it." | Stakeholder finding: the closure of every finding raised in an iteration remains a standing condition on the LCO re-assessment, and it is not satisfied while two findings raised this iteration are open. Verified against the artifacts: the finding ledger carries Development Case#F1 and Software Architecture Document#F1 open, and the Iteration Plan's fine plan carries the closure work. |
 
 **Actions carried into the next iteration.**
 
