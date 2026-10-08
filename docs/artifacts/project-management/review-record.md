@@ -5115,6 +5115,42 @@ The refusal is the sanctioning authority's and it is a condition, not a criteria
 
 **Closure discipline.** A finding is closed only by the lens that emitted it. The four findings of this lens are closed by this lens; the findings of the Reviewer's and the BusinessReviewer's lenses are theirs to close and are not closed here. A statement in this record that a finding is resolved does not close it.
 
+#### Iteration 3
+
+Three prior findings of this lens were open at the start of this iteration. All three are closed as Resolved, each materialized by a `resolve_artifact_finding` call by this lens. Each was a gate condition resting on an underlying defect owned by another lens; the underlying defect was verified as fixed before the gate condition was lifted.
+
+| Finding | Severity | Underlying defect | Verified | Disposition |
+|---|---|---|---|---|
+| Supplementary Specification#F1 | Major | Supplementary Specification#F2 — declared element-level traceability not registered | `model_generate_rtm(sourceLevel=Business)` reports a `Refines` link to the Software Architecture Document for each of NFR-001 to NFR-005 and for each declared constraint specified there, and a `Refines` link to the Test Case artifact for each of AC-001 to AC-006, all in state OK. No Business-level LEAF node remains. | Resolved |
+| Iteration Plan#F5 | Minor | Iteration Plan#F1 (business lens) — role profile recorded the BusinessReviewer as non-participating while the business lens executed | The Resources section records the BusinessReviewer as participating in I1, I2, I3, E2, C3 and T1, names the four lifecycle gates, and states the lens's output at each. The Development Case's Roles and Ownership table carries the same determination in the same pass. | Resolved |
+| Test Evaluation Summary#F1 | Major | Test Evaluation Summary#F2 and #F3 — declared upstream links not registered; issue-tracker row not reconciling with the SCM | `model_get_upstream(projectId, 'Test Evaluation Summary')` returns 53 links covering FR-001 to FR-012, NFR-001 to NFR-005, AC-001 to AC-006, UC-001 to UC-012, R001 to R010, BG-001 to BG-003 and CON-021/CON-033/CON-035/CON-040/CON-041; the artifact is present in the Business-level trace tree. The SCM quality signals table records Issue #1 open with its labels, matching `scm_list_issues(state=all)`. | Resolved |
+
+**The deferred finding is resolved.** Test Evaluation Summary#F2 was carried as Deferred out of Inception 2, with its own resolution text stating that the defect stood and the gate continued to count it open. The trace steward has now registered the declared links, and the Reviewer has closed the finding as Resolved. No finding of any lens remains deferred.
+
+**Every finding raised in Inception 1 and Inception 2 is closed.** Eleven findings were raised in Inception 1 and six in Inception 2. All seventeen are now closed by the lens that emitted each, including the one that was deferred. The finding ledger carries no open entry from a prior iteration.
+
+**Findings raised this iteration.** Two findings are recorded against this iteration's artifacts, both by this lens: Development Case#F1 (Major) and Software Architecture Document#F1 (Minor). Each is the gate condition resting on an underlying defect recorded by the Reviewer's technical lens — Development Case#F2 and #F3, and Software Architecture Document#F1. The underlying defects are the Reviewer's to close; the gate conditions close with them.
+
+**Stakeholder decision recorded this review.**
+
+| Input | Recorded as |
+|---|---|
+| The LCO sanction question was answered No | Stakeholder sanction: REFUSED — recorded in the Disposition section and in the milestone verdict. |
+| Every finding is to be fixed and closed | Stakeholder finding: the closure of every finding raised in an iteration remains a standing condition on the LCO re-assessment, and it is not satisfied while two findings raised this iteration are open. Verified against the artifacts: the finding ledger carries Development Case#F1 and Software Architecture Document#F1 open, and the Iteration Plan's fine plan carries the closure work. |
+
+**Actions carried into the next iteration.**
+
+| # | Action | Owner | Evidence that will close it |
+|---|---|---|---|
+| A-1 | Register the Development Case's nine declared artifact-level links in the trace repository, or drop the rows and state that the artifact carries no registered trace link, so the table states what the graph carries (T-8). | SystemAnalyst, trace steward | `model_get_downstream(projectId, 'Development Case')` returns the declared links, or the table states that none is registered; Development Case#F2 closed by the Reviewer. |
+| A-2 | Re-read the issue tracker in all states and replace the S1 assessment's "No Change Request is open" with the observed value, or date the sentence and state the observed value at that date. | ProcessEngineer | Development Case#F3 closed by the Reviewer. |
+| A-3 | Align the Software Architecture Document's two uncarried element-level rows with the graph: state COMP-009's registered source as UC-011, and either register COMP-001 to INT-001 or drop the row. | SoftwareArchitect | Software Architecture Document#F1 closed by the Reviewer. |
+| A-4 | Close the two gate conditions this lens recorded — Development Case#F1 and Software Architecture Document#F1 — once their underlying defects close. | ManagementReviewer | `resolve_artifact_finding` calls by this lens; the ledger shows 0 open findings. |
+| A-5 | Conduct the Project Approval Review ahead of the LCO verdict, so LCO-8 is met. | ReviewCoordinator | The Review Record carries the Project Approval Review entry. |
+| A-6 | Re-assess the LCO exit criteria in the next Inception iteration. | ReviewCoordinator | The re-assessment recorded in this Review Record. |
+
+**No action changes declared scope, the architecture or the risk record.** Each restores an artifact's agreement with observable state or registers a declared link in the trace repository.
+
 ### Review Coordinator lens
 #### Prioritized action list
 
