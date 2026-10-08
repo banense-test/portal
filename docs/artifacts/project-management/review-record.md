@@ -5981,6 +5981,23 @@ V --> W
 
 **Reading the table.** `Traces From` is the declared input this review is accountable to — the ten LCO exit criteria, the risks whose magnitude and trend it reports, the acceptance criteria and non-functional requirements whose verifiability it checks, the use cases whose coverage it confirms, and the constraints that govern its own measurement and risk policy. `Traces To` is the artifact each finding lands on. The `Issue #1` row is the observed tracking reference for the trace-registration actions, read from the issue tracker and not minted here.
 
+#### Iteration 3
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| Review Record | LCO-1 to LCO-12 | Refines | Development Case, Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Risk List, Iteration Plan, Test Evaluation Summary |
+| Development Case#F1 | Development Case#F2, Development Case#F3 | DependsOn | Development Case |
+| Software Architecture Document#F1 | Software Architecture Document#F1 (Reviewer lens) | DependsOn | Software Architecture Document |
+| Supplementary Specification#F1 | Supplementary Specification#F2 | DependsOn | Supplementary Specification |
+| Iteration Plan#F5 | Iteration Plan#F1 (business lens) | DependsOn | Iteration Plan |
+| Test Evaluation Summary#F1 | Test Evaluation Summary#F2, Test Evaluation Summary#F3 | DependsOn | Test Evaluation Summary |
+
+**Reading the table.** Each gate-condition finding this lens records traces to the underlying defect recorded by the lens that owns it. The gate condition closes when the underlying defect closes; the underlying defect is not restated here and is not this lens's to close.
+
+**Declared input coverage.** All twelve FR, five NFR, six AC, forty-three CON, three BG and two declared risks are cited by at least one artifact. No artifact cites an identifier outside the declared families. No artifact quotes the stakeholder in place of citing an identifier.
+
+**Trace state at this gate.** Every one of the twelve declared requirements reaches a use case, and every use case reaches a component — no Business-level LEAF node for any `FR-NNN`. The `Test Case` node is a LEAF by design: the artifact is empty because no use-case realization exists in Inception, and the Iteration Plan defers test authoring to Elaboration 2. The `Development Case` node is a LEAF by defect, which is Development Case#F2. No `SUSPECT` edge exists anywhere in the tree.
+
 ### Review Coordinator lens
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
