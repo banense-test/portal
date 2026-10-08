@@ -4349,6 +4349,86 @@ end note
 
 **Re-evaluation of the INACTIVE verdict.** The DC §4 determination is re-derived every iteration, not carried forward. This iteration it was re-derived against the declared scope and the eight persisted artifacts: no business process is modelled, automated or orchestrated; no business actor, business worker or business entity model is in declared scope; the business rules (CON-007 to CON-016, CON-043) are stakeholder-declared system constraints, not a modelled business rule set; and the system's value is a single web application replacing fragmented manual tooling, not the automation of a modelled process. All four tests return NONE. A Change Request that introduced a business process into scope would re-open the determination.
 
+#### Iteration 3
+
+**One prior finding of this lens closed. Zero left open.**
+
+| Finding | Severity | Decision | Basis |
+|---|---|---|---|
+| Iteration Plan#F1 — the role profile records the BusinessReviewer as non-participating in every iteration, while the business lens executed at this gate | Minor | **Resolved** | The two statements now reconcile on both ends. The Iteration Plan's Resources section records the BusinessReviewer as participating in I1, I2, I3, E2, C3 and T1, names the four lifecycle gates (I3 LCO, E2 LCA, C3 IOC, T1 PR), and states the lens's output at each gate: the re-derived DC §4 verdict, the business-volatility annotation check and the business-dimension traceability compliance check. It states explicitly that executing the lens is not authoring the model, and that the BusinessProcessAnalyst remains non-participating. The Development Case's Roles and Ownership table carries the same determination in the same pass. |
+
+```plantuml
+@startuml
+title Business Reviewer lens — finding ledger, LCO Inception 3 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Open at the gate — 0 findings" as OPEN {
+  class "none" as O0 <<empty>> {
+    No Critical, Major, Minor or Info
+    finding of this lens is open.
+  }
+}
+
+package "Closed this iteration — 1 finding" as CLOSED {
+  class "Iteration Plan#F1" as C1 <<Minor>> {
+    Raised: Inception 2, this lens.
+    Resolved: Inception 3, this lens.
+    The role profile and the Development
+    Case now agree that the business lens
+    executes at I1, I2, I3, E2, C3 and T1.
+  }
+}
+
+package "Lens history" as HIST {
+  class "Inception 1" as H1 <<record>> {
+    Findings raised: 0
+    Disposition: BR-OK-INACTIVE
+  }
+  class "Inception 2" as H2 <<record>> {
+    Findings raised: 1 Minor
+    Disposition: BR-OK-INACTIVE
+  }
+  class "Inception 3" as H3 <<record>> {
+    Findings raised: 0
+    Findings closed: 1
+    Disposition: BR-OK-INACTIVE
+  }
+}
+
+package "Disposition" as D {
+  class "Business lens verdict" as D1 <<verdict>> {
+    BR-OK-INACTIVE
+    Discipline NOT APPLICABLE per DC 4
+    No finding of this lens blocks LCO
+  }
+}
+
+O0 --> D1
+C1 --> D1
+H1 --> D1
+H2 --> D1
+H3 --> D1
+
+note bottom of CLOSED
+  Closure is materialized by resolve_artifact_finding
+  by the lens that emitted the finding. The tool call
+  is the state transition; this table is the rationale.
+end note
+
+note bottom of D
+  The business lens raises no gate condition of its own.
+  The DC 4 INACTIVE verdict is re-derived each iteration,
+  not carried forward, and it holds this iteration.
+end note
+@enduml
+```
+
+**No finding of this lens is deferred or rejected.** The one finding this lens has ever raised is closed on its merits: the defect it named — two artifacts disagreeing about whether the business lens runs — no longer exists in either artifact.
+
+**What the closure does not claim.** It does not claim the business lens has been exercised at a second lifecycle gate. The reconciliation is one iteration old; the re-derivation of the DC §4 verdict at LCA, IOC and PR is scheduled but not yet performed. That is why the governance criterion scores 9/10 rather than 10/10, and it is not a defect — it is work that belongs to the gates that have not yet run.
+
 ### Management Reviewer lens
 #### Iteration 1
 
