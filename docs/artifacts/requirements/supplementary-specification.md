@@ -8,7 +8,7 @@
 ## Functionality
 ```plantuml
 @startuml
-title Supplementary Specification — FURPS+ classification of every declared requirement (Portal, Inception 2)
+title Supplementary Specification — FURPS+ classification of every declared requirement (Portal, Inception 3)
 
 skinparam classAttributeIconSize 0
 skinparam packageStyle rectangle
@@ -219,7 +219,7 @@ Invariants that hold wherever the change comes from, not only in the screen HR h
 
 ```plantuml
 @startuml
-title Cross-cutting mechanisms — included by every dependent use case (Portal, Inception 2)
+title Cross-cutting mechanisms — included by every dependent use case (Portal, Inception 3)
 
 skinparam packageStyle rectangle
 
