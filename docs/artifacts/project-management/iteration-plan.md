@@ -326,7 +326,7 @@ X-1 to X-5 are re-assessed in Inception 3, not assumed met in an earlier iterati
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| Iteration Plan | R001, R002, R003, R004, R005, R006, R007, R008, R009, R010 | Refines | Risk List |
+| Iteration Plan | R001, R002, R003, R004, R005, R006, R007, R008, R009, R010, R011 | Refines | Risk List |
 | Iteration Plan | UC-001, UC-002, UC-003, UC-004, UC-005, UC-006, UC-007, UC-008, UC-009, UC-010, UC-011, UC-012 | Refines | Use-Case Model |
 | Iteration Plan | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | Test Case |
 | Iteration Plan | CON-023, CON-024, CON-025, CON-026, CON-034 | Refines | Development Case |
