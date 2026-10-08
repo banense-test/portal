@@ -236,6 +236,19 @@ Inception 2 cost 1.73× Inception 1 in tokens and 1.85× in agent elapsed time, 
 
 **The 14-day bound is the process rule for any human gate, not a per-gate declaration.** It applies to all three gates. Where a gate has no declared ceiling of its own, the process bound applies and is reported; no per-gate ceiling is invented, and no gate is left without the process bound. Measured queue time is reported apart from agent time and is never added to it.
 
+### Risk-driven sequencing
+
+The iteration is sequenced by the Risk List, not by artifact order. Two risks drive the order of the fine plan.
+
+| Risk | Magnitude | What it forces in this iteration's sequence |
+|---|---|---|
+| R011 | Moderate | The trace-registration step is iteration work with a named owner, not an unassigned act. W-1 and W-2 are the first two work items and the SystemAnalyst holds them as trace steward; the Requirements Traceability Matrix is their exit evidence. This is the avoidance treatment: the mechanism is inside the plan's control, so it is removed rather than accepted. |
+| R003 | Significant | The human validation gate on the real Keycloak and the real AD opens at the start of Elaboration 1, not in this iteration. It is bounded as a risk with a 14-day process bound and is reported in days of queue time, apart from agent time. No work item in this iteration depends on it. |
+
+**R001, R002, R004, R005 and R007 are accepted under CON-024 and carry no work item here.** Their mechanisms are outside the team's control and their treatments are design decisions already recorded in the Risk List. **R006, R008, R009 and R010 are avoided** and their treatments are architectural or procedural, discharged in Elaboration rather than in this iteration.
+
+**No risk is retired by this iteration.** Inception's LCO criterion is that the initial risks are identified and classified, not that they are retired. The trend line begins at LCA. R011 is the one risk this iteration acts on directly, and its treatment is the assignment of the registration step to an owner — which is what the fine plan's W-1 and W-2 do.
+
 ## Resources
 The agent role profile: which roles execute in which iteration. Roles not listed do not participate — BusinessProcessAnalyst (Business Modeling inactive, no business model is authored) and CapsuleDesigner (not a real-time system) do not participate in any iteration.
 
