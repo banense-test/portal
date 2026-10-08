@@ -16,7 +16,7 @@ skinparam packageStyle rectangle
 actor "Employee\nSTK-004" as EMP
 actor "HR Administrator\nSTK-001" as HR
 actor "Active Directory\nread-only, over LDAP" as AD <<external system>>
-actor "Keycloak\nOIDC provider" as KC <<external system>>
+component "Keycloak\nOIDC provider" as KC <<external system>>
 
 rectangle "Employee Portal" {
   usecase "UC-001\nView Own Clocking History" as UC001
@@ -48,10 +48,11 @@ HR --> UC012
 UC011 --> AD : LDAP read, portal-initiated
 
 note bottom of KC
-  Cross-cutting, not an actor and not a use case.
-  Every use case above is reached only
-  through the Keycloak OIDC login; roles
-  come from AD group membership in the token.
+  Cross-cutting mechanism, not an actor of any
+  use case and not a use case. Every use case
+  above is reached only through the Keycloak
+  OIDC login; roles come from AD group
+  membership in the token.
   CON-001, CON-018, CON-030, CON-031.
   See Supplementary Specification.
 end note
@@ -71,7 +72,7 @@ end note
 @enduml
 ```
 
-**Boundary.** The rectangle is the Portal. Actors sit on the boundary line. Keycloak is drawn outside the rectangle and is deliberately NOT an actor of any use case: authentication and authorization are cross-cutting mechanisms that every use case depends on, and they are specified in the Supplementary Specification with `<<include>>` from each dependent use case. Active Directory IS an actor of UC-011 because the directory search is a live read of a system of record the portal does not own; the association is directed from UC-011 to AD, because the portal initiates the LDAP read and AD never initiates anything.
+**Boundary.** The rectangle is the Portal. Actors sit on the boundary line. Keycloak is drawn outside the rectangle as an external system, NOT as an actor: authentication and authorization are cross-cutting mechanisms that every use case depends on, and they are specified in the Supplementary Specification with `<<include>>` from each dependent use case. Active Directory IS an actor of UC-011 because the directory search is a live read of a system of record the portal does not own; the association is directed from UC-011 to AD, because the portal initiates the LDAP read and AD never initiates anything.
 
 **Architecturally significant use cases.** Five of the twelve force an architectural decision and are detailed in this artifact: UC-002 (client-trusted timestamp, idempotency key, offline retry — CON-040), UC-004 (High volatility: the fixed export contract — FR-004), UC-005 (append-only correction with audit — CON-007, NFR-001), UC-010 (High volatility: the at-most-one-featured invariant — CON-011, CON-012), UC-011 (live LDAP read with no local copy — CON-032, R001). The remaining seven are surveyed only; the RequirementsSpecifier details them in Elaboration.
 ## Actors
