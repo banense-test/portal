@@ -5204,6 +5204,25 @@ V --> W
 
 **Traceability compliance — this iteration.** Every declared identifier — twelve FR, five NFR, forty-three CON, four STK, three BG, six AC and the two declared risks — is cited by at least one artifact. No artifact cites an identifier outside the declared families. No artifact quotes the stakeholder in place of citing an identifier. The business dimension has no traceability obligation to discharge: with no BUC, no business worker and no business entity, there is no business element whose upstream or downstream link could be missing. The one finding of this lens is a governance defect in the Iteration Plan's role profile, not a traceability defect.
 
+#### Iteration 3
+
+**Business-dimension traceability compliance.** The business level carries no traceability obligation this iteration: with no BUC, no business worker and no business entity, there is no business element whose upstream or downstream link could be missing. The check is satisfied vacuously and correctly.
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| Review Record (Business Reviewer lens) | Iteration Plan#F1 | Refines | Iteration Plan |
+| Review Record (Business Reviewer lens) | CON-023, CON-024, CON-025, CON-026, CON-034 | Refines | Development Case |
+| Review Record (Business Reviewer lens) | FR-001 to FR-012, NFR-001 to NFR-005, CON-001 to CON-043, STK-001 to STK-004, BG-001 to BG-003, AC-001 to AC-006, R001, R002 | Refines | Vision, Use-Case Model, Supplementary Specification, Risk List |
+| Iteration Plan#F1 | Iteration Plan | Refines | Review Record (Business Reviewer lens) |
+
+**Declared-input coverage.** All twelve FR, five NFR, forty-three CON, four STK, three BG, six AC and two declared risks are cited by at least one artifact reviewed by this lens. No artifact cites an identifier outside the declared families. No artifact quotes the stakeholder in place of citing an identifier.
+
+**Business-level LEAF check.** No `BUC-NNN`, no `BR-NNN` and no business stereotype exists, so no business-level node can be a LEAF. The absence is the correct state for an inactive discipline, not a gap.
+
+**Suspect traces.** No `«SUSPECT → role»` edge targets an artifact this lens owns. The Review Record is the only artifact this lens produces, and no upstream role has declared a change to it.
+
+**Marker check.** No artifact carries an open `[SCOPE_QUESTION]`, `[DERIVED — awaiting stakeholder confirmation]` or `[ASSUMPTION]` marker in the business dimension. The STK-001 derivation was confirmed by the stakeholder and the marker retired.
+
 ### Management Reviewer lens
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
