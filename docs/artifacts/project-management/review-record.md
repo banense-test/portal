@@ -4832,6 +4832,104 @@ D --> W4
 
 **This is the Business Reviewer's business-lens disposition. The LCO milestone verdict is the ReviewCoordinator's, and the milestone is not achieved until that verdict is recorded.**
 
+#### Iteration 3
+
+**Verdict: [BR-OK-INACTIVE] — Business Modeling discipline NOT APPLICABLE per DC §4.**
+
+```plantuml
+@startuml
+title Business lens disposition — LCO Inception 3 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "DC 4 trigger evaluation — re-derived this iteration" as DC4 {
+  class "T-1 Business process modelled,\nautomated or orchestrated" as T1 <<NONE>> {
+    No business process is in declared scope.
+    The three declared processes are system
+    use cases over a data-capture and
+    publishing intranet.
+  }
+  class "T-2 Business actor, worker or\nentity model in scope" as T2 <<NONE>> {
+    No business actor, worker or entity.
+    The system actors are declared directly:
+    STK-001, STK-004.
+  }
+  class "T-3 Modelled business rule set" as T3 <<NONE>> {
+    CON-007 to CON-016 and CON-043 are
+    stakeholder-declared system constraints,
+    not a modelled business rule set.
+  }
+  class "T-4 Business process automation\nis the system's value" as T4 <<NONE>> {
+    The value is one web application
+    replacing fragmented manual tooling.
+  }
+}
+
+package "Lens verdict" as V {
+  class "Business Modeling" as V1 <<INACTIVE>> {
+    Discipline NOT APPLICABLE.
+    No BUC, no BR-NNN, no business model
+    is authored, and none is required.
+  }
+  class "Business lens" as V2 <<EXECUTED>> {
+    The lens executed at this gate.
+    It re-derives the DC 4 verdict, checks
+    the volatility annotation and the
+    business-dimension traceability.
+  }
+  class "Findings" as V3 <<verdict>> {
+    Critical: 0
+    Major: 0
+    Minor: 0
+    Info: 0
+    Prior findings closed: 1
+  }
+  class "Gate effect" as V4 <<verdict>> {
+    No finding of this lens blocks LCO.
+    The business dimension raises no
+    gate condition of its own.
+  }
+}
+
+T1 --> V1
+T2 --> V1
+T3 --> V1
+T4 --> V1
+V1 --> V2
+V2 --> V3
+V3 --> V4
+
+note bottom of DC4
+  All four tests return NONE. The verdict is
+  re-derived each iteration against the declared
+  scope and the persisted artifacts, never
+  carried forward: that re-derivation is what
+  would catch a business process entering scope
+  through a Change Request.
+end note
+
+note bottom of V
+  The milestone verdict is the ReviewCoordinator's.
+  This block dispositions the business lens only.
+end note
+@enduml
+```
+
+**DC §4 trigger evaluation.** All four tests return NONE, re-derived this iteration against the declared scope and the persisted artifacts. No business process is modelled, automated or orchestrated; no business actor, worker or entity model is in scope; the declared business rules are stakeholder-declared system constraints rather than a modelled business rule set; and the system's value is a single web application replacing fragmented manual tooling, not the automation of a modelled process. The ProcessEngineer's classification was audited, not accepted.
+
+**What the business lens discharged at this gate.** Three duties, none of which requires the discipline to be active:
+
+| Duty | Outcome |
+|---|---|
+| Re-derive the DC §4 INACTIVE verdict | Holds. All four tests return NONE. |
+| Business-volatility annotation check | Discharged. FR-004 and FR-010 carry `Volatility: High` in the Vision; the SoftwareArchitect gave each its own subsystem and interface (`COMP-002` behind `INT-002`, `COMP-004` behind `INT-004`) and recorded the encapsulation as R006. |
+| Business-dimension traceability compliance | Satisfied vacuously and correctly. No business-level element exists whose link could be missing. |
+
+**Scope adherence.** Zero business use cases, zero `BR-NNN` business rules, zero business stereotypes. No undeclared business process was invented, and no declared system use case was promoted to a business use case. No artifact carries an open `[SCOPE_QUESTION]`, `[DERIVED]` or `[ASSUMPTION]` marker in the business dimension.
+
+**Gate effect.** No finding of this lens blocks the LCO milestone. The business dimension raises no gate condition of its own; the milestone verdict is the ReviewCoordinator's.
+
 ### Management Reviewer lens
 **LCO milestone: NOT SANCTIONED. Stakeholder sanction: REFUSED.**
 
