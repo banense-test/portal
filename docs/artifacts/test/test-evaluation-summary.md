@@ -294,14 +294,14 @@ end note
 ## Conclusions
 ### Recommendation
 
-**Proceed to Elaboration.** The test effort's contribution to the LCO decision is that the baseline is verifiable and the strategy is defined. Two conditions must hold before the first implementation task, and each has an owner:
+**Proceed to Elaboration.** The test effort's contribution to the LCO decision is that the baseline is verifiable, the strategy is defined, and the declared coverage is registered in the trace repository. Two conditions must hold before the first implementation task, and each has an owner:
 
 | # | Condition | Owner | Risk if not met |
 |---|---|---|---|
 | 1 | The test OIDC issuer and the test directory stand-in are built and reachable, the directory carrying entries with empty job title and extension. | TestManager with Implementer | No scenario can be exercised; the blank-field path is never built and R001 is discovered late. |
 | 2 | The test conventions are written into `CONTRIBUTING.md`. | TestManager | The suite has no structure and no definition of a passing test. |
 
-These two are the Development Case's Elaboration iteration-preparation checkpoint and R009. They are the test effort's entry criteria E-4 and E-5. The third condition previously listed here — the CI workflow — is **already satisfied**: `.github/workflows/ci.yml` is committed and green on `main` (`ci-run-37588175142`), and entry criterion E-6 is met.
+These two are the Development Case's Elaboration iteration-preparation checkpoint and R009. They are the test effort's entry criteria E-4 and E-5. The third condition previously listed here — the CI workflow — is **already satisfied**: `.github/workflows/ci.yml` is committed and green on `main` (`ci-run-37588755525`), and entry criterion E-6 is met.
 
 ### Risks to the test effort
 
