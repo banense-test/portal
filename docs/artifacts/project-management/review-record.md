@@ -1004,8 +1004,23 @@ note right
   6 new findings open.
 end note
 
-|#LightYellow|Inception 3 — auto-iteration|
-:Close the 6 open findings and remedy the deferred one;
+|#LightYellow|Inception 3|
+:Close the open findings and remedy the deferred one;
+:R1 Project Approval Review — scheduled as W-7, not conducted;
+:R3 Iteration Plan Review;
+:R5 Iteration Evaluation Criteria Review — X-1 to X-5 re-assessed;
+:R6 Iteration Acceptance Review;
+:R7 LCO Lifecycle Milestone Review — re-assessment;
+note right
+  EXECUTED. Lenses: Reviewer,
+  BusinessReviewer, ManagementReviewer.
+  Verdict: NOT SANCTIONED.
+  Every Inception 1 and Inception 2
+  finding closed; 5 findings open.
+end note
+
+|#LightYellow|Inception 4 — auto-iteration|
+:Close the 5 open findings;
 :R1 Project Approval Review — conduct, LCO-8;
 :R3 Iteration Plan Review;
 :R5 Iteration Evaluation Criteria Review — X-1 to X-5 re-assessed;
@@ -1049,7 +1064,7 @@ stop
 
 **Milestone review coverage.** All four RUP lifecycle milestones have a scheduled R7 review: LCO closes Inception, LCA closes Elaboration 2, IOC closes Construction 3, PR closes Transition 1. No phase transition is unsanctioned.
 
-**Open condition carried into the next Inception iteration.** R1 Project Approval Review is scheduled as fine-plan work item W-9 and has not been conducted in either Inception iteration. LCO exit criterion LCO-8 is unmet until it is conducted and on record. The scheduling defect is finding Iteration Plan#F3, closed by the Management Reviewer against the plan; the review event itself remains outstanding.
+**Open condition carried into the next Inception iteration.** R1 Project Approval Review is scheduled as fine-plan work item W-7 and has not been conducted in any Inception iteration. LCO exit criterion LCO-8 is unmet until it is conducted and on record. The scheduling defect is finding Iteration Plan#F3, closed by the Management Reviewer against the plan; the review event itself remains outstanding.
 
 #### Review event interaction
 
@@ -1190,6 +1205,52 @@ RC -> AU : return findings with owner and deadline
 | Open pull requests | None |
 | Issues, all states | Issue #1 open — "Trace registration — Test Evaluation Summary upstream links (Test Evaluation Summary#F2)", labels `trace-registration`, `priority-high`, `no-scope-change` |
 | Trace graph, Business level | 58 roots, 163 nodes; `NFR-002` to `NFR-005` are LEAF nodes; `AC-001` to `AC-006` are LEAF nodes; `Test Evaluation Summary` is absent from the tree |
+
+**Pull-request disposition.** No open pull request exists, so every pull request has reached a terminal disposition vacuously and no disposition call was required. The repository carries scaffolding only — a solution, two empty projects, a CI workflow, a README and the mandatory design reference. No productive code is present, which is consistent with Inception scope. No scope-ahead branch exists.
+
+#### Iteration 3
+
+**Review event.** R7 Lifecycle Milestone Review — Lifecycle Objectives (LCO), re-assessment. The third review event of the project, and the re-assessment of the gate the stakeholder refused at the end of Inception 2.
+
+| Field | Value |
+|---|---|
+| Review type | R7 Lifecycle Milestone Review (LCO) — re-assessment |
+| Triggering workflow activity | Close-Out Phase — Inception |
+| Verdict owner | ReviewCoordinator |
+| Sanctioning authority | STK-001, Laura Gómez, HR Director and project sponsor |
+| Artifacts in scope | 8 — Development Case, Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Risk List, Iteration Plan, Test Evaluation Summary |
+| Lenses executed | Reviewer (technical), BusinessReviewer (business), ManagementReviewer (management) |
+| Lenses not executed | None — all three executed |
+| Findings consolidated | 5 open — 0 Critical, 3 Major, 2 Minor |
+
+**Entry criteria — verified before the review began.**
+
+| # | Entry criterion | Status | Evidence |
+|---|---|---|---|
+| E-1 | Every artifact in scope is in its target state, not a draft placeholder | Met | All eight artifacts read in full; no section is a placeholder |
+| E-2 | Every upstream artifact each artifact depends on is persisted | Met | All eight persisted; the Iteration Assessment is authored after this review and is not a review input |
+| E-3 | Reviewers assigned with expertise matched to the artifact domain | Met | Technical lens on all eight; business lens on the business dimension; management lens on the gate |
+| E-4 | Agenda and evaluation criteria distributed at least 48 hours in advance | Met | Checklists prepared per artifact type before the artifacts were read |
+| E-5 | Finding ledger readable and complete | Met | `read_artifact_findings` returned the full ledger for all ten artifacts |
+
+**Exit criteria — the conditions this review must satisfy to close.**
+
+| # | Exit criterion | Status |
+|---|---|---|
+| X-1 | Every finding carries an owner, a severity and a resolution deadline | Met — 5 of 5 open |
+| X-2 | The Review Record is signed and archived | Met — this document |
+| X-3 | The milestone verdict is recorded | Met — Disposition |
+| X-4 | Every Critical finding is escalated to the stakeholder | Met vacuously — 0 Critical findings |
+| X-5 | The phase gate is sanctioned or refused by the sanctioning authority | Met — refused |
+
+**SCM evidence read this iteration.**
+
+| Signal | Observed |
+|---|---|
+| Build, branch `main` | success, 2026-10-08 11:30:38Z to 11:31:31Z |
+| Open pull requests | None |
+| Issues, all states | Issue #1 open — "Trace registration — Test Evaluation Summary upstream links (Test Evaluation Summary#F2)", labels `trace-registration`, `priority-high`, `no-scope-change` |
+| Trace graph, Business level | 99 roots, 466 nodes; `NFR-002` to `NFR-005` carry registered `Refines` links to the Software Architecture Document; `AC-001` to `AC-006` carry registered `Refines` links to the Test Case artifact; `Test Evaluation Summary` is present with 53 upstream and 76 downstream links; `Development Case` is a LEAF node |
 
 **Pull-request disposition.** No open pull request exists, so every pull request has reached a terminal disposition vacuously and no disposition call was required. The repository carries scaffolding only — a solution, two empty projects, a CI workflow, a README and the mandatory design reference. No productive code is present, which is consistent with Inception scope. No scope-ahead branch exists.
 
