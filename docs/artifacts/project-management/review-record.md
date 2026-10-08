@@ -4711,10 +4711,11 @@ MIN -[hidden]- CLEAN
 
 | Conflict | Lenses | Resolution |
 |---|---|---|
-| Development Case#F1 (ManagementReviewer) and Development Case#F2, #F3 (Reviewer) describe the same underlying defect | Reviewer, ManagementReviewer | Not a conflict and not a duplicate. The finding key is scoped per artifact AND per reviewer lens, so the three are distinct findings. #F2 and #F3 are the defects; #F1 is the gate condition the stakeholder's standing condition rests on. All three are carried and all three are open. |
-| Software Architecture Document#F1 (Reviewer) and Software Architecture Document#F1 (ManagementReviewer) share a key | Reviewer, ManagementReviewer | Not a conflict. Same key, two lenses, two findings: the defect and the gate condition. Both are carried and both are open. |
-| The Reviewer dispositions the artifacts "Approved with Changes"; the ManagementReviewer dispositions the gate "Conditional Go — NOT SANCTIONED" | Reviewer, ManagementReviewer | Not a conflict. The Reviewer dispositions the artifacts; the ManagementReviewer dispositions the gate. The ReviewCoordinator's milestone verdict is the binding one and is recorded in Disposition. |
-| The BusinessReviewer records zero findings while the other two lenses record five | BusinessReviewer, Reviewer, ManagementReviewer | Not a conflict. The Business Modeling discipline is inactive (DC T-1) and its inactivity was independently re-derived this iteration against the four DC §4 tests, all of which return NONE. The business lens's one historical finding, Iteration Plan#F1, is closed this iteration. |
+| Supplementary Specification#F1 (ManagementReviewer) and Supplementary Specification#F2 (Reviewer) describe the same underlying defect | Reviewer, ManagementReviewer | Not a conflict and not a duplicate. The finding key is scoped per artifact AND per reviewer lens, so the two are distinct findings. #F2 is the defect; #F1 is the gate condition the stakeholder's refusal rests on. Both are carried, both are open, and both close when the trace steward registers the links. |
+| Test Evaluation Summary#F1 (ManagementReviewer) and Test Evaluation Summary#F3 (Reviewer) describe the same underlying defect | Reviewer, ManagementReviewer | Not a conflict. #F3 is the defect; #F1 is the gate condition. Both are carried and both are open. |
+| Iteration Plan#F5 (ManagementReviewer) and Iteration Plan#F1 (BusinessReviewer) describe the same underlying defect | BusinessReviewer, ManagementReviewer | Not a conflict. #F1 is the defect; #F5 is the gate condition. Both are carried and both are open. |
+| The Reviewer's lens dispositions the artifacts "Approved with Changes"; the ManagementReviewer's lens dispositions them "Conditional Go — NOT SANCTIONED" | Reviewer, ManagementReviewer | Not a conflict. The Reviewer dispositions the artifacts; the ManagementReviewer dispositions the gate. The ReviewCoordinator's milestone verdict is the binding one and is recorded in Disposition. |
+| The BusinessReviewer records one Minor finding while the other two lenses record five | BusinessReviewer, Reviewer, ManagementReviewer | Not a conflict. The Business Modeling discipline is inactive (DC T-1) and its inactivity was independently re-derived this iteration against the four DC §4 tests, all of which return NONE. The one finding is a governance defect in the plan's role profile, not a business-modeling defect. |
 
 **No finding was rejected, downgraded or merged.** Every finding emitted by an executing lens is carried into the ledger at the severity its emitting lens assigned.
 
@@ -4976,7 +4977,7 @@ end note
 
 #### Consolidated finding ledger — LCO, end of Inception 3
 
-Five findings are open at the gate: three Major, two Minor, none Critical. Every one carries an owner, a severity and a resolution deadline. No finding raised in Inception 1 or Inception 2 remains open, including the one that was deferred.
+Five findings are open at the gate. Every one carries an owner, a severity and a resolution deadline. No finding is Critical. No finding from a prior iteration remains open: every Inception 1 and Inception 2 finding is closed, including the one that was deferred.
 
 | # | Finding | Severity | Lens | Owner | Deadline | Blocks LCO |
 |---|---|---|---|---|---|---|
@@ -4986,9 +4987,7 @@ Five findings are open at the gate: three Major, two Minor, none Critical. Every
 | 4 | Software Architecture Document#F1 — two of the twenty declared element-level rows are not carried by the graph as declared: COMP-009's declared source and COMP-001 to INT-001 | Minor | Reviewer | SoftwareArchitect | Next Inception iteration | No |
 | 5 | Software Architecture Document#F1 — the artifact is not releasable at the LCO gate while the Reviewer's finding stands | Minor | ManagementReviewer | SoftwareArchitect | Next Inception iteration | No |
 
-**Two findings share the key `Software Architecture Document#F1` and are distinct.** The finding key is scoped per artifact AND per reviewer lens, so the Reviewer's defect and the ManagementReviewer's gate condition are two findings, not one. Both are carried, both are open, and both close when the two rows are aligned with the graph.
-
-**Five artifacts carry no finding from any lens and are approved:** Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan. Silence is the verdict.
+**Five artifacts carry no new finding from any lens this iteration:** Vision, Use-Case Model, Supplementary Specification, Risk List, Iteration Plan. Silence is the verdict.
 
 ```plantuml
 @startuml
@@ -5135,6 +5134,160 @@ Priority is assigned by the consequence of leaving the finding open, not by seve
 | P3 | Software Architecture Document#F1 (Reviewer) | Minor | SoftwareArchitect | Align the two rows with the graph: state COMP-009's registered source as UC-011, and either register COMP-001 to INT-001 or drop the row | The artifact's own T-8 rule requires the table to state what the graph carries; the other eighteen element-level rows already verify |
 | P4 | Development Case#F1 | Major | ProcessEngineer, SystemAnalyst | The gate condition on #F2 and #F3. It closes when both close | It is a condition, not an independent defect; it has no separate remedy |
 | P5 | Software Architecture Document#F1 (ManagementReviewer) | Minor | SoftwareArchitect | The gate condition on the Reviewer's finding. It closes when that finding closes | It is a condition, not an independent defect; it has no separate remedy |
+
+#### Review effectiveness metrics — LCO, end of Inception 3
+
+```plantuml
+@startuml
+title Review effectiveness — Inception 1 to Inception 3 (Portal)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Coverage" as COV {
+  class "Artifacts planned" as C1 <<metric>> {
+    Inception 1: 8
+    Inception 2: 8
+    Inception 3: 8
+  }
+  class "Artifacts formally reviewed" as C2 <<metric>> {
+    Inception 1: 8
+    Inception 2: 8
+    Inception 3: 8
+  }
+  class "Review coverage" as C3 <<metric>> {
+    Inception 1: 100%
+    Inception 2: 100%
+    Inception 3: 100%
+    Trend: stable
+  }
+}
+
+package "Findings" as FND {
+  class "Findings raised" as F1 <<metric>> {
+    Inception 1: 11
+    Inception 2: 6
+    Inception 3: 5
+    Trend: down
+  }
+  class "Findings closed" as F2 <<metric>> {
+    Inception 1: 0
+    Inception 2: 10
+    Inception 3: 6
+    Trend: up then down
+  }
+  class "Open at the gate" as F3 <<metric>> {
+    Inception 1: 11
+    Inception 2: 6, plus 1 deferred
+    Inception 3: 5
+    Trend: down
+  }
+  class "Defect density" as F4 <<metric>> {
+    Inception 1: 1.38 per artifact
+    Inception 2: 0.75 per artifact
+    Inception 3: 0.63 per artifact
+    Trend: down
+  }
+}
+
+package "Ledger discipline" as LED {
+  class "Findings overdue" as L1 <<metric>> {
+    Inception 1: 0
+    Inception 2: 0
+    Inception 3: 0
+    Trend: stable
+  }
+  class "Findings without an owner" as L2 <<metric>> {
+    Inception 1: 0
+    Inception 2: 0
+    Inception 3: 0
+    Trend: stable
+  }
+  class "Findings without a deadline" as L3 <<metric>> {
+    Inception 1: 0
+    Inception 2: 0
+    Inception 3: 0
+    Trend: stable
+  }
+  class "Findings from a prior iteration open" as L4 <<metric>> {
+    Inception 1: 0
+    Inception 2: 11
+    Inception 3: 0
+    Trend: cleared
+  }
+}
+
+package "Not computable" as NA {
+  class "Defect removal efficiency" as N1 <<n/a>> {
+    No test execution has occurred.
+    Inception produces no executable
+    increment, so there is no test-found
+    defect count to compare.
+  }
+  class "Rework effort" as N2 <<n/a>> {
+    Reported in tokens and elapsed time
+    once an iteration closes with a
+    measured actual. No figure is
+    invented here.
+  }
+}
+
+C1 -[hidden]- C2
+C2 -[hidden]- C3
+F1 -[hidden]- F2
+F2 -[hidden]- F3
+F3 -[hidden]- F4
+L1 -[hidden]- L2
+L2 -[hidden]- L3
+L3 -[hidden]- L4
+COV -[hidden]- FND
+FND -[hidden]- LED
+LED -[hidden]- NA
+
+note bottom of FND
+  Defect density fell 1.38 to 0.75 to 0.63
+  findings per artifact while coverage held at
+  100%. The fall tracks the closure of the
+  prior iterations' defects, not a weaker review.
+end note
+
+note bottom of LED
+  The ledger is clean on every discipline
+  measure: nothing overdue, nothing unowned,
+  nothing undated, and no finding from a prior
+  iteration left open.
+end note
+
+note bottom of NA
+  A metric that cannot be computed is reported
+  as not computable, never as zero.
+end note
+@enduml
+```
+
+| Metric | Inception 1 | Inception 2 | Inception 3 | Trend |
+|---|---|---|---|---|
+| Artifacts planned for review | 8 | 8 | 8 | Stable |
+| Artifacts formally reviewed | 8 | 8 | 8 | Stable |
+| **Review coverage** | **100%** | **100%** | **100%** | Stable — every planned artifact received formal review in all three iterations |
+| Findings raised | 11 | 6 | 5 | Down |
+| Findings closed | 0 | 10 | 6 | Up, then down as the backlog drained |
+| Open at the gate | 11 | 6, plus 1 deferred | 5 | Down |
+| **Defect density** | **1.38 per artifact** | **0.75 per artifact** | **0.63 per artifact** | Down — the prior iterations' defects were corrected, so fewer remained to find |
+| Defect density — Development Case | 1.00 | 0.00 | 3.00 | Up — one Major defect, its gate condition, and the S1 issue-tracker claim |
+| Defect density — Software Architecture Document | 0.00 | 0.00 | 2.00 | Up — one Minor defect and its gate condition |
+| Defect density — Supplementary Specification | 1.00 | 2.00 | 0.00 | Down — #F1 and #F2 both closed |
+| Defect density — Test Evaluation Summary | 2.00 | 2.00 | 0.00 | Down — #F1, #F2 and #F3 all closed |
+| Defect density — Iteration Plan | 4.00 | 2.00 | 0.00 | Down — all five findings closed |
+| Defect density — Vision, Use-Case Model, Risk List | 1.00, 1.00, 0.00 | 0.00 each | 0.00 each | Down — no new finding from any lens |
+| **Defect removal efficiency** | **Not computable** | **Not computable** | **Not computable** | No test execution has occurred — Inception produces no executable increment, so there is no test-found defect count to compare against the review-found count |
+| **Rework effort** | **Not measured** | **Not measured** | **Not measured** | No phase has closed with a measured actual. Rework is reported in tokens and elapsed time once an iteration closes; no figure is invented here |
+| Findings overdue | 0 | 0 | 0 | Stable — no deadline has passed |
+| Findings without an owner | 0 | 0 | 0 | Stable — 5 of 5 open carry a named owner |
+| Findings without a deadline | 0 | 0 | 0 | Stable — 5 of 5 open carry a deadline |
+| Findings from a prior iteration open | 0 | 11 | 0 | Cleared — every Inception 1 and Inception 2 finding is closed |
+
+**Interpretation.** Coverage held at 100% for a third iteration, so the review process is not losing rigor. Defect density fell again, from 0.75 to 0.63 findings per artifact, and the fall is explained by the closure of the prior iterations' defects rather than by a weaker review: the same three lenses read the same eight artifacts in full. The concentration moved decisively: the Iteration Plan, the Supplementary Specification and the Test Evaluation Summary — which carried nine of the seventeen findings raised in Inception 1 and Inception 2 — now carry none, and the two artifacts that carry findings this iteration are the Development Case and the Software Architecture Document. The Development Case's three findings are one defect class (declared traceability not registered) plus one false statement about the issue tracker; the Software Architecture Document's two are one defect and its gate condition. The ledger discipline is intact and improved: nothing is overdue, nothing is unowned, nothing is undated, and for the first time no finding from a prior iteration remains open. The one metric that would show whether review is catching what test would catch — defect removal efficiency — remains not computable, because Inception produces no executable increment. It becomes computable at the first test execution in Elaboration.
 
 ## Resolutions and Actions
 ### Reviewer lens
