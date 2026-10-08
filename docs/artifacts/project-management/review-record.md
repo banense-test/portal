@@ -6559,3 +6559,25 @@ V --> W
 
 **No business-level element appears in this table.** There is no `BUC-NNN`, no `BR-NNN`, no business actor, business worker or business entity to trace, because the Business Modeling discipline is inactive for the whole project (Development Case T-1) and no such element was created. The absence is the verdict, not a gap.
 
+#### Iteration 3
+
+| Element | Traces From | Link Type | Traces To |
+|---|---|---|---|
+| Review Record | Development Case, Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Risk List, Iteration Plan, Test Evaluation Summary | Refines | — |
+| Development Case#F2 | Development Case | Refines | — |
+| Development Case#F3 | Development Case | Refines | — |
+| Development Case#F1 | Development Case | Refines | — |
+| Software Architecture Document#F1 | Software Architecture Document | Refines | — |
+| Review Record | FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012 | Refines | — |
+| Review Record | NFR-001, NFR-002, NFR-003, NFR-004, NFR-005 | Refines | — |
+| Review Record | AC-001, AC-002, AC-003, AC-004, AC-005, AC-006 | Refines | — |
+| Review Record | CON-001, CON-002, CON-003, CON-004, CON-005, CON-006, CON-007, CON-008, CON-009, CON-010, CON-011, CON-012, CON-013, CON-014, CON-015, CON-016, CON-017, CON-018, CON-019, CON-020, CON-021, CON-022, CON-023, CON-024, CON-025, CON-026, CON-027, CON-028, CON-029, CON-030, CON-031, CON-032, CON-033, CON-034, CON-035, CON-036, CON-037, CON-038, CON-039, CON-040, CON-041, CON-042, CON-043 | Refines | — |
+| Review Record | STK-001, STK-002, STK-003, STK-004 | Refines | — |
+| Review Record | BG-001, BG-002, BG-003 | Refines | — |
+| Review Record | R001, R002, R003, R004, R005, R006, R007, R008, R009, R010, R011 | Refines | — |
+| Review Record | Issue #1 | DependsOn | — |
+
+**Reading the table.** `Traces From` is the artifact or declared input this review is accountable to. The `Traces To` end is empty: the Review Record is a terminal quality-gate artifact, and the elements it feeds — the corrected artifacts, the Project Approval Review and the milestone re-assessment — are produced by other roles after this review. The finding rows cite their system-minted keys; a remediation is not an entity and no action identifier is minted. The `Issue #1` row is the observed tracking reference the trace-registration findings are carried by.
+
+**No business-level element appears in this table.** There is no `BUC-NNN`, no `BR-NNN`, no business actor, business worker or business entity to trace, because the Business Modeling discipline is inactive for the whole project (Development Case T-1) and no such element was created. The absence is the verdict, not a gap.
+
