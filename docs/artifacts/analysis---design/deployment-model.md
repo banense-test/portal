@@ -5,7 +5,6 @@
 - Milestone Target: End of Inception (Lifecycle Objectives) — NOT YET ACHIEVED
 
 ## Deployment Topology
-
 The Development Case records the Deployment Model's §5.2 trigger as FIRED: the deployment view is genuinely multi-node and multi-environment. This document is the deployment view in full; the Software Architecture Document carries the same topology in its Deployment View section and this document is its authoritative form.
 
 ```plantuml
@@ -78,6 +77,157 @@ end note
 **No cloud node carries the portal.** CON-008 restricts the portal to the internal corporate network. The hosted CI node is drawn outside the corporate network boundary because it is the development toolchain, not the runtime (CON-033).
 
 **No Keycloak node is drawn as something we install.** CON-032 places Keycloak inside the corporate network and states that a deployment view putting it in a cloud node contradicts the constraint. It is drawn as an Infrastructure-operated intra-network node, and the portal's only relationship to it is the OIDC redirect.
+
+### Deployment mode and strategy
+
+**Mode: custom-built.** Selected at Inception; it drives every packaging decision in this document.
+
+| Mode | Verdict | Reason |
+|---|---|---|
+| Custom-built | **Selected** | One internal application for one organization, deployed by Infrastructure on the estate it already operates (CON-005, CON-006). The user community is fixed and known (STK-004 — 200 employees across 3 offices) and the target machines are the corporate browsers already in place (CON-009). |
+| Shrink-wrapped | Rejected | There is no third-party distribution and no unknown target machine. An installer for a machine the team does not control would duplicate what Infrastructure already does. |
+| Downloadable | Rejected | CON-008 restricts the portal to the internal corporate network. There is no public distribution channel, and no user installs anything — CON-039 forbids an installable app. |
+
+**Strategy: build once, promote the same build, deploy at the install site by Infrastructure.** The team builds and tests against stand-ins it controls (CON-035); Infrastructure substitutes the real OIDC and LDAP values at deployment. CI never deploys (CON-033).
+
+```plantuml
+@startuml Portal_DeploymentStrategy
+title Deployment strategy — custom-built, three environments, one promotion path
+skinparam shadowing false
+
+node "Development environment — the team" {
+  node "Build agent" {
+    artifact "Portal.Web\n.NET 10 build" as DEVBUILD
+  }
+  component "Stand-in OIDC issuer\nplaceholder values — CON-035" as DEVIDP
+  component "Stand-in directory\nempty job title / extension — R001" as DEVDIR
+  database "PostgreSQL 18 (local)" as DEVDB
+}
+
+node "Test environment — the team" {
+  artifact "Portal.Web\nsame build" as TSTBUILD
+  component "Stand-in OIDC issuer" as TSTIDP
+  component "Stand-in directory" as TSTDIR
+  database "PostgreSQL 18" as TSTDB
+}
+
+node "Production — corporate network, Infrastructure operates" {
+  node "Windows Server estate — CON-005, CON-006" {
+    artifact "Portal.Web\n.NET 10, tagged SCM release" as PRDBUILD
+    database "PostgreSQL 18 — CON-031" as PRDDB
+  }
+  component "Keycloak — real, intra-network\nCON-032, not installed by this project" as PRDIDP
+  component "Active Directory — real\nLDAP read only — CON-003, CON-004" as PRDDIR
+}
+
+DEVBUILD --> TSTBUILD : promote the same build
+TSTBUILD --> PRDBUILD : promote the same build\nInfrastructure deploys
+
+note right of TSTBUILD
+  GATE 1 — development / test site.
+  All 16 UCs pass against the stand-ins (CON-035),
+  including the empty-attribute case (R001),
+  the retry boundary (AC-005, R003) and the
+  no-connection path (NFR-006, R006).
+end note
+
+note right of PRDBUILD
+  GATE 2 — install site.
+  Infrastructure deploys and substitutes the real
+  OIDC and LDAP values (CON-035). HR validates the
+  HR-facing behaviour (AC-002); employees validate
+  clocking (AC-001, AC-004).
+end note
+@enduml
+```
+
+**What the strategy does not include, by declaration.** No data migration (CON-036) — the portal starts empty and the historical Excel sheets stay on the shared drive as a read-only archive. No backup or restore procedure (CON-038) — Infrastructure's existing practice covers the PostgreSQL instance in restorable form. No Keycloak work of any kind (CON-001) — no realm design, no client provisioning, no Keycloak node installed by this project. No write to Active Directory (CON-004).
+
+### Rollout approach and rollback criteria
+
+Two acceptance gates, in order. The first is at the development/test site and is the team's; the second is at the install site and is Infrastructure's and the users'. A release that fails a gate is not promoted.
+
+```plantuml
+@startuml Portal_Rollout
+title Rollout and rollback — the two acceptance gates and the rollback criteria
+skinparam shadowing false
+
+|Team|
+start
+:Build once on hosted CI (CON-033);
+:Tag the SCM release;
+:Deploy the tagged release to the test environment;
+:Run the full test set against the stand-ins;
+
+|#EAF3EA|Gate 1 — development / test site|
+if (all 16 UCs pass, including the empty-attribute,\nthe retry boundary and the no-connection cases?) then (no)
+  :Fix in the next iteration;
+  note right
+    No promotion. The remedy is another iteration,
+    never a cut to declared scope (CON-028).
+  end note
+  stop
+else (yes)
+endif
+
+|Infrastructure|
+:Deploy the tagged release to the estate;
+:Substitute the real OIDC and LDAP values (CON-035);
+:Verify start-up, database connectivity and login;
+
+|#EAF3EA|Gate 2 — install site|
+if (login works and the directory reads the real AD?) then (no)
+  :Withdraw the release;
+  note right
+    ROLLBACK CRITERION 1 — the portal cannot authenticate or
+    cannot read the directory, so every use case is unusable.
+    First release: there is no previous release to restore. The
+    release is withdrawn and the existing Excel process remains
+    the record. No clocking is lost — the portal starts empty
+    (CON-036) and records nothing before go-live.
+  end note
+  stop
+else (yes)
+endif
+
+|HR and employees|
+:HR validates publishing and the category write (AC-002);
+:Employees validate clocking with no prior training (AC-001, AC-004);
+if (HR and employees accept the portal?) then (no)
+  :Withdraw the release;
+  note right
+    ROLLBACK CRITERION 2 — the customer is not willing to use it.
+    Deployment's exit criterion is a deployed, accessible system
+    with users who can operate it, not a clean compile.
+  end note
+  stop
+else (yes)
+endif
+:Go-live; adoption measurement against BG-003 begins;
+stop
+@enduml
+```
+
+| Gate | Site | Who runs it | What it certifies | Evidence |
+|---|---|---|---|---|
+| Gate 1 — development / test site | Test environment, against the stand-ins | The team | All 16 use cases pass, including the empty-attribute directory case (R001), the retry boundary and the beyond-5-minute path (AC-005, R003), and the no-connection message (NFR-006, R006) | The test set run against the stand-in issuer and the stand-in directory (CON-035) |
+| Gate 2 — install site | Production, on the estate | Infrastructure deploys; HR and employees validate | Login works against the real Keycloak, the directory reads the real AD, HR publishes without technical assistance (AC-002), and an employee clocks in and out without help (AC-001) | Infrastructure's deployment verification; HR's and the employees' acceptance |
+
+**Gate 2 must be a formality.** Every declared acceptance criterion is a runtime criterion and is exercised at Gate 1 against the stand-ins. Gate 2 confirms the substitution of the real values, not the behaviour of the use cases. If Gate 2 finds a use case failing, the cause is a stand-in-versus-real difference — R001 (LDAP attribute completeness), R005 (claim shape) or R008 (estate performance) — and the remedy is another iteration, never a cut to declared scope (CON-028).
+
+**Rollback criteria.** The portal is a first release: there is no previous release to restore, and the portal starts empty (CON-036). Rollback therefore means withdrawing the release, not reverting to an earlier version.
+
+| # | Criterion | Consequence | Why this is the criterion |
+|---|---|---|---|
+| 1 | The portal cannot authenticate, or cannot read the directory | Withdraw the release. The existing Excel process remains the record for new clockings. | Every use case depends on the identity level and the directory read. A portal that cannot authenticate is unusable by all 200 employees. |
+| 2 | HR or the employees are not willing to use it | Withdraw the release. | Deployment's exit criterion is a deployed, accessible system with users who can operate it — not a clean compile. |
+| 3 | A clocking press is lost on the real network beyond the declared retry window | **Not a rollback criterion.** The declared remedy is that the employee reports the clocking to HR, who corrects or inserts it (UC-005, AC-005), and the correction is audited (NFR-004). | AC-005 declares the beyond-5-minute path as a report-to-HR case, not a failure of the release. |
+
+**No clocking is lost by a rollback.** The portal records nothing before go-live (CON-036), so withdrawing the release returns the organization to the process it uses today. BG-002's elimination of Excel applies to new clockings recorded in the portal, and a withdrawn release records none.
+
+**Pilot before full rollout.** Gate 2 is run with a pilot group at the install site before the portal is opened to all 200 employees. This is a deployment sequencing decision inside the declared scope — it adds no use case, no screen and no requirement. It is how the declared acceptance criteria are measured: AC-004 (80% complete at least one clocking with no prior training) and BG-003 (80% adoption within three months) are measurements taken on real users, and a pilot surfaces an adoption problem while it is still cheap to answer. R002 (clocking adoption) is the risk this addresses.
+
+**No training material is planned.** AC-001 and AC-004 require the clocking act to work with no help and no prior training, and FR-001 reduces it to one button whose label follows the employee's status. A training programme would contradict the declared criterion rather than serve it. The support material is the Release Notes (Transition) and the User Documentation (Transition, TechnicalWriter).
 
 ## Nodes and Connectors
 
