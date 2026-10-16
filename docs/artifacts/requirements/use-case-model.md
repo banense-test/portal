@@ -126,7 +126,6 @@ end note
 ACT-001 and ACT-002 are the same person in different roles: NFR-005 derives the level from AD group membership, so an HR group member is an HR Administrator and everybody else is an Employee. There is no third level and no role matrix.
 
 ## Use-Case Survey
-
 Every use case below realizes a declared requirement. The `Source` column carries the declared `FR-NNN` identifier copied exactly.
 
 | UC | Name | Primary actor | Source | Priority | Volatility | Detail in this iteration |
@@ -188,6 +187,43 @@ note bottom
 end note
 @enduml
 ```
+
+### Cross-cutting mechanisms
+
+Three mechanisms cut across the use cases. None of them is a use case: none has an actor who initiates it for its own sake, and none delivers an observable outcome to an actor on its own. Each is specified in the Supplementary Specification and `<<include>>`d by the use cases that depend on it.
+
+```plantuml
+@startuml Portal_CrossCutting
+title Cross-cutting mechanisms — Supplementary Specification entries, included by the use cases that depend on them
+skinparam shadowing false
+left to right direction
+
+component "Authentication\nOIDC against the existing Keycloak\n(CON-001, CON-032)" as AUTH
+component "Authorization\nTwo levels from AD group membership\n(NFR-005)" as AUTHZ
+component "Audit trail\nwho / when / previous value / reason\n(NFR-004)" as AUDIT
+
+usecase "UC-001 .. UC-016\nevery authenticated use case" as ALL
+usecase "UC-005, UC-006, UC-011,\nUC-012, UC-015" as AUDITED
+
+ALL ..> AUTH : <<include>>
+ALL ..> AUTHZ : <<include>>
+AUDITED ..> AUDIT : <<include>>
+
+note bottom of AUDIT
+  Written for compliance and read directly from the database.
+  There is no in-portal audit view screen (NFR-004), so no actor
+  initiates it and it is not a use case.
+end note
+@enduml
+```
+
+| Mechanism | Supplementary Specification home | Included by | Why it is not a use case |
+|---|---|---|---|
+| Authentication | Functionality — Security and authorization (CON-001, CON-002, CON-032) | UC-001 to UC-016 — every use case | The user authenticates to reach a goal, not to authenticate. No actor's goal is "log in", and the mechanism is realized by the architecture as an OIDC client of the existing Keycloak. |
+| Authorization | Functionality — Security and authorization (NFR-005, CON-023) | UC-001 to UC-016 — every use case | The level is derived from AD group membership and decides which use cases an actor may reach. It is a constraint on every use case, not a goal of its own. |
+| Audit trail | Functionality — Audit trail (NFR-004, CON-010, CON-012, CON-021) | UC-005, UC-006, UC-011, UC-012, UC-015 | The audit is written for compliance and read directly from the database. There is no in-portal audit view screen, so no actor initiates it and it delivers no observable outcome to an actor. |
+
+**No `[SCOPE_QUESTION]` is raised for these.** All three are declared: authentication by CON-001 and CON-002, authorization by NFR-005, and the audit trail by NFR-004. They are declared as constraints rather than as requirements with an actor, which is exactly why they belong in the Supplementary Specification.
 
 ## Use-Case Specifications
 
