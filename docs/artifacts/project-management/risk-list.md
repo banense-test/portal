@@ -309,19 +309,19 @@ end note
 ```
 
 ## Traceability
-
-Each risk traces to the elements whose design must respond to it. A risk with no trace edge carries no design consequence and would not belong in this register.
+Each risk traces to the element whose design must respond to it. A risk with no trace edge carries no design consequence and would not belong in this register.
 
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| R001 | — | DependsOn | UC-013, UC-014, UC-004 |
-| R002 | — | DependsOn | UC-001, UC-016, BG-002, AC-004 |
-| R003 | — | DependsOn | UC-001, UC-016, AC-005 |
-| R004 | — | DependsOn | UC-005, UC-006, UC-011, UC-012, UC-015, NFR-004 |
-| R005 | — | DependsOn | UC-001, UC-004, UC-014, UC-015, NFR-005 |
-| R006 | — | DependsOn | UC-007, UC-008, UC-009, UC-013, UC-014, NFR-006 |
-| R007 | — | DependsOn | UC-004, UC-005, NFR-004 |
-| R008 | — | DependsOn | UC-001, UC-004, UC-005, NFR-001, NFR-002, NFR-003 |
-| R009 | — | DependsOn | UC-001, UC-016, AC-005 |
-| R010 | — | DependsOn | UC-014, UC-015, CON-022 |
-| R011 | — | DependsOn | UC-001, UC-004, UC-014, UC-015, CON-037 |
+| R001 | — | DependsOn | UC-013, UC-014 |
+| R002 | — | DependsOn | UC-001, BG-002 |
+| R003 | — | DependsOn | UC-016, AC-005 |
+| R004 | — | DependsOn | UC-005, NFR-004 |
+| R005 | — | DependsOn | NFR-005, UC-015 |
+| R006 | — | DependsOn | UC-013, NFR-006 |
+| R007 | — | DependsOn | UC-004 |
+| R008 | — | DependsOn | NFR-001, NFR-002 |
+| R009 | — | DependsOn | UC-001 |
+| R010 | — | DependsOn | UC-015 |
+| R011 | — | DependsOn | CON-037 |
+
