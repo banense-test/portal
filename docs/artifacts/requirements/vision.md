@@ -296,23 +296,18 @@ Members of the HR AD group publish, edit and unpublish news and manage worker ca
 | R002 | Risk | Some employees may keep using Excel out of habit if the change is not communicated well. P=3, I=2, exposure=6. |
 
 ## Constraints
-
 | ID | Category | Constraint |
 |---|---|---|
 | CON-001 | Technical | Authentication: the portal is an OIDC client of the existing Keycloak, which federates Active Directory. Keycloak is not ours to deploy. |
+| CON-002 | Operational | The portal's OIDC client is already registered in Keycloak and its credentials are with the development team. Login can be tested from day one — no request to raise, no queue to wait on and no gate. |
 | CON-003 | Technical | Active Directory is the single source of truth for employee data (name, job title, department, office, email, extension). The portal reads it over LDAP and holds no local copy; those fields are read-only in the portal. |
 | CON-004 | Operational | Infrastructure must not be asked to modify Active Directory. |
 | CON-005 | Technical | The portal is a .NET application deployed on the internal Windows Server estate that Infrastructure already runs. |
 | CON-006 | Operational | Infrastructure has accepted operating the portal on the basis that it is a .NET application on the existing Windows Server estate and requires no AD modification. |
+| CON-007 | Technical | All three offices are in the same timezone (Europe/Madrid). Clockings are stored in UTC and displayed in Europe/Madrid. There is no multi-timezone case and no normalisation to design. |
 | CON-008 | Environmental | The portal is accessible only from the internal corporate network. |
 | CON-009 | Technical | Compatibility: current Chrome and Edge on the corporate browsers. |
-| CON-029 | Technical | Backend: .NET 10, REST API. |
-| CON-030 | Technical | Frontend: Razor Pages (intranet, no SPA needed). 'No SPA' means no client-side framework and no client-side router — it does not mean no JavaScript. A page-level script on an already-rendered page is Razor Pages as normal, and the clocking page needs one. |
-| CON-031 | Technical | Database: PostgreSQL 18 — the latest stable major at project start; the patch level floats, the major is pinned. The Infrastructure team installs it on the same Windows Server estate they already operate. |
-| CON-032 | Technical | Keycloak runs INSIDE the corporate network. It is the company's internal identity provider, deployed on the internal estate Infrastructure operates alongside Active Directory, and internal applications authenticate against it. External to this project is not the same as external to the network: the OIDC redirect is an intra-network call, nothing about login crosses the corporate boundary, and login keeps working with no internet link. |
-| CON-033 | Operational | CI: the repository lives on the hosted SCM provider this workspace is configured with, so build and test run on that provider's hosted CI. 'No cloud' and 'internal network only' govern the portal at runtime, not the development toolchain. CI never holds production data or credentials, and never deploys: Infrastructure does. |
-| CON-034 | Operational | AI token spend: there is no budget or cap on token spend for this project, and none is to be set by the team. Each iteration's measured spend is recorded and used to forecast the next; declared scope is never cut or deferred to fit an estimate. |
-| CON-039 | Technical | No offline mode beyond the clocking retry: no PWA, no service worker, no installable app, and no client cache of the directory or the news. |
+| CON-010 | Regulatory | No external compliance regime applies to the audit trail and no retention period is mandated; HR or Infrastructure read it ad hoc from the database. |
 | CON-011 | BusinessRule | EmployeeId in the CSV export is the AD sAMAccountName (network login). It is the only identifier guaranteed to be populated and unique in all three offices. The portal reads it from the authenticated session and writes it as-is. There is no mapping table. |
 | CON-012 | BusinessRule | Only HR corrects or inserts a clocking. The original record is never overwritten in place and never deleted. There is no self-service correction screen for the employee. |
 | CON-013 | BusinessRule | A clocking pair never crosses midnight. A pair belongs to one calendar date and every export row is keyed by that date. A clocking still open at midnight is an incomplete day. |
@@ -331,10 +326,17 @@ Members of the HR AD group publish, edit and unpublish news and manage worker ca
 | CON-026 | BusinessRule | The directory shows corporate data only — no private personal information. |
 | CON-027 | Operational | Risk register convention: R001 and R002 are the business's declared risks, carried with their identifiers and magnitudes as declared. A risk the team identifies is adopted as a first-class risk and numbered in the same series (R003 onwards, in the order raised). |
 | CON-028 | Operational | Risk acceptance granted in advance by Laura Gómez (project sponsor): R001, R002 and every risk the team identifies whose mechanism is set by these constraints or lies outside the team's control and that cannot be transferred, are accepted — provided the treatment never cuts or defers declared scope. The availability, configuration and ownership of Keycloak and AD are not risks of this project and are not registered. |
+| CON-029 | Technical | Backend: .NET 10, REST API. |
+| CON-030 | Technical | Frontend: Razor Pages (intranet, no SPA needed). 'No SPA' means no client-side framework and no client-side router — it does not mean no JavaScript. A page-level script on an already-rendered page is Razor Pages as normal, and the clocking page needs one. |
+| CON-031 | Technical | Database: PostgreSQL 18 — the latest stable major at project start; the patch level floats, the major is pinned. The Infrastructure team installs it on the same Windows Server estate they already operate. |
+| CON-032 | Technical | Keycloak runs INSIDE the corporate network. It is the company's internal identity provider, deployed on the internal estate Infrastructure operates alongside Active Directory, and internal applications authenticate against it. External to this project is not the same as external to the network: the OIDC redirect is an intra-network call, nothing about login crosses the corporate boundary, and login keeps working with no internet link. |
+| CON-033 | Operational | CI: the repository lives on the hosted SCM provider this workspace is configured with, so build and test run on that provider's hosted CI. 'No cloud' and 'internal network only' govern the portal at runtime, not the development toolchain. CI never holds production data or credentials, and never deploys: Infrastructure does. |
+| CON-034 | Operational | AI token spend: there is no budget or cap on token spend for this project, and none is to be set by the team. Each iteration's measured spend is recorded and used to forecast the next; declared scope is never cut or deferred to fit an estimate. |
 | CON-035 | Operational | How the team works with Keycloak and AD: against stand-ins, never against the real ones. Placeholder values held in configuration and never in code; Infrastructure puts the real values in at deployment. |
 | CON-036 | Operational | Data migration: there is none. The portal starts empty and records clockings from go-live onwards. |
 | CON-037 | Technical | The custom design at `docs/inputs/employee-portal-design.html` is MANDATORY and authoritative for the UI visual layer, not only for its structure. The portal MUST implement it. |
 | CON-038 | Operational | Backups: the Infrastructure team's existing server-backup practice already covers this PostgreSQL instance in restorable form. No backup design, tooling or restore procedure is part of this project. |
+| CON-039 | Technical | No offline mode beyond the clocking retry: no PWA, no service worker, no installable app, and no client cache of the directory or the news. |
 
 ## Other Product Requirements
 
