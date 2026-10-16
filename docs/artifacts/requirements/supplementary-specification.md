@@ -257,6 +257,41 @@ end note
 | CON-027 | Risk register convention: R001 and R002 are carried with their identifiers and magnitudes as declared; a risk the team identifies is numbered R003 onwards, in the order raised. | Every risk carries an identifier so it can be traced into the design. |
 | CON-028 | Risk acceptance granted in advance by Laura Gómez for R001, R002 and every risk whose mechanism is set by these constraints or lies outside the team's control, provided the treatment never cuts or defers declared scope. | The availability, configuration and ownership of Keycloak and AD are not risks of this project and are not registered. |
 ## Interfaces
+```plantuml
+@startuml Portal_SystemContext
+title Portal — system context and interfaces (all intra-network, CON-008, CON-032)
+skinparam shadowing false
+skinparam componentStyle rectangle
+
+actor "Employee\n(STK-004)" as EMP
+actor "HR Administrator\n(STK-001)" as HR
+
+component "Employee Portal\n.NET 10, Razor Pages + REST API\nCON-029, CON-030" as PORTAL
+
+component "Keycloak\nOIDC identity provider\nintra-network, not deployed by this project\nCON-001, CON-032" as KC
+component "Active Directory\nLDAP, read only\nCON-003, CON-004" as AD
+database "PostgreSQL 18\nInfrastructure-installed\nCON-031" as DB
+
+EMP --> PORTAL : HTTPS, corporate browser\nChrome / Edge (CON-009)
+HR --> PORTAL : HTTPS, corporate browser
+
+PORTAL --> KC : OIDC redirect + token\nintra-network (CON-032)
+KC --> AD : authenticate, read group membership\n(NFR-005)
+PORTAL --> AD : LDAP read: name, job title, department,\noffice, email, extension (CON-003)
+PORTAL --> DB : clockings, news, category link, audit
+
+note right of AD
+  CON-004: the portal never writes to AD.
+  CON-003: AD is the single source of truth for
+  employee data; the portal holds no local copy.
+end note
+
+note bottom of PORTAL
+  CON-008: reachable only from the internal corporate network.
+  No interface crosses the corporate boundary.
+end note
+@enduml
+```
 
 ### External system interfaces
 
