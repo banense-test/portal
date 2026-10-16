@@ -340,17 +340,9 @@ The full text of every `CON-NNN` above is in the Constraints section; this table
 | CON-039 | Technical | No offline mode beyond the clocking retry: no PWA, no service worker, no installable app, and no client cache of the directory or the news. |
 
 ## Other Product Requirements
-
 ### Non-functional requirements
 
-| ID | Category | Requirement | Threshold |
-|---|---|---|---|
-| NFR-001 | Performance | Any page must load in under 3 seconds on the corporate network. | < 3 s per page load |
-| NFR-002 | Performance | The clock in/out operation must respond in under 1 second. | < 1 s per clocking operation |
-| NFR-003 | Reliability | The portal must be available Monday–Friday 7:00–19:00 with fault tolerance within the corporate network. 24/7 availability is not required. | Available Mon–Fri 07:00–19:00 |
-| NFR-004 | Functionality / Audit | Mandatory traceability of: who publishes each news item, who edits it and who unpublishes it (author + timestamp in every case); any change to a worker's category; and every clocking HR corrects or inserts (who, when, previous value, reason). Employee fields are read-only from AD, so there is nothing to audit there. The audit is written for compliance and read directly from the database; there is no in-portal audit view screen. | Every listed event carries author + timestamp; corrections also carry previous value + reason |
-| NFR-005 | Functionality / Security | Two-level authorization from Active Directory groups: members of the HR AD group publish, edit and unpublish news and manage worker categories; everybody else is an employee with read access to the directory and the news, plus their own clockings. There is no role matrix, no permission screen and no per-category rule. | Exactly two levels, derived from AD group membership |
-| NFR-006 | Usability | The directory and the news require the network and show a 'no connection' message when it is unavailable. Nothing is copied locally, so there is nothing to cache and nothing to sync. | No-connection message shown; no local copy |
+The six declared non-functional requirements are specified in the Supplementary Specification, which is their home: NFR-001 and NFR-002 (performance), NFR-003 (availability), NFR-004 (audit trail), NFR-005 (two-level authorization), NFR-006 (no-connection message). They are not restated here.
 
 ### Acceptance criteria
 
@@ -369,3 +361,4 @@ The full text of every `CON-NNN` above is in the Constraints section; this table
 | BG-001 | Reduce HR management time by 50% | The time HR spends managing employee processes is halved. |
 | BG-002 | Eliminate 100% of Excel usage for recording new clockings | No new clocking is recorded in a spreadsheet; the portal becomes the only place clockings are recorded. |
 | BG-003 | 80% employee adoption within 3 months | 80% of the 200 employees actively using the portal within three months of launch. |
+
