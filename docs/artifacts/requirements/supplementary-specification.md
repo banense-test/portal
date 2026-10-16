@@ -195,6 +195,56 @@ No third-party licence is declared for this project. The stack is .NET 10 (CON-0
 **Testability.** Every use case is testable against the stand-ins (CON-035), including the empty-attribute case that R001 records: the stand-in directory carries entries whose job title or extension is empty.
 
 ## Design Constraints
+The constraints below fix where data lives and what the design may not do. They are the boundary the Software Architect decomposes against.
+
+```plantuml
+@startuml Portal_DataOwnership
+title Design constraints — where each piece of data lives, and the one write the portal makes
+skinparam shadowing false
+skinparam componentStyle rectangle
+
+package "Active Directory — single source of truth (CON-003)" {
+  component "name, job title, department,\noffice, email, extension" as ADF
+  component "AD group membership\n(decides the authorization level, NFR-005)" as ADG
+  component "sAMAccountName\n(the CSV EmployeeId, CON-011)" as ADS
+}
+
+package "Portal — PostgreSQL 18 (CON-031)" {
+  database "clockings\n+ corrections as new records (CON-012)" as CLK
+  database "news items\n+ featured flag (CON-019)" as NEWS
+  database "category link\nAD user id -> category\nTWO COLUMNS ONLY (CON-022)" as CAT
+  database "audit entries\nwho / when / previous value / reason (NFR-004)" as AUD
+}
+
+package "Keycloak — intra-network (CON-032)" {
+  component "OIDC identity + group claims" as KC
+}
+
+ADF --> CLK : read at export time only\nno local copy (CON-003)
+ADF --> CAT : keyed by AD user id
+ADS --> CLK : written as-is into EmployeeId\nno mapping table (CON-011)
+ADG --> KC : federated
+KC --> CLK : authorization level
+
+CAT --> AUD : category change audited
+CLK --> AUD : correction audited
+NEWS --> AUD : publish / edit / unpublish audited
+
+note right of CAT
+  CON-022: the local table holds two columns and nothing else.
+  No duplicate of the employee, no synchronisation,
+  no reconciliation, no conflict to resolve.
+  CON-023: the category is descriptive and does NOT
+  drive access control.
+end note
+
+note bottom of ADF
+  CON-004: the portal never writes to AD.
+  CON-036: no data migration — the portal starts empty.
+  CON-007: clockings stored in UTC, displayed Europe/Madrid.
+end note
+@enduml
+```
 
 | ID | Constraint | Consequence for the design |
 |---|---|---|
@@ -206,7 +256,6 @@ No third-party licence is declared for this project. The stack is .NET 10 (CON-0
 | CON-034 | AI token spend: there is no budget or cap, and none is to be set by the team. Declared scope is never cut or deferred to fit an estimate. | Scope decisions are never driven by a spend estimate. |
 | CON-027 | Risk register convention: R001 and R002 are carried with their identifiers and magnitudes as declared; a risk the team identifies is numbered R003 onwards, in the order raised. | Every risk carries an identifier so it can be traced into the design. |
 | CON-028 | Risk acceptance granted in advance by Laura Gómez for R001, R002 and every risk whose mechanism is set by these constraints or lies outside the team's control, provided the treatment never cuts or defers declared scope. | The availability, configuration and ownership of Keycloak and AD are not risks of this project and are not registered. |
-
 ## Interfaces
 
 ### External system interfaces
