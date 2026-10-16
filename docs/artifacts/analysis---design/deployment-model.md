@@ -314,7 +314,6 @@ end note
 **No credential in the release.** Every OIDC and LDAP value is a placeholder in the repository (CON-035). Infrastructure substitutes the real values at deployment. This is what makes the stand-in strategy possible and is the project's answer to R001 and R005.
 
 ## Environment Mapping
-
 Three environments are declared. Development and test run against stand-ins the team controls; production runs against the real Keycloak and the real Active Directory, whose values Infrastructure substitutes at deployment.
 
 ```plantuml
@@ -400,3 +399,30 @@ Validation against the real Keycloak and the real Active Directory is performed 
 | Availability and performance (NFR-001, NFR-002, NFR-003) | Not measurable on the target estate | Measured on the estate Infrastructure operates |
 
 **R008 is recorded here as a deployment fact.** The declared performance and availability budgets are stated against the corporate network and the existing Windows Server estate. The team cannot measure them on the target estate; Infrastructure operates it. The budgets are therefore treated as design constraints, not as measurements, and the Software Architecture Document records the tactics that serve them.
+
+### Environment readiness and the promotion sequence
+
+Each environment is ready when the items below are in place. The team's environments are ready from day one; the production environment is Infrastructure's to prepare, and this project asks nothing of it beyond what CON-005, CON-006, CON-031 and CON-035 already declare.
+
+| Environment | Ready when | Owner | Declared by |
+|---|---|---|---|
+| Development | The stand-in OIDC issuer and the stand-in directory are running, the local PostgreSQL 18 instance is up, and the placeholder configuration is in place | The team | CON-035 |
+| Test | The same stand-ins, plus the test set that exercises the empty-attribute case (R001), the retry boundary (AC-005, R003) and the no-connection path (NFR-006, R006) | The team | CON-035 |
+| Production | The estate runs the .NET 10 application, PostgreSQL 18 is installed on it, the real OIDC and LDAP values are substituted, and the portal is reachable from the corporate network | Infrastructure | CON-005, CON-006, CON-008, CON-031, CON-035 |
+
+**What this project asks of Infrastructure, and nothing more.** Deploy the tagged release on the existing Windows Server estate; install PostgreSQL 18 on that estate; substitute the real OIDC and LDAP values. No AD modification (CON-004), no Keycloak work (CON-001), no backup design (CON-038), no data migration (CON-036). This is the basis on which Infrastructure accepted operating the portal (CON-006).
+
+**Promotion sequence.** One build, promoted unchanged through the environments. The only thing that differs between environments is configuration — the stand-in values in development and test, the real values in production (CON-035). No environment-specific build exists, and no code path is conditional on the environment.
+
+| Step | Environment | Action | Gate |
+|---|---|---|---|
+| 1 | Development | Build and run against the stand-ins | — |
+| 2 | Test | Promote the same build; run the full test set | Gate 1 — development / test site |
+| 3 | Production | Infrastructure deploys the tagged release and substitutes the real values | Gate 2 — install site |
+| 4 | Production | Pilot group validates clocking and HR publishing | Gate 2 — install site |
+| 5 | Production | Open to all 200 employees; adoption measurement against BG-003 begins | — |
+
+**The one human gate is not a promotion step.** Validation of the real Keycloak and the real AD by Infrastructure with HR (CON-035) is queue time, bounded at 14 days, and its feedback must reach the team before Elaboration closes. It is not work this project performs and it is not a step in the sequence above. If it delays a milestone, the remedy is another iteration, never a cut to declared scope (CON-028).
+
+**Environment-specific behaviour is declared, not configured.** The no-connection message (NFR-006) is exercised in development and test by making the stand-in source unreachable, and appears in production when the corporate network is unavailable. The clocking retry (FR-016) is exercised by blocking the POST on demand. The declared performance and availability budgets (NFR-001, NFR-002, NFR-003) are measurable only on the estate, which the team does not operate — R008 records this, and the budgets are treated as design constraints rather than measurements.
+
