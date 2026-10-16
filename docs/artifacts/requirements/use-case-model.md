@@ -5,7 +5,6 @@
 - Milestone Target: End of Inception (Lifecycle Objectives) — NOT YET ACHIEVED
 
 ## Use-Case Diagram
-
 ```plantuml
 @startuml Portal_UseCaseOverview
 title Portal — system boundary, actors and use cases (Inception iteration 1)
@@ -55,39 +54,27 @@ ACT002 --> UC011
 ACT002 --> UC012
 ACT002 --> UC015
 
-UC001 --> ACT003
-UC002 --> ACT003
-UC003 --> ACT003
-UC004 --> ACT003
-UC005 --> ACT003
-UC006 --> ACT003
-UC007 --> ACT003
-UC008 --> ACT003
-UC009 --> ACT003
-UC010 --> ACT003
-UC011 --> ACT003
-UC012 --> ACT003
-UC013 --> ACT003
-UC014 --> ACT003
-UC015 --> ACT003
-UC016 --> ACT003
+ACT003 --> UC004
+ACT003 --> UC013
+ACT003 --> UC014
+ACT003 --> UC015
 
-UC001 --> ACT004
-UC002 --> ACT004
-UC003 --> ACT004
-UC004 --> ACT004
-UC005 --> ACT004
-UC006 --> ACT004
-UC007 --> ACT004
-UC008 --> ACT004
-UC009 --> ACT004
-UC010 --> ACT004
-UC011 --> ACT004
-UC012 --> ACT004
-UC013 --> ACT004
-UC014 --> ACT004
-UC015 --> ACT004
-UC016 --> ACT004
+ACT004 --> UC001
+ACT004 --> UC002
+ACT004 --> UC003
+ACT004 --> UC004
+ACT004 --> UC005
+ACT004 --> UC006
+ACT004 --> UC007
+ACT004 --> UC008
+ACT004 --> UC009
+ACT004 --> UC010
+ACT004 --> UC011
+ACT004 --> UC012
+ACT004 --> UC013
+ACT004 --> UC014
+ACT004 --> UC015
+ACT004 --> UC016
 
 note bottom of ACT004
   Keycloak is the OIDC identity provider for every
@@ -101,7 +88,9 @@ note bottom of ACT003
   Active Directory is read over LDAP and is the single
   source of truth for name, job title, department,
   office, email and extension (CON-003). The portal
-  never writes to it (CON-004).
+  never writes to it (CON-004). It participates only in
+  the four use cases that resolve employee data:
+  UC-004 (FullName), UC-013, UC-014 and UC-015.
 end note
 
 note top of UC016
@@ -122,6 +111,8 @@ end note
 **No time-trigger actor.** No scheduled job, batch export or recurring report is declared. The CSV export is initiated by HR, not by a clock.
 
 **No administrative actor.** NFR-004 states the audit is read directly from the database and there is no in-portal audit view screen, so no auditor or administrator actor interacts with the portal.
+
+**Cross-cutting mechanisms are not use cases.** Authentication, authorization and the audit trail are specified in the Supplementary Specification and `<<include>>`d by the use cases that depend on them — see "Cross-cutting mechanisms" under the Use-Case Survey. No use case named "Authenticate", "Authorize" or "Log" exists, and none is to be added.
 
 ## Actors
 
