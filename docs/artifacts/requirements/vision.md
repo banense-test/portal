@@ -116,110 +116,52 @@ Each line below is a declared exclusion. It is published here so that no later i
 - No rule that features a news item by itself.
 
 ## Features
-
 Every feature below traces to a declared requirement. The identifier in the first column is the declared `FR-NNN`; the Use-Case Model realizes each one as a use case.
 
 ```plantuml
-@startuml Portal_UseCaseOverview
-title Portal — system boundary, actors and use cases (Inception iteration 1)
+@startuml Portal_FeatureToUC
+title Portal — features to the use cases that realize them
 skinparam shadowing false
 left to right direction
 skinparam packageStyle rectangle
 
-actor "Employee\n(STK-004)" as ACT001
-actor "HR Administrator\n(STK-001)" as ACT002
-actor "Active Directory\n(external system)" as ACT003
-actor "Keycloak\n(external system)" as ACT004
-
-rectangle "Employee Portal" {
-  usecase "UC-001 Clock In and Clock Out" as UC001
-  usecase "UC-002 View Own Clocking History" as UC002
-  usecase "UC-003 View All Employee Clockings" as UC003
-  usecase "UC-004 Export Monthly Clocking Report as CSV" as UC004
-  usecase "UC-005 Correct or Insert a Clocking" as UC005
-  usecase "UC-006 Publish News Item" as UC006
-  usecase "UC-007 Read News List" as UC007
-  usecase "UC-008 Filter News by Category" as UC008
-  usecase "UC-009 Display Featured News Banner" as UC009
-  usecase "UC-010 Feature or Un-feature a News Item" as UC010
-  usecase "UC-011 Edit Published News Item" as UC011
-  usecase "UC-012 Unpublish News Item" as UC012
-  usecase "UC-013 Search Employee Directory" as UC013
-  usecase "UC-014 View Directory Entry" as UC014
-  usecase "UC-015 Assign or Clear Worker Category" as UC015
-  usecase "UC-016 Clock In/Out Survives a Network Drop" as UC016
+package "Features (Vision)" {
+  component "F-01 Digital clocking\nFR-001, FR-002, FR-016" as F01
+  component "F-02 HR clocking administration\nand export\nFR-003, FR-004, FR-005" as F02
+  component "F-03 News publication\nand reading\nFR-006, FR-007, FR-008,\nFR-011, FR-012" as F03
+  component "F-04 Featured news banner\nFR-009, FR-010" as F04
+  component "F-05 Corporate directory\nFR-013, FR-014" as F05
+  component "F-06 Worker category\nmanagement\nFR-015" as F06
+  component "F-07 Two-level authorization\nNFR-005" as F07
 }
 
-ACT001 --> UC001
-ACT001 --> UC002
-ACT001 --> UC007
-ACT001 --> UC008
-ACT001 --> UC009
-ACT001 --> UC013
-ACT001 --> UC014
-ACT001 --> UC016
+package "Use cases (Use-Case Model)" {
+  usecase "UC-001, UC-002, UC-016" as UCA
+  usecase "UC-003, UC-004, UC-005" as UCB
+  usecase "UC-006, UC-007, UC-008,\nUC-011, UC-012" as UCC
+  usecase "UC-009, UC-010" as UCD
+  usecase "UC-013, UC-014" as UCE
+  usecase "UC-015" as UCF
+}
 
-ACT002 --> UC003
-ACT002 --> UC004
-ACT002 --> UC005
-ACT002 --> UC006
-ACT002 --> UC010
-ACT002 --> UC011
-ACT002 --> UC012
-ACT002 --> UC015
+F01 --> UCA
+F02 --> UCB
+F03 --> UCC
+F04 --> UCD
+F05 --> UCE
+F06 --> UCF
 
-UC001 --> ACT003
-UC002 --> ACT003
-UC003 --> ACT003
-UC004 --> ACT003
-UC005 --> ACT003
-UC006 --> ACT003
-UC007 --> ACT003
-UC008 --> ACT003
-UC009 --> ACT003
-UC010 --> ACT003
-UC011 --> ACT003
-UC012 --> ACT003
-UC013 --> ACT003
-UC014 --> ACT003
-UC015 --> ACT003
-UC016 --> ACT003
+F07 ..> UCA : constrains
+F07 ..> UCB : constrains
+F07 ..> UCC : constrains
+F07 ..> UCD : constrains
+F07 ..> UCE : constrains
+F07 ..> UCF : constrains
 
-UC001 --> ACT004
-UC002 --> ACT004
-UC003 --> ACT004
-UC004 --> ACT004
-UC005 --> ACT004
-UC006 --> ACT004
-UC007 --> ACT004
-UC008 --> ACT004
-UC009 --> ACT004
-UC010 --> ACT004
-UC011 --> ACT004
-UC012 --> ACT004
-UC013 --> ACT004
-UC014 --> ACT004
-UC015 --> ACT004
-UC016 --> ACT004
-
-note bottom of ACT004
-  Keycloak is the OIDC identity provider for every
-  authenticated use case (CON-001). It runs inside the
-  corporate network (CON-032) and is not deployed by
-  this project. NFR-005: AD group membership decides
-  the level — HR or employee.
-end note
-
-note bottom of ACT003
-  Active Directory is read over LDAP and is the single
-  source of truth for name, job title, department,
-  office, email and extension (CON-003). The portal
-  never writes to it (CON-004).
-end note
-
-note top of UC016
-  UC-016 is the network-drop behaviour of the clocking
-  page; it is realized as the alternative flow of UC-001.
+note bottom of F07
+  F-07 is a constraint, not a use case: it is specified in the
+  Supplementary Specification (NFR-005) and included by every
+  use case. No use case named "Authorize" exists.
 end note
 @enduml
 ```
