@@ -230,7 +230,6 @@ stop
 **No training material is planned.** AC-001 and AC-004 require the clocking act to work with no help and no prior training, and FR-001 reduces it to one button whose label follows the employee's status. A training programme would contradict the declared criterion rather than serve it. The support material is the Release Notes (Transition) and the User Documentation (Transition, TechnicalWriter).
 
 ## Nodes and Connectors
-
 ### Nodes
 
 | Node | Type | Environment | Declared by |
@@ -263,6 +262,56 @@ stop
 **No migration artifact.** CON-036 declares there is no data migration: the portal starts empty and records clockings from go-live onwards. The historical Excel sheets stay on the shared drive as a read-only archive and are not imported. No import path and no migration script is deployed.
 
 **No backup artifact.** CON-038 declares Infrastructure's existing server-backup practice already covers this PostgreSQL instance in restorable form, confirmed in writing with a verified restore test. No backup tooling and no restore procedure is part of this project.
+
+### Deployment unit and packaging
+
+The deployment unit is **one tagged SCM release** carrying one deployable (ADR-001). Versioned, tagged and traceable: the tag is what Infrastructure deploys, and the Release Notes name the use-case scenarios that tag delivers.
+
+```plantuml
+@startuml Portal_DeploymentUnit
+title Deployment unit — the tagged SCM release and what it carries
+skinparam shadowing false
+skinparam componentStyle rectangle
+
+package "SCM release — one tag, one deployable (ADR-001)" {
+  component "Portal.Web\n.NET 10 application\nRazor Pages + REST API" as APP
+  component "Configuration template\nplaceholder OIDC + LDAP values\nCON-035" as CFG
+  component "Database schema\nfour tables + audit table\nno employee table" as SCHEMA
+  component "Release Notes\nuse-case scenarios, BOM, known issues" as RN
+}
+
+component "Infrastructure's deployment steps\nsubstitute real values, deploy, verify" as INFRA
+
+APP --> CFG : reads at start-up
+APP --> SCHEMA : applies on first start
+RN --> INFRA : read before deploying
+
+note bottom of CFG
+  No credential is committed. Every value is a
+  placeholder in the repository (CON-035).
+end note
+
+note bottom of SCHEMA
+  CON-036: no migration artifact — the portal starts empty.
+  CON-038: no backup artifact — Infrastructure's practice covers it.
+end note
+@enduml
+```
+
+| Item in the release | Contents | Declared by |
+|---|---|---|
+| `Portal.Web` | The .NET 10 application: Razor Pages, the REST endpoints, the domain components, the identity and audit mechanisms, the data access layer. One deployable. | CON-029, CON-030 |
+| Configuration template | Placeholder OIDC and LDAP values — issuer, client id, client secret, LDAP host, bind account, base DN. Held in configuration, never in code. | CON-035 |
+| Database schema | The four tables plus the audit table. No employee table exists. | CON-003, CON-022, CON-031 |
+| Release Notes | The use-case scenarios the release delivers, the installation steps, the known issues, the bill of materials inline, and the acceptance verdict. Drafted in Transition (DC §5.1). | DC §5.1 |
+
+**Bill of materials.** The lock files in the repository are the BOM — the resolved dependency set of the tagged commit. The Release Notes carry the inline summary. No separate BOM document is produced, and no third-party library version is pinned at Inception: no library is declared, and the Designer pins one only where a declared requirement forces it.
+
+**No migration artifact and no backup artifact.** CON-036 declares there is no data migration — the portal starts empty and the historical Excel sheets stay on the shared drive as a read-only archive. CON-038 declares Infrastructure's existing server-backup practice already covers this PostgreSQL instance in restorable form, confirmed in writing with a verified restore test. Neither is packaged, and neither is a deployment step this project performs.
+
+**No installer.** The application is deployed by Infrastructure onto the estate it already operates (CON-005, CON-006). There is no user-side installation: the corporate browser loads the pages and the clocking page script is served with the page (CON-039 — no installable app, no service worker).
+
+**No credential in the release.** Every OIDC and LDAP value is a placeholder in the repository (CON-035). Infrastructure substitutes the real values at deployment. This is what makes the stand-in strategy possible and is the project's answer to R001 and R005.
 
 ## Environment Mapping
 
