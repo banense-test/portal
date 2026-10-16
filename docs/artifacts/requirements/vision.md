@@ -281,7 +281,6 @@ Members of the HR AD group publish, edit and unpublish news and manage worker ca
 **Volatility: Low.** The two levels are declared and the stakeholder has explicitly excluded a permission model beyond them.
 
 ## Assumptions and Dependencies
-
 | ID | Type | Statement |
 |---|---|---|
 | CON-002 | Dependency | The portal's OIDC client is already registered in Keycloak and its credentials are with the development team. Login can be tested from day one — no request to raise, no queue to wait on and no gate. |
@@ -294,6 +293,8 @@ Members of the HR AD group publish, edit and unpublish news and manage worker ca
 | CON-028 | Assumption | Risk acceptance is granted in advance by Laura Gómez for R001, R002 and every risk the team identifies whose mechanism is set by these constraints or lies outside the team's control, provided the treatment never cuts or defers declared scope. If the human validation of the real Keycloak and AD delays a milestone, the remedy is another iteration. |
 | R001 | Risk | The LDAP attributes the directory reads may not be filled consistently across the 3 offices (job title, extension). If not tested early the directory shows gaps. P=3, I=3, exposure=9. |
 | R002 | Risk | Some employees may keep using Excel out of habit if the change is not communicated well. P=3, I=2, exposure=6. |
+
+The full text of every `CON-NNN` above is in the Constraints section; this table records only why each one is a dependency or an assumption rather than a design decision. The two risks are carried with their declared identifiers and magnitudes (CON-027) and are owned by the ProjectManager in the Risk List.
 
 ## Constraints
 | ID | Category | Constraint |
