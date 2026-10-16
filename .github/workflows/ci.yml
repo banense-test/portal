@@ -1,0 +1,164 @@
+# =============================================================================
+# Portal — CI baseline. Closes Development Case gap G-1; implements CON-033.
+#
+# Hosted CI on the SCM provider this workspace is configured with. It builds and
+# tests everything under src/ and tests/. It never holds production data or
+# credentials and it never deploys — Infrastructure deploys (CON-033).
+#
+# Subsystem dependency hierarchy the integration order follows (bottom-up, leaves
+# first). Sketched here so the Integrator reads it from the pipeline definition
+# itself; the authoritative version is the Software Architecture Document
+# (Logical View).
+#
+# @startuml CI_SubsystemDependency
+# title Portal — subsystem dependency hierarchy (integration order, leaves first)
+# skinparam shadowing false
+# skinparam componentStyle rectangle
+#
+# component "Portal.Web\nRazor Pages UI (CON-030)" as WEB
+# component "Portal.Api\nREST API (CON-029)" as API
+# component "Portal.Domain\nclocking, news, category rules" as DOM
+# component "Portal.Data\nPostgreSQL 18 access (CON-031)" as DATA
+# component "Portal.Directory\nLDAP read (CON-003)" as DIR
+# component "Portal.Identity\nOIDC client (CON-001)" as IDN
+#
+# WEB --> API
+# API --> DOM
+# DOM --> DATA
+# API --> DIR
+# API --> IDN
+#
+# note right of DATA
+#   Integration order: DATA and DOM first,
+#   then DIR and IDN, then API, then WEB.
+#   A merge into iteration/Cn is valid only
+#   when the post-merge CI run is green.
+# end note
+# @enduml
+#
+# Build frequency: at least one CI-verified merge per day toward the iteration
+# close, one per week minimum. Every push to main, iteration/**, chore/**,
+# feature/** and hotfix/** triggers this pipeline, so every role gets CI
+# feedback on its own branch rather than only when a pull request is opened.
+# =============================================================================
+
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'iteration/**'
+      - 'chore/**'
+      - 'feature/**'
+      - 'hotfix/**'
+  pull_request:
+    branches:
+      - main
+      - 'iteration/**'
+      - 'chore/**'
+      - 'feature/**'
+      - 'hotfix/**'
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_VERSION: '10.0.x'
+  DOTNET_NOLOGO: 'true'
+  DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      # The solution is REGENERATED from the src/ + tests/ tree on every run, so
+      # the manifest can never drift out of sync with the merged code. A stale
+      # solution that omits a merged subsystem would compile nothing of the
+      # Implementer's work and a green check would be a lie.
+      - name: Sync solution with the src/ and tests/ tree
+        run: |
+          set -euo pipefail
+          dotnet new sln --name Portal --force
+          mapfile -t projects < <(find src tests -name '*.csproj' -not -path '*/obj/*' -not -path '*/bin/*' | sort)
+          if [ ${#projects[@]} -eq 0 ]; then
+            echo "No project found under src/ or tests/." >&2
+            exit 1
+          fi
+          echo "Projects added to Portal.sln:"
+          printf '  %s\n' "${projects[@]}"
+          dotnet sln Portal.sln add "${projects[@]}"
+
+      - name: Restore
+        run: dotnet restore Portal.sln
+
+      - name: Build
+        run: dotnet build Portal.sln --configuration Release --no-restore
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: build
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: portal
+          POSTGRES_PASSWORD: portal
+          POSTGRES_DB: portal_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U portal -d portal_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      ConnectionStrings__Portal: "Host=localhost;Port=5432;Database=portal_test;Username=portal;Password=portal"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Sync solution with the src/ and tests/ tree
+        run: |
+          set -euo pipefail
+          dotnet new sln --name Portal --force
+          mapfile -t projects < <(find src tests -name '*.csproj' -not -path '*/obj/*' -not -path '*/bin/*' | sort)
+          if [ ${#projects[@]} -eq 0 ]; then
+            echo "No project found under src/ or tests/." >&2
+            exit 1
+          fi
+          dotnet sln Portal.sln add "${projects[@]}"
+
+      - name: Restore
+        run: dotnet restore Portal.sln
+
+      - name: Test
+        run: >-
+          dotnet test Portal.sln --configuration Release --no-restore
+          --logger "trx;LogFileName=results.trx"
+          --results-directory TestResults
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults
+          if-no-files-found: ignore
