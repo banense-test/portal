@@ -155,6 +155,45 @@ No third-party licence is declared for this project. The stack is .NET 10 (CON-0
 **Documentation.** No user documentation is declared for Inception. The TechnicalWriter produces User Documentation in Transition. The portal is expected to be usable with no prior training (AC-004), which is a design obligation, not a documentation one.
 
 ## Reliability
+```plantuml
+@startuml Portal_Reliability
+title Reliability — the declared availability window and the one recoverability mechanism
+skinparam shadowing false
+
+start
+:Employee presses Clock In / Clock Out;
+note right
+  NFR-003: the portal must be available Monday-Friday
+  07:00-19:00 with fault tolerance within the corporate
+  network. 24/7 availability is not required.
+end note
+if (network reachable?) then (yes)
+  :Clocking recorded with the press timestamp;
+  stop
+else (no)
+  :Press held in localStorage with an idempotency key;
+  :Retry the POST for up to 5 minutes;
+  note right
+    CON-039: this retry is the ONLY offline behaviour.
+    No PWA, no service worker, no installable app,
+    no client cache of the directory or the news.
+  end note
+  if (network restored within 5 minutes?) then (yes)
+    :Clocking recorded with the press timestamp,\nnot the receipt time;
+    stop
+  else (no)
+    :No-connection message shown;
+    :Employee reports the clocking to HR;
+    note right
+      AC-005: beyond 5 minutes the employee reports
+      the clocking to HR, who corrects or inserts it
+      (UC-005) — the declared remedy, not a portal feature.
+    end note
+    stop
+  endif
+endif
+@enduml
+```
 
 | ID | Requirement | Threshold |
 |---|---|---|
@@ -166,7 +205,6 @@ No third-party licence is declared for this project. The stack is .NET 10 (CON-0
 **Recoverability.** The clocking retry (FR-016, UC-016) is the only recoverability mechanism the portal itself provides: the press is held in the browser in localStorage with an idempotency key and retried for up to 5 minutes. Beyond that window the employee reports the clocking to HR, who corrects or inserts it (UC-005) — the declared remedy, not a portal feature. Database recoverability is Infrastructure's existing practice (CON-038) and is not designed here.
 
 **Frequency of failure.** No failure-rate target is declared. The declared reliability obligation is the availability window (NFR-003) and the clocking retry (AC-005).
-
 ## Performance
 
 | ID | Requirement | Threshold |
