@@ -621,141 +621,145 @@ end note
 | Use-Case Model | No finding from this lens. Fifteen use cases, one per declared requirement, no phantom use case, no cross-cutting mechanism promoted to a use case, no per-actor split of a single declared process. The open findings are the Reviewer's and the Business Reviewer's |
 
 ### Review Coordinator lens
-<!-- review: Inception I1 -->
+<!-- review: Inception I2 -->
 
-<!-- review: Inception I1 -->
-
-**Consolidated ledger: 10 findings — 0 Critical, 6 Major, 4 Minor.** Every entry below is copied from `read_artifact_findings` for the artifact named. The coordinator does not re-evaluate the artifacts; the defect statements are the lenses' and are cited by key.
+**Consolidated ledger: 7 open findings — 0 Critical, 5 Major, 2 Minor.** Every row is copied from `read_artifact_findings` for the artifact named. The coordinator does not re-evaluate the artifacts; the defect statements are the lenses' and are cited by key.
 
 | # | Key | Artifact | Severity | Emitting lens | Owner | Defect |
 |---|---|---|---|---|---|---|
-| 1 | `Use-Case Model#F1` | Use-Case Model | Major | Reviewer | SystemAnalyst | The worker-category rule cluster (CON-009, CON-015, CON-016, CON-021) is bound to UC-010 Read and Filter News, and CON-015 is listed among UC-010's rules. CON-015 states the worker category is used in exactly two places — a directory column that also filters, and a CSV export column. UC-010 filters news by the four news categories, a different closed list governed by FR-010 and FR-006. |
-| 2 | `Software Architecture Document#F1` | Software Architecture Document | Major | Reviewer | SoftwareArchitect | The Data View schema cannot satisfy CON-012 and CON-013 at the same time. `Clocking` holds ClockInUtc and ClockOutUtc in one row, so recording a Clock Out is an in-place UPDATE that CON-013 forbids; the Invariants table resolves CON-013 with "a correction is a new row" but enforces CON-012 with a unique index on (EmployeeId, WorkDate), which rejects that row. The correction record carries no previous-value column, which CON-013 and NFR-005 require. |
-| 3 | `Iteration Plan#F1` (Reviewer) | Iteration Plan | Major | Reviewer | ProjectManager | The fine plan omits two artifacts this iteration produced. W1–W7 cover seven artifacts but not the Software Architecture Document or the Test Evaluation Summary, both persisted and both CORE. The critical chain has no Analysis and Design or Test lane, and the role profile marks SoftwareArchitect and TestManager inactive in iteration 1, contradicting the existence of both artifacts. |
-| 4 | `Iteration Plan#F1` (Management Reviewer) | Iteration Plan | Major | ManagementReviewer | ProjectManager | The plan asserts R001 is retired in Elaboration iteration 2 by the stand-in directory carrying empty job-title and extension entries. Building the fixture is not retiring the risk: the SAD's own retirement criterion is a passing directory search and export against that fixture, and the Test Evaluation Summary executes UC-011 in iteration 6 and UC-004 in iteration 4 with no test role active in iteration 2. The highest-magnitude risk (exposure 9) is not retired until Construction. |
-| 5 | `Iteration Plan#F2` (Management Reviewer) | Iteration Plan | Major | ManagementReviewer | ProjectManager | AC-004 is assigned verification in iteration 7, the iteration in which its own measure begins to elapse, so the criterion can never be verified at the gate it is assigned to. AC-004 is a population measure over 200 employees; the three-month adoption window (BG-003) that begins in iteration 7 cannot have produced its result by the end of iteration 7. One of five declared acceptance criteria has no gate at which it can close. |
-| 6 | `Test Evaluation Summary#F1` | Test Evaluation Summary | Major | Reviewer | TestManager | The quality-signal table cites CI run `39932821851` (09:34:14Z to 09:35:04Z); the build observed on `main` is run `39933356092` (09:38:42Z to 09:39:34Z). A run identifier and two timestamps are observable SCM state, so a stale citation reads downstream as a verified observation. The conclusion holds; the citation does not. |
-| 7 | `Software Architecture Document#F2` | Software Architecture Document | Minor | Reviewer | SoftwareArchitect | The Traceability table conflates two link types in one row: rows for COMP-001 to COMP-007 declare Realizes in the Link Type column while the Traces To column holds DependsOn targets. A reader cannot tell which link type the Traces To entries carry. |
-| 8 | `Test Evaluation Summary#F2` | Test Evaluation Summary | Minor | Reviewer | TestManager | NFR-001 is assigned to Iteration 3, which the Iteration Plan scopes as Elaboration design only with no implementation. The stated method — every use case exercised unauthenticated and refused — cannot be executed against use cases that are designed but not built. |
-| 9 | `Vision#F1` (Reviewer) | Vision | Minor | Reviewer | SystemAnalyst | The success-criteria table presents BG-001 as measurable — "50% reduction against the current manual baseline" — but no baseline is declared in the scope and none has been measured. The denominator is an inference the Vision adds; BG-001 names no baseline. The criterion cannot be verified as written. |
-| 10 | `Vision#F1` (Business Reviewer) | Vision | Minor | BusinessReviewer | SystemAnalyst | In the Features tables the success-criterion column is self-referential for two features: the FR-014 row cites "FR-014" and the FR-015 row cites "FR-015" as their own success criterion. Every other row cites an independent measure. A criterion that restates the requirement identifier cannot be tested. |
+| 1 | `Use-Case Model#F2` | Use-Case Model | Major | Reviewer | SystemAnalyst | The UC-001 postcondition still describes the single-row clocking model ADR-010 replaced. Under ADR-010 a complete pair is two append-only rows and a correction is a third; the effective pair is a query over supersession, not a record. The postcondition is false after the second press. The trace graph reports the same defect independently through four `SUSPECT → System Analyst` edges on COMP-002 |
+| 2 | `Use-Case Model#F1` | Use-Case Model | Major | BusinessReviewer | SystemAnalyst | CON-012 is bound to UC-001 but not enforced by it. The button logic distinguishes only "a pair is open" from "a pair is not open", so once a pair is complete the portal renders Clock In again and records the press. Alternative flow A4 covers only the open-pair case. As specified, UC-001 permits the state CON-012 declares impossible |
+| 3 | `Use-Case Model#F2` | Use-Case Model | Major | BusinessReviewer | SystemAnalyst | CON-015's attachment is incomplete and contradicts the Software Architecture Document. The Use-Case Model binds the rule to UC-004 and UC-012 and explicitly denies it is bound to UC-011, the directory, in a paragraph that first states the rule confines the category to the directory column and the export column. UC-011 specifies no filter by worker category. The SAD cites CON-015 as the basis for COMP-005 rendering the column and filtering by it |
+| 4 | `Software Architecture Document#F3` | Software Architecture Document | Major | Reviewer | SoftwareArchitect | The architectural-significance table is not re-based onto the eight-iteration roadmap. It assigns the four significant use cases to "Elaboration iteration 2" and the remaining six ranks to "Elaboration iteration 3". Under the current roadmap iteration 2 is this Inception correction iteration and Elaboration is iterations 3 and 4, so the table names an iteration that designs nothing. The Iteration Plan places the design of UC-001, UC-004, UC-009 and UC-011 in iteration 3 |
+| 5 | `Iteration Plan#F3` | Iteration Plan | Major | ManagementReviewer | ProjectManager | The iteration 2 fine plan does not account for the Development Case, which this iteration produced. Exit criterion E1 states every artifact the iteration produces has a work item, an owner and an exit condition; W1 to W9 cover eight artifacts but not the Development Case, which was substantively revised. The role profile marks ProcessEngineer Active in iteration 2, asserting work the fine plan does not contain. The plan fails its own E1 criterion |
+| 6 | `Supplementary Specification#F1` | Supplementary Specification | Minor | Reviewer | RequirementsSpecifier | The constraint grouping is internally inconsistent and does not match the declared categories. The "Environmental constraints" table lists CON-005 and CON-031, both declared Technical. The constraint map diagram disagrees with the table on CON-005 and places CON-031 in its Environment package. The two representations of the same 36 constraints do not agree |
+| 7 | `Supplementary Specification#F1` | Supplementary Specification | Minor | BusinessReviewer | RequirementsSpecifier | The business-rules register carries twelve of the thirteen declared `[BusinessRule]` constraints, omitting CON-008, the authorization rule. CON-008 is enforced elsewhere as MECH-02, so the rule is not lost, but the register presents itself as complete and under-reports by one |
 
-**Artifacts carrying no finding across all three lenses:** Development Case, Supplementary Specification, Risk List.
+**Findings closed this iteration — 10, by their emitting lenses.** These are not open and do not bear on the verdict; they are listed so the ledger's arithmetic is checkable.
 
-**Defect distribution by artifact and owner:**
+| Key | Artifact | Severity | Emitting lens |
+|---|---|---|---|
+| `Vision#F1` | Vision | Minor | Reviewer |
+| `Vision#F1` | Vision | Minor | BusinessReviewer |
+| `Use-Case Model#F1` | Use-Case Model | Major | Reviewer |
+| `Software Architecture Document#F1` | Software Architecture Document | Major | Reviewer |
+| `Software Architecture Document#F2` | Software Architecture Document | Minor | Reviewer |
+| `Iteration Plan#F1` | Iteration Plan | Major | Reviewer |
+| `Iteration Plan#F1` | Iteration Plan | Major | ManagementReviewer |
+| `Iteration Plan#F2` | Iteration Plan | Major | ManagementReviewer |
+| `Test Evaluation Summary#F1` | Test Evaluation Summary | Major | Reviewer |
+| `Test Evaluation Summary#F2` | Test Evaluation Summary | Minor | Reviewer |
 
-```plantuml
-@startuml
-title Consolidated defect distribution - by artifact and by owner, Inception iteration 1
+**Artifacts carrying no finding across all three lenses:** Development Case, Risk List, Test Evaluation Summary, Vision, Iteration Assessment.
 
-package "By artifact" {
-  class "Iteration Plan\n3 Major" as A1
-  class "Software Architecture Document\n1 Major, 1 Minor" as A2
-  class "Test Evaluation Summary\n1 Major, 1 Minor" as A3
-  class "Vision\n2 Minor" as A4
-  class "Use-Case Model\n1 Major" as A5
-  class "Development Case\n0" as A6
-  class "Supplementary Specification\n0" as A7
-  class "Risk List\n0" as A8
-}
+**Two findings share a key and are not duplicates.** `Use-Case Model#F2` appears twice because findings are scoped per artifact and per lens: the Reviewer's `#F2` is the UC-001 postcondition against ADR-010, the Business Reviewer's `#F2` is CON-015's attachment to UC-011. They are distinct defects with distinct remediations and both must be corrected. The same holds for `Supplementary Specification#F1`.
 
-package "By owner" {
-  class "ProjectManager\n3 Major" as O1
-  class "SoftwareArchitect\n1 Major, 1 Minor" as O2
-  class "TestManager\n1 Major, 1 Minor" as O3
-  class "SystemAnalyst\n1 Major, 2 Minor" as O4
-}
+**Conflicts between lenses — resolved by the coordinator.**
 
-A1 --> O1
-A2 --> O2
-A3 --> O3
-A4 --> O4
-A5 --> O4
+| Conflict | Resolution |
+|---|---|
+| The Reviewer's `Use-Case Model#F2` and the Business Reviewer's `Use-Case Model#F1` both touch UC-001 and could be read as one defect | They are two: one restates the postcondition, the other adds a flow. Both are corrected in one pass over UC-001, but neither closes the other. Recorded as separate actions |
+| The Business Reviewer's `Use-Case Model#F2` asserts CON-015 governs the directory search; the Use-Case Model denies it; the SAD implements it | Not a conflict to arbitrate — the declared constraint settles it. CON-015 names "a directory column that also filters" as one of exactly two permitted uses, so the Use-Case Model is the artifact that is wrong. The action is to bind the rule to UC-011, not to remove the filter from COMP-005 |
+| The Reviewer's `Supplementary Specification#F1` and the Business Reviewer's `Supplementary Specification#F1` both concern the same section | Adjacent, not identical: one is the constraint grouping, the other the business-rules register count. Both are corrected in one pass over the Supplementary Specification |
+| The Management Reviewer's `Iteration Plan#F3` offers two alternative resolutions | The coordinator selects the first: add the Development Case as a work item. Amending E1 to exclude the Development Case would weaken a criterion that is correct as written |
 
-note bottom of O1
-  The Iteration Plan carries the most
-  findings and the only three-Major
-  concentration. It is the artifact that
-  decides whether the LCO gate can be
-  re-presented.
-end note
-
-note bottom of A6
-  Three artifacts clean across all three
-  lenses. Their content is largely inherited
-  from declared inputs; the five carrying
-  findings are where the team made design
-  and planning decisions.
-end note
-@enduml
-```
-
-**Severity distribution and the gate consequence:**
+**No conflict required escalation to the stakeholder.** Every disagreement is settled by a declared constraint or by the artifact that owns the element.
 
 ```plantuml
 @startuml
-title Severity distribution and gate consequence - Inception iteration 1
+title Portal - Consolidated finding ledger at the LCO gate, Inception iteration 2
 
-package "Critical - 0" {
-  class "None recorded" as C0
+package "Open Major - 5" {
+  class "Use-Case Model#F2 (Reviewer)\nUC-001 postcondition describes the\nsingle-row model ADR-010 replaced" as M1
+  class "Use-Case Model#F1 (Business)\nCON-012 bound to UC-001 but not\nenforced; complete-pair case unaddressed" as M2
+  class "Use-Case Model#F2 (Business)\nCON-015 attachment contradicts\nthe Software Architecture Document" as M3
+  class "Software Architecture Document#F3\nsignificance table not re-based onto\nthe eight-iteration roadmap" as M4
+  class "Iteration Plan#F3 (Management)\nDevelopment Case has no work item\nin the iteration 2 fine plan" as M5
 }
 
-package "Major - 6" {
-  class "Blocks the LCO gate" as M0
-  class "Use-Case Model#F1" as M1
-  class "Software Architecture Document#F1" as M2
-  class "Iteration Plan#F1 (Reviewer)" as M3
-  class "Iteration Plan#F1 (Management)" as M4
-  class "Iteration Plan#F2 (Management)" as M5
-  class "Test Evaluation Summary#F1" as M6
+package "Open Minor - 2" {
+  class "Supplementary Specification#F1 (Reviewer)\nconstraint grouping disagrees with\nthe declared categories" as N1
+  class "Supplementary Specification#F1 (Business)\nCON-008 absent from the\nbusiness-rules register" as N2
 }
 
-package "Minor - 4" {
-  class "Does not block the gate;\ncorrected or deferred with a reason" as N0
-  class "Software Architecture Document#F2" as N1
-  class "Test Evaluation Summary#F2" as N2
-  class "Vision#F1 (Reviewer)" as N3
-  class "Vision#F1 (Business)" as N4
+package "Open Critical - 0" {
+  class "None" as C0
 }
 
-M1 --> M0
-M2 --> M0
-M3 --> M0
-M4 --> M0
-M5 --> M0
-M6 --> M0
-N1 --> N0
-N2 --> N0
-N3 --> N0
-N4 --> N0
+package "Closed this iteration - 10" {
+  class "Vision#F1 (Reviewer)" as R1
+  class "Vision#F1 (Business)" as R2
+  class "Use-Case Model#F1 (Reviewer)" as R3
+  class "Software Architecture Document#F1" as R4
+  class "Software Architecture Document#F2" as R5
+  class "Iteration Plan#F1 (Reviewer)" as R6
+  class "Iteration Plan#F1 (Management)" as R7
+  class "Iteration Plan#F2 (Management)" as R8
+  class "Test Evaluation Summary#F1" as R9
+  class "Test Evaluation Summary#F2" as R10
+}
+
+note bottom of M3
+  The only open finding that is a disagreement
+  between two artifacts rather than a defect
+  inside one.
+end note
 
 note bottom of C0
-  No Critical finding: no declared exclusion
-  is crossed, no phantom use case, no invented
-  identifier, no scope expansion beyond the
-  fifteen declared requirements, and no
-  artifact claims a milestone or an acceptance
-  criterion is closed.
-end note
-
-note bottom of M0
-  Six open Major findings. The stakeholder
-  refused the LCO sanction and required every
-  finding corrected. The gate cannot be
-  re-presented until all six are closed and
-  re-verified by their emitting lenses.
+  No declared exclusion crossed, no phantom
+  use case, no invented identifier, no scope
+  expansion beyond the fifteen declared
+  requirements.
 end note
 @enduml
 ```
 
-**Findings the coordinator raises on the review process itself.** These are process observations, not artifact defects, and they are not in the ledger above because the ledger holds artifact findings only.
+**Defect concentration.** Three of the five open Major findings sit in one artifact, the Use-Case Model, and two of those three are the same defect class: a rule or a decision another artifact changed, not carried through to the use case that must enforce it. That concentration is why the Use-Case Model is the critical path of the next iteration and why the Development Case's new authoring checks are load-bearing rather than cosmetic.
 
-| Observation | Consequence |
-|---|---|
-| The Management Reviewer's defect-distribution diagram states "6 Major, 3 Minor" while enumerating four Minor entries | A counting error in a review artifact. The ledger holds 4 Minor and the consolidated total uses the ledger. No artifact finding is raised — the diagram is inside the Review Record, which is this record, and the correction is made here. |
-| The Business Reviewer confirmed `Use-Case Model#F1` without re-recording it | Correct process. One logical defect, one ledger entry, one owner. Duplicating it would have made the SystemAnalyst triage the same defect twice. |
-| All three lenses reviewed all 8 artifacts | Coverage is complete. No artifact reached the gate unreviewed, and no lens reviewed a subset. |
-| No lens closed a finding belonging to another lens | The ownership invariant held. No cross-lens closure was attempted. |
+**Review effectiveness metrics — this milestone.**
+
+| Metric | Value | Basis |
+|---|---|---|
+| Review coverage | 10 of 10 artifacts | Every artifact in the repository was read by all three lenses |
+| Findings open at gate | 7 — 0 Critical, 5 Major, 2 Minor | `read_artifact_findings`, all 10 artifacts |
+| Findings closed this iteration | 10 | Resolution objects present in the ledger |
+| Closure rate | 10 of 17 findings raised across both iterations | 10 closed, 7 open |
+| Defect density by artifact | Use-Case Model 3, Software Architecture Document 1, Iteration Plan 1, Supplementary Specification 2, five artifacts 0 | Open findings per artifact |
+| Defect removal efficiency | Not computable at this gate | No test execution has occurred; Inception builds nothing, so there is no test-found defect count to compare against |
+| Rework effort | Not measured in hours | This system measures tokens and elapsed time, not person-hours. Iteration 1 measured 6,756,727 tokens and 0:54:19.692 agent time with 0:00:00 human queue time, reported apart and never added |
+| Overdue findings | 0 of 7 | The action list was issued at this review event; no deadline has elapsed |
+| Escalations | 0 | No deadline missed, no Critical finding open |
+
+**Interpretation.** Coverage is complete and closure is running at 59% across the two iterations, which is the expected shape of a correction iteration: the first pass raised 10 findings, 10 were closed, and the corrections themselves produced 7 new ones. The pattern is not declining rigor — it is the normal cost of a correction that changes a decision (ADR-010, the roadmap) which other artifacts had to follow. The signal to watch is whether the next iteration's corrections produce a third generation of the same defect class; if they do, the authoring checks are not working and the process needs correction, not another pass.
+
+```plantuml
+@startuml
+title Portal - Finding lifecycle and closure protocol
+
+[*] --> Open : record_artifact_finding\nby the emitting lens
+Open --> Assigned : coordinator assigns\nowner and priority
+Assigned --> Corrected : author corrects every\nsection the finding names
+Corrected --> Verified : emitting lens re-reads\nthe corrected content
+Verified --> Closed : resolve_artifact_finding\nby the emitting lens only
+Closed --> [*]
+
+Assigned --> Overdue : deadline missed
+Overdue --> Escalated : written notice to\nthe Project Manager
+Escalated --> Corrected : owner resumes
+
+note right of Closed
+  A Review Record sentence saying
+  "resolved" is not a resolution.
+  Only the tool call closes a finding.
+end note
+
+note bottom of Verified
+  Cross-lens closure is rejected by the
+  actor handler: a lens that did not emit
+  a finding cannot certify its correction.
+end note
+@enduml
+```
 
 ## Resolutions and Actions
 ### Reviewer lens
