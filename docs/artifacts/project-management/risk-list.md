@@ -279,3 +279,18 @@ end note
 | R009 | — | DependsOn | — |
 
 **R007 and R009 carry no trace edge, and that is correct.** Both are process risks against the iteration sequence itself — the toolchain gaps and the correction process's convergence — and neither threatens a labelled element. A risk traced to an element it does not threaten would be a false edge; the register carries them with their treatments and no link.
+
+### Suspect traces re-verified this iteration
+
+Five edges were flagged SUSPECT when the System Analyst changed UC-001 and UC-011. Each was read against the changed use case and cleared, because the change does not remove what the risk threatens.
+
+| Edge | What changed at the other end | Why the edge still holds |
+|---|---|---|
+| R001 → UC-011 | UC-011 now renders the worker category as a column and filters the result set by it, and gained an A4 no-category flow | R001 is the LDAP attribute gap on job title and extension. The six AD-sourced fields are unchanged and the A1 empty-attribute case is still the case that retires R001. The added category column does not touch the AD read path |
+| R002 → UC-001 | UC-001's postcondition restated in ADR-010's append-only terms; the button logic now distinguishes three CON-012 states and a complete pair renders no clocking button | R002 is the adoption risk. The change sharpens the dependency rather than removing it: routing a completed pair to HR under UC-005 is a friction point the adoption measure will register |
+| R003 → UC-011 | As R001 — the category column and filter added to the directory search | R003 is the CON-031 human validation gate. UC-011 is one of the two use cases the real-AD validation exercises, and the added column and filter widen what Infrastructure and HR must check against the real directory |
+| R004 → UC-011 | As R001 — the category column, the filter and the A4 no-category flow | R004 is the risk that the stand-in omits the empty-attribute entries. The A1 case still retires R001, and A4 adds a second fixture requirement to the same stand-in. The dependency is now stronger |
+| R008 → UC-001 | As R002 — the append-only event-row shape and the three-state button logic | R008 is the wrong-client-clock risk against the FR-013 contract. UC-001 still carries that contract, and the append-only shape makes the recorded time the row's own value rather than a field overwritten later |
+
+**No edge was retired and no risk was renumbered.** The five changes were to the use cases the risks threaten, not to the risks themselves; the register's identifiers, magnitudes and strategies are unchanged.
+
