@@ -1015,74 +1015,78 @@ end note
 
 ## Disposition
 ### Reviewer lens
-<!-- review: Inception I2 -->
+<!-- review: Inception I3 -->
 
 **Disposition: Approved with Changes.**
 
-The technical position of the artifact set is materially stronger than at iteration 1. Seven findings of this lens were corrected and verified, and the corrections are substantive rather than cosmetic. ADR-010 resolves the schema contradiction that would have made CON-012 and CON-013 unsatisfiable together, and it does so by making CON-013 hold by construction — an append-only event log with a partial unique index that constrains the originals and admits every superseding row. The Iteration Plan now names the event that retires R001 rather than the fixture that makes it retirable, which is the claim an LCO gate exists to test. The Vision records BG-001 as unmeasured instead of presenting it as measurable. The Test Evaluation Summary's coverage plan is re-based onto the roadmap it is measured against, and NFR-001 is split so neither half is assigned to an iteration that cannot execute it.
+The technical position of the artifact set is materially stronger than at iteration 2, and the three findings this lens carried into the iteration are genuinely corrected rather than restated. The UC-001 postcondition now describes ADR-010's append-only event log — one ClockIn row, one ClockOut row, the effective pair resolved over supersession — and the trace graph confirms it independently by clearing all four `COMP-002` suspect edges. The Supplementary Specification groups all 36 constraints by their declared category in both the table and the diagram, states the arithmetic that proves the set is complete, and can no longer drift without the count failing. The Software Architecture Document's significance table names Elaboration iterations 4 and 5, matching the Iteration Plan's nine-iteration roadmap exactly.
 
-Two Major findings remain, and both are defects of currency rather than of reasoning. The Use-Case Model's UC-001 postcondition still describes the single-row clocking model ADR-010 replaced, and the trace graph reports the same defect independently through four `SUSPECT → System Analyst` edges on COMP-002. The Software Architecture Document's architectural-significance table still names "Elaboration iteration 2", an iteration that under the current roadmap designs nothing. Neither invalidates the phase's conclusions; both would mislead the role that reads them next, which is why they are Major and not Minor.
+One Major finding remains, and it is a defect of currency rather than of reasoning. The Test Evaluation Summary cites a CI run and an issue count that were not read at the moment of writing: the run it names is superseded and the count omits an issue. The test position itself is sound — 15 of 15 use cases and 5 of 5 NFRs assigned an execution iteration in which the behaviour exists, both R001 fixture obligations recorded with their execution iteration, the alternative flows that enforce CON-012 and CON-016 named as test obligations. What is wrong is the artifact's claim to be reading the authoritative record, and that claim is the one the Development Case's C2 check exists to make true.
 
-One Minor finding: the Supplementary Specification's constraint grouping disagrees between its table and its diagram and matches neither the declared category.
+Two Minor findings: the Development Case records the CI workflow as not yet created when it is committed and green, and the Iteration Plan's W11 owner list disagrees with its own role profile.
 
 **No Critical finding.** No declared exclusion is crossed anywhere in the set. No identifier is invented — every `FR-`, `NFR-`, `CON-`, `AC-`, `BG-`, `STK-` and `R` identifier cited is one the work order assigned. No scope is expanded beyond the fifteen declared requirements: the fifteen use cases map one to one onto them, and the three extension use cases are declared requirements modelled as exception paths rather than invented goals. No cross-cutting mechanism is promoted to a use case — authentication, authorization, audit and directory read are mechanisms in the Supplementary Specification, included by the use cases that depend on them. No artifact claims a milestone is achieved or an acceptance criterion is closed.
 
-**What this disposition is not.** It is not a sanction to advance. The milestone verdict belongs to the ReviewCoordinator and the sanction to the stakeholder; this lens reports the technical state of the artifacts and nothing more. It is also not a claim that the two Major findings are tolerable — they are correctable within this iteration and they should be corrected before the gate is re-presented, because the role that reads each of them next is the role that would act on the stale version.
+**What this disposition is not.** It is not a sanction to advance. The milestone verdict belongs to the ReviewCoordinator and the sanction to the stakeholder; this lens reports the technical state of the artifacts and nothing more. It is also not a claim that the one Major finding is tolerable — it is correctable within this iteration and it should be corrected before the gate is re-presented, because the role that reads it next is the role that would act on the stale version.
 
-**Traceability position.** The trace graph carries 42 business roots and 180 nodes. No `FR-NNN`, `NFR-NNN` or `UC-NNN` is a leaf: every declared requirement is realized by a use case and every use case is carried by at least one component. The four `SUSPECT → System Analyst` edges are the only trace defect and are recorded as evidence inside `Use-Case Model#F2` rather than as a separate finding, because they and the postcondition are one defect seen from two directions.
+**The recurrence is the finding that matters most.** `Test Evaluation Summary#F3` is the third generation of the "observable state cited from an earlier read" class, and the second against this artifact: `Test Evaluation Summary#F1` was closed in iteration 2 on the strength of a corrected citation, and the correction did not hold. R009 asks whether the authoring checks work, and its escalation path is that a third generation of a class the checks cover means the process needs correction rather than another pass. C2 covers this class and did not prevent it. The Development Case's verdict table should record that, and the Project Manager should read it as R009's warning sign firing rather than as a routine Minor.
 
-**SCM position.** No open pull request, so no PR required a disposition. The build on `main` is green and carries no product evidence — the repository holds inputs and artifacts only, and a green build on such a repository proves the pipeline runs, not that anything works.
+**Traceability position.** The trace graph carries 42 business roots and 180 nodes. No `FR-NNN`, `NFR-NNN` or `UC-NNN` is a leaf: every declared requirement is realized by a use case and every use case is carried by at least one component. No `SUSPECT` edge is reported anywhere in the graph — the four that iteration 2 recorded are cleared, and the five the Risk List re-verified are cleared with the reason each dependency still holds. The trace position is clean.
+
+**SCM position.** No open pull request, so no PR required a disposition. The build on `main` is green — run `39958957391`, completed 2026-10-23 13:10:47Z — and carries no product evidence, because the repository holds inputs and artifacts only. Three issues are open, all documentation staleness, all minor; two of them are the evidence for the Development Case finding above.
 
 ```plantuml
 @startuml
-title Portal - Inception iteration 2 technical position at the LCO gate
+title Portal - Inception iteration 3 technical lens: disposition and what it rests on
 
-package "Closed this iteration - 7 findings of this lens" {
-  class "Vision#F1\nBG-001 recorded as unmeasured" as C1
-  class "Use-Case Model#F1\nworker-category cluster rebound" as C2
-  class "Iteration Plan#F1\nfine plan complete, roles Active" as C3
-  class "SAD#F1\nADR-010 append-only clocking log" as C4
-  class "SAD#F2\ntraceability rows split by link type" as C5
-  class "TES#F1\nCI run cited as observed" as C6
-  class "TES#F2\nNFR-001 split by executable half" as C7
+package "Corrected and verified - 3" {
+  class "Use-Case Model\nUC-001 postcondition matches ADR-010\n4 suspect traces cleared" as P1 <<Pass>>
+  class "Supplementary Specification\n36 constraints grouped by declared category\ntable and diagram agree" as P2 <<Pass>>
+  class "Software Architecture Document\nsignificance table matches the roadmap" as P3 <<Pass>>
 }
 
-package "Open this iteration - 2 Major, 1 Minor" {
-  class "Use-Case Model#F2\nUC-001 postcondition vs ADR-010\n+ 4 suspect traces" as O1
-  class "SAD#F3\nsignificance table not re-based" as O2
-  class "SuppSpec#F1\nconstraint grouping inconsistent" as O3
+package "Open - 1 Major, 2 Minor" {
+  class "Test Evaluation Summary#F3\nMajor - SCM state not read at writing" as F1 <<Major>>
+  class "Development Case#F1\nMinor - CI workflow recorded as absent" as F2 <<Minor>>
+  class "Iteration Plan#F2\nMinor - W11 owners vs role profile" as F3 <<Minor>>
 }
 
-package "Gate position" {
-  class "0 Critical" as G1
-  class "2 Major" as G2
-  class "1 Minor" as G3
-  class "No exclusion crossed\nNo identifier invented\nNo scope expanded" as G4
+package "Conditions absent - no Critical" {
+  class "No declared exclusion crossed" as N1
+  class "No identifier invented" as N2
+  class "No scope expanded beyond 15 declared FRs" as N3
+  class "No milestone or AC claimed closed" as N4
 }
 
-C1 --> G1
-C2 --> G1
-C3 --> G1
-C4 --> G1
-C5 --> G1
-C6 --> G1
-C7 --> G1
-O1 --> G2
-O2 --> G2
-O3 --> G3
+package "Disposition" {
+  class "Approved with Changes\nfrom the technical lens only" as D1
+  class "Not a sanction to advance\nThe milestone verdict is the\nReviewCoordinator's and the sanction\nthe stakeholder's" as D2
+}
 
-note bottom of G2
-  Both Major findings are artifacts not
-  re-based onto a decision another artifact
-  changed. Neither invalidates the phase's
-  conclusions; both would mislead the role
-  that reads them next.
+P1 --> D1
+P2 --> D1
+P3 --> D1
+F1 --> D1
+F2 --> D1
+F3 --> D1
+N1 --> D1
+N2 --> D1
+N3 --> D1
+N4 --> D1
+D1 --> D2
+
+note bottom of F1
+  The one Major is correctable within this
+  iteration and should be corrected before the
+  gate is re-presented: the role that reads it
+  next is the role that would act on the stale
+  version.
 end note
 
-note bottom of G4
-  The three conditions that would make a
-  finding Critical are all absent from
-  the set.
+note bottom of D2
+  Two lenses reported Approved with Changes in
+  iteration 2 and no lens approved the milestone.
+  The distinction is load-bearing.
 end note
 @enduml
 ```
