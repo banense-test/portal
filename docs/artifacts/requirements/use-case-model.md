@@ -216,14 +216,13 @@ R_DIR --> UC014
 
 note bottom of R_CAT
   CON-015 is the load-bearing rule: the worker
-  category is read in exactly two places - the
-  directory column and the export column. The
-  cluster binds UC-004 (export column) and
-  UC-012 (the only write). UC-011 renders the
-  category as the read-only directory column
-  CON-015 names: it reads the value, it does not
-  manage it, and CON-015's ban on the category
-  driving an access decision applies there too.
+  category is descriptive and drives no access
+  decision. The cluster binds UC-004 (the export
+  column) and UC-012 (the only write) - nowhere
+  else. UC-011 renders the category as a
+  read-only column from the portal-owned link,
+  which is CON-021, bound through R_DIR; it
+  reads the value, it does not manage it.
   A worker category used to filter news, or read
   in an authorization decision, is a defect.
 end note
@@ -245,6 +244,12 @@ note bottom of R_DIR
 end note
 @enduml
 ```
+
+**UC-010 is bound to the news-category list, not the worker-category cluster.** FR-010 filters news
+by General, HR, IT and Events — the closed list FR-006 declares. The worker-category cluster
+(CON-009, CON-015, CON-016, CON-021) binds UC-004 and UC-012 only. UC-011 renders the worker category
+as a read-only column from the portal-owned link under CON-021; it reads the value and never manages
+it, so the cluster is not bound there either.
 
 **Mechanisms every use case includes.** MECH-01 (authenticated corporate identity, NFR-001) is
 included by all fifteen. MECH-02 (HR group authorization, CON-008) is included by the eight HR use
