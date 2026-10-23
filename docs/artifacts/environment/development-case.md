@@ -173,20 +173,24 @@ following. Each is owned by the discipline role named:
 | `.github/workflows` (build and test CI) | ConfigurationManager with Implementer | Not yet created — Elaboration |
 | `docs/inputs/employee-portal-design.html` | Stakeholder-declared, authoritative (CON-034) | Committed with the project inputs |
 ## Optional Artifact Triggers
-
 **No OPTIONAL artifact trigger fires for this project.** All six are recorded NOT TRIGGERED, each
 against its baseline condition. This set is re-evaluated every iteration — a Change Request may
 newly fire one.
+
+**Re-evaluated in iteration 3, not carried forward.** All six conditions were re-read against the
+current declared scope and the current artifact set. No Change Request was raised in either iteration
+and no declared scope was added, cut or deferred, so no condition has moved. The verdicts below are
+this iteration's, and the same set is recorded through `record_optional_artifact_triggers` so the
+optional-generator roles read one source of truth.
 
 | OPTIONAL artifact | Verdict | Why the trigger does not hold |
 |---|---|---|
 | Glossary | NOT TRIGGERED | The domain is internal HR administration, not regulated, legal, medical or financial. Every specialist term the project uses is already defined by a constraint: worker category by CON-009 (closed four-value list), clocking pair by CON-011, EmployeeId by CON-004. Terminology is defined inline in the Supplementary Specification; a separate stakeholder-validated glossary would duplicate it |
 | Architectural Proof-of-Concept | NOT TRIGGERED | The phase condition (Elaboration) is not met. Substantively, neither declared risk needs empirical validation: R001 is retired by testing against a stand-in directory that carries empty job title and extension entries (CON-031), and R002 is an adoption risk with no architectural mechanism. Validation against the real Keycloak and AD is human work by Infrastructure and HR, not a team PoC. Re-evaluated in Elaboration |
-| Data Model | NOT TRIGGERED | Not a data-centric system, fewer than 10 entities, and CON-033 declares no data migration. The entities are clocking, clocking correction, news item, worker-category link and audit entry. CON-021 fixes the worker-category table at two columns. Data design lives inline in the Design Model |
+| Data Model | NOT TRIGGERED | Not a data-centric system, fewer than 10 entities, and CON-033 declares no data migration. The entities are clocking, clocking event, news item, worker-category link and audit entry. CON-021 fixes the worker-category table at two columns. Data design lives inline in the Design Model |
 | Deployment Model | NOT TRIGGERED | Single internal Windows Server estate, no cloud, no containers, no clustering or load balancing declared, no migration. Deployment is a section of the Software Architecture Document — which is where CON-028's requirement that Keycloak sit inside the corporate network is enforced |
 | User-Interface Prototype | NOT TRIGGERED | The stakeholder has already supplied the authoritative UI design at `docs/inputs/employee-portal-design.html`, mandatory for the visual layer per CON-034. A prototype exists to obtain validation the project already holds; building a second one would create a competing source of truth |
 | Test Plan | NOT TRIGGERED | No formal delivery, regulatory audit or contractual test reporting. NFR-005 states no external compliance regime applies and no retention period is mandated. Per-iteration testing scope is defined in the Iteration Plan |
-
 ## Roles and Ownership
 
 **The 25-role roster is inherited unchanged. Primary ownership is per the service-side allowlist and
