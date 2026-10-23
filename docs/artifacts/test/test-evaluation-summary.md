@@ -476,16 +476,6 @@ product. That is why the exclusion list is the first thing the severity scale na
 the test framework — is an Elaboration obligation with a named owner and a named iteration, and the
 Development Case already records it as a toolchain gap to close before Implementation intensity rises.
 
-### Obligations this document places on the next iteration
-
-| Obligation | Owner | Why it cannot slip |
-|---|---|---|
-| Select the test framework and confirm the CI glob discovers the test projects | Test Manager | Without it no test case can run, and R007 records the consequence of the gap surviving into Construction |
-| Verify the directory stand-in carries entries with empty job title and empty extension | Test Designer, checked by CodeReviewer | This is the only mechanism that retires R001. A stand-in without them makes every directory test pass while the risk stays live (R004) |
-| Design test cases for the four detailed use cases — UC-001, UC-004, UC-009, UC-011 | Test Analyst, Test Designer | These carry the client-timestamp contract, the export column contract, the single-featured invariant and the LDAP read — the four places a wrong decision is expensive to reverse |
-| Assert the FR-004 export contract column by column, including the empty clock-out row and decimal hours computed from recorded times | Test Designer | R006 records the misread derivation as the failure mode; the contract is consumed outside the portal and a change to it is invisible to the portal's own tests |
-| Assert NFR-005 at the database, not through the application | Test Designer | No audit view screen exists, so a test that reads through the application proves less than the requirement demands |
-
 ### What this document does not claim
 
 - It does not claim the Inception milestone is achieved. That verdict belongs to the ReviewCoordinator.
