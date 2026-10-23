@@ -3,14 +3,13 @@
 - **Status:** Draft — iteration 2, submitted for review
 - **Milestone Target:** End of Inception (not yet achieved)
 ## Use-Case Diagram
-
 Fifteen use cases, one per declared requirement FR-001 to FR-015. Two human actors and two external
 systems sit on the boundary. Authentication (NFR-001) is deliberately **not** a use case: it is
 mechanism MECH-01 in the Supplementary Specification, included by every use case.
 
 ```plantuml
 @startuml
-title Portal - System boundary, actors and use cases (Inception, iteration 1)
+title Portal - System boundary, actors and use cases (Inception, iteration 2)
 
 left to right direction
 
@@ -85,7 +84,6 @@ requirement traceable without inventing three goals the employee does not have.
 attributes to UC-011, and it supplies FullName to UC-004 — the export's second column is a directory
 value, not a portal-owned one. Keycloak initiates nothing: it is the mechanism behind MECH-01, and a
 mechanism is not an actor goal.
-
 ## Actors
 
 | Actor | Type | Represents | Goals in the portal | Source |
