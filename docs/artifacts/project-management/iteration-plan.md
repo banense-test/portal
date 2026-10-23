@@ -100,58 +100,6 @@ title Portal - Iteration sequence and human gates (unanchored)
 
 **Two clocks, never added.** Agent iterations are measured in tokens and elapsed agent time. The CON-031 gate is measured in days of human queue time — waiting, not working. They are reported side by side and never summed into one figure.
 
-### Fine plan — Inception iteration 1
-
-Bounded to this iteration. Owners are agent roles. No work item carries a size: no phase has closed, so
-no measured actual exists and no forecast is invented (CON-030 sets no token budget, and none is set
-here).
-
-| # | Work item | Owner | Depends on | Exit condition |
-|---|---|---|---|---|
-| W1 | Development Case — tailoring, optional triggers, measurement and version policy | ProcessEngineer | — | Persisted; all six OPTIONAL triggers recorded |
-| W2 | Vision — problem, features, exclusions, volatility map | SystemAnalyst | W1 | Persisted; 13 exclusions published verbatim |
-| W3 | Use-Case Model — 15 UCs, 4 detailed, business-rule binding | SystemAnalyst | W2 | Persisted; every UC traces to its FR |
-| W4 | Supplementary Specification — 5 NFR, 36 CON, MECH-01 to MECH-04 include graph | RequirementsSpecifier | W3 | Persisted; every constraint bound to a UC or a mechanism |
-| W5 | Risk List — R001 to R008 classified, treated, traced | ProjectManager | W4 | Persisted; every risk has a strategy and a treatment |
-| W6 | Iteration Plan — coarse roadmap and this fine plan | ProjectManager | W5 | Persisted; LCO readiness assessed |
-| W7 | Review Record — findings per artifact | Reviewer, ReviewCoordinator | W6 | Findings recorded with severity |
-| G0 | **LCO milestone verdict** | ReviewCoordinator | W7 | Verdict issued |
-
-```plantuml
-@startgantt
-title Portal - Inception iteration 1 fine plan: work items and owners
-
-[W1 Development Case - tailoring and triggers] lasts 1 day
-[W1 Development Case - tailoring and triggers] is colored in LightBlue
-
-[W2 Vision - problem, features, exclusions] lasts 1 day
-[W2 Vision - problem, features, exclusions] starts at [W1 Development Case - tailoring and triggers]'s end
-[W2 Vision - problem, features, exclusions] is colored in LightGreen
-
-[W3 Use-Case Model - 15 UCs, 4 detailed] lasts 1 day
-[W3 Use-Case Model - 15 UCs, 4 detailed] starts at [W2 Vision - problem, features, exclusions]'s end
-[W3 Use-Case Model - 15 UCs, 4 detailed] is colored in LightGreen
-
-[W4 Supplementary Specification - NFR and CON] lasts 1 day
-[W4 Supplementary Specification - NFR and CON] starts at [W3 Use-Case Model - 15 UCs, 4 detailed]'s end
-[W4 Supplementary Specification - NFR and CON] is colored in LightGreen
-
-[W5 Risk List - R001 to R008] lasts 1 day
-[W5 Risk List - R001 to R008] starts at [W4 Supplementary Specification - NFR and CON]'s end
-[W5 Risk List - R001 to R008] is colored in Orange
-
-[W6 Iteration Plan - roadmap and fine plan] lasts 1 day
-[W6 Iteration Plan - roadmap and fine plan] starts at [W5 Risk List - R001 to R008]'s end
-[W6 Iteration Plan - roadmap and fine plan] is colored in Orange
-
-[W7 Review Record - findings] lasts 1 day
-[W7 Review Record - findings] starts at [W6 Iteration Plan - roadmap and fine plan]'s end
-[W7 Review Record - findings] is colored in Grey
-
-[G0 LCO milestone verdict] happens at [W7 Review Record - findings]'s end
-@endgantt
-```
-
 ### Critical chain
 
 The sequential agent stretches from iteration start to the LCO gate. Depth is seven stretches plus the
