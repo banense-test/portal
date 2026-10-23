@@ -126,6 +126,7 @@ endif
 
 |Environment|
 :Read Iteration Assessment;
+:Apply authoring checks C1 to C9 to every artifact produced;
 :Revise Development Case where a finding demands it;
 stop
 @enduml
