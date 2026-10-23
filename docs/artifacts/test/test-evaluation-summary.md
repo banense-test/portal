@@ -249,13 +249,12 @@ value is therefore *conformance evidence*: proving the system does exactly what 
 say, and proving it against the stand-ins that CON-031 makes the team's entire integration surface.
 That is a different mission from exploratory testing, and it is the one this project needs.
 
-**What iteration 2 corrects in the test position.** Two defects were recorded against this document
-at the LCO review. The cited CI run was not the build observed on `main`, so an observable SCM fact
-was stated as a verified observation when it was a stale one. And NFR-001 was assigned to an
+**What this iteration corrects in the test position.** Two defects were recorded against this
+document at the LCO review. The cited CI run was not the build observed on `main`, so an observable
+SCM fact was stated as a verified observation when it was a stale one. And NFR-001 was assigned to an
 Elaboration iteration scoped as design only, so its stated method — exercising every use case
-unauthenticated and requiring refusal — could not have been executed there. Both are corrected
-below, and the coverage plan is re-based onto the eight-iteration roadmap the Iteration Plan now
-carries.
+unauthenticated and requiring refusal — could not have been executed there. Both are corrected here,
+and the coverage plan is re-based onto the eight-iteration roadmap the Iteration Plan now carries.
 
 ### Acceptance criteria verification
 
