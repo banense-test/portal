@@ -395,8 +395,8 @@ endif
 
 1. HR chooses one calendar month.
 2. The portal resolves the month window in Europe/Madrid — 00:00 on the first day to 23:59:59 on the last.
-3. The portal selects every clocking pair and every HR correction or insertion in that window.
-4. The portal groups pairs by employee and calendar date (CON-011).
+3. The portal selects every clocking event in that window and resolves each employee-day's effective pair over supersession — the rows no other row supersedes.
+4. The portal groups the effective pairs by employee and calendar date (CON-011).
 5. For each group the portal emits one row: EmployeeId, FullName, WorkerCategory, Date, ClockIn, ClockOut, HoursWorked, Corrected.
 6. The portal streams the CSV in the fixed column order.
 7. HR receives the file.
@@ -406,7 +406,7 @@ endif
 - **A1 — Missing clock-out.** ClockOut and HoursWorked are exported empty; the row is still exported.
 - **A2 — No clocking on a day.** No row is produced for that employee-day.
 - **A3 — Worker has no category.** WorkerCategory is blank (CON-016). No default value is invented.
-- **A4 — HR corrected or inserted a clocking that day.** Corrected = Y for that employee-day; otherwise N.
+- **A4 — HR corrected or inserted a clocking that day.** Corrected = Y for that employee-day; otherwise N. The correction is an appended event row naming the row it supersedes, so the effective pair the export reads already carries the corrected value and the original is never overwritten (CON-013).
 - **A5 — Directory attribute empty.** FullName is the one directory value in the contract; if AD returns it empty the column is exported empty and the row is still produced. This is the R001 case reaching the export, not only the directory screen.
 
 **Column contract**
@@ -436,9 +436,16 @@ note right
   00:00 first day to 23:59:59 last day.
   CON-007: stored UTC, displayed Europe/Madrid.
 end note
-:Select every clocking pair in the window;
-:Select every HR correction or insertion in the window;
-:Group pairs by employee and calendar date (CON-011);
+:Select every clocking event in the window;
+:Resolve each employee-day's effective pair
+ over supersession (ADR-010);
+note right
+  The effective pair is the two rows no other
+  row supersedes - the same query as UC-002
+  and UC-003. A correction is an appended row,
+  so the original is never overwritten (CON-013).
+end note
+:Group the effective pairs by employee and calendar date (CON-011);
 :Emit one row per employee-day group;
 :EmployeeId = sAMAccountName from the session record (CON-004);
 
