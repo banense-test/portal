@@ -507,6 +507,66 @@ asks what went wrong and why — a process gap, a tool failure, an ambiguous tem
 guideline. Each change to this document is traceable to a specific observed problem. Process
 improvement without that evidence is guesswork and is not recorded here.
 
+**Iteration 1 evidence and the changes it forced.** Ten findings were recorded across three lenses.
+Five of them are defects of a *kind*, not of a single artifact — the same mistake made in different
+documents — and a kind of defect is a process gap, which is this document's business.
+
+```plantuml
+@startuml
+title Portal - Process improvement record: iteration 1 evidence to Development Case change
+
+package "Observed in Inception iteration 1" {
+  class "Iteration Plan#F1 (Reviewer)\nFine plan derived from the discipline\nsequence, not from the artifact set" as O1
+  class "Iteration Plan#F1 (Management)\nFixture built treated as risk retired" as O2
+  class "Iteration Plan#F2 (Management)\nPopulation measure assigned to an\niteration gate" as O3
+  class "Test Evaluation Summary#F1\nStale CI run cited as observed" as O4
+  class "Vision#F1 (both lenses)\nCriterion restates its requirement" as O5
+}
+
+package "Development Case change forced" {
+  class "Disciplines and Intensity:\nplan derives from the artifact set" as C1
+  class "Guidelines: risk retirement is a\npassing test, never a fixture" as C2
+  class "Guidelines: a criterion must be\nable to fail" as C3
+  class "Guidelines: observable SCM state\ncited only as observed" as C4
+  class "Guidelines: process improvement\nrecord" as C5
+}
+
+O1 --> C1
+O2 --> C2
+O3 --> C3
+O4 --> C4
+O5 --> C3
+C1 --> C5
+C2 --> C5
+C3 --> C5
+C4 --> C5
+
+note bottom of C5
+  Each change is traceable to a named
+  finding. A change with no observed
+  problem behind it is not recorded.
+end note
+@enduml
+```
+
+| Observed problem | Root cause | Change to this document |
+|---|---|---|
+| `Iteration Plan#F1` (Reviewer) — the fine plan covered seven artifacts; the iteration produced nine, and the two it missed had their roles marked idle | The plan was derived from the discipline sequence this document describes, not from the artifact set the iteration was going to produce. Analysis and Design is Medium and Test is Low in Inception, and both were read as idle | Disciplines and Intensity now states that a plan is derived from the artifact set, and that a discipline at Medium or Low intensity is active, not idle |
+| `Iteration Plan#F1` (Management Reviewer) — the plan claimed R001 retired in iteration 2 on the strength of the stand-in fixture being built | Building a risk's mechanism was treated as retiring the risk. The distinction is the one claim a risk-driven gate exists to test | Guidelines and Procedures, working against stand-ins: the stand-in is R001's mechanism, not its retirement; retirement is a passing test |
+| `Iteration Plan#F2` (Management Reviewer) — AC-004, a population measure, was assigned to the iteration in which its own window opens | A measure that cannot close inside an iteration was gated on an iteration | Guidelines and Procedures, criteria: a criterion must be able to fail, and a measure whose window outlives the iteration is a post-acceptance measure with a named owner |
+| `Vision#F1` (both lenses) — BG-001 presented as measurable with no declared baseline; FR-014 and FR-015 citing their own identifiers as success criteria | A criterion that restates its requirement cannot be distinguished from it, so it cannot be tested | Same guideline as above, applied at authoring time rather than at review time |
+| `Test Evaluation Summary#F1` — a CI run identifier and two timestamps cited from an earlier read than the moment of writing | Observable SCM state was cited from memory | Guidelines and Procedures, observable state: a run identifier, a timestamp, a build status or a commit SHA is cited only as read at the moment of writing, or not cited at all |
+
+**The pattern behind four of the five.** Each is a claim that *looks* verified and is not: a fixture
+that looks like a retired risk, a criterion that looks like a measure, a run identifier that looks
+like an observation, a plan that looks like it covers the work. The check that catches all four is the
+same — name the event that would make the claim false, and confirm that event is recorded somewhere.
+A claim with no falsifying event is not a claim the process can act on.
+
+**No change is made to the roster, the CORE catalog, the ownership allowlist or the intensity
+matrix.** The iteration-1 defects were authoring and planning defects, not process-shape defects. The
+process configuration held; what it lacked was three authoring checks, and those are now guidelines.
+
 ### Scope note for test tailoring
 
 No accessibility conformance target is declared for this cycle, and scale is not a binding concern at
