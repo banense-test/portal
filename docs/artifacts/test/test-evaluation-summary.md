@@ -4,25 +4,6 @@
 - **Milestone Target:** End of Inception (not yet achieved)
 
 ## Test Scope
-### Evaluation Mission — Inception iteration 1
-
-The Evaluation Mission is the agreement with the stakeholders on the purpose, focus and acceptable
-outcome of the test effort for this iteration. It is stated before any test is designed, and the
-iteration is judged against it — not against a coverage percentage.
-
-| Element | Statement |
-|---|---|
-| **Purpose** | Establish a test position the project can be held to: what will be tested, against what, at which level, and what evidence will count as proof. Inception produces no working software, so the mission is to make the test effort *decidable* in Elaboration and Construction, not to prove the system works |
-| **Focus** | The four architecturally significant use cases detailed this iteration — UC-001, UC-004, UC-009, UC-011 — and the four risks that decide whether the test effort can succeed at all: R001, R004, R006, R008 |
-| **Acceptable outcome** | Every one of the 15 use cases has a named test level and a named iteration in which it is executed; the stand-in fixture requirement that retires R001 is recorded as a test obligation, not a convention; the defect record and the quality signals are named; the test framework gap is carried as an Elaboration obligation with an owner |
-| **Not the outcome** | A pass rate. No test is executed this iteration and none can be. A mission that claimed otherwise would be reporting a result that does not exist |
-
-**Why the mission is scoped this way.** The declared scope is constraint-dense — 36 constraints
-against 15 requirements — so the stakeholder has already fixed most behaviour. The test effort's
-value is therefore *conformance evidence*: proving the system does exactly what CON-001 to CON-036
-say, and proving it against the stand-ins that CON-031 makes the team's entire integration surface.
-That is a different mission from exploratory testing, and it is the one this project needs.
-
 ### Test effort workflow
 
 ```plantuml
