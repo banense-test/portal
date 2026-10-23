@@ -347,7 +347,6 @@ presses and corrections for an employee-day is readable directly from the table,
 NFR-005's "read directly from the database" requires.
 
 ## Use-Case View
-
 The Use-Case view validates the other four. Four scenarios are drawn because they are the four places
 where a wrong structural decision would be expensive to reverse; each one exercises a different part
 of the architecture.
@@ -398,14 +397,22 @@ alt key already recorded
   LEDGER --> UI : original result
   note right: Duplicate rejected (REL-04). No second record.
 else new key
-  LEDGER -> STORE : read today's pair for employee
+  LEDGER -> STORE : resolve the open pair for employee-day\n(row of each EventKind not superseded)
   activate STORE
   STORE --> LEDGER : open pair or none
   deactivate STORE
   LEDGER -> LEDGER : enforce CON-011, CON-012
-  LEDGER -> STORE : insert clocking with pressTime
+  LEDGER -> STORE : INSERT ClockingEvent\n(EventKind, pressTime, Source=Employee,\nSupersedesId=NULL)
   activate STORE
   STORE -> DB : insert
+  note right
+    Append-only: no UPDATE, no DELETE.
+    The partial unique index on
+    (EmployeeId, WorkDate, EventKind)
+    WHERE SupersedesId IS NULL admits one
+    original ClockIn and one original
+    ClockOut per employee-day (CON-012).
+  end note
   STORE --> LEDGER : ok
   deactivate STORE
   LEDGER --> UI : confirmation with recorded time
@@ -439,7 +446,8 @@ end note
 **What this validates.** The retry lives in COMP-001, not in COMP-002 — the server never holds a
 pending press, which is what CON-036 means by one action, one queue, one entity. The idempotency check
 precedes the pair rules, so a retried press cannot be rejected as a second pair. COMP-002 writes no
-audit entry, which is the NFR-005 boundary.
+audit entry, which is the NFR-005 boundary. The write is an INSERT and never an UPDATE, so the same
+scenario that records a Clock Out also satisfies CON-013.
 
 ### UC-004 Export Monthly Clocking Report as CSV
 
@@ -462,10 +470,15 @@ activate EXP
 EXP -> EXP : resolve window in Europe/Madrid\n00:00 first day to 23:59:59 last day
 note right: CON-007: stored UTC, exported Europe/Madrid.
 
-EXP -> STORE : select pairs and corrections in window
+EXP -> STORE : select clocking events in window,\nresolved to the effective pair per employee-day
 activate STORE
 STORE --> EXP : rows
 deactivate STORE
+note right
+  ADR-010: the effective pair is the row of each
+  EventKind that no other row supersedes.
+  COMP-002 owns that resolution; COMP-003 consumes it.
+end note
 
 EXP -> EXP : group by employee and calendar date (CON-011)
 
@@ -514,7 +527,7 @@ end note
 
 **What this validates.** COMP-003 depends on COMP-006 and COMP-009 but on neither COMP-002 nor
 COMP-004 — the export reads the ledger through the data store and derives everything else itself. The
-Corrected flag is derived from the presence of a correction record, not stored as a column on the
+Corrected flag is derived from the presence of a `Source = Hr` row, not stored as a column on the
 clocking, which is what keeps CON-013's append-only rule compatible with FR-004.
 
 ### UC-009 Feature or Un-feature News
@@ -590,13 +603,15 @@ deactivate UI
 
 **What this validates.** The invariant is enforced in two places and the audit entry is written once.
 COMP-004 is the only component that changes the featured flag, and the schema refuses a second
-featured row even if COMP-004 is wrong.
+featured row even if COMP-004 is wrong. The news-category closed list (General, HR, IT, Events) is
+owned here too, and is a different list from the worker category — no component reads one to decide
+anything about the other.
 
 ### UC-011 Search Employee Directory
 
 ```plantuml
 @startuml
-title UC-011 Search Employee Directory - the R001 seam and the category join
+title UC-011 Search Employee Directory - the R001 seam and the category column
 
 actor "Employee\nSTK-004" as EMP
 participant "COMP-001\nPortal UI Shell" as UI
@@ -650,18 +665,24 @@ note over GW
   The stand-in directory replaces AD here
   (CON-031) and must carry the empty-attribute
   entries or R001 is retired untested.
+  Returns the six AD attributes only: worker
+  category is portal-owned (CON-021) and never
+  crosses this seam.
 end note
 note over CAT
   CON-021: the category is a link, never a
   duplicate of the employee. No sync, no
   reconciliation, no conflict.
+  CON-015: rendered as a column and used to
+  filter the directory. It decides nothing.
 end note
 @enduml
 ```
 
 **What this validates.** The category join is a second, local read — the directory is never written to
 and never copied. The unreachable branch returns a signal, not an empty list, which is what makes
-FR-014 distinguishable from "no match" at the UI.
+FR-014 distinguishable from "no match" at the UI. The category is read here as a column and a filter
+and for no access decision, which is the CON-015 boundary the architecture has to keep visible.
 
 ## Logical View
 The decomposition. Each component encapsulates **one area of change** — a decision likely to change,
