@@ -360,7 +360,7 @@ stop
 ## Test Summary
 ### What was executed this iteration
 
-**No test was executed in Inception iteration 1, and none could be.** The iteration produces no
+**No test was executed in Inception iteration 2, and none could be.** The iteration produces no
 working software: no code, no stand-ins, no test cases. Reporting a pass rate here would be reporting
 a result that does not exist.
 
@@ -368,35 +368,42 @@ a result that does not exist.
 |---|---|---|
 | Test cases designed | 0 | Test Case is an Elaboration artifact; the four detailed use cases are the input to it |
 | Test cases executed | 0 | No code exists to execute against |
-| Use cases with a named test level and iteration | 15 of 15 | Coverage plan above |
-| Non-functional requirements with a named measurement method | 5 of 5 | Quality-attribute plan above |
-| Stand-in fixture obligations recorded | 1 | The empty job-title and empty extension entries (R001, R004) |
-| Test framework selected | No | Recorded gap; Test Manager closes it in Elaboration |
+| Use cases with a named test level and an execution iteration matching the roadmap | 15 of 15 | Coverage plan above |
+| Non-functional requirements with a named measurement method and an iteration where the behaviour exists | 5 of 5 | Quality-attribute plan above |
+| Acceptance criteria with a point at which they can close | 5 of 5, with AC-004 split into two parts | Acceptance criteria verification above |
+| Stand-in fixture obligations recorded | 1 | The empty job-title and empty extension entries (R001, R004), executed in iteration 3 |
+| Test framework selected | No | Recorded gap; closes in iteration 3 |
 
 ### Quality signals observed
 
-These are read from the project's SCM, not compiled by hand.
+These are read from the project's SCM at the moment of writing, not compiled by hand.
 
 | Signal | Value | Source |
 |---|---|---|
-| Hosted CI build on `main` | Success — run `39932821851`, started 2026-10-23 09:34:14Z, completed 09:35:04Z | `scm_get_build_status` |
-| Open issues in the tracker | None | `scm_list_issues` |
-| Closed issues in the tracker | None | `scm_list_issues` |
+| Hosted CI build on `main` | Success — run `39940062277`, started 2026-10-23 10:34:26Z, completed 10:35:16Z | `scm_get_build_status` |
+| Issues in the tracker | One — `Issue #1`, recorded against a documentation artifact, not against the portal | `scm_list_issues`, state `all` |
 
 **How to read the green build.** It is a real signal and a weak one. The repository currently holds
 project inputs and artifacts, not the portal; a green build proves the pipeline runs, not that
 anything works. Its value this iteration is that the CI path CON-029 requires is live and that the
 first red build will mean something. It is not evidence about the product.
 
+**How to read the one issue.** It is a documentation-staleness defect in the branching strategy
+document, raised by review rather than by a test. It is not a product defect and it does not bear on
+the test position. It is cited here because the tracker is the authoritative defect record and a
+defect count that omitted it would be a count compiled by hand.
+
 ### Coverage achieved against the mission
 
 | Mission element | Achieved | Evidence |
 |---|---|---|
-| Every use case has a named test level and iteration | Yes | Coverage plan — 15 of 15 |
+| Every use case has a named test level and an execution iteration | Yes | Coverage plan — 15 of 15, re-based onto the eight-iteration roadmap |
+| Every execution iteration is one in which the behaviour exists | Yes | Coverage plan and quality-attribute plan; NFR-001 split into a claim-mapping check and a per-iteration refusal assertion |
 | Every NFR has a named measurement method | Yes | Quality-attribute plan — 5 of 5 |
-| The R001 fixture obligation is recorded as a test obligation | Yes | Test infrastructure table; entry criterion |
-| The defect record and quality signals are named | Yes | SCM issue tracker; hosted CI |
-| The test framework gap has an owner and a phase | Yes | Test Manager, Elaboration |
+| Every acceptance criterion has a point at which it can close | Yes | AC-004 split into a learnability check at iteration 5 and a post-Project-Acceptance population measure owned by STK-001 |
+| The R001 fixture obligation is recorded as a test obligation with its execution iteration | Yes | Test infrastructure table; entry criterion; iteration 3 in the execution sequence |
+| The defect record and quality signals are named and read from the SCM | Yes | SCM issue tracker; hosted CI run `39940062277` |
+| The test framework gap has an owner and an iteration | Yes | Test Manager, iteration 3 |
 | Test execution evidence | **No — and not expected this iteration** | No code exists |
 
 ## Defects and Incidents
