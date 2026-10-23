@@ -1,0 +1,17 @@
+<Project>
+
+  <!--
+    Shared build settings for every project under src/ and tests/.
+    Version policy (Development Case): .NET 10 and PostgreSQL 18 are the only
+    framework pins. No package-level pin is invented by the team.
+  -->
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+</Project>
