@@ -1,9 +1,9 @@
 ## Document Control
 ### Reviewer lens
-<!-- review: Inception I1 -->
+<!-- review: Inception I2 -->
 
 - **Phase:** Inception
-- **Status:** Draft — iteration 1, technical lens review complete
+- **Status:** Draft — iteration 2, technical lens review complete
 - **Milestone Target:** End of Inception (not yet achieved)
 
 ### Business Reviewer lens
