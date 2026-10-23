@@ -708,147 +708,68 @@ SIG ..> ROAD : not re-based onto
 ```
 
 ### Business Reviewer lens
-<!-- review: Inception I1 -->
+<!-- review: Inception I2 -->
 
-<!-- review: Inception I1 -->
+<!-- review: Inception I2 -->
 
-One new defect from this lens: 0 Critical, 0 Major, 1 Minor. The business-rule attachment defect in the Use-Case Model is real and I confirm it, but it is already carried by the Reviewer lens as `Use-Case Model#F1`; re-recording it here would put one logical defect in the ledger twice, so I reference it instead of duplicating it.
-
-```plantuml
-@startuml
-title Compliance matrix - LCO business modeling lens, Inception iteration 1
-
-package "Applicable and satisfied" {
-  class "Scenario alignment: DC section 4\nclassification independently verified" as C1 <<Pass>>
-  class "Business rules as formal constraints:\nCON-008 to CON-020 carry ID, source,\nUC attachment, testable condition" as C2 <<Pass>>
-  class "Stakeholder representation:\nall 4 declared STK represented" as C3 <<Pass>>
-  class "Volatility annotation:\n3 High features flagged and encapsulated" as C4 <<Pass>>
-  class "Diagram coverage: no BM diagram owed,\nnone missing" as C5 <<Pass>>
-  class "UML richness of this review:\n4 diagrams, matrix-driven" as C6 <<Pass>>
-}
-
-package "Not applicable - no business model exists" {
-  class "BUC completeness test:\nno BUC declared, none owed" as N1 <<N/A>>
-  class "BUC realization adequacy:\nno BUC, and Elaboration concern" as N2 <<N/A>>
-  class "Derivation bridge:\nsystem UCs declared directly" as N3 <<N/A>>
-  class "Resource planning compliance:\nno business worker or entity" as N4 <<N/A>>
-}
-
-package "Defect owned by another lens" {
-  class "Business-rule attachment accuracy:\nCON-015 bound to UC-010" as D1 <<Fail>>
-}
-
-C1 --> D1 : rule audit found\none misbinding
-D1 ..> N1 : recorded as\nUse-Case Model#F1
-
-note bottom of D1
-  Not re-recorded by this lens.
-  Use-Case Model#F1 already carries it;
-  a second row would duplicate one
-  logical defect across two lenses.
-end note
-
-note bottom of N3
-  Derivation readiness is not a gap here:
-  the stakeholder declared FR-001 to FR-015
-  as system use cases, so there is no
-  business model to derive them from.
-end note
-@enduml
-```
-
-#### Development Case
-
-No finding. The INACTIVE declaration is correct and correctly evidenced. It is a thin plug-in: it removes no role from the 25-role roster, changes no workflow structure, and reassigns no ownership. BusinessProcessAnalyst and BusinessReviewer are recorded idle by trigger rather than deleted, which is the right treatment — an idle role is not a removed role. The real-time-system trigger is also correctly not fired: NFR-004's one-second target is a performance requirement, not a hard deadline, and FR-013's retry is a bounded client-side retry loop rather than reactive event-driven behaviour.
-
-#### Vision
-
-| Severity | Location | Defect | Remediation |
-|---|---|---|---|
-| Minor | Features tables, FR-014 and FR-015 rows, success-criterion column | The success-criterion column is self-referential for two features: the FR-014 row cites "FR-014" and the FR-015 row cites "FR-015" as their own success criterion. Every other row cites an independent measure — an AC-NNN or a CON-NNN. A criterion that restates the requirement identifier is not a verification measure: it cannot be tested and cannot be distinguished from the requirement it is meant to verify. The two affected features are the network-unavailable behaviours, whose observable outcome is stated in the requirement text but is not expressed as a checkable criterion anywhere in the Vision. | Replace the self-referential cells with an independent measure — cite an existing acceptance criterion, or state the observable check directly, for example "the directory area shows a no-connection message and no result rows when the corporate network is unreachable". If no AC is declared for FR-014 and FR-015, record the criterion as derived from the requirement text rather than presenting the requirement identifier as its own measure. |
-
-All other business-lens Vision checks pass. The 13 declared exclusions are published verbatim as a checkable boundary, which is the correct control for the exclusion-crossing risk. All four declared stakeholders are represented, and the negative-stakeholder analysis is honest: STK-003's constraint (CON-022, no AD modification) is declared and honoured rather than traded away. The volatility map flags exactly the three High features — FR-004, FR-009, FR-012 — and the Software Architecture Document encapsulates each in a dedicated component, so the volatility annotation reached the architecture rather than stopping at the Vision. No unsourced quantitative business claim appears.
+Three findings this iteration: two Major, one Minor, no Critical. All three are business-rule attachment defects — the rule content is correct and the attachment to the use cases that enforce it is not.
 
 #### Use-Case Model
 
-No new finding from this lens. The business-rule binding defect is confirmed and is carried as `Use-Case Model#F1` by the Reviewer lens; I do not duplicate it.
+**`Use-Case Model#F1` — Major — CON-012 is bound to UC-001 but not enforced by it.** The button logic in main-flow step 3 distinguishes only "a pair is open" from "a pair is not open", so once an employee has completed a pair for the day the portal renders Clock In again and step 6 records the press. Alternative flow A4 covers only the open-pair case. The complete-pair case is the one that produces a second pair, and it is unaddressed — as specified, UC-001 permits the exact state CON-012 declares impossible. Remediation: add an alternative flow for the complete-pair case, state step 3 in terms of the three states the rule creates (no pair, pair open, pair complete), and route the employee to HR under UC-005 per CON-017.
 
-The business-lens checks that pass: every one of the fifteen use cases cites a declared FR-NNN in its `Source` field, so no use case exists that the stakeholder did not declare and no declared requirement is unrepresented. The business rules are bound to use cases rather than left as prose — the binding diagram attaches each rule cluster to the use cases that enforce it, which is the property that makes a rule auditable. The three extension use cases (UC-013, UC-014, UC-015) are correctly modelled as exception paths rather than as independent actor goals, and the model says so explicitly. Authentication is a mechanism (MECH-01) and never a use case, which is the correct treatment of a cross-cutting technical concern.
+**`Use-Case Model#F2` — Major — CON-015's attachment is incomplete and contradicts the Software Architecture Document.** CON-015 declares two permitted uses of the worker category: "a directory column that also filters" and "a CSV export column". The Use-Case Model binds the rule to UC-004 and UC-012 and explicitly denies it is bound to UC-011, which is the directory — in a paragraph that first states the rule "confines the worker category to the directory column and the export column". UC-011's main flow specifies no filter by worker category at all. The Software Architecture Document takes the opposite position, citing CON-015 as the basis for COMP-005 rendering the column and filtering the result set by it. Remediation: bind CON-015 to UC-011, state its permissive half (column plus filter) and its prohibitive half (no access decision) separately, add the filter to UC-011's flows, and align the outline table and the binding diagram.
 
 #### Supplementary Specification
 
-No finding. The business rules are the strongest part of this artifact set and they meet the four-property standard: each carries a unique identifier (CON-008 to CON-020), each is traceable to a declared source, each is attached to the use cases or entities it constrains, and each states a testable condition. CON-009's closed four-value list, CON-010's single-featured invariant, CON-012's one-pair-per-day rule and CON-013's never-overwrite rule are all stated as invariants rather than as guidelines, which is what makes them enforceable downstream. CON-015 is the load-bearing rule of the set — the worker category is descriptive and drives no access decision — and it is stated with the precision the exclusion requires.
-
-#### Software Architecture Document
-
-No finding from this lens. The three High-volatility features are each encapsulated behind a dedicated component, which is the architectural consequence the volatility annotation was there to produce. CON-028 is satisfied: Keycloak sits inside the corporate network boundary, and the hosted CI is the only node outside it and is explicitly a development toolchain rather than a runtime dependency. No cache is designed anywhere, which is the correct architectural reading of FR-014 and FR-015 — nothing is copied locally, so there is nothing to serve stale.
-
-#### Risk List
-
-No finding from this lens. R001 and R002 are carried with their declared identifiers and magnitudes and are not renumbered or reclassified, which CON-023 requires. R001 is the one risk with a business-model consequence: the directory must render an entry whose job title or extension is empty without breaking the row or hiding the employee, and the stand-in directory must carry such entries or the risk is retired untested. That obligation is recorded in the Development Case and in the Test Evaluation Summary as an entry criterion, so it is carried into execution rather than left as a note.
-
-#### Iteration Plan, Test Evaluation Summary
-
-No finding from this lens. Neither artifact carries business-level content that this lens governs; the technical lens has reviewed both.
-
-**Defect distribution:**
+**`Supplementary Specification#F1` — Minor — the business-rules register carries twelve of thirteen declared `[BusinessRule]` constraints.** The scope declares CON-008 through CON-020 as `[BusinessRule]`. The register presents itself as the business-rule register ("The twelve business rules below are invariants") and omits CON-008, the authorization rule. CON-008 is enforced and attached elsewhere as MECH-02, so the rule is not lost — but the register under-reports by one and asserts its own completeness. Remediation: add CON-008 as the thirteenth row with its enforcement point and a cross-reference to MECH-02, and correct the count; or state in the preamble that authorization is deliberately carried as a mechanism and name CON-008 as the one declared `[BusinessRule]` constraint treated that way.
 
 ```plantuml
 @startuml
-title Business lens verdict - defect distribution and disposition
+title Portal - Business lens defect distribution, Inception iteration 2
 
-package "New findings from this lens" {
-  class "Critical: 0" as F0
-  class "Major: 0" as F1
-  class "Minor: 0" as F2
-  class "Info: 0" as F3
+package "Use-Case Model - 2 Major" {
+  class "F1 CON-012 complete-pair case\nbound but not enforced" as U1 <<Major>>
+  class "F2 CON-015 attachment incomplete\ncontradicts the SAD" as U2 <<Major>>
 }
 
-package "Business-lens criteria scored" {
-  class "Scenario alignment 10/10" as S1
-  class "Business rule audit 8/10" as S2
-  class "Stakeholder coverage 9/10" as S3
-  class "Volatility annotation 10/10" as S4
-  class "Diagram coverage 10/10" as S5
+package "Supplementary Specification - 1 Minor" {
+  class "F1 CON-008 absent from the register\n12 of 13 declared BusinessRule" as S1 <<Minor>>
 }
 
-class "Disposition\nBR-OK-INACTIVE\nBusiness Modeling NOT APPLICABLE" as V
+package "Defect class" {
+  class "Attachment defect - 3 of 3\nThe rule content is correct.\nThe binding to the use cases\nthat enforce it is not." as D1
+}
 
-F0 --> V
-F1 --> V
-F2 --> V
-F3 --> V
-S1 --> V
-S2 --> V
-S3 --> V
-S4 --> V
-S5 --> V
+package "Severity position" {
+  class "Critical: 0" as G1
+  class "Major: 2" as G2
+  class "Minor: 1" as G3
+}
 
-note bottom of S2
-  8/10, not 10/10: the rule set is
-  structurally complete but one attachment
-  is wrong (Use-Case Model#F1). The defect
-  is real; it is simply not this lens's
-  to record.
+U1 --> D1
+U2 --> D1
+S1 --> D1
+U1 --> G2
+U2 --> G2
+S1 --> G3
+
+note bottom of D1
+  No finding this iteration disputes what a rule
+  says. Each disputes where it is bound, or
+  whether the use case bound to it specifies the
+  behaviour that enforces it.
 end note
 
-note bottom of S3
-  9/10: all four declared stakeholders are
-  represented. The one point withheld is that
-  STK-002 appears in the Stakeholder Summary
-  but not in the Problem Statement's affected
-  table - defensible, since he is advisory
-  and not harmed by the problem.
-end note
-
-note bottom of V
-  No BM artifact was owed, so no BM artifact
-  can be defective. The absence of BUCs,
-  workers and entities is the CORRECT state
-  for a business-process-led = false project.
+note bottom of G1
+  No declared exclusion crossed, no identifier
+  invented, no scope expanded beyond the fifteen
+  declared requirements.
 end note
 @enduml
 ```
+
+**What this lens did not find.** No business artifact is owed and missing. No BUC, business actor, business worker or business entity is absent that the Development Case requires — the discipline is correctly inactive and the absence is the correct state. No stakeholder is unrepresented. No business goal is presented as met when its denominator does not exist. No volatile business policy failed to reach the architecture. No element addresses an undeclared functional area.
 
 ### Management Reviewer lens
 <!-- review: Inception I1 -->
