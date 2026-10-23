@@ -155,7 +155,6 @@ stop
 ```
 
 ## Risk Register
-
 | ID | Risk | Origin | P | I | Exposure | Magnitude | Strategy | Owner |
 |---|---|---|---|---|---|---|---|---|
 | R001 | The LDAP attributes the directory reads may not be filled consistently across the 3 offices (job title, extension). If not tested early, the directory shows gaps | Declared | 3 | 3 | 9 | High | Accept (CON-023) | SoftwareArchitect |
@@ -166,6 +165,7 @@ stop
 | R006 | The FR-004 export contract is implemented with a misread derivation — column order, empty clock-out, decimal hours, Corrected flag | Team-identified | 2 | 2 | 4 | Moderate | Avoid | Designer |
 | R007 | The Elaboration toolchain gaps — test framework, `CONTRIBUTING.md`, lint configuration, CI workflows — are not closed before Construction raises Implementation intensity | Team-identified | 2 | 2 | 4 | Moderate | Avoid | ProcessEngineer |
 | R008 | A client clock is wrong, so the timestamp FR-013 makes authoritative records a time that did not happen | Team-identified | 2 | 2 | 4 | Moderate | Accept (CON-023) | Designer |
+| R009 | The correction process does not converge: a third Inception iteration produces a further generation of the "a decision another artifact changed, not carried through" defect class, the LCO gate fails again, and the project leaves the 6 ± 3 iteration band | Team-identified | 2 | 3 | 6 | Significant | Avoid | ProcessEngineer |
 
 **R003 is not a CON-024 risk.** CON-024 excludes the availability, configuration and ownership of
 Keycloak and Active Directory. R003 is not about either system: it is the timing of the human feedback
@@ -176,6 +176,21 @@ registering the first, and CON-031 makes the second a schedule fact the plan mus
 "otherwise the audit trail records something that did not happen". The requirement fixes the
 behaviour; the residual risk is that the client clock is wrong. Its mechanism — the employee's own
 machine — lies outside the team's control, which is the CON-023 acceptance ground.
+
+**R009 is registered on the project's own measured history, not on a hypothesis.** Two Inception
+iterations have each produced a generation of the same defect class. Iteration 1's corrections
+produced seven findings of it. Iteration 2's corrections produced five Major findings of it, three in
+one artifact. The class is: a decision one artifact changed, not carried through to the artifacts that
+had to follow it. Its mechanism is inside the team's control — the authoring checks and the
+cross-artifact sweep — so its strategy is Avoid and no CON-023 grant is cited. Its warning sign is
+observable at the next review: a finding that names an artifact not re-based onto a decision another
+artifact changed in the same iteration.
+
+**R009 is the risk that decides whether a fourth Inception iteration is the right remedy.** The
+roadmap is nine iterations, the ceiling of the 6 ± 3 band. If iteration 3's review raises a third
+generation of the class, the correct reading is not that the corrections were insufficient — it is
+that the process needs correction, and the Project Manager escalates that reading rather than
+scheduling a fourth pass.
 
 ```plantuml
 @startuml
@@ -190,6 +205,7 @@ package "Significant - exposure 6" {
   class "R003 Human validation gate exceeds\n14 days queue time\nP=2 I=3 exposure=6\nAccept (CON-023)" as R003
   class "R004 Stand-in directory omits the\nempty-attribute entries\nP=2 I=3 exposure=6\nAvoid" as R004
   class "R005 An artifact crosses one of the\n13 declared exclusions\nP=2 I=3 exposure=6\nAvoid" as R005
+  class "R009 The correction process does not\nconverge; a third generation of the\nsame defect class\nP=2 I=3 exposure=6\nAvoid" as R009
 }
 
 package "Moderate - exposure 4" {
@@ -226,14 +242,14 @@ note right of R003
   Elaboration closes - a schedule risk.
 end note
 
-note bottom of R007
-  R007 threatens no labelled element: it is a
-  toolchain and sequencing risk, carried in the
-  register with no trace edge.
+note bottom of R009
+  R009 threatens no labelled element: it is a
+  process risk against the iteration sequence
+  itself, carried in the register with no trace
+  edge. R007 is the same shape.
 end note
 @enduml
 ```
-
 ## Risk Mitigation and Contingency
 
 | ID | Mitigation action | Contingency if it materializes | Warning sign |
