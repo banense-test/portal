@@ -622,7 +622,6 @@ and never copied. The unreachable branch returns a signal, not an empty list, wh
 FR-014 distinguishable from "no match" at the UI.
 
 ## Logical View
-
 The decomposition. Each component encapsulates **one area of change** — a decision likely to change,
 hidden from every other component. The three High-volatility requirements each own a component; the
 cross-cutting mechanisms are components because they are reused by many; the two adapters exist so the
@@ -630,7 +629,7 @@ external systems have exactly one seam each.
 
 ```plantuml
 @startuml
-title Portal - Logical view: candidate component decomposition (Inception iteration 1)
+title Portal - Logical view: candidate component decomposition (Inception iteration 2)
 
 skinparam componentStyle rectangle
 
@@ -704,16 +703,28 @@ note right of C004
   FR-009 High volatility.
   The single-featured invariant
   (CON-010) is owned here.
+  Also owns the news-category closed
+  list (General, HR, IT, Events) that
+  FR-006 sets and FR-010 filters by.
 end note
 note right of C006
   FR-012 High volatility.
   The closed four-value list (CON-009)
   is a configuration point here.
 end note
+note bottom of C005
+  Worker category is projected as a
+  directory column and nothing more.
+  No authorization decision reads it
+  (CON-015, MECH-02).
+end note
 note bottom of C009
   The only place the portal touches AD.
   The stand-in directory plugs in here
   (CON-031) - this is the R001 seam.
+  Returns the six AD attributes only;
+  worker category is portal-owned and
+  never crosses this seam.
 end note
 note bottom of C007
   Write-only interface. No read API:
@@ -727,14 +738,14 @@ end note
 | COMP | Responsibility | Area of change it encapsulates | Offers | Requires | Realizes |
 |---|---|---|---|---|---|
 | COMP-001 Portal UI Shell | Razor Pages host, page rendering, and the page-level clocking script including the localStorage retry queue | The browser-side behaviour of the clocking press (FR-013, CON-036) | Page routes; the clocking POST endpoint | COMP-002, COMP-003, COMP-004, COMP-005, COMP-006, COMP-008 | UC-001, UC-013, UC-014, UC-015 |
-| COMP-002 Clocking Ledger | Records clockings, enforces the pair rules, serves own and all-employee history, applies HR corrections | The clocking integrity rules (CON-011, CON-012, CON-013) | Record a clocking; read a month; read all; correct or insert | COMP-010, COMP-007, COMP-008 | UC-001, UC-002, UC-003, UC-005 |
+| COMP-002 Clocking Ledger | Appends clocking events, enforces the pair rules, serves own and all-employee history, appends HR corrections | The clocking integrity rules (CON-011, CON-012, CON-013) | Record a clocking; read a month; read all; correct or insert | COMP-010, COMP-007, COMP-008 | UC-001, UC-002, UC-003, UC-005 |
 | COMP-003 Clocking Export | Produces the monthly CSV: window, grouping, derivations, column order, Corrected flag | The FR-004 column contract — the most volatile element in the system | Export a month as CSV | COMP-010, COMP-006, COMP-009, COMP-008 | UC-004 |
-| COMP-004 News Lifecycle | Publish, edit, unpublish, feature; owns the single-featured invariant and the never-delete rule | The news lifecycle policy (CON-010, CON-014, CON-018, CON-019) | Publish; edit; unpublish; feature; read published and featured | COMP-010, COMP-007, COMP-008 | UC-006, UC-007, UC-008, UC-009, UC-010 |
-| COMP-005 Directory Search | Searches the directory, joins the category, projects the seven fields | The directory projection and its degradation (CON-003, CON-020, FR-014) | Search by name, department or office | COMP-009, COMP-006, COMP-008 | UC-011, UC-014 |
+| COMP-004 News Lifecycle | Publish, edit, unpublish, feature; owns the single-featured invariant, the never-delete rule, and the news-category closed list | The news lifecycle policy (CON-010, CON-014, CON-018, CON-019) and the news-category value set (FR-006, FR-010) | Publish; edit; unpublish; feature; read published and featured; filter by news category | COMP-010, COMP-007, COMP-008 | UC-006, UC-007, UC-008, UC-009, UC-010 |
+| COMP-005 Directory Search | Searches the directory, projects the seven fields including the category column, degrades to a no-connection message | The directory projection and its degradation (CON-003, CON-020, FR-014) | Search by name, department or office | COMP-009, COMP-006, COMP-008 | UC-011, UC-014 |
 | COMP-006 Worker Category | Assigns, clears and reads the category link; owns the closed value set | The category value set and its storage shape (CON-009, CON-016, CON-021) | Read a category; assign; clear | COMP-010, COMP-007, COMP-008 | UC-012 |
 | COMP-007 Audit Trail | Writes the five audited actions; append-only; no read API | The audit record shape (NFR-005, CON-013) | Record an audited action | COMP-010 | — (mechanism) |
 | COMP-008 Identity and Access | Validates the OIDC session; resolves employeeId and the two-valued level | The identity and authorization mechanism (NFR-001, CON-002, CON-008) | Current identity; current level | Keycloak (external) | — (mechanism) |
-| COMP-009 Corporate Directory Gateway | The only LDAP client; returns the six declared attributes, tolerating empty values | The AD access mechanism and the stand-in seam (CON-003, CON-022, CON-031) | Read attributes for a search term; read one employee's full name | Active Directory (external) | UC-011, UC-004 |
+| COMP-009 Corporate Directory Gateway | The only LDAP client; returns the six declared AD attributes, tolerating empty values | The AD access mechanism and the stand-in seam (CON-003, CON-022, CON-031) | Read attributes for a search term; read one employee's full name | Active Directory (external) | UC-004, UC-011 |
 | COMP-010 Portal Data Store | The only SQL client; transactions; the schema's invariants | The persistence mechanism (CON-027, CON-013, CON-014) | Transactional read and write over the four owned tables | PostgreSQL (external) | — (mechanism) |
 
 ### Analysis and design mechanisms
@@ -757,6 +768,26 @@ properties it must hold; the product is named only where the stakeholder declare
 retry exists: without a bounded retry there would be no duplicate to reject, and without the key the
 retry would create one record per attempt. CON-036's "one action, one queue, one entity" is the
 statement that these two are not a synchronisation mechanism.
+
+### Worker category: where it is read, and where it is not
+
+CON-015 confines the worker category to exactly two uses — a directory column that also filters, and
+a CSV export column. The decomposition keeps that boundary visible rather than implicit.
+
+| Component | Reads worker category | For what | Basis |
+|---|---|---|---|
+| COMP-005 Directory Search | Yes | Renders the column and filters the result set by it | CON-015, FR-011 |
+| COMP-003 Clocking Export | Yes | Emits the `WorkerCategory` CSV column | CON-015, FR-004 |
+| COMP-006 Worker Category | Yes | Owns the value; assigns, clears, reads | CON-009, CON-012, CON-021 |
+| COMP-008 Identity and Access | **No** | Authorization is the two AD-group levels only | CON-008, CON-015 |
+| COMP-009 Corporate Directory Gateway | **No** | Returns the six AD attributes; category is portal-owned and never crosses the LDAP seam | CON-003, CON-021 |
+| COMP-004 News Lifecycle | **No** | Filters news by the news-category list, a different closed list | FR-006, FR-010 |
+| COMP-002 Clocking Ledger | **No** | Records and serves clockings | CON-011, CON-012 |
+
+The two closed lists are distinct and are owned by different components: the **worker-category** list
+(Full-time, Part-time, Contractor, Intern) belongs to COMP-006 and is governed by CON-009; the
+**news-category** list (General, HR, IT, Events) belongs to COMP-004 and is governed by FR-006 and
+FR-010. Neither component reads the other's list.
 
 ## Process View
 
