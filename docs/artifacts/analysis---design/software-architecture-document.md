@@ -1042,28 +1042,6 @@ The portal owns exactly two things: clockings (with their corrections and audit 
 worker-category link. Everything else about a person is read from AD on every request and never
 stored.
 
-### Invariants and where they are enforced
-
-| Invariant | Enforced in the schema | Enforced in a component | Basis |
-|---|---|---|---|
-| At most one clocking pair per employee per calendar day | Unique index on (EmployeeId, WorkDate) | COMP-002 | CON-012 |
-| A pair never crosses midnight | `WorkDate` is a column, not derived from a timestamp range | COMP-002 | CON-011 |
-| A clocking original is never overwritten or deleted | No update or delete path on original rows; a correction is a new row | COMP-002 | CON-013 |
-| A repeated idempotency key produces one record | Unique index on IdempotencyKey | COMP-002 | FR-013, REL-04 |
-| At most one featured news item | Partial unique index on the featured flag where published | COMP-004 | CON-010 |
-| News is never deleted | No delete path; `IsPublished` flag | COMP-004 | CON-014 |
-| A worker has at most one category, possibly empty | Primary key on AdUserId; nullable Category | COMP-006 | CON-016, CON-021 |
-| The category value is one of four | Check constraint on the value set | COMP-006 | CON-009 |
-| The audit trail is legible without the application | Columns, not a serialised blob | COMP-007 | NFR-005, INT-07 |
-
-**Two of these are enforced twice on purpose.** CON-010 says the featured invariant must hold wherever
-the change comes from, and CON-013 says originals are never overwritten — both are statements about
-the data, not about the service, so both are enforced where the data lives.
-
-**No employee table, no category lookup table, no audit view.** CON-021 forbids duplicating the
-employee, CON-009 forbids a configurable category list, and NFR-005 forbids an in-portal audit screen.
-Each absence is a constraint satisfied, not a gap.
-
 ### The clocking record shape
 
 A clocking pair is recorded as an **append-only event log**, not as one mutable row. Each press
