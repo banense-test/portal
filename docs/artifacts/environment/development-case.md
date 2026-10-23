@@ -400,7 +400,6 @@ PE --> DC
 ```
 
 ## Guidelines and Procedures
-
 ### Measurement policy
 
 The baseline measures two quantities and only two: tokens consumed, and elapsed time split into agent
@@ -500,5 +499,16 @@ improvement without that evidence is guesswork and is not recorded here.
 ### Scope note for test tailoring
 
 No accessibility conformance target is declared for this cycle, and scale is not a binding concern at
-200 employees across 3 offices. Neither is designed for, and neither is a gap in this document — both
-return to the stakeholder when this cycle closes.
+200 employees across 3 offices. Neither is designed for as a separate objective, and neither is a gap
+in this document — both return to the stakeholder when this cycle closes.
+
+One factual consequence follows from CON-034 and is recorded here so the UI Designer and Test roles
+do not have to rediscover it: the authoritative design reference at
+`docs/inputs/employee-portal-design.html` (committed, SHA `715d4f73`) states in its own design-system
+header that it targets AA contrast, visible focus, targets of at least 40px, and keyboard-only
+operation. Because CON-034 makes that file mandatory and authoritative for the visual layer, those
+values are inherited as **design conformance** — the UI is built to the reference and tested against
+it. They are not a separately declared accessibility target, no WCAG level is claimed, and no
+accessibility test suite is scoped from them. The distinction matters: a defect is "the UI departs
+from the reference", not "the portal fails WCAG".
+
