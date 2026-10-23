@@ -3,7 +3,7 @@
 ## Document Control
 
 - **Phase:** Inception
-- **Status:** Draft — iteration 1, submitted for review
+- **Status:** Draft — iteration 2, submitted for review
 - **Milestone Target:** End of Inception (not yet achieved)
 
 ## Deployment mode
@@ -40,6 +40,52 @@ identity comes from the existing Keycloak and AD, and the portal holds no user t
 **No user population is provisioned at deployment.** There is no account creation step, no invitation
 step and no password step in the deployment procedure. An employee who can log in to the corporate
 network can use the portal; one who cannot, cannot. This is the whole of the access provisioning.
+
+## Deployment activities across the lifecycle
+
+Deployment is a discipline that runs across all four phases, not a Transition-only activity. What
+changes per phase is the depth, not the presence.
+
+```plantuml
+@startuml
+title Portal - Deployment activity across the lifecycle
+
+|Inception|
+start
+:Select the deployment mode - custom-built;
+:Sketch the topology against the SAD Deployment View;
+:Name the two acceptance gates and their owners;
+:Name the release unit - an SCM release, version and tag;
+
+|Elaboration|
+:Re-confirm the topology as the SAD evolves;
+:Confirm the six configuration values are placeholders\nheld in configuration, never in code (CON-031);
+:Confirm no deployment step requires an AD change (CON-022);
+
+|Construction|
+:Gate 1 - development site acceptance\nagainst the stand-ins (CON-031);
+:Package the SCM release - version, tag, traceable;
+:Draft the Release Notes (DC 5.1);
+
+|Transition|
+:Gate 2 - install site acceptance\nwith Infrastructure (STK-003);
+:Beta - HR and sponsor-nominated employees;
+:Go-live - all three offices, all 200 employees;
+:Handover to Infrastructure (CON-032);
+stop
+@enduml
+```
+
+| Phase | Deployment work | Exit condition |
+|---|---|---|
+| Inception | Mode, target community, topology sketch, gate names, release unit | This document baselined |
+| Elaboration | Re-confirm topology against the evolving SAD; confirm the configuration surface is six placeholders and no AD change is required | Topology and configuration surface stable enough to build against |
+| Construction | Gate 1 acceptance; package the tagged release; draft the Release Notes | Gate 1 passed and a tag exists |
+| Transition | Gate 2 acceptance; beta; go-live; handover | Infrastructure accepts operation (CON-032) |
+
+**The Release Notes are a Transition deliverable (DC §5.1) and are not drafted earlier.** What
+Inception fixes is the specification the Transition draft must meet — the content requirements are
+in the Support material section below.
 
 ## Target environments
 
@@ -157,7 +203,8 @@ configuration substitution works. They fail for different reasons and must be ju
 
 **Gate 2 is not a formality that can be waived.** It is the only point at which the placeholder
 configuration is replaced by real values, and the only point at which the portal meets the real AD
-whose attribute gaps are R001. A Gate 2 that is skipped leaves R001 unretired in production.
+whose attribute gaps are R001. A Gate 2 that is skipped leaves the real-AD case unobserved in
+production.
 
 ## Beta program
 
@@ -169,13 +216,18 @@ after Gate 2 and asks a different question: can these people do their job with t
 | **Participants** | The HR department (STK-001 and the HR AD group) plus a group of employees nominated by STK-001 across the three offices. The employee group is chosen by the sponsor, not by the team — the team has no basis for choosing who represents 200 people |
 | **Duration** | Bounded by the Transition iteration. It ends when the exit criteria are met or when the sponsor calls go-live |
 | **Feedback mechanism** | A single channel owned by STK-001, with each report tagged to the use case it concerns (UC-001 to UC-015). A report that cannot be tagged to a use case is either a defect in an existing one or a request outside declared scope — and the second is a Change Request, not a beta finding |
-| **What beta measures** | AC-001 (clocking unaided), AC-003 (a colleague's phone or email found in under 10 seconds), AC-004 (80% complete a clocking with no prior training), and the first reading of BG-003 adoption |
+| **What beta measures** | AC-001 (clocking unaided), AC-003 (a colleague's phone or email found in under 10 seconds), and the first reading of BG-003 adoption. Beta closes neither half of AC-004: its learnability half is verified in iteration 5 by the untrained-user check in the iteration that implements UC-001, and its 80%-of-population half is a post-Project-Acceptance measure owned by STK-001 against BG-003's three-month window. Beta supplies the first observation that measure will use; it does not close it |
 | **Exit criteria** | No open beta finding against UC-001, UC-004, UC-011 or UC-013 — the four use cases carrying the declared acceptance criteria and the highest risk. Findings against other use cases are triaged: a defect blocks go-live, a request becomes a Change Request |
 | **What beta does not do** | It does not re-open declared scope. A beta finding that asks for an excluded capability (a self-service correction screen, an audit view, a permission screen, a news archive) is a Change Request to the CCM, never a beta fix (CON-023) |
 
 **R002 is the risk beta exists to measure.** Adoption is not a technical property and cannot be
 tested; it can only be observed. Beta is where the first observation happens, and BG-003's 80% target
 is measured after go-live, not during beta.
+
+**AC-004 is not a beta exit criterion, and that is deliberate.** A criterion whose window opens at
+go-live cannot be closed by the activity that precedes go-live. Beta's job is to confirm that an
+untrained person can complete a clocking — the learnability half — and to leave the population
+measure to the point where it can actually be read.
 
 ## Rollout approach
 
@@ -233,7 +285,10 @@ note right: AC-002 verified before employees arrive.
 :Beta - HR and employees nominated by STK-001;
 note right
   Feedback captured against the 15 UCs.
-  AC-001, AC-003, AC-004 observed here.
+  AC-001 and AC-003 observed here.
+  AC-004 learnability was verified in
+  iteration 5; its population half is
+  post-acceptance, owned by STK-001.
 end note
 
 if (Beta feedback blocks go-live?) then (yes)
@@ -285,10 +340,9 @@ if (Is the defect in the portal application?) then (yes)
   if (Does the previous tagged release still satisfy the data contract?) then (yes)
     :Redeploy the previous SCM release tag;
     note right
-      The schema is additive and append-only
-      (CON-013, CON-014): no migration is
-      reversed, because CON-033 declares
-      no data migration at all.
+      The schema is append-only (CON-013, CON-014):
+      no migration is reversed, because CON-033
+      declares no data migration at all.
     end note
   else (no)
     :Fix forward in another iteration;
@@ -333,10 +387,12 @@ stop
 | Keycloak, AD or PostgreSQL is unavailable | No portal rollback. Escalate to Infrastructure — these are not project risks (CON-024) and not project rollbacks | Infrastructure |
 | A beta finding asks for an excluded capability | No rollback and no fix. A Change Request to the CCM (CON-023) | ChangeControlManager |
 
-**Rollback is safe here for a specific reason.** The schema is append-only and the portal owns no
-copy of any employee (CON-021, CON-003), so a previous release tag can be redeployed without
-reversing a migration or reconciling data. There is no migration to reverse because CON-033 declares
-none, and no employee data to reconcile because the portal never held any.
+**Rollback is safe here for a specific reason.** The clocking schema is an append-only event log —
+no UPDATE and no DELETE path exists on it (CON-013) — and the portal owns no copy of any employee
+(CON-021, CON-003). A previous release tag can therefore be redeployed without reversing a migration
+or reconciling data: there is no migration to reverse because CON-033 declares none, and no employee
+data to reconcile because the portal never held any. A rollback that spans a schema change is not
+available and is not needed, because the schema only ever grows by insertion.
 
 **Rollback is not a scope lever.** A rollback that would defer a declared use case is not available:
 CON-023 forbids cutting or deferring declared scope, and the remedy for a slipped milestone is
@@ -362,7 +418,7 @@ their existing practice, not a document this project writes.
 
 | Risk | How it lands at deployment | Deployment response |
 |---|---|---|
-| R001 — LDAP attribute gaps | The real AD is met for the first time at Gate 2. Empty job titles and extensions will appear in the directory and in the CSV | Gate 2 explicitly checks a directory entry with an empty attribute. The empty case is the designed case: the field renders blank and the row survives. HR is told which attributes are unfilled across the offices |
+| R001 — LDAP attribute gaps | The real AD is met for the first time at Gate 2. Empty job titles and extensions will appear in the directory and in the CSV | R001 is retired in iteration 3, not at Gate 2: the empty-attribute case of UC-011 and UC-004 is executed against the stand-in directory, which carries entries with empty job title and extension. Gate 2 re-confirms the same case against the real AD. The empty case is the designed case — the field renders blank and the row survives — and HR is told which attributes are unfilled across the offices |
 | R002 — adoption | The rollout is the moment the habit either changes or does not | One go-live for all three offices (BG-002 leaves no Excel fallback), HR publishes the first news before employees arrive, and beta measures the first adoption reading |
 | R003 — the CON-031 human validation gate | Gate 2 depends on Infrastructure and HR being available | Gate 2 is scheduled inside the Transition iteration and its queue time is reported apart from agent time. If it exceeds its ceiling the process suspends and the ProjectManager escalates; the remedy is another iteration (CON-023) |
 | R008 — wrong client clock | The recorded time is the press time, so a wrong workstation clock is recorded as fact | The confirmation shows the recorded time, so the error is visible at the moment it happens; HR corrects under UC-005, audited (CON-013) |
@@ -382,10 +438,3 @@ them, and CON-035 covers backups as Infrastructure's existing practice.
 authoritative statement of nodes, artefacts and communication paths, including CON-028's requirement
 that Keycloak sit inside the corporate network. This document adds the strategy the topology does not
 carry: mode, environments, gates, beta, rollout and rollback.
-
-## Note for the ProjectManager
-
-The Iteration Plan's agent role profile records DeploymentManager as inactive in iterations 1 to 5,
-while this strategy baseline is produced in Inception iteration 1. The two are reconcilable — the
-profile schedules deployment *work*, and this is a planning baseline, not deployment work — but the
-profile should say so explicitly, or a later reader will treat the baseline as unscheduled work.
