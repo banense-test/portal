@@ -348,119 +348,97 @@ endif
 
 ## Findings
 ### Reviewer lens
-<!-- review: Inception I2 -->
+<!-- review: Inception I3 -->
 
-Three findings this milestone: 0 Critical, 2 Major, 1 Minor. Each is recorded in the finding ledger against its artifact; this entry states the defect, its location and its remediation.
+Three findings this milestone: 0 Critical, 1 Major, 2 Minor. Each is recorded in the finding ledger against its artifact; this entry states the defect, its location and its remediation.
 
-#### Use-Case Model
+#### Test Evaluation Summary
 
-**`Use-Case Model#F2` — Major.** The UC-001 postcondition still describes the single-row clocking model that ADR-010 replaced. It states that exactly one clocking record exists for the employee for today. Under ADR-010 a complete pair is two append-only rows — one ClockIn and one ClockOut — and an HR correction adds a third; the effective pair is a query over supersession, not a record. The postcondition is false after the second press.
+**`Test Evaluation Summary#F3` — Major.** The quality-signals and defect-record tables cite observable SCM state that was not read at the moment of writing, and one figure is factually wrong. The CI build is cited as run `39940933643`, started 2026-10-23 10:41:58Z and completed 10:42:50Z; the build on `main` at the time of this review is run `39958957391`, started 13:09:58Z and completed 13:10:47Z. The issue count is stated as two — `Issue #1` and `Issue #2` — in both the quality-signals table and the defect-record table; the tracker holds three, the third being `Issue #3`. The omitted issue is a defect against the Development Case, so the artifact's own claim that the tracker is the authoritative defect record is undermined by a count that does not read it.
 
-The trace graph reports the same defect independently: the `COMP-002` Realizes edges to UC-001, UC-002, UC-003 and UC-005 are marked `SUSPECT → System Analyst`. The changed end is COMP-002, whose responsibility ADR-010 redefined, and it has not been reviewed against the use cases it realizes.
+This is the third generation of the defect class the Development Case's C2 check ("Was this identifier read at the moment of writing?") and its "Observable state" guideline exist to catch. It is the same class as `Test Evaluation Summary#F1`, which was closed in iteration 2 on the strength of a corrected citation. The correction did not hold.
 
-*Remediation.* Restate the postcondition in ADR-010's terms: after a Clock In press one ClockIn event row exists for the employee-day; after a Clock Out press a ClockOut event row exists for the same `WorkDate`; the effective pair is the two rows no other row supersedes. Confirm UC-002, UC-003 and UC-005 read the same shape — UC-005's outline already says a new audited record with the original never overwritten, which is consistent, so state it explicitly. Then clear the four suspect traces by declaring the Use-Case Model reviewed against ADR-010.
+*Remediation.* Re-read `scm_get_build_status` and `scm_list_issues` at the moment of writing and replace both citations: the current run identifier with its start and completion timestamps, and the current issue count with all three issues named. State the count as read, not as remembered. Then record in the Development Case's authoring-check verdict that C2 did not prevent this recurrence — R009's escalation question is whether the checks work, and this is evidence bearing on it.
 
-#### Software Architecture Document
+#### Development Case
 
-**`Software Architecture Document#F3` — Major.** The architectural-significance table has not been re-based onto the eight-iteration roadmap. It assigns the four architecturally significant use cases to "Elaboration iteration 2" and the remaining six ranks to "Elaboration iteration 3". Under the current roadmap iteration 2 is this Inception correction iteration and Elaboration is iterations 3 and 4, so "Elaboration iteration 2" names an iteration that designs nothing. The Iteration Plan places the design of UC-001, UC-004, UC-009 and UC-011 in iteration 3, so the two artifacts disagree about when the architecture is designed. The Test Evaluation Summary performed this re-base for its coverage plan; the Software Architecture Document is the one artifact that did not receive it.
+**`Development Case#F1` — Minor.** The project tool and guideline reference table records `.github/workflows` (build and test CI) as "Not yet created — Elaboration", and the iteration preparation checkpoint states that `.github/workflows` does not yet exist. The build-and-test workflow is committed and green on `main` — run `39958957391`, completed 2026-10-23 13:10:47Z. Two open SCM issues record the same defect against this artifact: `Issue #2` and `Issue #3`. The Development Case is the artifact that governs what the team may rely on, and it currently tells the team a toolchain component is missing when it is present and working.
 
-*Remediation.* Re-base the "Design in" column: ranks 1 to 4 to Elaboration iteration 3, ranks 5 to 10 to Elaboration iteration 4, matching the Iteration Plan's roadmap and its use-case table. Check the rest of the document for the same stale numbering in the same pass.
+*Remediation.* Change the `.github/workflows` row's state from "Not yet created — Elaboration" to the fact: committed and green on `main`, with the run identifier read at the moment of writing. Remove `.github/workflows` from the iteration preparation checkpoint's list of things that do not yet exist, leaving `CONTRIBUTING.md` and the lint configuration as the open R007 gaps. Then close `Issue #2` and `Issue #3` against this correction.
 
-#### Supplementary Specification
+#### Iteration Plan
 
-**`Supplementary Specification#F1` — Minor.** The constraint grouping is internally inconsistent and does not match the declared categories. The "Environmental constraints" table lists CON-005 and CON-031, both declared Technical in the scope. The constraint map diagram disagrees with the table on CON-005 — the diagram places it in "Platform and technology" while the table places it in "Environmental" — and places CON-031 in its "Environment" package. A reader cannot tell whether the grouping is the declared category or the team's own, and the two representations of the same 36 constraints do not agree.
+**`Iteration Plan#F2` — Minor.** The iteration 3 fine plan's W11 names four owners — Reviewer, BusinessReviewer, ManagementReviewer, ReviewCoordinator — while the agent role profile marks BusinessReviewer Idle and ManagementReviewer "—" in the iteration 3 column. The plan's own prose asserts "every work item has an Active owner", and exit criterion E2 requires that every role that produces in an iteration is Active in that iteration's column. The claim is therefore false of the plan that makes it: two of W11's four owners are recorded as not working in the iteration.
 
-*Remediation.* Either group by the declared category, moving CON-005 and CON-031 to the platform/technical group in both the table and the diagram, or retitle the tables so they state they group by what each constraint decides rather than by its declared category, and make the diagram use the same grouping. Either resolution is acceptable; the defect is that the table and the diagram disagree and neither matches the declared category.
+This is the same defect class as `Iteration Plan#F3` — a completeness claim asserted rather than counted against the set it describes. It is Minor rather than Major because the work itself is correctly identified and owned by two Active roles; what is wrong is the owner list and the claim about it.
+
+*Remediation.* Either activate ManagementReviewer in the iteration 3 column and give it the LCO sanction question as its work item — the LCO gate is re-presented this iteration and the sanction question is the Management Reviewer's to put to the stakeholder, as it was in iteration 2 — or remove ManagementReviewer and BusinessReviewer from W11's owner list and leave the Review Record work with Reviewer and ReviewCoordinator. Whichever is chosen, make the owner list and the role profile agree, and count the claim before writing it.
 
 ```plantuml
 @startuml
-title Portal - Inception iteration 2 defect distribution: severity by artifact
+title Portal - Inception iteration 3 technical lens: defect distribution by severity and artifact
 
-package "Major - 2 findings" {
-  class "Use-Case Model\n1 Major\nUC-001 postcondition vs ADR-010" as M1
-  class "Software Architecture Document\n1 Major\nsignificance table not re-based" as M2
+package "Major - 1 finding" {
+  class "Test Evaluation Summary\nF3 - SCM state cited from an earlier read\nrun 39940933643 and 2 issues, not the\nrun and 3 issues read at review" as M1 <<Major>>
 }
 
-package "Minor - 1 finding" {
-  class "Supplementary Specification\n1 Minor\nconstraint grouping inconsistent" as N1
+package "Minor - 2 findings" {
+  class "Development Case\nF1 - .github/workflows recorded as\nnot yet created; it is committed and green" as N1 <<Minor>>
+  class "Iteration Plan\nF2 - W11 names four owners; two are\nrecorded not Active in iteration 3" as N2 <<Minor>>
 }
 
 package "Clean this pass - 0 findings" {
   class "Vision" as C1
-  class "Risk List" as C2
-  class "Iteration Plan" as C3
-  class "Test Evaluation Summary" as C4
-  class "Development Case" as C5
+  class "Use-Case Model" as C2
+  class "Supplementary Specification" as C3
+  class "Software Architecture Document" as C4
+  class "Risk List" as C5
 }
 
 package "Not judged this pass" {
   class "Iteration Assessment\nauthored after this review" as X1
+  class "Review Record\nthis artifact" as X2
 }
 
-package "Closed this pass - 7 prior findings" {
-  class "Vision#F1" as R1
-  class "Use-Case Model#F1" as R2
-  class "Iteration Plan#F1 (Reviewer)" as R3
-  class "Software Architecture Document#F1" as R4
-  class "Software Architecture Document#F2" as R5
-  class "Test Evaluation Summary#F1" as R6
-  class "Test Evaluation Summary#F2" as R7
+package "Closed this pass - 3 prior findings of this lens" {
+  class "Use-Case Model#F2\nUC-001 postcondition in ADR-010 terms" as R1
+  class "Supplementary Specification#F1\nconstraint grouping by declared category" as R2
+  class "Software Architecture Document#F3\nsignificance table re-based to 4 and 5" as R3
 }
+
+package "Open, not this lens's to close" {
+  class "Iteration Plan#F3\nManagement Reviewer lens" as O1
+}
+
+M1 --> N1 : same class: a claim not read against its source
+N1 --> N2 : same class: a completeness claim not counted
 
 note bottom of M1
-  Both Major findings are the same class of
-  defect: an artifact that was not re-based
-  onto a decision another artifact changed.
+  Both Minor findings and the Major are one
+  defect class: a claim asserted rather than
+  read against the set it describes. It is the
+  class the Development Case's C2 and C6 checks
+  exist to catch, and C2 did not prevent the
+  Test Evaluation Summary recurrence.
+end note
+
+note bottom of R1
+  All three closures verified against the
+  current artifact content, not against the
+  author's account of the correction.
 end note
 @enduml
 ```
 
-```plantuml
-@startuml
-title Portal - Inception iteration 2: where the two Major findings sit
+#### Artifacts with no finding from this lens
 
-package "Use-Case Model - SystemAnalyst" {
-  class "UC-001 Clock In and Clock Out" as UC001
-  class "UC-002, UC-003, UC-005" as UCREST
-}
-
-package "Software Architecture Document - SoftwareArchitect" {
-  class "ADR-010 append-only clocking event log" as ADR010
-  class "Architectural significance table" as SIG
-}
-
-package "Iteration Plan - ProjectManager" {
-  class "Eight-iteration roadmap" as ROAD
-}
-
-note right of UC001
-  FINDING Major
-  Postcondition says "exactly one
-  clocking record". Under ADR-010 a
-  complete pair is two rows and a
-  correction is a third.
-end note
-
-note right of UCREST
-  Suspect traces COMP-002 -> UC-001,
-  UC-002, UC-003, UC-005: the changed
-  component has not been reviewed
-  against the use cases it realizes.
-end note
-
-note right of SIG
-  FINDING Major
-  "Design in: Elaboration iteration 2"
-  and "Elaboration iteration 3".
-  The roadmap has Elaboration at
-  iterations 3 and 4.
-end note
-
-UC001 ..> ADR010 : contradicts
-UCREST ..> ADR010 : not yet reviewed against
-SIG ..> ROAD : not re-based onto
-@enduml
-```
+| Artifact | Position |
+|---|---|
+| Vision | The 13 declared exclusions are published verbatim as the control for R005. All four stakeholders, five acceptance criteria and both declared risks are carried. BG-001 is recorded as not yet measurable with STK-001 named as the baseline supplier, and the two self-referential success criteria carry observable checks derived from the requirement text. No unsourced quantitative claim appears |
+| Use-Case Model | The finding this lens carried into the iteration is corrected and verified. UC-001's postcondition describes one ClockIn event row and one ClockOut event row with the effective pair resolved over supersession, and the same shape is stated explicitly for UC-002, UC-003 and UC-005. The four `COMP-002` suspect traces are cleared. Fifteen use cases, one per declared requirement, no phantom use case, no cross-cutting mechanism promoted to a use case, no per-actor split of a single declared process |
+| Supplementary Specification | The finding this lens carried into the iteration is corrected and verified. All 36 constraints are grouped by their declared category in both the table and the diagram, the two representations agree row for row, and the section states the arithmetic that proves the set is complete. All 5 NFRs and all 36 constraints are accounted for; the four mechanisms are recorded as mechanisms with an include graph and never as use cases; INT-03 reproduces the FR-004 column contract exactly |
+| Software Architecture Document | The finding this lens carried into the iteration is corrected and verified. The significance table names Elaboration iteration 4 for ranks 1 to 4 and iteration 5 for ranks 5 to 10, matching the Iteration Plan's roadmap, and the surrounding prose states the basis. The rest of the document was swept: no iteration number contradicts the roadmap. The three High-volatility requirements each own a dedicated component; CON-028 is satisfied with Keycloak inside the corporate network boundary; no cache is designed, consistent with FR-014 and FR-015; no scheduler exists, justified by CON-018 and CON-011 |
+| Risk List | R001 and R002 carried with their declared identifiers and magnitudes, not renumbered or reclassified. R003 to R009 numbered in the order raised, each with a full treatment. CON-024 respected — Keycloak and AD availability are not registered, and R003 is correctly distinguished as the timing of the CON-031 human feedback loop. Every `Accept` cites the CON-023 grant and its condition. The five suspect traces raised by the UC-001 and UC-011 changes are re-verified and cleared with the reason each dependency still holds, and the trace graph confirms no suspect edge remains |
 
 ### Business Reviewer lens
 <!-- review: Inception I2 -->
