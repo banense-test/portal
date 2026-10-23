@@ -606,9 +606,12 @@ Iteration 3 adds no use case and details none. Its only use-case work is the cor
 
 **Two closed four-value lists, kept apart.** Worker categories (Full-time, Part-time, Contractor, Intern — CON-009) and news categories (General, HR, IT, Events — FR-006, FR-010) are different lists governing different use cases. CON-015 confines the worker category to two places: the directory column that also filters, and the CSV export column. It drives no access decision and no news filter. UC-010 filters news by the news-category list; UC-004, UC-011 and UC-012 are the use cases that carry the worker-category cluster.
 
-**Scenarios carried into Elaboration.** UC-001 A1–A5 (duplicate press, network recovered, network lost, second pair, complete pair), UC-004 A1–A5 (missing clock-out, no clocking, no category, corrected day, empty directory attribute), UC-009 A1–A3 (un-feature, unpublish the featured item, nothing featured), UC-011 A1–A3 (empty attribute, network unreachable, no match).
+**Scenarios carried into Elaboration.** UC-001 A1–A5 (duplicate press, network recovered, network lost, second pair, complete pair), UC-004 A1–A5 (missing clock-out, no clocking, no category, corrected day, empty directory attribute), UC-009 A1–A3 (un-feature, unpublish the featured item, nothing featured), UC-011 A1–A4 (empty attribute, network unreachable, no match, worker with no category).
 
 **Two scenarios are executed in iteration 4, not deferred to Construction.** UC-011 A1 (empty attribute) and UC-004 A5 (empty directory attribute) are the cases that retire R001. They need no production code beyond the directory read path and the export derivation, so they run in the iteration that builds the stand-ins. The full use-case tests for UC-004 and UC-011 remain in Construction with the rest of their capability areas.
+
+**UC-011 A4 is a second fixture requirement on the same stand-in.** The no-category case exercises CON-016 — a worker with no category still appears in the directory and the export with the field blank — and it is the case that makes R004's fixture inspection cover both the AD-sourced empty attributes and the portal-owned empty category. It is not a retirement case for R001; R001 is retired by A1.
+
 ## Evaluation Criteria
 Two layers, kept apart: the declared acceptance criteria the project is accountable to, and this iteration's own exit criteria.
 
