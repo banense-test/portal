@@ -187,7 +187,7 @@ news, or a news category used as a directory field, is a defect.
 | List | Values | Declared by | Governs | Never used for |
 |---|---|---|---|---|
 | News categories | General, HR, IT, Events | FR-006, FR-010 | UC-006 Publish News, UC-007 Edit Published News, UC-010 Read and Filter News | Any directory field, any export column, any access decision |
-| Worker categories | Full-time, Part-time, Contractor, Intern | CON-009 | UC-004 Export Monthly Clocking Report (the WorkerCategory column), UC-012 Assign or Clear Worker Category (the only write) | Any news filter, any access decision (CON-015) |
+| Worker categories | Full-time, Part-time, Contractor, Intern | CON-009 | UC-004 Export Monthly Clocking Report (the WorkerCategory column), UC-011 Search Employee Directory (the column and its filter), UC-012 Assign or Clear Worker Category (the only write) | Any news filter, any access decision (CON-015) |
 
 ```plantuml
 @startuml
@@ -215,8 +215,8 @@ package "Use cases" {
   class "UC-007 Edit Published News" as UC007
   class "UC-010 Read and Filter News" as UC010
   class "UC-004 Export Monthly CSV" as UC004
-  class "UC-012 Assign or Clear Worker Category" as UC012
   class "UC-011 Search Employee Directory" as UC011
+  class "UC-012 Assign or Clear Worker Category" as UC012
 }
 
 NC1 --> UC006
@@ -237,13 +237,15 @@ WC2 --> UC004
 WC3 --> UC004
 WC4 --> UC004
 WC5 --> UC004
+WC1 --> UC011
+WC2 --> UC011
+WC3 --> UC011
+WC4 --> UC011
 WC1 --> UC012
 WC2 --> UC012
 WC3 --> UC012
 WC4 --> UC012
 WC5 --> UC012
-
-UC011 ..> UC012 : reads the value,\nnever manages it (CON-021)
 
 note bottom of NC4
   Classifies a news item and nothing else.
@@ -262,11 +264,13 @@ end note
 @enduml
 ```
 
-The worker-category list carries the additional restriction of CON-015: it is descriptive, it drives
-no access control, and it is used in exactly two places — a directory column that also filters, and a
-CSV export column. UC-011 renders the category as a read-only column from the portal-owned link under
-CON-021; it reads the value and never manages it, so the worker-category rule cluster is not bound
-there either.
+The worker-category list carries the additional restriction of CON-015, and the restriction has two
+halves that are stated separately. The **permissive** half: the category is rendered as a directory
+column and the result set is filterable by it, and it is a CSV export column. The **prohibitive**
+half: it drives no access control — no authorization decision, no visibility rule, no withholding of
+an entry. UC-011's filter narrows a result set the employee may already see in full; it never removes
+an entry the employee would otherwise be entitled to see. UC-012 is the only write the portal makes
+about a person.
 
 The news-category list carries no such restriction because it is not a property of a person: it
 classifies a news item and nothing else.
