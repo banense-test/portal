@@ -205,33 +205,33 @@ end note
 6. **A milestone that does not pass costs an iteration, and that is the correct price.** The first iteration produced a complete baseline and still did not pass the gate. The remedy is iteration 2 in Inception, not a scope cut and not more agents in parallel. The roadmap is now eight iterations, and the declared scope is unchanged.
 
 ## Use Cases and Scenarios Implemented
-
 No use case is implemented. Inception produces no working software, and no acceptance criterion is closed.
 
-All fifteen declared use cases are baselined: each is identified, traced to its declared requirement, and bound to the constraints that govern it. Four are detailed because they are architecturally significant; eleven are outlined and are detailed in Elaboration.
+All fifteen declared use cases are baselined: each is identified, traced to its declared requirement, and bound to the constraints that govern it. Four are detailed because they are architecturally significant; eleven are outlined and are detailed in Elaboration iteration 4.
 
 | UC | Name | Source | State at iteration close | Detailed in |
 |---|---|---|---|---|
 | UC-001 | Clock In and Clock Out | FR-001 | Baselined, detailed | Iteration 1 |
-| UC-002 | View Own Clocking History | FR-002 | Baselined, outline | Iteration 3 |
-| UC-003 | View All Employee Clockings | FR-003 | Baselined, outline | Iteration 3 |
+| UC-002 | View Own Clocking History | FR-002 | Baselined, outline | Iteration 4 |
+| UC-003 | View All Employee Clockings | FR-003 | Baselined, outline | Iteration 4 |
 | UC-004 | Export Monthly Clocking Report as CSV | FR-004 | Baselined, detailed | Iteration 1 |
-| UC-005 | Correct or Insert Clocking | FR-005 | Baselined, outline | Iteration 3 |
-| UC-006 | Publish News | FR-006 | Baselined, outline | Iteration 3 |
-| UC-007 | Edit Published News | FR-007 | Baselined, outline | Iteration 3 |
-| UC-008 | Unpublish News | FR-008 | Baselined, outline | Iteration 3 |
+| UC-005 | Correct or Insert Clocking | FR-005 | Baselined, outline | Iteration 4 |
+| UC-006 | Publish News | FR-006 | Baselined, outline | Iteration 4 |
+| UC-007 | Edit Published News | FR-007 | Baselined, outline | Iteration 4 |
+| UC-008 | Unpublish News | FR-008 | Baselined, outline | Iteration 4 |
 | UC-009 | Feature or Un-feature News | FR-009 | Baselined, detailed | Iteration 1 |
-| UC-010 | Read and Filter News | FR-010 | Baselined, outline — rule binding defective, `Use-Case Model#F1` | Iteration 3 |
+| UC-010 | Read and Filter News | FR-010 | Baselined, outline — rule binding defective, `Use-Case Model#F1` | Iteration 4 |
 | UC-011 | Search Employee Directory | FR-011 | Baselined, detailed | Iteration 1 |
-| UC-012 | Assign or Clear Worker Category | FR-012 | Baselined, outline | Iteration 3 |
-| UC-013 | Retry Clocking Through a Network Drop | FR-013 | Baselined, outline | Iteration 3 |
-| UC-014 | Recognize Directory Unavailable | FR-014 | Baselined, outline | Iteration 3 |
-| UC-015 | Recognize News Unavailable | FR-015 | Baselined, outline | Iteration 3 |
+| UC-012 | Assign or Clear Worker Category | FR-012 | Baselined, outline | Iteration 4 |
+| UC-013 | Retry Clocking Through a Network Drop | FR-013 | Baselined, outline | Iteration 4 |
+| UC-014 | Recognize Directory Unavailable | FR-014 | Baselined, outline | Iteration 4 |
+| UC-015 | Recognize News Unavailable | FR-015 | Baselined, outline | Iteration 4 |
 
 **Scenarios carried into Elaboration.** UC-001 A1–A4 (duplicate press, network recovered, network lost, second pair), UC-004 A1–A5 (missing clock-out, no clocking, no category, corrected day, empty directory attribute), UC-009 A1–A3 (un-feature, unpublish the featured item, nothing featured), UC-011 A1–A3 (empty attribute, network unreachable, no match).
 
 **Why these four were detailed now.** UC-001 carries the client-timestamp and idempotency contract (FR-013) that forces a design decision. UC-004 is the project's most volatile interface — a fixed external column contract. UC-009 carries a system invariant (CON-010) that must hold wherever the change comes from. UC-011 carries the LDAP read and the R001 empty-attribute case. These are the four places where a wrong decision in Elaboration would be expensive to reverse.
 
+**Two scenarios are executed in iteration 3, not deferred to Construction.** UC-011 A1 (empty attribute) and UC-004 A5 (empty directory attribute) are the cases that retire R001. They need no production code beyond the directory read path and the export derivation, so they run in the iteration that builds the stand-ins. The full use-case tests for UC-004 and UC-011 remain in Construction with the rest of their capability areas.
 ## Results Relative to Evaluation Criteria
 One line per criterion the Iteration Plan carried. Layer B is this iteration's own exit criteria; Layer A is the declared acceptance criteria the project is accountable to.
 
