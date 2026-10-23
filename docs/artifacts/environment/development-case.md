@@ -154,7 +154,6 @@ once the stand-ins exist; Deployment is exercised only at handover. A team that 
 well outperforms one that nominally follows the full library.
 
 ## Disciplines and Intensity
-
 **All active disciplines: intensity per canonical matrix.** No deviation is proposed and none is
 self-granted.
 
@@ -173,6 +172,18 @@ target, not a hard deadline. FR-013's retry is a bounded client-side retry loop,
 event-driven behaviour. CON-010's single-featured-item rule is a data invariant enforced in the
 service layer. No capsule, no concurrent state machine, no timing invariant — CapsuleDesigner
 receives no assignment.
+
+**A discipline at Medium or Low intensity is active, not idle.** Inception runs Analysis and Design
+at Medium and Test at Low. Neither is a rest state: the Software Architecture Document and the Test
+Evaluation Summary are both CORE artifacts produced in Inception, and both were produced in iteration
+1. Reading a Low or Medium intensity as "no work this phase" is what caused `Iteration Plan#F1`
+(Reviewer), where two producing roles were marked idle and two produced artifacts had no work item.
+
+**A plan is derived from the artifact set, not from the discipline sequence.** The workflow diagram
+below orders the disciplines; it does not enumerate the work. An iteration plan is built by listing
+the artifacts that iteration will produce, assigning each to its owning role, and placing each in the
+critical chain — then checking the result against this diagram for ordering, never deriving the list
+from it. The diagram answers "in what order"; only the artifact set answers "what".
 
 ```plantuml
 @startuml
@@ -223,7 +234,7 @@ stop
 
 Disciplines are pipelined within an iteration, not run as a waterfall: Requirements, Analysis and
 Design, Implementation and Test overlap, while Project Management and CM run alongside all of them.
-
+The diagram shows ordering, not workload — see the two rules above.
 ## Artifacts and Templates
 
 **All 16 CORE artifacts are produced. None is omitted, deferred or downgraded.** The table records
