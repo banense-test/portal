@@ -15,6 +15,13 @@
 - **Status:** Draft — iteration 1, business modeling lens review complete
 - **Milestone Target:** End of Inception (not yet achieved)
 
+### Management Reviewer lens
+<!-- review: Inception I1 -->
+
+- **Phase:** Inception
+- **Status:** Draft — iteration 1, management lens review complete; LCO sanction refused
+- **Milestone Target:** End of Inception (not yet achieved)
+
 ## Review Scope and Criteria
 ### Reviewer lens
 <!-- review: Inception I1 -->
@@ -228,6 +235,88 @@ note bottom of P5
 end note
 @enduml
 ```
+
+### Management Reviewer lens
+<!-- review: Inception I1 -->
+
+**Review point:** LCO, management lens. The question applied is exit criteria — do the artifacts collectively satisfy the conditions for phase transition — and the sanction question that follows from it. This is the Project Approval Review and the Project Planning Review held inside the LCO milestone review, not separately from it.
+
+**Artifacts reviewed (8 of 8 persisted):** Development Case, Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Risk List, Iteration Plan, Test Evaluation Summary.
+
+**Management-lens checklists applied:**
+
+| Criterion | What it tests | Applied to |
+|---|---|---|
+| Evidence grounding | Every planning conclusion cites an artifact, metric or test result rather than an assertion | Iteration Plan, Risk List, Test Evaluation Summary |
+| Milestone criteria coverage | All LCO exit criteria addressed with pass/fail per criterion | The artifact set as a whole |
+| Risk retirement verification | Each risk has a mechanism and a named retiring event, and no retirement is claimed before its evidence exists | Risk List, Iteration Plan, Software Architecture Document |
+| Iteration objective traceability | Delivery maps against the iteration's original stated objectives, not against what was delivered instead | Iteration Plan objectives O1–O4 |
+| Four-axis health | Scope, schedule, cost and quality each assessed separately | The artifact set as a whole |
+| Feasibility and acceptability | Feasibility from the artifacts; acceptability obtained by asking the stakeholder | The artifact set, then S_CONSULT_STAKEHOLDER |
+| Data verification | Quantitative claims sourced or tagged; no invented unit, date or figure | Vision, Iteration Plan, Test Evaluation Summary |
+| Conditional verdict enforcement | Prior conditions verified before the next verdict | No prior milestone verdict exists — first review |
+
+**Trace tree consulted:** 42 Business roots, 180 nodes. Every FR-001 to FR-015 refines to exactly one UC-001 to UC-015; every UC realizes at least one component. No «LEAF» on any FR, NFR or UC. No «SUSPECT» edge. No «UNKNOWN LABEL». The requirements baseline is complete and correctly shaped — this is the strongest part of the set and no management finding touches it.
+
+**SCM evidence observed:** no open pull request, no branch labelled `ready-for-review`, build on `main` successful, no issues in any state. Inception produces no implementation code, so there is no pull request to disposition and no defect record to read. The green build proves the pipeline runs, not that the product works.
+
+**Compliance matrix — 8 LCO exit criteria, 5 Met, 2 Partial, 1 Not met, 1 not assessable:**
+
+```plantuml
+@startuml
+title LCO compliance table - exit criteria, status and evidence (Inception iteration 1)
+
+package "Met - 5" {
+  class "Scope declared and published as a checkable boundary\n15 FR / 5 NFR / 36 CON / 13 exclusions verbatim" as M1 <<Met>>
+  class "Requirements baselined\n15 UC one per FR, 5 NFR, 36 CON; no leaf on any FR, NFR or UC" as M2 <<Met>>
+  class "Risks identified and classified\nR001-R008 with strategy, mitigation, contingency, owner, warning sign" as M3 <<Met>>
+  class "Vision for the product\nproblem, position, features, volatility map, exclusions" as M4 <<Met>>
+  class "Feasibility\nplatform fixed by CON-001/025/026/027; identity and directory external and read-only" as M5 <<Met>>
+}
+
+package "Partially met - 2" {
+  class "Risk retirement plan\nR001 mechanism built in iteration 2, but the test that retires it runs in iterations 4 and 6" as P1 <<Partial>>
+  class "Acceptance criteria accounted for\n4 of 5 have a gate; AC-004 is a population measure assigned to the gate where its window opens" as P2 <<Partial>>
+}
+
+package "Not met - 1" {
+  class "Plan accounts for the iteration's work\nfine plan omits the SAD and the Test Evaluation Summary; two roles marked idle that produced artifacts" as N1 <<NotMet>>
+}
+
+package "Not assessable - 1" {
+  class "Cost position\nCON-030 declares no budget and forbids the team to set one; no phase has closed, so no measured spend exists" as X1 <<NotAssessable>>
+}
+
+note bottom of P1
+  The plan answers "Yes" to retiring the
+  highest-magnitude risk first. The evidence
+  chain places the retiring test two to four
+  iterations later. Iteration Plan#F1.
+end note
+
+note bottom of P2
+  AC-004 fuses a learnability check (testable
+  in iteration 4) with an 80% population
+  measure (BG-003, three months post-launch).
+  Iteration Plan#F2.
+end note
+
+note bottom of X1
+  Not a defect. A cost position cannot be
+  reported where no budget is declared and
+  no phase has closed.
+end note
+@enduml
+```
+
+**Four-axis health position:**
+
+| Axis | Position | Basis |
+|---|---|---|
+| Scope | Healthy | 15 FR, 5 NFR, 36 CON, 13 exclusions all carried; no undeclared feature, no invented identifier, no exclusion crossed anywhere in the set |
+| Schedule | At-Risk | The plan's risk-retirement claim is not supported by its own evidence chain (`Iteration Plan#F1`), and one acceptance criterion has no gate at which it can close (`Iteration Plan#F2`) |
+| Cost | Not assessable | CON-030 declares no budget and forbids the team to set one; no phase has closed, so no measured spend exists. No figure is invented to fill the gap |
+| Quality | Healthy at the level Inception owes | Requirements baseline complete and traceable; architecture is a genuine candidate with the three High-volatility requirements encapsulated; no test executed and none claimed |
 
 ## Findings
 ### Reviewer lens
@@ -481,6 +570,158 @@ end note
 @enduml
 ```
 
+### Management Reviewer lens
+<!-- review: Inception I1 -->
+
+Two defects from this lens, both Major, both against the Iteration Plan. The other five findings in the ledger belong to the Reviewer and Business Reviewer lenses; I confirm them as part of the milestone position and cite them by key rather than re-recording them, because one logical defect recorded twice is one defect the author has to triage twice.
+
+#### Iteration Plan
+
+| Severity | Location | Defect | Remediation |
+|---|---|---|---|
+| Major | LCO readiness assessment, "Is there a plan to retire the highest-magnitude risk first?" row | The plan answers "Yes — R001 is retired in Elaboration iteration 2 by the stand-in directory carrying empty job-title and extension entries". Building the fixture is not retiring the risk. R001 is that the directory shows gaps when attributes are unfilled, and the Software Architecture Document's own retirement criterion is "a directory search and an export both pass against a fixture whose entries have empty job title and extension" — a passing test, not a fixture. The Test Evaluation Summary executes UC-011 in iteration 6 and UC-004 in iteration 4, and the role profile marks TestAnalyst, TestDesigner and Tester inactive in iteration 2. The highest-magnitude risk (R001, exposure 9) is therefore not retired until Construction, and the plan's central risk claim rests on an event its own evidence chain places two to four iterations later. | Restate the answer to match the evidence chain: R001's mechanism is built in iteration 2 and the risk is retired when the UC-011 and UC-004 tests pass against that fixture. Either move those two test executions earlier — a directory and export test against the stand-in needs no production code beyond the two components, so iteration 3 is a defensible home — or state plainly that R001 stays open until Construction and record what that means for the LCA gate. Do not answer "Yes" to a risk-retirement question on the strength of a fixture. |
+| Major | Evaluation Criteria, Layer A table, AC-004 row | AC-004 is assigned verification in iteration 7, which is the iteration in which its own measure begins to elapse, so the criterion can never be verified at the gate it is assigned to. AC-004 is "80% of employees complete at least one clocking with no prior training" — a population measure over 200 employees. The coarse roadmap describes iteration 7 as "Handover to Infrastructure (CON-032); adoption measurement begins". A three-month adoption window (BG-003) that begins in the iteration assigned to verify it cannot have produced its result by the end of that iteration. The row also treats the criterion as addressed by UC-001 being detailed, which is a design statement, not a measurement. One of the five declared acceptance criteria has no gate at which it can be closed, and the plan presents it as accounted for. | Separate the two things AC-004 fuses. The learnability half — an employee completes a clocking with no prior training — is testable in the iteration that implements UC-001 (iteration 4) with a small untrained-user check, and belongs there. The 80%-of-population half is a post-launch adoption measure governed by BG-003's three-month window and cannot be closed inside any iteration; record it as a post-Project-Acceptance measure with HR (STK-001) as owner, and state in Layer A that AC-004 is verified in two parts at two different points. Do not assign a population measure to an iteration gate. |
+
+#### Vision
+
+No finding from this lens. The 13 declared exclusions are published verbatim as a checkable boundary, which is the correct control for the exclusion-crossing risk R005. All four declared stakeholders, all five acceptance criteria and both declared risks are carried. No unsourced quantitative business claim appears: the 200 employees, 3 offices, 50% reduction, 80% adoption and 3-month window are all declared inputs, not figures the Vision invented. The two findings in the ledger against this artifact are `Vision#F1` (Reviewer lens) and `Vision#F1` (Business Reviewer lens).
+
+#### Risk List
+
+No finding from this lens. R001 and R002 are carried with their declared identifiers and magnitudes (P=3 I=3 exposure=9; P=3 I=2 exposure=6) and are not renumbered or reclassified, which CON-023 requires. Team-identified risks run R003 to R008 in the order raised, each with probability, impact, magnitude, strategy, mitigation, contingency, owner and warning sign. CON-024 is respected — Keycloak and AD availability are not registered, and R003 is correctly distinguished as the timing of the CON-031 human feedback loop rather than a Keycloak or AD risk. Every `Accept` cites the CON-023 grant and its condition; no risk is accepted on the Project Manager's own authority. The register is the strongest management artifact in the set.
+
+#### Development Case
+
+No finding from this lens. Baseline conformance (a)–(e) passes: the 25-role roster is inherited unchanged, no CORE artifact is omitted, no primary ownership is reassigned, no artifact outside the CORE + OPTIONAL universe appears, and no two roles are merged. All six OPTIONAL triggers are recorded NOT TRIGGERED and each verdict holds against its §5.2 condition. Discipline intensity is per the canonical matrix with no self-granted deviation. Business Modeling is declared INACTIVE on the correct trigger. The measurement policy correctly refuses to set a token budget (CON-030) and keeps the two clocks apart.
+
+#### Software Architecture Document
+
+No finding from this lens. The three High-volatility requirements each own a dedicated component; CON-028 is satisfied with Keycloak inside the corporate network boundary; no cache is designed, consistent with FR-014 and FR-015; no scheduler exists, justified by CON-018 and CON-011. The ledger carries `Software Architecture Document#F1` (Reviewer lens, Major) and `Software Architecture Document#F2` (Reviewer lens, Minor).
+
+#### Use-Case Model
+
+No finding from this lens. Fifteen use cases, one per declared requirement, with no phantom use case, no cross-cutting mechanism promoted to a use case, and no per-actor split of a single declared process. The ledger carries `Use-Case Model#F1` (Reviewer lens, Major).
+
+#### Supplementary Specification
+
+No finding from this lens. All 5 NFRs and all 36 constraints are accounted for; the four mechanisms are recorded as mechanisms with an include graph and never as use cases; INT-03 reproduces the FR-004 column contract exactly. The constraint-conformance record is complete, which is what a 36-constraint project needs.
+
+#### Test Evaluation Summary
+
+No finding from this lens. The Evaluation Mission is correctly scoped to the test position rather than to a pass rate, and the document explicitly disclaims product evidence. All 15 use cases have a named test level and execution iteration; all 5 NFRs have the measurement method the requirement itself names, with NFR-002 correctly refusing server response time as a substitute. The ledger carries `Test Evaluation Summary#F1` (Reviewer lens, Major) and `Test Evaluation Summary#F2` (Reviewer lens, Minor).
+
+**Defect distribution — 6 Major, 3 Minor, 0 Critical across the set:**
+
+```plantuml
+@startuml
+title Defect distribution - LCO review, all three lenses, Inception iteration 1
+
+package "Major - 6" {
+  class "Software Architecture Document#F1\nData View cannot satisfy\nCON-012 and CON-013 together" as M1
+  class "Use-Case Model#F1\nWorker-category rules bound\nto UC-010 news filtering" as M2
+  class "Iteration Plan#F1\nFine plan omits SAD and\nTest Evaluation Summary" as M3
+  class "Test Evaluation Summary#F1\nCited CI run does not match\nobserved build" as M4
+  class "Iteration Plan#F1 (management lens)\nR001 claimed retired in iteration 2;\nretiring test runs in 4 and 6" as M5
+  class "Iteration Plan#F2 (management lens)\nAC-004 population measure assigned\nto the gate where its window opens" as M6
+}
+
+package "Minor - 3" {
+  class "Software Architecture Document#F2\nTraceability rows conflate\nRealizes and DependsOn" as N1
+  class "Test Evaluation Summary#F2\nNFR-001 assigned to an\nElaboration design iteration" as N2
+  class "Vision#F1 (Reviewer lens)\nBG-001 baseline undefined\nbut presented as measurable" as N3
+  class "Vision#F1 (Business lens)\nFR-014 and FR-015 cite their own\nidentifiers as success criteria" as N4
+}
+
+package "Critical - 0" {
+  class "None" as C0
+}
+
+package "Artifacts with no finding" {
+  class "Development Case" as OK1
+  class "Supplementary Specification" as OK2
+  class "Risk List" as OK3
+}
+
+M3 --> M5 : same artifact,\ntwo lenses
+M3 --> M6 : same artifact,\ntwo lenses
+M1 --> N1 : same artifact
+M4 --> N2 : same artifact
+N3 --> N4 : same artifact,\ntwo lenses
+
+note bottom of C0
+  No Critical finding: no declared exclusion
+  is crossed, no phantom use case, no invented
+  identifier, no scope expansion beyond the
+  declared 15 requirements, and no artifact
+  claims a milestone or an acceptance
+  criterion is closed.
+end note
+
+note bottom of OK1
+  DC baseline conformance (a)-(e) passes;
+  all six OPTIONAL triggers audited against
+  their section 5.2 conditions and each
+  NOT TRIGGERED verdict holds.
+end note
+@enduml
+```
+
+**Risk retirement trend — magnitude against retirement evidence at this gate:**
+
+```plantuml
+@startuml
+title Risk retirement trend - magnitude against retirement evidence at LCO
+
+package "High - exposure 9" {
+  class "R001 AD attribute gaps\nP=3 I=3\nTrend: FLAT - no evidence yet\nRetired by: passing UC-011 and UC-004\ntests against the empty-attribute fixture" as R001
+}
+
+package "Significant - exposure 6" {
+  class "R002 Clocking adoption\nP=3 I=2\nTrend: FLAT - post-launch measure\nRetired by: BG-003 adoption reading" as R002
+  class "R003 Human gate exceeds 14 days\nP=2 I=3\nTrend: NEW - not yet elapsed\nRetired by: CON-031 feedback received" as R003
+  class "R004 Stand-in omits empty entries\nP=2 I=3\nTrend: NEW - fixture not built\nRetired by: fixture inspection" as R004
+  class "R005 Artifact crosses an exclusion\nP=2 I=3\nTrend: NEW - 0 crossings found\nRetired by: every review, every artifact" as R005
+}
+
+package "Moderate - exposure 4" {
+  class "R006 Export contract misread\nP=2 I=2\nTrend: NEW - contract not built\nRetired by: column-by-column test" as R006
+  class "R007 Toolchain gaps\nP=2 I=2\nTrend: NEW - 4 gaps open\nRetired by: gaps closed before Construction" as R007
+  class "R008 Wrong client clock\nP=2 I=2\nTrend: NEW - accepted under CON-023\nRetired by: nothing - accepted, mitigated" as R008
+}
+
+package "Retirement evidence at this gate" {
+  class "Risks with evidence of retirement: 0 of 8" as E0
+  class "Risks with a mechanism designed: 6 of 8" as E1
+  class "Risks accepted under CON-023: 4 of 8" as E2
+}
+
+R001 --> E0
+R002 --> E0
+R003 --> E0
+R004 --> E0
+R005 --> E0
+R006 --> E0
+R007 --> E0
+R008 --> E0
+
+note bottom of E0
+  Zero is the correct reading at LCO, not a
+  failure: Inception builds nothing, so no risk
+  can be retired by evidence. What the gate
+  checks is that each risk has a mechanism and
+  a named retiring event - and that the plan
+  does not claim retirement it has not earned.
+end note
+
+note bottom of R001
+  The highest-magnitude risk. Its mechanism is
+  built in iteration 2; its retiring test runs in
+  iterations 4 and 6. The plan's claim that it is
+  retired in iteration 2 is Iteration Plan#F1.
+end note
+@enduml
+```
+
 ## Resolutions and Actions
 ### Reviewer lens
 <!-- review: Inception I1 -->
@@ -516,6 +757,89 @@ end note
 
 **No Critical finding was raised, so no escalation to the stakeholder is required from this lens.** No `[SCOPE_QUESTION]` is open against any artifact reviewed. The two deferred questions — accessibility target and throughput binding — are recorded as out of scope for this cycle in the Work Order and are correctly carried as deferred rather than as gaps.
 
+### Management Reviewer lens
+<!-- review: Inception I1 -->
+
+**Prior findings of this lens reconciled:** none. This is the first review of this lens on this project; `read_artifact_findings` returned no finding with `reviewerRole == ManagementReviewer` on any of the four management artifacts, so no closure was due and no finding was re-recorded under an existing key. The findings present on the Vision and the Iteration Plan belong to the Reviewer and Business Reviewer lenses and were left untouched — only the lens that emitted a finding may close it.
+
+**Stakeholder sanction: REFUSED.**
+
+**Stakeholder acceptance:** the sanction question was put with the verdict leaning and all six open Major defects inside it. The answer was "No", with the instruction "You need to correct all the findings." That answer is the record; no signature from a named person is required and none was sought.
+
+**Actions arising from this review — all six Major findings must be corrected before the LCO gate is re-presented:**
+
+| Action | Artifact | Owner | Blocks LCO |
+|---|---|---|---|
+| Resolve the CON-012 / CON-013 schema contradiction and add the previous-value column | Software Architecture Document | SoftwareArchitect | Yes |
+| Rebind the worker-category rule cluster away from UC-010 and bind the news-category list to it | Use-Case Model | SystemAnalyst | Yes |
+| Add the SAD and the Test Evaluation Summary to the fine plan and the critical chain; activate both roles in iteration 1 | Iteration Plan | ProjectManager | Yes |
+| Correct the cited CI run to the observed build | Test Evaluation Summary | TestManager | Yes |
+| Restate the R001 retirement claim to match the evidence chain, or move the retiring tests earlier | Iteration Plan | ProjectManager | Yes |
+| Split AC-004 into its learnability check and its post-launch population measure, and assign each to a point where it can close | Iteration Plan | ProjectManager | Yes |
+| Split the conflated Traceability rows by link type | Software Architecture Document | SoftwareArchitect | No |
+| Make NFR-001's execution iteration match where the behaviour exists | Test Evaluation Summary | TestManager | No |
+| Mark BG-001 as not yet measurable, or name the baseline source | Vision | SystemAnalyst | No |
+| Replace the self-referential success criteria on the FR-014 and FR-015 feature rows | Vision | SystemAnalyst | No |
+
+**No Critical finding was raised, so no Critical escalation is required.** The stakeholder was nevertheless consulted, because the LCO sanction is theirs to give and it was refused. No `[SCOPE_QUESTION]` is open against any artifact reviewed: the two deferred questions — accessibility target and throughput binding — are recorded as out of scope for this cycle in the Work Order and are correctly carried as deferred rather than as gaps in the Vision, the Supplementary Specification and the Development Case.
+
+**Review and sanction sequence:**
+
+```plantuml
+@startuml
+title LCO review and sanction sequence - Inception iteration 1
+
+actor "STK-001\nLaura Gomez\nproject sponsor" as STK
+participant "Management Reviewer\n(this lens)" as MR
+participant "Reviewer\n(technical lens)" as REV
+participant "Business Reviewer\n(business lens)" as BR
+participant "ReviewCoordinator" as RC
+participant "Project Manager" as PM
+
+REV -> MR : 4 Major, 3 Minor recorded\nagainst 5 artifacts
+BR -> MR : 1 Minor recorded\nagainst the Vision
+note right
+  Three lenses, one ledger.
+  No lens closes another lens's finding.
+end note
+
+MR -> MR : reconcile prior MR findings\nnone existed - first review
+MR -> MR : assess LCO exit criteria\n5 met, 2 partial, 1 not met, 1 not assessable
+MR -> MR : record 2 Major findings\nagainst the Iteration Plan
+note right
+  Iteration Plan#F1: R001 claimed retired
+  in iteration 2; the retiring test runs
+  in iterations 4 and 6.
+  Iteration Plan#F2: AC-004 is a population
+  measure assigned to the gate where its
+  three-month window opens.
+end note
+
+MR -> STK : ask the sanction question\nverdict leaning: Conditional Go\n0 Critical, 6 Major open
+note right
+  The leaning and every open Major defect
+  go INSIDE the question. A sanction
+  requested without them is a blind
+  rubber stamp.
+end note
+
+STK --> MR : No
+STK --> MR : You need to correct all the findings
+
+MR -> MR : Stakeholder sanction: REFUSED
+MR -> MR : LCO milestone NOT achieved
+MR -> RC : verdict: No-Go\nsanction refused, 6 Major open
+RC -> PM : iteration 2 required\nCON-023: remedy is another iteration,\nnever a scope cut
+PM -> PM : record the Iteration Assessment\ngiven this verdict
+
+note over STK, MR
+  The sanction is the stakeholder's to give,
+  not the team's to manufacture. It was asked,
+  it was refused, and the refusal is the record.
+end note
+@enduml
+```
+
 ## Disposition
 ### Reviewer lens
 <!-- review: Inception I1 -->
@@ -544,3 +868,68 @@ What the business lens does govern, and what I found: the business rules are the
 One Minor finding is raised from this lens: two Vision feature rows cite their own requirement identifier as their success criterion, which is not a verification measure. It does not block the milestone.
 
 The artifact set is fit to proceed to Elaboration from the business modeling perspective. No business artifact is owed, none is missing, and none is defective in a way this lens owns.
+
+### Management Reviewer lens
+<!-- review: Inception I1 -->
+
+**Disposition: No-Go. The LCO milestone is not achieved and the project does not advance to Elaboration.**
+
+The stakeholder refused the sanction and required every finding corrected. That refusal is the verdict, and it is consistent with what the artifacts show: the requirements baseline is complete and correctly shaped, the risk register is honest, and the Development Case is a correct delta over the baseline — but the plan that is supposed to carry the project through Elaboration does not survive its own evidence chain.
+
+The two management findings are the ones that decide this. `Iteration Plan#F1` is the more serious: the plan answers "Yes" to the question an LCO readiness assessment exists to answer — is the highest-magnitude risk retired first — on the strength of a fixture being built, when the test that retires R001 runs two to four iterations later and no test role is active in the iteration the plan names. A plan that claims a risk retired before its evidence exists is the failure mode risk-driven development is designed to prevent, and it is exactly the claim a milestone gate must not accept. `Iteration Plan#F2` is quieter but structural: AC-004 fuses a learnability check that is testable in iteration 4 with an 80% population measure whose three-month window opens in the iteration assigned to verify it, so one of five declared acceptance criteria has no gate at which it can close.
+
+The four Major findings from the other lenses compound the position rather than changing it. `Software Architecture Document#F1` is the one that would cost most if carried forward: CON-012 and CON-013 are both declared and the Data View as drawn cannot satisfy both, so Elaboration would baseline an unimplementable schema. `Use-Case Model#F1` would propagate a category filter onto news. `Iteration Plan#F1` from the technical lens understates the critical path by omitting two artifacts the iteration actually produced. `Test Evaluation Summary#F1` is a data-integrity defect: the conclusion holds, the citation does not.
+
+**What this verdict is not.** It is not a finding that the project is not viable. Feasibility is met: the platform is fixed by four constraints, identity and directory are external and read-only, the team's integration surface is stand-ins it controls, and the declared scope is constraint-dense enough that the stakeholder has already made most design decisions. Nothing in the set crosses a declared exclusion, invents an identifier, or expands scope beyond the fifteen declared requirements. The project is worth doing and the requirements baseline is worth building on.
+
+**What must happen before the gate is re-presented.** All six Major findings corrected and re-verified, and the four Minor findings corrected or explicitly deferred with a reason. The remedy is another iteration — CON-023 forbids cutting or deferring declared scope to fit a schedule, and no scope is cut here. The cost axis is not assessable and no figure is invented to fill it: CON-030 declares no budget and forbids the team to set one, and no phase has closed, so no measured spend exists to forecast from.
+
+**Project health state at this gate:**
+
+```plantuml
+@startuml
+title Project health state machine - LCO gate, Inception iteration 1
+
+[*] --> Healthy : iteration opens
+Healthy --> AtRisk : a Major finding opens\nagainst a planning artifact
+AtRisk --> Critical : a Critical finding opens,\nor a declared exclusion is crossed
+AtRisk --> Healthy : every Major finding closed\nand re-verified
+Critical --> Stopped : stakeholder refuses sanction
+AtRisk --> Stopped : stakeholder refuses sanction
+Stopped --> AtRisk : findings corrected,\nre-review scheduled
+Critical --> Stopped : no correction path\nwithin the iteration
+Stopped --> [*] : project cancelled
+
+state Healthy {
+  Healthy : no open Critical or Major finding
+  Healthy : four-axis position green
+}
+
+state AtRisk {
+  AtRisk : Major findings open, none Critical
+  AtRisk : milestone may advance only\nwith named conditions
+}
+
+state Critical {
+  Critical : a declared exclusion crossed,\nor an invented identifier,\nor scope expanded beyond the 15 FR
+}
+
+state Stopped {
+  Stopped : milestone does not advance
+  Stopped : no phase transition sanctioned
+}
+
+note right of AtRisk
+  Current position: 0 Critical, 6 Major.
+  Scope Healthy, Schedule At-Risk,
+  Quality Healthy at the level Inception owes,
+  Cost not assessable (CON-030).
+end note
+
+note right of Stopped
+  Reached this iteration: the stakeholder
+  refused the LCO sanction and required
+  every finding corrected.
+end note
+@enduml
+```
