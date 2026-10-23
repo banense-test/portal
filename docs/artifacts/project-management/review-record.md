@@ -82,8 +82,6 @@
 ### Business Reviewer lens
 <!-- review: Inception I3 -->
 
-<!-- review: Inception I3 -->
-
 **Review point:** LCO, business modeling lens. The question applied is exit criteria — is the Business Modeling discipline correctly dispositioned, and does the artifact set carry the business-level content the downstream disciplines need.
 
 **Scenario assessment — the governing decision.** `business-process-led = false`, verified independently against the artifact set rather than inherited from the Development Case. None of the six business modeling scenarios applies: no ERP or BPM suite in scope, no workflow re-engineered, no organizational restructuring, no business actor, business worker, business entity or business use case declared. The stakeholder declared fifteen discrete administrative tasks directly as system use cases FR-001 to FR-015, replacing three manual artifacts. The disposition is correct and unchanged from iterations 1 and 2.
