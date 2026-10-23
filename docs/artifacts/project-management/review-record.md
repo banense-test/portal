@@ -744,33 +744,81 @@ end note
 
 ## Resolutions and Actions
 ### Reviewer lens
-<!-- review: Inception I2 -->
+<!-- review: Inception I3 -->
 
-**Prior findings of this lens, reconciled this iteration.** Seven were open at the start of iteration 2. Each was verified against the corrected artifact content and closed through `resolve_artifact_finding`. None is Deferred, none is Rejected, none is left open.
+**Prior findings of this lens, reconciled this iteration.** Three were open at the start of iteration 3. Each was verified against the corrected artifact content and closed through `resolve_artifact_finding`. None is Deferred, none is Rejected, none is left open.
 
 | Finding | Severity | Verified against | Resolution |
 |---|---|---|---|
-| `Vision#F1` | Minor | Success-criteria table — BG-001 row now reads "Not yet measurable", names STK-001 as the baseline source, and records the 50% reduction as a post-launch comparison | Resolved |
-| `Use-Case Model#F1` | Major | Business-rule binding diagram — `R_CAT` binds UC-004 and UC-012 only; `R_NCAT` carries the news-category list to UC-006 and UC-010; UC-010's rules cell no longer cites CON-015 | Resolved |
-| `Iteration Plan#F1` | Major | Fine plan W1–W9 includes W5 Software Architecture Document and W6 Test Evaluation Summary with exit conditions; critical chain carries Analysis and Design and Test lanes; both roles Active in the iteration 1 column | Resolved |
-| `Software Architecture Document#F1` | Major | ADR-010 — append-only `ClockingEvent`, partial unique index on `(EmployeeId, WorkDate, EventKind)` where `SupersedesId IS NULL`, `PreviousValueUtc` column, Invariants table names the enforcing index per row | Resolved |
-| `Software Architecture Document#F2` | Minor | Traceability table — one row per link type, `Traces To` empty on every Realizes and Derives row, separate DependsOn rows | Resolved |
-| `Test Evaluation Summary#F1` | Minor | Quality-signals table — cites run `39940062277`, started 2026-10-23 10:34:26Z, completed 10:35:16Z, with the caveat retained | Resolved |
-| `Test Evaluation Summary#F2` | Minor | Quality-attribute plan — NFR-001 split into NFR-001a (claim mapping, iteration 3) and NFR-001b (refusal assertion, iterations 5, 6, 7) | Resolved |
+| `Use-Case Model#F2` | Major | UC-001 postcondition row now reads "After a Clock In press one ClockIn event row exists for the employee-day; after a Clock Out press a ClockOut event row exists for the same `WorkDate`; the effective pair is the two rows no other row supersedes". Main flow step 2 resolves the effective pair over supersession. The "Clocking record shape" paragraph states the shape is the same in UC-002, UC-003 and UC-005, and each of those outline rows says "resolved over supersession". The trace graph reports no `SUSPECT` edge on any `COMP-002` Realizes link | Resolved |
+| `Supplementary Specification#F1` | Minor | Design Constraints preamble states the grouping basis is the declared category and gives the arithmetic: Technical 9, Environmental 3, BusinessRule 13, Architectural 3, Operational 8 = 36. The Environmental table carries CON-006, CON-007, CON-028 only; the Technical table carries CON-001 to CON-005, CON-025 to CON-027 and CON-031; the diagram's "Technical - 9" and "Environmental - 3" packages hold the same members | Resolved |
+| `Software Architecture Document#F3` | Major | Significance table reads "Elaboration iteration 4" for ranks 1 to 4 and "Elaboration iteration 5" for ranks 5 to 10, and the prose states the basis as the Iteration Plan's nine-iteration roadmap. The Iteration Plan's coarse roadmap places Elaboration at iterations 4 and 5 with UC-001, UC-004, UC-009 and UC-011 designed in iteration 4 — the same assignment. No stale "Elaboration iteration 2" or "iteration 3" value remains | Resolved |
 
-**Not this lens's to close.** `Iteration Plan#F1` and `Iteration Plan#F2` as recorded by the Management Reviewer remain with that lens. The actor handler rejects cross-lens closure, correctly: a lens that did not emit a finding cannot certify its correction.
+**Not this lens's to close.** `Iteration Plan#F3`, recorded by the Management Reviewer lens, remains open with that lens. The actor handler rejects cross-lens closure, correctly: a lens that did not emit a finding cannot certify its correction.
 
 **Open actions this milestone.** Three, all assigned, none deferred.
 
 | Action | Owner | Closes | Exit condition |
 |---|---|---|---|
-| Restate the UC-001 postcondition in ADR-010's append-only terms; confirm UC-002, UC-003 and UC-005 read the same shape; clear the four `COMP-002` suspect traces | SystemAnalyst | `Use-Case Model#F2` | The postcondition describes two event rows and a supersession query, not one record; no `SUSPECT → System Analyst` edge remains on COMP-002 |
-| Re-base the architectural-significance "Design in" column onto the eight-iteration roadmap | SoftwareArchitect | `Software Architecture Document#F3` | Ranks 1–4 read Elaboration iteration 3 and ranks 5–10 read Elaboration iteration 4, matching the Iteration Plan |
-| Make the constraint grouping consistent between the table and the diagram, and state whether it follows the declared category | RequirementsSpecifier | `Supplementary Specification#F1` | The table and the diagram group the same 36 constraints the same way, and the grouping's basis is stated |
+| Re-read `scm_get_build_status` and `scm_list_issues` at the moment of writing; replace the run identifier and its timestamps and the issue count with the values read, naming all three issues | TestManager | `Test Evaluation Summary#F3` | The quality-signals and defect-record tables cite the run and the issue count as read at the moment of writing, and the count matches the tracker |
+| Record `.github/workflows` as committed and green on `main` with the run identifier read at the moment of writing; remove it from the iteration preparation checkpoint's list of missing toolchain components; close `Issue #2` and `Issue #3` | ProcessEngineer | `Development Case#F1` | The tool and guideline reference table and the checkpoint agree that the CI workflow exists, and the two issues are closed against the correction |
+| Make W11's owner list and the iteration 3 role profile agree — either activate ManagementReviewer for the LCO sanction question or reduce W11's owners to the roles recorded Active | ProjectManager | `Iteration Plan#F2` | Every work item's owners are Active in the iteration's column, and the plan's claim about it is counted rather than asserted |
 
-**What the corrections established.** The seven closures are not cosmetic. ADR-010 is the substantive one: it resolves a contradiction that would have surfaced as an unimplementable schema the moment Elaboration tried to baseline it, and it does so by making CON-013 hold by construction rather than by convention. The Iteration Plan's risk-retirement table now names the event that retires R001 rather than the fixture that makes it retirable, which is the claim an LCO gate exists to test. The Vision's BG-001 row now records an unmeasured criterion as unmeasured instead of presenting it as measurable.
+**What the three closures established.** The corrections are substantive, not cosmetic. The UC-001 postcondition now describes the same clocking shape ADR-010 establishes, and the trace graph confirms it independently by clearing all four suspect edges — the artifact and the graph agree, which is the check that a narrative claim of resolution cannot satisfy. The Supplementary Specification's constraint grouping is now derived from one basis and states the arithmetic that proves completeness, so the two representations cannot drift without the count failing. The Software Architecture Document's significance table and the Iteration Plan's roadmap name the same iteration for the same use case, which is the cross-artifact agreement the LCO architecture criterion tests.
 
-**What the corrections did not establish.** A correction is not a closure, and a closure is not a pass. The two Major findings recorded this milestone are both consequences of the corrections themselves — ADR-010 changed the clocking shape and the Use-Case Model did not follow; the roadmap changed and the Software Architecture Document did not follow. That is the normal cost of a correction iteration and it is why the gate is re-presented rather than assumed.
+**What the three closures did not establish.** A correction is not a closure and a closure is not a pass. The three findings recorded this milestone are all of one class — a claim asserted rather than read against the set it describes — and one of them is a recurrence of a defect closed in iteration 2 on the strength of a corrected citation. That recurrence is the evidence R009 asks for: the C2 check did not prevent it, and the Development Case's own verdict table should record that rather than claim the checks are working.
+
+```plantuml
+@startuml
+title Portal - Inception iteration 3 technical lens: closure and open position
+
+package "Closed this iteration - 3 prior findings" {
+  class "Use-Case Model#F2\nMajor\npostcondition in ADR-010 terms,\n4 suspect traces cleared" as C1
+  class "Supplementary Specification#F1\nMinor\nconstraint grouping by declared category" as C2
+  class "Software Architecture Document#F3\nMajor\nsignificance table re-based to 4 and 5" as C3
+}
+
+package "Open this iteration - 1 Major, 2 Minor" {
+  class "Test Evaluation Summary#F3\nMajor\nSCM state cited from an earlier read" as O1
+  class "Development Case#F1\nMinor\nCI workflow recorded as not yet created" as O2
+  class "Iteration Plan#F2\nMinor\nW11 owners disagree with the role profile" as O3
+}
+
+package "Open, other lens" {
+  class "Iteration Plan#F3\nManagement Reviewer lens" as X1
+}
+
+package "Gate position" {
+  class "0 Critical" as G1
+  class "1 Major" as G2
+  class "2 Minor" as G3
+  class "No exclusion crossed\nNo identifier invented\nNo scope expanded" as G4
+}
+
+C1 --> G1
+C2 --> G1
+C3 --> G1
+O1 --> G2
+O2 --> G3
+O3 --> G3
+G4 --> G1
+
+note bottom of O1
+  A recurrence of a defect closed in iteration 2
+  on the strength of a corrected citation. This
+  is the evidence R009 asks for: C2 did not
+  prevent it.
+end note
+
+note bottom of G2
+  The one Major is a currency defect, not a
+  reasoning defect. It does not invalidate the
+  test position; it makes the artifact's own
+  claim to be reading the authoritative record
+  untrue.
+end note
+@enduml
+```
 
 ### Business Reviewer lens
 <!-- review: Inception I2 -->
