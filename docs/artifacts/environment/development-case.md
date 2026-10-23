@@ -9,7 +9,7 @@ the canonical intensity matrix. None of that is restated or redefined here. What
 this project changes, and why.
 
 **No structural plug-in is applied.** No role is added, merged or removed; no CORE artifact is
-omitted; no primary ownership is reassigned. Four thin plug-ins are applied — they substitute content
+omitted; no primary ownership is reassigned. Five thin plug-ins are applied — they substitute content
 and add project guidance without altering the process shape.
 
 ```plantuml
@@ -27,6 +27,7 @@ package "Thin plug-ins applied by this project" {
   [P2 OPTIONAL trigger decisions] as P2
   [P3 Project tool and guideline references] as P3
   [P4 Measurement policy] as P4
+  [P5 Authoring checks C1 to C9] as P5
 }
 package "Portal Development Case — this artifact" {
   [Delta over the baseline] as DC
@@ -37,10 +38,12 @@ BASE --> P1
 BASE --> P2
 BASE --> P3
 BASE --> P4
+BASE --> P5
 P1 --> DC
 P2 --> DC
 P3 --> DC
 P4 --> DC
+P5 --> DC
 
 note bottom of DC
   No structural plug-in is applied: no role is merged,
@@ -49,120 +52,6 @@ note bottom of DC
 end note
 @enduml
 ```
-
-### Organization and toolchain assessment (S1 findings)
-
-The assessment below is the evidence behind every tailoring decision in this document. It was first
-derived from the declared scope — 15 functional requirements, 5 non-functional requirements, 36
-constraints, 2 declared risks, 4 stakeholders — and is now re-based on the ten artifacts Inception
-iteration 2 produced and on the seventeen findings the three review lenses have recorded across both
-iterations.
-
-**Organization.** The project runs as an AI agent team against the fixed 25-role IARI roster. Three
-facts shape the tailoring:
-
-- **The declared scope is unusually constraint-dense.** 36 constraints against 15 requirements means
-  the stakeholder has already made most design decisions. The process must therefore spend its effort
-  on *conformance* — proving the system does exactly what CON-001 to CON-036 say — rather than on
-  exploration. This is why Requirements intensity is Critical in Inception and why the Supplementary
-  Specification carries the constraint load.
-- **Three roles are idle by trigger, not by choice.** Business Modeling is inactive (see Disciplines
-  and Intensity), so BusinessProcessAnalyst and BusinessReviewer have no work. CapsuleDesigner has no
-  work because no real-time capsule exists. Idle roles are not removed from the roster — they simply
-  receive no assignment this cycle.
-- **Every defect in both iterations sits where the team made a decision, and none sits where it copied
-  declared input.** Seventeen findings across two iterations, and not one touches the requirements
-  baseline: 15 use cases, one per declared requirement, no phantom use case, no cross-cutting mechanism
-  promoted to a use case, no exclusion crossed, no invented identifier. The findings concentrate in the
-  artifacts that record a design or planning decision — Use-Case Model, Software Architecture Document,
-  Iteration Plan, Test Evaluation Summary, Vision, Supplementary Specification. The process consequence
-  is that review effort belongs on the decision-bearing artifacts, and that those artifacts need a
-  checkable criterion applied *before* they are persisted, not after.
-
-**The second generation is the finding that matters.** Iteration 1 raised ten findings and closed ten.
-Iteration 2 closed those ten and raised seven more, five of them Major, three in one artifact. Two of
-those three are the same defect class: a decision one artifact changed, not carried through to the
-artifacts that had to follow it. The authoring checks this document added in iteration 2 were written
-to catch that class and did not prevent its second generation. That is a process result, not an
-artifact result, and it is the reason this revision exists — see Guidelines and Procedures, authoring
-checks, for the check-by-check verdict.
-
-**Toolchain.** Assessed against what the constraints declare:
-
-| Capability | State | Basis |
-|---|---|---|
-| SCM and hosted CI | Available and observed working | CON-029 — hosted provider CI; never deploys, never holds production data or credentials. A build on `main` was observed successful at the iteration-2 review |
-| Build | Available | CON-025 — .NET 10 SDK |
-| Database | Available | CON-027 — PostgreSQL 18, major pinned, patch floats |
-| Identity stand-in | Required, team-built | CON-031 — test OIDC issuer with placeholder issuer/client id/secret |
-| Directory stand-in | Required, team-built | CON-031 — test directory carrying the declared attributes, including entries with empty job title or extension |
-| UI reference | Available | CON-034 — `docs/inputs/employee-portal-design.html`, mandatory and authoritative |
-| Test framework | **Gap** | Not declared by the stakeholder. TestManager selects it in Elaboration; no framework is assumed here |
-| Modeling tool | **Gap, accepted** | No modeling tool is declared. All artifacts are Markdown with embedded PlantUML in SCM — this is sufficient and no tool is procured |
-| Lint / format config | **Gap** | `CONTRIBUTING.md` and lint configuration do not yet exist. SoftwareArchitect and Implementer author them in Elaboration; this document references them, it does not author them |
-
-The two stand-ins are the load-bearing toolchain item. CON-031 makes them the team's entire
-integration surface: the team never touches the real Keycloak or the real Active Directory, and
-"every use case works correctly against the stand-ins" is the team's definition of done. A stand-in
-that omits the empty-attribute entries would leave R001 untested — and building the stand-in is not
-the same act as retiring the risk (see Guidelines and Procedures, risk retirement).
-
-```plantuml
-@startuml
-title Portal — Organization and Toolchain Baseline (S1 assessment)
-
-package "Agent roles with work this project (IARI baseline, unchanged)" {
-  class "Requirements\nSystemAnalyst, RequirementsSpecifier" as R_REQ
-  class "Analysis and Design\nSoftwareArchitect, Designer,\nUserInterfaceDesigner, DatabaseDesigner" as R_AD
-  class "Implementation\nImplementer, Integrator" as R_IMP
-  class "Test\nTestManager, TestAnalyst,\nTestDesigner, Tester" as R_TEST
-  class "Deployment\nDeploymentManager" as R_DEP
-  class "CM and Change Management\nConfigurationManager,\nChangeControlManager" as R_CM
-  class "Project Management\nProjectManager" as R_PM
-  class "Environment\nProcessEngineer" as R_ENV
-  class "Review and Documentation\nReviewer, ReviewCoordinator,\nManagementReviewer, CodeReviewer,\nTechnicalWriter" as R_REV
-}
-
-package "Trigger-conditional roles — idle, trigger not fired" {
-  class "BusinessProcessAnalyst\nBusinessReviewer" as R_BM
-  class "CapsuleDesigner" as R_CAP
-}
-
-package "Toolchain — declared or assessed" {
-  class "SCM + hosted CI\nCON-029: never deploys,\nnever holds production data" as T_CI
-  class "Build: .NET 10 SDK\nCON-025" as T_BUILD
-  class "Test framework\nGAP: not declared —\nfix in Elaboration" as T_TEST
-  class "Stand-in OIDC issuer\nCON-031" as T_OIDC
-  class "Stand-in LDAP directory\nCON-031: includes empty\njob title / extension entries" as T_LDAP
-  class "PostgreSQL 18\nCON-027: major pinned,\npatch floats" as T_DB
-  class "UI reference\nCON-034: employee-portal-design.html\nis authoritative" as T_UI
-  class "Modeling / requirements tool\nGAP: none — artifacts are\nMarkdown in SCM" as T_MODEL
-}
-
-R_REQ --> T_CI
-R_AD --> T_BUILD
-R_IMP --> T_BUILD
-R_TEST --> T_TEST
-R_TEST --> T_OIDC
-R_TEST --> T_LDAP
-R_AD --> T_DB
-R_AD --> T_UI
-R_REQ --> T_MODEL
-R_DEP --> T_CI
-R_CM --> T_CI
-R_ENV --> T_CI
-R_BM ..> R_REQ : no business model to hand over
-R_CAP ..> R_AD : no real-time capsule to design
-@enduml
-```
-
-### Rollout order
-
-The process is rolled out incrementally, not in one step. Requirements and Analysis and Design are
-established first because they carry the constraint-conformance load; Implementation and Test follow
-once the stand-ins exist; Deployment is exercised only at handover. A team that follows this subset
-well outperforms one that nominally follows the full library.
-
 ## Disciplines and Intensity
 **All active disciplines: intensity per canonical matrix.** No deviation is proposed and none is
 self-granted.
