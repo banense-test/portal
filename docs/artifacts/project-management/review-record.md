@@ -958,92 +958,85 @@ end note
 ```
 
 ### Business Reviewer lens
-<!-- review: Inception I2 -->
+<!-- review: Inception I3 -->
 
-<!-- review: Inception I2 -->
+<!-- review: Inception I3 -->
 
 **Disposition: Approved with Changes — from the business modeling lens only.**
 
-The Business Modeling discipline is correctly inactive and the artifact set carries the business-level content the downstream disciplines need. No Critical finding. Two Major and one Minor, all in the business-rule attachment layer, all correctable within this iteration by the SystemAnalyst, who owns both affected artifacts.
+The Business Modeling discipline is correctly inactive and the artifact set carries the business-level content the downstream disciplines need. No Critical finding. One Minor finding, correctable within this iteration by the SystemAnalyst, who owns the affected artifact.
 
-**What this disposition is not.** It is not a sanction to advance. The milestone verdict belongs to the ReviewCoordinator and the sanction to the stakeholder; this lens reports the business modeling state of the artifacts and nothing more. It is also not a claim that the two Major findings are tolerable — they are correctable now and they should be corrected before the gate is re-presented, because each would mislead the role that reads it next. `Use-Case Model#F1` (business lens) would let a second clocking pair be recorded for one employee-day, which CON-012 declares impossible. `Use-Case Model#F2` (business lens) would let the declared directory filter be dropped when UC-011 is detailed in Elaboration, because the use case denies the rule that declares it.
+**What this disposition is not.** It is not a sanction to advance. The milestone verdict belongs to the ReviewCoordinator and the sanction to the stakeholder; this lens reports the business modeling state of the artifacts and nothing more. It is also not a claim that the one Minor finding is tolerable — it is correctable now and it should be corrected before the gate is re-presented, because the role that reads the Use-Case Model next is the RequirementsSpecifier detailing the eleven outline use cases in Elaboration, and the index is what that role navigates by.
+
+**The trajectory across three iterations is the finding that matters most.** This lens carried three findings into iteration 2 and three into iteration 3, and all six are now closed. The two Major findings of iteration 2 were the same defect class twice: a rule bound to a use case but not enforced by its behaviour. Both are corrected by specifying the behaviour, not by restating the binding. What remains is the residue of that class — the binding index was updated in the flows but not in the two tables that index them. That is a smaller defect of the same family, and it is the reason the recommendation asks for one cross-read of the three representations rather than a third targeted patch.
+
+```plantuml
+@startuml
+title Portal - Business-rule binding coverage at the LCO gate, Inception iteration 3
+
+left to right direction
+
+package "Bound and enforced in behaviour - 13 of 13" {
+  class "CON-008 authorization\nMECH-02, 8 HR use cases" as R8 <<Pass>>
+  class "CON-009 closed four values\nUC-004, UC-011, UC-012" as R9 <<Pass>>
+  class "CON-010 one featured item\nUC-006, UC-007, UC-008, UC-009" as R10 <<Pass>>
+  class "CON-011 pair never crosses midnight\nUC-001, UC-002, UC-003, UC-005, UC-013" as R11 <<Pass>>
+  class "CON-012 one pair per employee-day\nUC-001 step 3, A4, A5" as R12 <<Pass>>
+  class "CON-013 originals never overwritten\nUC-001, UC-005" as R13 <<Pass>>
+  class "CON-014 news never deleted\nUC-006, UC-007, UC-008, UC-010" as R14 <<Pass>>
+  class "CON-015 category drives no access\nUC-004, UC-011, UC-012" as R15 <<Pass>>
+  class "CON-016 category may be empty\nUC-004 A3, UC-011 A4, UC-012" as R16 <<Pass>>
+  class "CON-017 only HR corrects\nUC-001 step 3 and A4, UC-005" as R17 <<Pass>>
+  class "CON-018 featuring is manual\nUC-006, UC-007, UC-009" as R18 <<Pass>>
+  class "CON-019 unpublish promotes nothing\nUC-008 A2, UC-009 A2" as R19 <<Pass>>
+  class "CON-020 corporate data only\nUC-011 step 6, UC-014" as R20 <<Pass>>
+}
+
+package "Binding index gaps - 1 Minor finding, 2 instances" {
+  class "CON-011 and CON-013\nenforced in UC-004 step 4 and A4,\nabsent from UC-004 Rules bound cell\nand from the R_CLK cluster edges" as D1 <<Minor>>
+  class "CON-012\nlisted in UC-013 Rules bound cell,\nno enforcement point named" as D2 <<Minor>>
+}
+
+R11 --> D1
+R13 --> D1
+R12 --> D2
+
+note bottom of D1
+  The behaviour is specified correctly in
+  UC-004's flow. What is wrong is the index a
+  reader uses to find it: the survey table and
+  the binding diagram omit two rules the
+  artifact's own enforcement paragraph says
+  UC-004 enforces.
+end note
+
+note bottom of D2
+  The retry re-sends one press under one
+  idempotency key, so the duplicate is rejected
+  by the key, not by CON-012. Either name the
+  enforcement point or drop the rule from the
+  cell.
+end note
+@enduml
+```
 
 **Business modeling position at this gate:**
 
 | Criterion | Position | Basis |
 |---|---|---|
-| BM disposition | Correct and independently verified | `business-process-led = false`; five activation criteria tested, none met |
+| BM disposition | Correct and independently verified | `business-process-led = false`; six scenarios tested, none applies |
 | Business artifacts owed | None | No BUC, business actor, business worker or business entity is required by the Development Case |
 | Business artifacts missing | None | The Glossary is NOT TRIGGERED and correctly absent |
-| Business rules | 12 of 13 carried with ID, attachment and testable condition; 2 attachment defects | `Use-Case Model#F1` (business lens), `Use-Case Model#F2` (business lens), `Supplementary Specification#F1` (business lens) |
+| Business rules | 13 of 13 carried with ID, source, attachment and testable condition | `Supplementary Specification#F1` (business lens) closed this iteration |
+| Business-rule binding index | 2 of 3 representations disagree in 2 places | `Use-Case Model#F3` (business lens) |
 | Stakeholder representation | Complete | All four declared stakeholders represented; negative-stakeholder analysis honest |
 | Volatility annotation | Reached the architecture | Three High features each own a dedicated component |
 | Business goals | Measurable or explicitly unmeasured | BG-001 unmeasured with STK-001 named as baseline supplier; BG-002 and BG-003 measurable |
 | Scope adherence | Clean | 15 UCs to 15 declared FRs; no invented identifier; no exclusion crossed |
 
-**Derivation readiness — the business lens's functional test.** The business-to-system derivation bridge is N/A because the system use cases were declared, not derived: the stakeholder declared FR-001 to FR-015 directly and the Use-Case Model maps one to one onto them. The bridge is not broken — it does not exist, and the Development Case correctly does not require it. What the Requirements discipline needs from the business level is the rule binding, and that is what the three findings correct.
+**Derivation readiness — the business lens's functional test.** The business-to-system derivation bridge is N/A because the system use cases were declared, not derived: the stakeholder declared FR-001 to FR-015 directly and the Use-Case Model maps one to one onto them. The bridge is not broken — it does not exist, and the Development Case correctly does not require it. What the Requirements discipline needs from the business level is the rule binding, and that is what the one open finding corrects.
 
-**What must happen before the gate is re-presented.** The three findings corrected and re-verified by this lens. The remedy is another iteration — CON-023 forbids cutting or deferring declared scope to fit a schedule, and no scope is cut here. The cost axis is not assessable from this lens and no figure is invented to fill it: CON-030 declares no budget and forbids the team to set one.
-
-```plantuml
-@startuml
-title Portal - Business modeling position at the LCO gate, Inception iteration 2
-
-package "Discipline disposition" {
-  class "Business Modeling\nINACTIVE per DC section 4" as BM <<BR-OK-INACTIVE>>
-  class "BusinessProcessAnalyst\nidle by trigger" as BPA
-  class "BusinessReviewer\nreviewed 9 of 9 artifacts" as BR
-}
-
-package "Business-level content - present and sound" {
-  class "Business rules\n13 declared BusinessRule constraints" as C1
-  class "Stakeholder representation\n4 of 4 declared" as C2
-  class "Volatility annotation\n3 High features, 3 components" as C3
-  class "Business goals\n1 unmeasured, 2 measurable" as C4
-  class "Scope adherence\n15 UCs to 15 declared FRs" as C5
-}
-
-package "Business-level content - defective" {
-  class "CON-012 enforcement\nUC-001 permits a second pair" as D1 <<Major>>
-  class "CON-015 attachment\nUC-011 denies the rule the SAD applies" as D2 <<Major>>
-  class "CON-008 register entry\n12 of 13 in the register" as D3 <<Minor>>
-}
-
-package "Gate position" {
-  class "0 Critical" as G1
-  class "2 Major" as G2
-  class "1 Minor" as G3
-  class "No exclusion crossed\nNo identifier invented\nNo scope expanded" as G4
-}
-
-BM --> BPA
-BM --> BR
-C1 --> D1
-C1 --> D2
-C1 --> D3
-D1 --> G2
-D2 --> G2
-D3 --> G3
-C2 --> G1
-C3 --> G1
-C4 --> G1
-C5 --> G1
-G4 --> G1
-
-note bottom of BM
-  Verified independently, not inherited.
-  Five activation criteria tested against
-  the artifact set; none is met.
-end note
-
-note bottom of G2
-  Both Major findings are attachment defects.
-  The rule content is correct in each case;
-  the binding to the use cases that enforce
-  it is not.
-end note
-@enduml
-```
+**What must happen before the gate is re-presented.** `Use-Case Model#F3` corrected and re-verified by this lens. The remedy is another iteration — CON-023 forbids cutting or deferring declared scope to fit a schedule, and no scope is cut here. The cost axis is not assessable from this lens and no figure is invented to fill it: CON-030 declares no budget and forbids the team to set one.
 
 ### Management Reviewer lens
 <!-- review: Inception I2 -->
