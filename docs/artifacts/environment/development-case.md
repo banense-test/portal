@@ -1,9 +1,7 @@
 ## Document Control
-
 - **Phase:** Inception
-- **Status:** Draft — iteration 1, submitted for review
+- **Status:** Draft — iteration 2, submitted for review
 - **Milestone Target:** End of Inception (not yet achieved)
-
 ## Tailoring Overview
 This document is a **delta over the IARI Development Case baseline**. The baseline supplies the
 25-role roster, the 9 disciplines, the 16 CORE and 6 OPTIONAL artifacts, the ownership allowlist and
