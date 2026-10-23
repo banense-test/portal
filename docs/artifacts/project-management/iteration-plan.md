@@ -1,7 +1,8 @@
 ## Document Control
 - **Phase:** Inception
-- **Status:** Draft — iteration 1 closed with LCO not achieved; iteration 2 plan built
+- **Status:** Draft — iteration 2, submitted for review
 - **Milestone Target:** End of Inception (not yet achieved)
+
 ## Iteration Objectives
 Inception iteration 1 establishes the requirements baseline and the risk position the rest of the project is planned against. It is a planning iteration, not a build iteration: no code is produced and no acceptance criterion is closed here.
 
