@@ -9,8 +9,6 @@
 ### Business Reviewer lens
 <!-- review: Inception I3 -->
 
-<!-- review: Inception I3 -->
-
 - **Phase:** Inception
 - **Status:** Draft — iteration 3, business modeling lens review complete
 - **Milestone Target:** End of Inception (not yet achieved)
