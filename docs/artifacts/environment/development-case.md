@@ -494,8 +494,12 @@ readiness checkpoint before development starts, and the Environment discipline o
 3. Verify the toolchain the iteration depends on actually works: build, CI, test framework, and the
    stand-ins. A broken build discovered on day one is a process failure, not a development one.
 4. Confirm the templates and guideline references the iteration needs exist. `CONTRIBUTING.md`, the
-   lint configuration and `.github/workflows` are gaps this iteration; they must be closed before
-   Implementation intensity rises in Construction.
+   lint configuration and `.github/workflows` do not yet exist; they are R007 and must be closed
+   before Implementation intensity rises in Construction. The test framework is the same shape of gap
+   and closes in the first Elaboration iteration.
+5. Apply the authoring checks (C1 to C9) to every artifact the iteration produces, before it is
+   persisted. A check applied at review time is a finding; a check applied at authoring time is a
+   correction that never becomes one.
 
 ### Process support during the iteration
 
