@@ -1,6 +1,6 @@
 # Branching and Baseline Strategy — Portal
 
-**Owner:** ConfigurationManager. **Status:** Inception, iteration 2.
+**Owner:** ConfigurationManager. **Status:** Inception, iteration 3.
 
 This file is the configuration-management model of the project expressed as code. It defines what a
 configuration item is, how branches and baselines are named, which gates a baseline must pass, who
@@ -194,55 +194,42 @@ One baseline per iteration close, never mid-iteration. A tag is defensible only 
 
 ```plantuml
 @startuml
-title Portal - Baseline register: the tag series and what each one freezes
+title Portal - Baseline tag series: phase-relative numbering
 
-state "Inception - no tag" as INC {
-  INC : documentation and config-as-code only
+state "Inception" as INC {
+  INC : no tag in this phase
   INC : no iteration-close PR exists to gate on
-  INC : the tag family has no Inception member
 }
-
-state "Elaboration iteration 1" as E1 {
+state "Elaboration, first iteration" as E1 {
   E1 : baseline-elaboration-E1-v1
-  E1 : freezes the first evolutionary mechanism
 }
-
-state "Elaboration iteration n" as EN {
-  EN : baseline-elaboration-En-v1
+state "Elaboration, later iterations" as EN {
+  EN : baseline-elaboration-E{n}-v1
 }
-
-state "Construction iteration 1" as C1 {
+state "Construction, first iteration" as C1 {
   C1 : baseline-construction-C1-v1
-  C1 : freezes the first UC realizations
 }
-
-state "Construction iteration n" as CN {
-  CN : baseline-construction-Cn-v1
+state "Construction, later iterations" as CN {
+  CN : baseline-construction-C{n}-v1
 }
-
 state "Transition release" as T1 {
   T1 : baseline-transition-T1-v1
-  T1 : handover to Infrastructure (CON-032)
 }
-
 [*] --> INC
 INC --> E1 : LAM close, both gates pass
-E1 --> EN : next Elaboration iteration
+E1 --> EN
 EN --> C1 : LCA close, both gates pass
-C1 --> CN : next Construction iteration
+C1 --> CN
 CN --> T1 : Project Acceptance
 T1 --> [*]
 
-note right of INC
-  A patch version is written only after a
-  rollback or a post-baseline critical fix.
-  Routine work targets the NEXT tag.
-end note
-
-note bottom of T1
-  Every tag in this series points to a commit
-  whose iteration-close PR was APPROVED and
-  whose post-merge main build was green.
+note right of E1
+  n counts iterations WITHIN the phase.
+  E1 is the first Elaboration iteration,
+  whatever project iteration number the
+  Iteration Plan gives it. The tag series
+  never carries a project iteration number,
+  and this file does not restate the roadmap.
 end note
 @enduml
 ```
@@ -252,6 +239,12 @@ end note
 | `baseline-elaboration-E{n}-v{x}` | Elaboration iteration close (LAM) | the evolutionary architectural mechanism merged into `iteration/E{n}` |
 | `baseline-construction-C{n}-v{x}` | Construction iteration close (IOC) | the UC realizations merged into `iteration/C{n}` |
 | `baseline-transition-T{n}-v{x}` | Transition release | the release handed to Infrastructure (CON-032) |
+
+`n` counts iterations within its phase, not project iterations. The first Elaboration iteration is
+`E1` and the first Construction iteration is `C1`, whatever project iteration number the Iteration
+Plan assigns them. The tag series therefore survives a roadmap renumbering without a re-tag, and this
+file deliberately names no project iteration number: the roadmap is the Iteration Plan's to state, and
+a second copy of it here would be a second source of truth that drifts.
 
 `x` starts at 1 and is incremented only after a rollback or a post-baseline critical fix applied to
 the iteration branch. Routine iteration work targets the next iteration's tag, not a re-tag of the
@@ -546,8 +539,12 @@ No baseline tag is written in Inception. The architecture is not stable, no iter
 request exists to gate on, and the tag family itself has no Inception member — the first tag this
 project writes is `baseline-elaboration-E1-v1`, at the Elaboration iteration close.
 
-The pipeline is live. The build observed on `main` at the moment of writing is run `39940359296`,
-success, 2026-10-23 10:36:57Z to 10:37:48Z. It builds one web project and one test project — a
-skeleton — so a green result proves the pipeline runs and the manifest guard holds, not that the
-product works. The CI gate becomes a real gate on a baseline when the first mechanism lands in
-Elaboration.
+The pipeline is live and is a CI-5 configuration item in its own right. The build read on `main` at
+the moment of writing is run `39940933643`, success, 2026-10-23 10:41:58Z to 10:42:50Z. It builds one
+web project and one test project — a skeleton — so a green result proves the pipeline runs and the
+manifest guard holds, not that the product works. The CI gate becomes a real gate on a baseline when
+the first mechanism lands in Elaboration.
+
+The Development Case's tool-reference table records `.github/workflows` as not yet created, which
+contradicts the run above. The discrepancy is filed as Issue #3 for the ProcessEngineer; this file
+records the configuration item as it is observed.
