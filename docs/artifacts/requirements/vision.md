@@ -155,7 +155,6 @@ whether throughput is a binding concern. Neither is designed for this cycle and 
 Both return to the stakeholder when this cycle closes.
 
 ## Features
-
 Every feature below traces to a declared requirement. There is no feature in this Vision that the
 stakeholder did not declare.
 
@@ -164,6 +163,12 @@ scope-management lever on this project: CON-023 states that treatment of a risk 
 declared scope, and the remedy for a delayed milestone is another iteration. The lever the team
 actually has is iteration count, not priority. Recording everything as Must is the honest reading, and
 it tells the ProjectManager where the schedule pressure will land.
+
+**Success-criterion column.** Each cell names an independent measure — a declared acceptance
+criterion, a declared constraint, or a declared business goal. A cell never restates the feature's own
+requirement identifier: a criterion that repeats the requirement cannot be tested against it. Where
+no declared AC or CON covers a feature, the cell states the observable check derived from the
+requirement text and says so.
 
 ### Clocking
 
@@ -185,7 +190,7 @@ it tells the ProjectManager where the schedule pressure will land.
 | Unpublish News — hides, never deletes | FR-008 | Must | Low | CON-014 |
 | Feature or Un-feature News — manual flag, at most one featured at any moment, unpublishing the featured item promotes nothing | FR-009 | Must | **High** | CON-010, CON-019 |
 | Read and Filter News — sorted by date, filter by category, featured item in a banner, read-only | FR-010 | Must | Medium | BG-003 |
-| Recognize News Unavailable — "no connection" instead of stale or partial results | FR-015 | Must | Low | FR-015 |
+| Recognize News Unavailable — "no connection" instead of stale or partial results | FR-015 | Must | Low | Observable check derived from FR-015 (no declared AC or CON covers it): with the corporate network unreachable, the news area displays a no-connection message and zero news rows — no stale item, no partial list, no cached copy |
 
 ### Directory
 
@@ -193,11 +198,11 @@ it tells the ProjectManager where the schedule pressure will land.
 |---|---|---|---|---|
 | Search Employee Directory — by name, department or office; seven displayed fields; no private personal information | FR-011 | Must | Medium | AC-003 |
 | Assign or Clear Worker Category — HR only, closed four-value list or empty, audited | FR-012 | Must | **High** | CON-009, CON-016 |
-| Recognize Directory Unavailable — "no connection" instead of stale or partial results | FR-014 | Must | Low | FR-014 |
+| Recognize Directory Unavailable — "no connection" instead of stale or partial results | FR-014 | Must | Low | Observable check derived from FR-014 (no declared AC or CON covers it): with the corporate network unreachable, the directory area displays a no-connection message and zero result rows — no stale entry, no partial result set, no cached copy |
 
 ### Volatility map — input to architectural decomposition
 
-Volatility is assessed on two axes: will this change for the same customer over time, and does it
+Volatility is assessed on two axes: will this change for the same customer over time, and does this
 differ across customers right now. The three High items are the ones the Software Architect must
 encapsulate behind a dedicated component rather than scatter through the code.
 
