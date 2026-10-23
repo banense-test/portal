@@ -183,7 +183,6 @@ is built to the reference and tested against it. No WCAG level is claimed and no
 suite is scoped from them. The question returns to the stakeholder when this cycle closes.
 
 ## Reliability
-
 ### Audit trail — NFR-005
 
 Mandatory traceability. The audit trail is written to the database for compliance and read directly
@@ -260,10 +259,75 @@ end note
 | REL-06 | When the corporate network is unavailable, the directory shows a no-connection message instead of stale or partial results. Nothing is copied locally, so there is nothing to cache and nothing to sync | FR-014 |
 | REL-07 | When the corporate network is unavailable, the news area shows a no-connection message instead of stale or partial results | FR-015 |
 | REL-08 | Backups are the Infrastructure team's existing server-backup practice, which already covers this PostgreSQL instance in restorable form with a verified restore test. No backup design, tooling or restore procedure is part of this project | CON-035 |
+| REL-09 | A clocking pair still open at midnight is an incomplete day. It is not closed automatically, not carried to the next date, and not deleted. It exports with ClockOut and HoursWorked empty and is corrected by HR under UC-005 if the employee reports it | CON-011, CON-013, CON-017, FR-004 |
+
+**REL-01 bounds an availability target; it does not declare an operating schedule.** The portal is
+not shut down outside 7:00–19:00 and no scheduled outage window is designed. The window states the
+period during which the portal must be available, and 24/7 availability is explicitly not required —
+so no redundancy, clustering or failover beyond what the corporate network already provides is
+designed for. A design that adds a nightly maintenance window, a shutdown job or a scheduled restart
+has invented an operating procedure the stakeholder did not declare.
+
+**REL-09 is the consequence of three declared rules meeting, and it is stated here because it is the
+one place a designer is tempted to invent behaviour.** CON-011 says a pair never crosses midnight and
+a pair still open at midnight is an incomplete day. CON-013 says originals are never overwritten and
+never deleted. CON-017 says only HR corrects or inserts clockings. Together they forbid the obvious
+"helpful" fix: an automatic midnight close would write a clock-out time nobody observed, which is a
+correction made by the system rather than by HR, and it would overwrite the original record. The
+incomplete day is therefore left incomplete and surfaces in the export as an empty ClockOut — which
+is exactly what FR-004 already specifies for a missing clock-out.
 
 **Recoverability note.** REL-06 and REL-07 are deliberately the *absence* of a fallback. There is no
 client cache of the directory or the news, so a no-connection message is the only correct behaviour —
 a stale result would be worse than no result, because it would look authoritative.
+
+```plantuml
+@startuml
+title Portal - Availability window, degradation and the open-pair-at-midnight case
+
+package "Availability target - NFR-003" {
+  class "Monday-Friday 07:00-19:00\nfault tolerance within the\ncorporate network" as AV1
+  class "24/7 NOT required\nno redundancy designed beyond\nwhat the network provides" as AV2
+  class "No scheduled outage window\nno shutdown job, no nightly restart" as AV3
+}
+
+package "Degradation - declared, not a fallback" {
+  class "Clocking: retry up to 5 min\npress time preserved (REL-02, REL-03)" as DG1
+  class "Directory: no-connection message\nnothing cached (REL-06)" as DG2
+  class "News: no-connection message\nnothing cached (REL-07)" as DG3
+  class "Beyond 5 min: report to HR\nwho corrects under UC-005 (REL-05)" as DG4
+}
+
+package "Open pair at midnight - REL-09" {
+  class "Pair still open at midnight\nis an incomplete day (CON-011)" as OP1
+  class "NOT auto-closed\nwould write an unobserved time\nand overwrite the original" as OP2
+  class "NOT carried to the next date\nNOT deleted (CON-013)" as OP3
+  class "Exports ClockOut and HoursWorked empty\nrow still exported (FR-004)" as OP4
+  class "HR corrects under UC-005\nif the employee reports it (CON-017)" as OP5
+}
+
+AV1 --> AV2
+AV2 --> AV3
+DG1 --> DG4
+OP1 --> OP2
+OP2 --> OP3
+OP3 --> OP4
+OP4 --> OP5
+
+note bottom of OP2
+  The tempting fix is forbidden by three
+  declared rules at once: CON-011 (incomplete
+  day), CON-013 (never overwrite), CON-017
+  (only HR corrects). An automatic midnight
+  close is a system-made correction.
+end note
+
+note bottom of DG2
+  A stale result would be worse than no result,
+  because it would look authoritative.
+end note
+@enduml
+```
 
 ## Performance
 
