@@ -54,8 +54,9 @@ end note
 
 The assessment below is the evidence behind every tailoring decision in this document. It was first
 derived from the declared scope — 15 functional requirements, 5 non-functional requirements, 36
-constraints, 2 declared risks, 4 stakeholders — and is now re-based on the eight artifacts Inception
-iteration 1 produced and on the ten findings its three review lenses recorded against them.
+constraints, 2 declared risks, 4 stakeholders — and is now re-based on the ten artifacts Inception
+iteration 2 produced and on the seventeen findings the three review lenses have recorded across both
+iterations.
 
 **Organization.** The project runs as an AI agent team against the fixed 25-role IARI roster. Three
 facts shape the tailoring:
@@ -69,19 +70,28 @@ facts shape the tailoring:
   and Intensity), so BusinessProcessAnalyst and BusinessReviewer have no work. CapsuleDesigner has no
   work because no real-time capsule exists. Idle roles are not removed from the roster — they simply
   receive no assignment this cycle.
-- **The iteration-1 defect load is concentrated where the team made decisions, not where it copied
-  declared input.** All ten findings sit in the five artifacts that record a design or planning
-  decision — Iteration Plan (3), Software Architecture Document (2), Test Evaluation Summary (2),
-  Vision (2), Use-Case Model (1). The three artifacts that largely transcribe declared input —
-  Development Case, Supplementary Specification, Risk List — carried none. The process consequence is
-  that review effort belongs on the decision-bearing artifacts, and that the decision-bearing
-  artifacts need a checkable criterion before they are persisted, not after.
+- **Every defect in both iterations sits where the team made a decision, and none sits where it copied
+  declared input.** Seventeen findings across two iterations, and not one touches the requirements
+  baseline: 15 use cases, one per declared requirement, no phantom use case, no cross-cutting mechanism
+  promoted to a use case, no exclusion crossed, no invented identifier. The findings concentrate in the
+  artifacts that record a design or planning decision — Use-Case Model, Software Architecture Document,
+  Iteration Plan, Test Evaluation Summary, Vision, Supplementary Specification. The process consequence
+  is that review effort belongs on the decision-bearing artifacts, and that those artifacts need a
+  checkable criterion applied *before* they are persisted, not after.
+
+**The second generation is the finding that matters.** Iteration 1 raised ten findings and closed ten.
+Iteration 2 closed those ten and raised seven more, five of them Major, three in one artifact. Two of
+those three are the same defect class: a decision one artifact changed, not carried through to the
+artifacts that had to follow it. The authoring checks this document added in iteration 2 were written
+to catch that class and did not prevent its second generation. That is a process result, not an
+artifact result, and it is the reason this revision exists — see Guidelines and Procedures, authoring
+checks, for the check-by-check verdict.
 
 **Toolchain.** Assessed against what the constraints declare:
 
 | Capability | State | Basis |
 |---|---|---|
-| SCM and hosted CI | Available and observed working | CON-029 — hosted provider CI; never deploys, never holds production data or credentials. A build on `main` was observed successful at the iteration-1 review |
+| SCM and hosted CI | Available and observed working | CON-029 — hosted provider CI; never deploys, never holds production data or credentials. A build on `main` was observed successful at the iteration-2 review |
 | Build | Available | CON-025 — .NET 10 SDK |
 | Database | Available | CON-027 — PostgreSQL 18, major pinned, patch floats |
 | Identity stand-in | Required, team-built | CON-031 — test OIDC issuer with placeholder issuer/client id/secret |
