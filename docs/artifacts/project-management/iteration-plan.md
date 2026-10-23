@@ -451,9 +451,11 @@ The CON-031 validation gate is the only human gate inside the plan. It is bounde
 **Measured human queue time, iteration 1: 0:00:00.** That figure excludes the end-of-iteration approval gate, which is not measured. It is reported beside the agent clock and never added to it.
 
 ## Use Cases and Scenarios Addressed
-All fifteen declared use cases are in the iteration's scope as a **baseline** activity: each is identified, traced to its declared requirement, and bound to the constraints that govern it. Four are detailed in this iteration because they are architecturally significant; eleven are outlined and are detailed in Elaboration iteration 4.
+All fifteen declared use cases are in the project's scope as a **baseline** activity: each is identified, traced to its declared requirement, and bound to the constraints that govern it. Four are detailed because they are architecturally significant; eleven are outlined and are detailed in Elaboration iteration 4.
 
-| UC | Name | Source | This iteration | Detailed in |
+Iteration 2 adds no use case and details none. Its only use-case work is the correction of the rule binding on UC-010 and the confirmation that UC-011 reads the worker category as a rendered column and never as a decision input.
+
+| UC | Name | Source | State | Detailed in |
 |---|---|---|---|---|
 | UC-001 | Clock In and Clock Out | FR-001 | Baselined, **detailed** | Iteration 1 |
 | UC-002 | View Own Clocking History | FR-002 | Baselined, outline | Iteration 4 |
@@ -464,14 +466,16 @@ All fifteen declared use cases are in the iteration's scope as a **baseline** ac
 | UC-007 | Edit Published News | FR-007 | Baselined, outline | Iteration 4 |
 | UC-008 | Unpublish News | FR-008 | Baselined, outline | Iteration 4 |
 | UC-009 | Feature or Un-feature News | FR-009 | Baselined, **detailed** | Iteration 1 |
-| UC-010 | Read and Filter News | FR-010 | Baselined, outline | Iteration 4 |
+| UC-010 | Read and Filter News | FR-010 | Baselined, outline — bound to the news-category closed list | Iteration 4 |
 | UC-011 | Search Employee Directory | FR-011 | Baselined, **detailed** | Iteration 1 |
 | UC-012 | Assign or Clear Worker Category | FR-012 | Baselined, outline | Iteration 4 |
 | UC-013 | Retry Clocking Through a Network Drop | FR-013 | Baselined, outline | Iteration 4 |
 | UC-014 | Recognize Directory Unavailable | FR-014 | Baselined, outline | Iteration 4 |
 | UC-015 | Recognize News Unavailable | FR-015 | Baselined, outline | Iteration 4 |
 
-**Why these four are detailed now.** UC-001 carries the client-timestamp and idempotency contract (FR-013) that forces a design decision. UC-004 is the project's most volatile interface — a fixed external column contract. UC-009 carries a system invariant (CON-010) that must hold wherever the change comes from. UC-011 carries the LDAP read and the R001 empty-attribute case. These are the four places where a wrong decision in Elaboration would be expensive to reverse.
+**Why these four are detailed.** UC-001 carries the client-timestamp and idempotency contract (FR-013) that forces a design decision. UC-004 is the project's most volatile interface — a fixed external column contract. UC-009 carries a system invariant (CON-010) that must hold wherever the change comes from. UC-011 carries the LDAP read and the R001 empty-attribute case. These are the four places where a wrong decision in Elaboration would be expensive to reverse.
+
+**Two closed four-value lists, kept apart.** Worker categories (Full-time, Part-time, Contractor, Intern — CON-009) and news categories (General, HR, IT, Events — FR-006, FR-010) are different lists governing different use cases. CON-015 confines the worker category to two places: the directory column that also filters, and the CSV export column. It drives no access decision and no news filter. UC-010 filters news by the news-category list; UC-004 and UC-012 are the only use cases that carry the worker-category cluster.
 
 **Scenarios carried into Elaboration.** UC-001 A1–A4 (duplicate press, network recovered, network lost, second pair), UC-004 A1–A5 (missing clock-out, no clocking, no category, corrected day, empty directory attribute), UC-009 A1–A3 (un-feature, unpublish the featured item, nothing featured), UC-011 A1–A3 (empty attribute, network unreachable, no match).
 
