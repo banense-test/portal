@@ -100,52 +100,6 @@ title Portal - Iteration sequence and human gates (unanchored)
 
 **Two clocks, never added.** Agent iterations are measured in tokens and elapsed agent time. The CON-031 gate is measured in days of human queue time — waiting, not working. They are reported side by side and never summed into one figure.
 
-### Critical chain
-
-The sequential agent stretches from iteration start to the LCO gate. Depth is seven stretches plus the
-gate. No stretch carries a spend annotation: no phase has closed, so there is no measured actual to
-forecast from.
-
-```plantuml
-@startuml
-title Portal - Inception iteration 1 critical chain: sequential agent stretches to the LCO gate
-
-|Environment|
-start
-:Development Case;
-note right
-  Tailoring, optional triggers,
-  measurement policy, version policy.
-end note
-
-|Requirements|
-:Vision;
-:Use-Case Model - 15 UCs, 4 detailed;
-:Supplementary Specification - 5 NFR, 36 CON;
-
-|Project Management|
-:Risk List - R001 to R008 classified;
-:Iteration Plan - coarse roadmap + fine plan;
-note right
-  No spend figure is annotated on any stretch:
-  no phase has closed, so no measured actual
-  exists and no forecast is invented.
-end note
-
-|Review|
-:Review Record - findings per artifact;
-
-|ReviewCoordinator|
-:LCO milestone verdict;
-note right
-  The verdict is the gate.
-  The Project Manager records the
-  Iteration Assessment given that verdict.
-end note
-stop
-@enduml
-```
-
 ### Fine plan — Inception iteration 1 (closed)
 
 Bounded to iteration 1, corrected to account for the work the iteration actually did. Nine artifacts were produced, not seven: the Software Architecture Document and the Test Evaluation Summary were produced without a work item covering them, and their roles were marked idle in the role profile. Both are corrected here.
