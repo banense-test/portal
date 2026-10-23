@@ -1389,3 +1389,97 @@ end note
 stop
 @enduml
 ```
+
+### Review Coordinator lens
+<!-- review: Inception I2 -->
+
+**Milestone verdict: LCO NOT ACHIEVED. Iteration required.**
+
+The verdict is anchored to the finding data, not to judgment. The evidence read at this gate:
+
+| Evidence | Value | Source |
+|---|---|---|
+| Artifacts read | 10 | `read_artifact_findings` on every artifact in the repository |
+| Artifacts unread | 0 | Same |
+| Open Critical findings | 0 | Same |
+| Open Major findings | 5 | Same |
+| Open Minor findings | 2 | Same |
+| Stakeholder sanction | REFUSED | Management Reviewer lens, this record |
+| LCO exit criteria met | 5 of 7 | Iteration Plan, exit criteria E1 to E7 |
+
+Two of the three conditions for advancing are false: five Major findings are open and the stakeholder refused the sanction. The milestone is therefore not achieved and the phase gate does not open.
+
+**Why this is an iteration and not an escalation.** No Critical finding is open. Every open finding is a correction to an artifact that already exists — none requires new scope, a new artifact or a new role. The remedy is another Inception correction iteration, which is the designed response to a gate that did not pass (CON-023). No declared scope is cut or deferred, and no role is added to compensate.
+
+**What the gate did establish.** Ten findings were closed this iteration by their emitting lenses, and the closures are substantive rather than cosmetic. ADR-010 resolves a schema contradiction that would have surfaced as an unimplementable design the moment Elaboration tried to baseline it, and it makes CON-013 hold by construction rather than by convention. The Iteration Plan now names the event that retires R001 rather than the fixture that makes it retirable. The Vision records BG-001 as unmeasured instead of presenting it as measurable. The Test Evaluation Summary's coverage plan is re-based onto the roadmap it is measured against.
+
+**What the gate did not establish.** A correction is not a closure and a closure is not a pass. The two failing criteria are the two the gate exists to test: that the primary use cases are understood well enough to build from, and that the architecture is credible. Both fail on defects of currency — a decision another artifact changed, not carried through to the artifact that must follow it.
+
+**Conditions for the next LCO presentation.** The gate re-opens when all seven actions in Resolutions and Actions are closed and re-verified by their emitting lenses. Stated as outcomes, so the next review can check them:
+
+1. UC-001's postcondition and its button logic describe the same clocking shape, and that shape is ADR-010's append-only event log. `Use-Case Model#F2` (Reviewer) and `Use-Case Model#F1` (Business) both close on this one revision.
+2. CON-015 reads the same way in the Use-Case Model and the Software Architecture Document, and UC-011's flows contain the filter the rule declares. `Use-Case Model#F2` (Business) closes on this.
+3. The Software Architecture Document's design iterations match the Iteration Plan's roadmap. `Software Architecture Document#F3` closes on this.
+4. The Iteration Plan's fine plan and its exit criterion E1 agree about the Development Case. `Iteration Plan#F3` closes on this.
+5. The Supplementary Specification's constraint grouping is internally consistent and its business-rules register is complete or states its own scope. Both Minor findings close on this.
+
+**No condition requires new scope, a new artifact or a new role.** Every one is a correction to an artifact that already exists, which is why the next iteration is a correction iteration and not a re-plan.
+
+**Stakeholder position.** The sanction was refused with the instruction that every finding be fixed and closed. That instruction is the stakeholder's input for the next pass and is recorded in Resolutions and Actions as the stakeholder finding. It is not put back to the stakeholder as a fresh question: the question has been asked and answered this iteration, and re-asking it would re-open a decision already made.
+
+**Lens dispositions carried into this verdict.**
+
+| Lens | Disposition | Bearing on the verdict |
+|---|---|---|
+| Reviewer | Approved with Changes — 2 Major, 1 Minor open | The technical position is materially stronger than at iteration 1; the two Major findings are defects of currency, not of reasoning |
+| BusinessReviewer | Approved with Changes — 2 Major, 1 Minor open | The business-rule content is correct; the attachment to the use cases that enforce it is not |
+| ManagementReviewer | No-Go — sanction REFUSED | Quality axis red; two LCO exit criteria fail |
+
+No lens approved the milestone. The two "Approved with Changes" dispositions are dispositions of the artifact set from a discipline's own position, not sanctions to advance, and both lenses state that explicitly.
+
+```plantuml
+@startuml
+title Portal - LCO gate verdict, Inception iteration 2
+
+package "Evidence read at the gate" {
+  class "10 artifacts read\n0 unread" as E1
+  class "0 open Critical" as E2
+  class "5 open Major" as E3
+  class "2 open Minor" as E4
+  class "Stakeholder sanction: REFUSED" as E5
+}
+
+package "LCO exit criteria" {
+  class "5 of 7 met" as X1
+  class "Use-case fidelity - FAIL" as X2
+  class "Architecture credibility - FAIL" as X3
+}
+
+package "Verdict" {
+  class "LCO NOT ACHIEVED" as V1
+  class "requiresIteration: true" as V2
+  class "Remedy: another Inception\ncorrection iteration" as V3
+}
+
+E1 --> V1
+E2 --> V1
+E3 --> V1
+E4 --> V1
+E5 --> V1
+X1 --> V1
+X2 --> V1
+X3 --> V1
+V1 --> V2
+V2 --> V3
+
+note bottom of E2
+  Zero Critical is what keeps the remedy an
+  iteration rather than an escalation.
+end note
+
+note bottom of V3
+  No declared scope is cut or deferred to
+  fit a schedule (CON-023).
+end note
+@enduml
+```
