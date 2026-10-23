@@ -1091,19 +1091,56 @@ end note
 **What the corrections did not establish.** A correction is not a closure, and a closure is not a pass. The two Major findings recorded this milestone are both consequences of the corrections themselves — ADR-010 changed the clocking shape and the Use-Case Model did not follow; the roadmap changed and the Software Architecture Document did not follow. That is the normal cost of a correction iteration and it is why the gate is re-presented rather than assumed.
 
 ### Business Reviewer lens
-<!-- review: Inception I1 -->
+<!-- review: Inception I2 -->
 
-<!-- review: Inception I1 -->
+<!-- review: Inception I2 -->
 
-**Prior findings of this lens reconciled:** none. This is the first review of this lens on this project. `read_artifact_findings` returned one finding each on the Vision and the Use-Case Model, both emitted by the Reviewer lens, and an empty list on the Supplementary Specification. No finding of the Business Reviewer lens existed to close, so no `resolve_artifact_finding` call was due and no finding was re-recorded under an existing key. The two Reviewer-lens findings are outside my ownership and were left untouched.
+| Finding | Severity | Owner | Action | Status |
+|---|---|---|---|---|
+| `Vision#F1` (iteration 1) | Minor | SystemAnalyst | Replace the two self-referential success-criterion cells with independent observable checks | **Resolved** — verified in the Features section; FR-014 and FR-015 now carry derived observable checks and the preamble states the rule |
+| `Use-Case Model#F1` | Major | SystemAnalyst | Add the complete-pair alternative flow to UC-001; state step 3 in terms of no pair / pair open / pair complete; route to HR under UC-005 per CON-017 | Open — this iteration |
+| `Use-Case Model#F2` | Major | SystemAnalyst | Bind CON-015 to UC-011; state the permissive half (column plus filter) and the prohibitive half (no access decision) separately; add the filter to UC-011's flows; align the outline table and the binding diagram with the SAD | Open — this iteration |
+| `Supplementary Specification#F1` | Minor | SystemAnalyst | Add CON-008 as the thirteenth register row with its enforcement point and a MECH-02 cross-reference, and correct the count; or state in the preamble that authorization is carried as a mechanism | Open — this iteration |
 
-**Actions arising from this lens:**
+**No finding is deferred and no finding is rejected.** The stakeholder's instruction that every finding be corrected is honoured: all three new findings are assigned to the SystemAnalyst, who owns both affected artifacts, and none is deferred to a later phase. No declared scope is cut or deferred to fit a schedule (CON-023).
 
-| Action | Artifact | Owner | Blocks LCO |
-|---|---|---|---|
-| Replace the self-referential success criteria on the FR-014 and FR-015 feature rows with an independent measure | Vision | SystemAnalyst | No |
+**Closure discipline.** `Vision#F1` was closed by `resolve_artifact_finding` before any new defect was recorded, in a state separate from the one that records new findings. The three new findings are recorded under keys the system minted this iteration; none re-records a persisting defect, because no defect of this lens from iteration 1 persists.
 
-**No Critical finding was raised, so no escalation to the stakeholder is required from this lens.** No `[SCOPE_QUESTION]` is open against any artifact reviewed. The two deferred questions — accessibility target and throughput binding — are recorded as out of scope for this cycle in the Work Order and are correctly carried as deferred rather than as gaps.
+**What the SystemAnalyst needs to know to act without asking a follow-up question.** The two Major findings are one class of defect seen twice: a rule is cited in a "Business rules enforced" list without the use case specifying the behaviour that enforces it. `Use-Case Model#F1` is the sharper case — the rule is bound, the flow contradicts it. `Use-Case Model#F2` is the wider case — the rule is bound to two of its three declared uses and the artifact denies the third, while the architecture implements it. Correcting both means making the binding diagram, the outline table, the use-case flows and the Software Architecture Document say the same thing about the same rule.
+
+```plantuml
+@startuml
+title Portal - Business lens finding lifecycle at this gate
+
+[*] --> VisionF1 : iteration 1, Minor
+VisionF1 --> Resolved : corrected in the Features section\nverified against the current content
+Resolved --> [*] : resolve_artifact_finding\nby this lens
+
+[*] --> UCMF1 : iteration 2, Major
+[*] --> UCMF2 : iteration 2, Major
+[*] --> SuppF1 : iteration 2, Minor
+
+UCMF1 --> Assigned : SystemAnalyst
+UCMF2 --> Assigned : SystemAnalyst
+SuppF1 --> Assigned : SystemAnalyst
+
+Assigned --> Corrected : flows, tables and diagram\nmade to agree
+Corrected --> Verified : this lens re-reads\nthe corrected sections
+Verified --> [*] : resolve_artifact_finding\nby this lens only
+
+note right of Resolved
+  Closed before any new defect was
+  recorded, in a state separate from
+  the one that records findings.
+end note
+
+note bottom of Assigned
+  No finding deferred, none rejected.
+  CON-023 forbids cutting or deferring
+  declared scope to fit a schedule.
+end note
+@enduml
+```
 
 ### Management Reviewer lens
 <!-- review: Inception I1 -->
