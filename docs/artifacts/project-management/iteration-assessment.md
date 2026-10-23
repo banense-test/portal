@@ -65,7 +65,6 @@ end note
 ```
 
 ## Adherence to Plan
-
 ### What the iteration actually did
 
 Nine artifacts were persisted. Eight were reviewed by all three lenses; the ninth is the Review Record itself, which is the review. Eleven agent invocations and eleven stakeholder exchanges produced them.
@@ -199,10 +198,11 @@ end note
 ### Lessons carried into iteration 2
 
 1. **A plan derived from the discipline sequence will understate the iteration.** The two artifacts the fine plan missed are the two whose disciplines are Low or Medium in Inception. The plan is now derived from the artifact set the iteration will produce, and the role profile from the work items.
-2. **Building a risk's mechanism is not retiring the risk.** The distinction is the whole point of risk-driven planning, and it is the one claim an LCO gate exists to test. Every risk in the Risk List now names the event that retires it, and that event is a passing test or an observed reading — never a fixture, never a design.
+2. **Building a risk's mechanism is not retiring the risk.** The distinction is the whole point of risk-driven planning, and it is the one claim an LCO gate exists to test. The Iteration Plan now carries a risk-retirement sequencing table in which every risk names the event that retires it, and that event is a passing test or an observed reading — never a fixture, never a design. R001 is retired in iteration 3 by executing the empty-attribute case of UC-011 and UC-004 against the stand-in, and Tester is active from iteration 3 for exactly that reason.
 3. **A criterion that restates its requirement is not a criterion.** Three of the ten findings are this defect in different artifacts. The test applied from here: can this criterion fail? If it cannot be distinguished from the requirement it verifies, it is not a measure.
 4. **Observable SCM state must be cited as observed.** A run identifier, a timestamp, a build status — each is a fact with a moment. Citing one from memory makes a verified observation out of a stale one.
 5. **The requirements baseline is the strongest part of the set and no finding touched it.** Fifteen use cases, one per declared requirement, no phantom use case, no cross-cutting mechanism promoted to a use case, no per-actor split, no exclusion crossed, no invented identifier. The defects are all in the artifacts where the team made design and planning decisions — which is where the next iteration's effort belongs.
+6. **A milestone that does not pass costs an iteration, and that is the correct price.** The first iteration produced a complete baseline and still did not pass the gate. The remedy is iteration 2 in Inception, not a scope cut and not more agents in parallel. The roadmap is now eight iterations, and the declared scope is unchanged.
 
 ## Use Cases and Scenarios Implemented
 
