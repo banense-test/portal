@@ -438,58 +438,58 @@ R001 is the project's highest-magnitude risk (P=3, I=3, exposure=9). Its mechani
 **What this means for the LCA gate.** LCA is granted with R001 already retired and R003, R004, R006 and R007 retired or closed. R002 and R008 remain open by their nature — one is a post-launch adoption measure, the other is accepted under CON-023 — and the LCA gate records both as open with their treatments, not as retired.
 
 ## Resources
-
-The 25-role roster is inherited unchanged from the Development Case. Three roles are idle by trigger,
-not by choice: BusinessProcessAnalyst and BusinessReviewer (Business Modeling inactive) and
-CapsuleDesigner (no real-time capsule). No role is added, merged or removed.
+The 25-role roster is inherited unchanged from the Development Case. Three roles are idle by trigger, not by choice: BusinessProcessAnalyst and BusinessReviewer (Business Modeling inactive) and CapsuleDesigner (no real-time capsule). No role is added, merged or removed.
 
 ### Agent role profile — by iteration
 
-| Role | It. 1 | It. 2 | It. 3 | It. 4 | It. 5 | It. 6 | It. 7 |
-|---|---|---|---|---|---|---|---|
-| ProcessEngineer | Active | Active | Active | Active | Active | Active | Active |
-| SystemAnalyst | Active | Active | Active | — | — | — | — |
-| RequirementsSpecifier | Active | Active | Active | — | — | — | — |
-| SoftwareArchitect | — | Active | Active | Active | Active | Active | Active |
-| Designer | — | Active | Active | Active | Active | Active | — |
-| UserInterfaceDesigner | — | Active | Active | Active | Active | Active | — |
-| DatabaseDesigner | — | Active | Active | Active | Active | Active | — |
-| Implementer | — | — | — | Active | Active | Active | — |
-| Integrator | — | — | — | Active | Active | Active | Active |
-| TestManager | — | Active | Active | Active | Active | Active | Active |
-| TestAnalyst | — | — | Active | Active | Active | Active | — |
-| TestDesigner | — | — | Active | Active | Active | Active | — |
-| Tester | — | — | — | Active | Active | Active | Active |
-| DeploymentManager | — | — | — | — | — | Active | Active |
-| ConfigurationManager | Active | Active | Active | Active | Active | Active | Active |
-| ChangeControlManager | Active | Active | Active | Active | Active | Active | Active |
-| ProjectManager | Active | Active | Active | Active | Active | Active | Active |
-| Reviewer | Active | Active | Active | Active | Active | Active | Active |
-| ReviewCoordinator | Active | Active | Active | Active | Active | Active | Active |
-| ManagementReviewer | Active | — | Active | — | — | Active | Active |
-| CodeReviewer | — | — | — | Active | Active | Active | — |
-| TechnicalWriter | — | — | — | Active | Active | Active | Active |
-| BusinessProcessAnalyst | Idle | Idle | Idle | Idle | Idle | Idle | Idle |
-| BusinessReviewer | Idle | Idle | Idle | Idle | Idle | Idle | Idle |
-| CapsuleDesigner | Idle | Idle | Idle | Idle | Idle | Idle | Idle |
+The profile is derived from the work items, not the other way round. Iteration 1's column is corrected: Analysis and Design is Medium and Test is Low in Inception, so neither SoftwareArchitect nor TestManager is idle — both produced CORE artifacts in iteration 1.
 
-**Parallelism discipline.** The profile widens in Construction because the work genuinely divides by
-capability area, not because the project is behind. If an iteration slips, the remedy is another
-iteration — never more roles in parallel, which adds context conflict and artifact contention without
-proportional benefit, and never a cut to declared scope (CON-023).
+| Role | It. 1 | It. 2 | It. 3 | It. 4 | It. 5 | It. 6 | It. 7 | It. 8 |
+|---|---|---|---|---|---|---|---|---|
+| ProcessEngineer | Active | Active | Active | Active | Active | Active | Active | Active |
+| SystemAnalyst | Active | Active | Active | Active | — | — | — | — |
+| RequirementsSpecifier | Active | — | Active | Active | — | — | — | — |
+| SoftwareArchitect | Active | Active | Active | Active | Active | Active | Active | Active |
+| Designer | — | — | Active | Active | Active | Active | Active | — |
+| UserInterfaceDesigner | — | — | Active | Active | Active | Active | Active | — |
+| DatabaseDesigner | — | — | Active | Active | Active | Active | Active | — |
+| Implementer | — | — | — | — | Active | Active | Active | — |
+| Integrator | — | — | — | — | Active | Active | Active | Active |
+| TestManager | Active | Active | Active | Active | Active | Active | Active | Active |
+| TestAnalyst | — | — | Active | Active | Active | Active | Active | — |
+| TestDesigner | — | — | Active | Active | Active | Active | Active | — |
+| Tester | — | — | Active | Active | Active | Active | Active | — |
+| DeploymentManager | — | — | — | — | — | — | Active | Active |
+| ConfigurationManager | Active | Active | Active | Active | Active | Active | Active | Active |
+| ChangeControlManager | Active | Active | Active | Active | Active | Active | Active | Active |
+| ProjectManager | Active | Active | Active | Active | Active | Active | Active | Active |
+| Reviewer | Active | Active | Active | Active | Active | Active | Active | Active |
+| ReviewCoordinator | Active | Active | Active | Active | Active | Active | Active | Active |
+| ManagementReviewer | Active | Active | — | Active | — | — | Active | Active |
+| CodeReviewer | — | — | Active | Active | Active | Active | Active | — |
+| TechnicalWriter | — | — | — | — | Active | Active | Active | Active |
+| BusinessProcessAnalyst | Idle | Idle | Idle | Idle | Idle | Idle | Idle | Idle |
+| BusinessReviewer | Idle | Idle | Idle | Idle | Idle | Idle | Idle | Idle |
+| CapsuleDesigner | Idle | Idle | Idle | Idle | Idle | Idle | Idle | Idle |
+
+**Two corrections to iteration 1's column.** SoftwareArchitect and TestManager are Active, not idle: the Software Architecture Document and the Test Evaluation Summary were both produced in iteration 1 and both are CORE artifacts the Development Case requires. The profile now follows the work items.
+
+**Tester is active from iteration 3, not iteration 5.** R001 is retired in iteration 3 by executing the empty-attribute case of UC-011 and UC-004 against the stand-in, and a risk cannot be retired by a role that is not working. This is the sequencing correction that closes `Iteration Plan#F1` (Management Reviewer).
+
+**Parallelism discipline.** The profile widens in Construction because the work genuinely divides by capability area, not because the project is behind. If an iteration slips, the remedy is another iteration — never more roles in parallel, which adds context conflict and artifact contention without proportional benefit, and never a cut to declared scope (CON-023).
 
 ### Human resources — the two clocks
 
 | Resource | Role in the project | Clock | Bound |
 |---|---|---|---|
-| STK-001 Laura Gómez | Project sponsor; grants risk acceptance (CON-023); owns HR processes, news and worker categories | Human queue time | — |
+| STK-001 Laura Gómez | Project sponsor; grants risk acceptance (CON-023); owns HR processes, news and worker categories; owns the BG-001 baseline and the AC-004 population measure | Human queue time | — |
 | STK-002 Miguel Torres | Clarifies engineering doubts for the technical roles; does not build | Human queue time | — |
 | STK-003 Infrastructure team | Operates AD and Keycloak; performs the CON-031 validation against the real systems; operates the portal post-launch (CON-032) | Human queue time | **14 days** ceiling on the CON-031 gate |
 | STK-004 Cuba Corp Employees | End users; source of the BG-003 adoption measure | Human queue time | — |
 
-The CON-031 validation gate is the only human gate inside the plan. It is bounded at 14 days of queue
-time. If exceeded, the process suspends — nothing is auto-filled, no date is projected, and the Project
-Manager escalates. The remedy is another iteration, not a scope reduction.
+The CON-031 validation gate is the only human gate inside the plan. It is bounded at 14 days of queue time. If exceeded, the process suspends — nothing is auto-filled, no date is projected, and the Project Manager escalates. The remedy is another iteration, not a scope reduction.
+
+**Measured human queue time, iteration 1: 0:00:00.** That figure excludes the end-of-iteration approval gate, which is not measured. It is reported beside the agent clock and never added to it.
 
 ## Use Cases and Scenarios Addressed
 
