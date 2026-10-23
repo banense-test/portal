@@ -479,14 +479,13 @@ works correctly against the stand-ins" is the team's definition of done. A stand
 empty-attribute entries would silently retire R001 without testing it.
 
 ## Design Constraints
-All 36 declared constraints, grouped by the category the scope declares for each one. The grouping is
-the declared category, not the team's own: Technical 9, Environmental 3, BusinessRule 13,
-Architectural 3, Operational 8. A constraint that appears in no design section is an unproven
-constraint — the Software Architect owns the conformance argument.
+All 36 declared constraints, grouped by the category the scope declares for each one. The grouping basis is the declared category — not the team's own, and not a thematic grouping. Technical 9, Environmental 3, BusinessRule 13, Architectural 3, Operational 8: 9 + 3 + 13 + 3 + 8 = 36, and every declared identifier appears exactly once.
 
-The 13 `[BusinessRule]` constraints are not restated here. They are the business-rules register in
-the Functionality section, which is their single home; this section carries the other 23 and
-cross-references the register.
+This section is the single home of the constraint grouping. The diagram below and the five tables that follow it are the same grouping stated twice, and they agree row for row. No other section of this document regroups the 36; the Functionality section's thematic blocks point here by identifier and do not restate a constraint's text.
+
+A constraint that appears in no design section is an unproven constraint — the Software Architect owns the conformance argument.
+
+The 13 `[BusinessRule]` constraints are not restated here. They are the business-rules register in the Functionality section, which is their single home; this section carries the other 23 and cross-references the register.
 
 ```plantuml
 @startuml
@@ -555,6 +554,14 @@ note bottom of C8
   section. It is a rule and it is enforced; the
   register and this map both carry it.
 end note
+
+note top of C1
+  Grouping basis: the category the scope declares
+  for each constraint. 9 + 3 + 13 + 3 + 8 = 36.
+  This is the only grouping of the 36 in this
+  document; the Functionality section's thematic
+  blocks point here and do not regroup.
+end note
 @enduml
 ```
 
@@ -603,9 +610,7 @@ end note
 
 ### BusinessRule constraints
 
-The 13 declared `[BusinessRule]` constraints — CON-008 to CON-020 — are the business-rules register
-in the Functionality section. That register is their single home and states each rule with the place
-it must hold. They are not restated here.
+The 13 declared `[BusinessRule]` constraints — CON-008 to CON-020 — are the business-rules register in the Functionality section. That register is their single home and states each rule with the place it must hold. They are not restated here.
 
 ## Interfaces
 | ID | Interface | Direction | Contract | Source |
