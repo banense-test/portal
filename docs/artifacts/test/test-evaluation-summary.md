@@ -96,44 +96,60 @@ stop
 ### Coverage plan — use-case driven
 
 Coverage is measured against the use cases, not against lines of code. Every one of the 15 declared
-use cases has a named test level and a named iteration of execution. None is unassigned.
+use cases has a named test level and a named iteration of execution, and every execution iteration
+below is the iteration in which the Iteration Plan implements that use case. None is unassigned and
+none is assigned to an iteration where the behaviour does not yet exist.
 
 | UC | Source | Risk it carries | Test level | Executed in |
 |---|---|---|---|---|
-| UC-001 Clock In and Clock Out | FR-001 | R002 (adoption), R008 (client clock) | Component + acceptance | Iteration 4 |
-| UC-002 View Own Clocking History | FR-002 | — | Component | Iteration 4 |
-| UC-003 View All Employee Clockings | FR-003 | — | Component | Iteration 4 |
-| UC-004 Export Monthly Clocking Report as CSV | FR-004 | R006 (column contract), R001 (empty FullName) | Component + contract | Iteration 4 |
-| UC-005 Correct or Insert Clocking | FR-005 | — | Component + audit | Iteration 4 |
-| UC-006 Publish News | FR-006 | — | Component + acceptance | Iteration 5 |
-| UC-007 Edit Published News | FR-007 | — | Component + audit | Iteration 5 |
-| UC-008 Unpublish News | FR-008 | — | Component + audit | Iteration 5 |
-| UC-009 Feature or Un-feature News | FR-009 | — | Component + invariant | Iteration 5 |
-| UC-010 Read and Filter News | FR-010 | — | Component | Iteration 5 |
-| UC-011 Search Employee Directory | FR-011 | R001 (empty attributes), R004 (fixture) | Component + acceptance | Iteration 6 |
-| UC-012 Assign or Clear Worker Category | FR-012 | — | Component + audit | Iteration 6 |
-| UC-013 Retry Clocking Through a Network Drop | FR-013 | R008 (client clock) | Component + fault injection | Iteration 4 |
-| UC-014 Recognize Directory Unavailable | FR-014 | — | Component + fault injection | Iteration 6 |
-| UC-015 Recognize News Unavailable | FR-015 | — | Component + fault injection | Iteration 5 |
+| UC-001 Clock In and Clock Out | FR-001 | R002 (adoption), R008 (client clock) | Component + acceptance | Iteration 5 |
+| UC-002 View Own Clocking History | FR-002 | — | Component | Iteration 5 |
+| UC-003 View All Employee Clockings | FR-003 | — | Component | Iteration 5 |
+| UC-004 Export Monthly Clocking Report as CSV | FR-004 | R006 (column contract), R001 (empty FullName) | Component + contract | Iteration 5 — with the empty-attribute case executed in iteration 3 |
+| UC-005 Correct or Insert Clocking | FR-005 | — | Component + audit | Iteration 5 |
+| UC-006 Publish News | FR-006 | — | Component + acceptance | Iteration 6 |
+| UC-007 Edit Published News | FR-007 | — | Component + audit | Iteration 6 |
+| UC-008 Unpublish News | FR-008 | — | Component + audit | Iteration 6 |
+| UC-009 Feature or Un-feature News | FR-009 | — | Component + invariant | Iteration 6 |
+| UC-010 Read and Filter News | FR-010 | — | Component | Iteration 6 |
+| UC-011 Search Employee Directory | FR-011 | R001 (empty attributes), R004 (fixture) | Component + acceptance | Iteration 7 — with the empty-attribute case executed in iteration 3 |
+| UC-012 Assign or Clear Worker Category | FR-012 | — | Component + audit | Iteration 7 |
+| UC-013 Retry Clocking Through a Network Drop | FR-013 | R008 (client clock) | Component + fault injection | Iteration 5 |
+| UC-014 Recognize Directory Unavailable | FR-014 | — | Component + fault injection | Iteration 7 |
+| UC-015 Recognize News Unavailable | FR-015 | — | Component + fault injection | Iteration 6 |
 
 **The three extension use cases are tested as exception paths, not as goals.** UC-013, UC-014 and
 UC-015 are the network-failure behaviour of UC-001, UC-011 and UC-010. They are executed by injecting
 the failure into the parent use case's test, and they are reported separately because each carries its
 own declared requirement and its own acceptance criterion (AC-005 for UC-013).
 
+**Two scenarios execute in iteration 3, ahead of their capability area.** UC-011 A1 (empty attribute)
+and UC-004 A5 (empty directory attribute) are the cases that retire R001. They need no production
+code beyond the directory read path and the export derivation, so they run in the iteration that
+builds the stand-ins. The full use-case tests for UC-004 and UC-011 remain in Construction with the
+rest of their capability areas. This is the sequencing the Iteration Plan's risk retirement table
+records, and the test effort follows it rather than the other way round.
+
 ### Coverage plan — architecture-centric quality attributes
 
 The non-functional requirements in the Supplementary Specification define the second dimension of the
 mission. Each is measured by the method the requirement itself names — not by a substitute the team
-finds convenient.
+finds convenient — and in an iteration where the behaviour being measured exists.
 
 | NFR | Requirement | How it is measured | Executed in |
 |---|---|---|---|
-| NFR-001 | Authenticated access via corporate credentials | Every use case is exercised unauthenticated and must be refused; the session must supply sAMAccountName and AD group membership. Tested against the stand-in OIDC issuer | Iteration 3 |
-| NFR-002 | Page load under 3 seconds | Full page load the employee experiences, browser request to page displayed and usable, including the clocking page's script. Server response time is not accepted as a substitute | Iteration 6 |
-| NFR-003 | Availability Monday–Friday 7:00–19:00 | Fault tolerance within the corporate network. No 24/7 target is tested, and no redundancy beyond the network is expected | Iteration 6 |
-| NFR-004 | Clock in/out response under 1 second | The one operation with a sub-second target, measured on the clocking POST | Iteration 4 |
-| NFR-005 | Audit trail for compliance | The five audited actions are asserted at the database, read directly — not through a screen, because no audit view screen exists. The previous value and the free-text reason are columns, not an opaque blob | Iterations 4, 5, 6 |
+| NFR-001a | Authenticated access — the session supplies the identity | The stand-in OIDC issuer's claim mapping is verified to supply sAMAccountName and AD group membership, and the two AD-group levels resolve to HR and to employee. This is a claim-mapping check against the stand-in, not a use-case test | Iteration 3 |
+| NFR-001b | Authenticated access — every portal function requires it | Every use case implemented in the iteration is exercised unauthenticated and must be refused, and exercised with the wrong AD group and must be refused where CON-008 reserves the function to HR | Iterations 5, 6, 7 — each against the use cases that iteration implements |
+| NFR-002 | Page load under 3 seconds | Full page load the employee experiences, browser request to page displayed and usable, including the clocking page's script. Server response time is not accepted as a substitute | Iteration 5 for the clocking page; iteration 7 across all pages |
+| NFR-003 | Availability Monday–Friday 7:00–19:00 | Fault tolerance within the corporate network, observed inside the declared window. No 24/7 target is tested, and no redundancy beyond the network is expected | Iteration 7, confirmed in iteration 8 |
+| NFR-004 | Clock in/out response under 1 second | The one operation with a sub-second target, measured on the clocking POST | Iteration 5 |
+| NFR-005 | Audit trail for compliance | The five audited actions are asserted at the database, read directly — not through a screen, because no audit view screen exists. The previous value and the free-text reason are columns, not an opaque blob | Iteration 5 for clocking corrections; iteration 6 for news publication, edit and unpublish; iteration 7 for the worker-category change |
+
+**NFR-001 is split because its two halves become executable at different points.** The claim mapping
+is a property of the stand-in and can be verified the moment the stand-in exists — iteration 3. The
+refusal assertion is a property of each use case and cannot be executed before that use case is
+implemented. Assigning the whole requirement to one iteration would either test nothing or claim a
+result that does not exist; splitting it puts each half where it can actually run.
 
 **NFR-005 is tested at the database, and that is the point.** The audit trail is read directly from
 the database by people outside the portal. A test that asserts an audit row exists through the
@@ -143,15 +159,15 @@ previous value and the reason are legible without the application.
 ### Test levels across the lifecycle
 
 Testing is distributed across all four phases. Deferring it to Construction is the single most
-expensive planning error available on this project, because R001 is retired by a fixture that must
-exist before the directory is built.
+expensive planning error available on this project, because R001 is retired by a test that must run
+in the iteration that builds the stand-ins.
 
 | Phase | What is tested | Evidence produced |
 |---|---|---|
-| Inception (this iteration) | Nothing is executed. The mission, the coverage plan, the fixture obligation and the quality signals are established | This document |
-| Elaboration | The stand-ins themselves; the architecture's risk position; the two High-volatility contracts (FR-004 export, FR-009 single-featured invariant) | Test Cases designed; stand-in fixtures verified to carry the empty-attribute entries |
-| Construction | Every use case against the stand-ins, capability area by capability area, with the regression set re-run each iteration | Executed TC-NNN results; SCM issues for every failure |
-| Transition | The declared acceptance criteria AC-001 to AC-005, and handover readiness for Infrastructure (CON-032) | Acceptance evidence; release recommendation |
+| Inception (iterations 1–2) | Nothing is executed. The mission, the coverage plan, the fixture obligation and the quality signals are established | This document |
+| Elaboration (iterations 3–4) | The stand-ins themselves; the empty-attribute case of UC-011 and UC-004, which retires R001; the NFR-001 claim mapping; the two High-volatility contracts (FR-004 export, FR-009 single-featured invariant) | Executed results for the R001 retirement case; Test Cases designed for all 15 use cases; stand-in fixtures verified to carry the empty-attribute entries |
+| Construction (iterations 5–7) | Every use case against the stand-ins, capability area by capability area, with the regression set re-run each iteration | Executed TC-NNN results; SCM issues for every failure |
+| Transition (iteration 8) | The declared acceptance criteria AC-001 to AC-005 against the deployed portal, and handover readiness for Infrastructure (CON-032) | Acceptance evidence; release recommendation |
 
 ### Test infrastructure and resources
 
@@ -209,12 +225,12 @@ end note
 
 | Resource | Justification against the mission | State |
 |---|---|---|
-| Test OIDC issuer stand-in | NFR-001 is a portal-wide mechanism included by all 15 use cases. Without a stand-in issuer no use case can be exercised at all, and CON-031 forbids using the real Keycloak | Required — built in Elaboration |
-| Test directory stand-in over LDAP | UC-011 and UC-004 read six attributes from AD. The stand-in must carry entries with empty job title and empty extension, or R001 is retired untested (R004) | Required — built in Elaboration |
+| Test OIDC issuer stand-in | NFR-001 is a portal-wide mechanism included by all 15 use cases. Without a stand-in issuer no use case can be exercised at all, and CON-031 forbids using the real Keycloak | Required — built in iteration 3 |
+| Test directory stand-in over LDAP | UC-011 and UC-004 read six attributes from AD. The stand-in must carry entries with empty job title and empty extension, or R001 is retired untested (R004) | Required — built in iteration 3 |
 | Local PostgreSQL 18 | NFR-005 is asserted at the database, and CON-013/CON-014 are schema-level rules. A test cannot prove "never overwritten" without a real store | Required — Infrastructure installs per CON-027 |
 | Hosted CI (build and test) | The regression set must run every iteration. CON-029 fixes the provider and forbids deployment from CI | Available — build green on `main` |
-| SCM issue tracker | The authoritative defect record. Defect metrics are read from it, never compiled by hand | Available — no issues recorded |
-| Test framework | Not declared by the stakeholder. The Development Case records it as a gap for the Test Manager to close in Elaboration | **Gap — Elaboration obligation** |
+| SCM issue tracker | The authoritative defect record. Defect metrics are read from it, never compiled by hand | Available — one issue recorded |
+| Test framework | Not declared by the stakeholder. The Development Case records it as a gap for the Test Manager to close in Elaboration | **Gap — closes in iteration 3** |
 | Real Keycloak and real AD | Not a test resource. Validation against them is human work by Infrastructure with HR (CON-031) and is not scheduled by the team | Out of the team's test surface |
 
 **No performance test environment is provisioned.** NFR-002 and NFR-004 are measured on the corporate
@@ -227,10 +243,119 @@ Criteria are per iteration and measurable. They are not "when QA is satisfied".
 
 | Gate | Criterion |
 |---|---|
-| **Entry to test execution** (from Elaboration onward) | The stand-ins are running and the directory stand-in is verified to carry the empty job-title and empty extension entries; the hosted CI build is green; the test framework is selected and the test projects are discovered by the CI glob |
+| **Entry to test execution** (from iteration 3 onward) | The stand-ins are running and the directory stand-in is verified to carry the empty job-title and empty extension entries; the hosted CI build is green; the test framework is selected and the test projects are discovered by the CI glob |
+| **Entry to a Construction iteration's use-case tests** | The use cases in that iteration's scope are implemented and reachable through the portal; the stand-ins are the only external dependency in play |
 | **Exit from an iteration's test effort** | Every use case in that iteration's scope has been executed against the stand-ins; the regression set for all prior iterations has been re-run; every failure is recorded as an SCM issue; the Evaluation Mission for that iteration is assessed as met or not met |
 | **Exit is not** | A 100% pass rate. The criterion is that the mission is met and the evidence supports it. A known defect with a recorded issue and an accepted treatment does not block the mission; an unrecorded one does |
 | **Regression** | Mandatory every iteration. The set grows by the use cases closed in the previous iteration and is never reduced to make room for new work |
+
+### Evaluation Mission — Inception iteration 2
+
+The Evaluation Mission is the agreement with the stakeholders on the purpose, focus and acceptable
+outcome of the test effort for this iteration. It is stated before any test is designed, and the
+iteration is judged against it — not against a coverage percentage.
+
+| Element | Statement |
+|---|---|
+| **Purpose** | Keep the test position decidable and make it follow the plan it is measured against. Inception produces no working software, so the mission is to make the test effort *decidable* in Elaboration and Construction, not to prove the system works |
+| **Focus** | The four architecturally significant use cases detailed in iteration 1 — UC-001, UC-004, UC-009, UC-011 — and the four risks that decide whether the test effort can succeed at all: R001, R004, R006, R008. This iteration adds one obligation: every execution iteration in the coverage plan must be the iteration in which the behaviour it tests exists |
+| **Acceptable outcome** | Every one of the 15 use cases has a named test level and an execution iteration that matches the eight-iteration roadmap; every NFR is measured by the method the requirement itself names, in an iteration where the behaviour exists; the stand-in fixture requirement that retires R001 is recorded as a test obligation with the iteration in which it is executed; the defect record and the quality signals are named and read from the SCM at the moment of writing |
+| **Not the outcome** | A pass rate. No test is executed this iteration and none can be. A mission that claimed otherwise would be reporting a result that does not exist |
+
+**Why the mission is scoped this way.** The declared scope is constraint-dense — 36 constraints
+against 15 requirements — so the stakeholder has already fixed most behaviour. The test effort's
+value is therefore *conformance evidence*: proving the system does exactly what CON-001 to CON-036
+say, and proving it against the stand-ins that CON-031 makes the team's entire integration surface.
+That is a different mission from exploratory testing, and it is the one this project needs.
+
+**What iteration 2 corrects in the test position.** Two defects were recorded against this document
+at the LCO review. The cited CI run was not the build observed on `main`, so an observable SCM fact
+was stated as a verified observation when it was a stale one. And NFR-001 was assigned to an
+Elaboration iteration scoped as design only, so its stated method — exercising every use case
+unauthenticated and requiring refusal — could not have been executed there. Both are corrected
+below, and the coverage plan is re-based onto the eight-iteration roadmap the Iteration Plan now
+carries.
+
+### Acceptance criteria verification
+
+Every declared acceptance criterion has a point at which it can close. AC-004 is verified in two
+parts at two different points, because it fuses a learnability check with a population measure whose
+window opens at go-live.
+
+| AC | Criterion | Verified by | Verified in |
+|---|---|---|---|
+| AC-001 | An employee can clock in and out without help from HR or the development team | UC-001 executed end to end against the stand-ins, with the confirmation observed | Iteration 5 |
+| AC-002 | An HR Administrator can publish a news item without technical assistance | UC-006 executed as an HR-group user, with no console or database step | Iteration 6 |
+| AC-003 | Any employee finds a colleague's phone/email in under 10 seconds | UC-011 timed from search entry to the result row showing phone and email | Iteration 7 |
+| AC-004a | Learnability half — an employee completes at least one clocking with no prior training | A small untrained-user check in the iteration that implements UC-001 | Iteration 5 |
+| AC-004b | Population half — 80% of employees complete at least one clocking within three months of launch | The BG-003 adoption reading, owned by STK-001. Not a gate on any iteration | Post-Project-Acceptance |
+| AC-005 | A clocking made while the corporate network is down for up to 5 minutes is not lost | UC-013 executed with the network injected down for the full 5 minutes, then restored; the recorded timestamp is the press time, not the receipt time | Iteration 5 |
+
+**AC-004b is not an iteration gate and this document does not treat it as one.** A population measure
+whose window opens at go-live cannot be verified by the iteration in which the window opens. It is
+recorded here with its owner and its point of closure so that the project's accountability to it is
+visible, and it is not assigned to a gate that could never close on it.
+
+### Test execution sequence across the roadmap
+
+```plantuml
+@startuml
+title Portal - Test execution sequence across the eight-iteration roadmap
+
+|Iteration 3 - Elaboration|
+start
+:Build the stand-in OIDC issuer and the stand-in directory;
+:Verify the directory stand-in carries entries with empty job title and empty extension;
+note right: R004 - the fixture inspection
+:Execute UC-011 A1 and UC-004 A5 against the stand-in;
+note right
+  R001 is retired here, by a passing
+  directory search and export - not by
+  the fixture existing.
+end note
+:Verify the stand-in OIDC claim mapping supplies sAMAccountName and AD group membership;
+note right: NFR-001a, Elaboration half
+
+|Iteration 4 - Elaboration|
+:Design test cases for all 15 use cases;
+:Receive the CON-031 human validation feedback;
+note right: R003 closes here
+
+|Iteration 5 - Construction|
+:Execute UC-001, UC-002, UC-003, UC-004, UC-005, UC-013;
+:Assert NFR-004 on the clocking POST;
+:Assert NFR-001b refusal on every use case implemented this iteration;
+:Measure NFR-002 on the clocking page, script included;
+:Assert NFR-005 at the database for clocking corrections;
+:Run the AC-004a untrained-user check;
+
+|Iteration 6 - Construction|
+:Execute UC-006, UC-007, UC-008, UC-009, UC-010, UC-015;
+:Assert NFR-001b refusal on every use case implemented this iteration;
+:Assert NFR-005 at the database for news publication, edit and unpublish;
+:Re-run the iteration 5 regression set;
+
+|Iteration 7 - Construction|
+:Execute UC-011, UC-012, UC-014;
+:Assert NFR-001b refusal on every use case implemented this iteration;
+:Assert NFR-005 at the database for the worker-category change;
+:Measure NFR-002 across all pages;
+:Measure NFR-003 within the declared window;
+:Run the full regression set - all 15 use cases;
+
+|Iteration 8 - Transition|
+:Verify AC-001, AC-002, AC-003, AC-005 against the deployed portal;
+:Confirm NFR-003 in the operating window;
+:Hand over to Infrastructure (CON-032);
+note right
+  AC-004b is not an iteration gate:
+  the BG-003 window opens at go-live
+  and closes after Project Acceptance,
+  owned by STK-001.
+end note
+stop
+@enduml
+```
 
 ## Test Summary
 ### What was executed this iteration
