@@ -470,32 +470,39 @@ works correctly against the stand-ins" is the team's definition of done. A stand
 empty-attribute entries would silently retire R001 without testing it.
 
 ## Design Constraints
+All 36 declared constraints, grouped by the category the scope declares for each one. The grouping is
+the declared category, not the team's own: Technical 9, Environmental 3, BusinessRule 13,
+Architectural 3, Operational 8. A constraint that appears in no design section is an unproven
+constraint — the Software Architect owns the conformance argument.
 
-All 36 declared constraints, grouped by what they decide. A constraint that appears in no design
-section is an unproven constraint — the Software Architect owns the conformance argument.
+The 13 `[BusinessRule]` constraints are not restated here. They are the business-rules register in
+the Functionality section, which is their single home; this section carries the other 23 and
+cross-references the register.
 
 ```plantuml
 @startuml
-title Portal - Constraint conformance map by category (36 constraints)
+title Portal - Constraint conformance map by declared category (36 constraints)
 
-package "Platform and technology - 5" {
+package "Technical - 9" {
   class "CON-001 .NET on Windows Server estate" as C1
-  class "CON-025 .NET 10, REST API" as C25
-  class "CON-026 Razor Pages, no SPA" as C26
-  class "CON-027 PostgreSQL 18, major pinned" as C27
-  class "CON-005 Chrome and Edge" as C5
-}
-
-package "Identity, directory and authorization - 6" {
   class "CON-002 OIDC client of existing Keycloak" as C2
   class "CON-003 AD fields read-only over LDAP" as C3
   class "CON-004 EmployeeId is sAMAccountName" as C4
-  class "CON-008 Two AD-group levels only" as C8
-  class "CON-022 No AD modification" as C22
+  class "CON-005 Chrome and Edge" as C5
+  class "CON-025 .NET 10, REST API" as C25
+  class "CON-026 Razor Pages, no SPA" as C26
+  class "CON-027 PostgreSQL 18, major pinned" as C27
+  class "CON-031 Stand-ins, never the real AD or Keycloak" as C31
+}
+
+package "Environmental - 3" {
+  class "CON-006 Internal network only" as C6
+  class "CON-007 Single timezone Europe/Madrid" as C7
   class "CON-028 Keycloak inside the corporate network" as C28
 }
 
-package "Business rules - 12" {
+package "BusinessRule - 13" {
+  class "CON-008 Two AD-group levels only" as C8
   class "CON-009 Closed four-value category list" as C9
   class "CON-010 At most one featured item" as C10
   class "CON-011 Pair never crosses midnight" as C11
@@ -510,35 +517,34 @@ package "Business rules - 12" {
   class "CON-020 Corporate data only" as C20
 }
 
-package "Data ownership - 3" {
+package "Architectural - 3" {
   class "CON-021 Category stored as a link" as C21
-  class "CON-033 No data migration" as C33
+  class "CON-034 Design file mandatory and authoritative" as C34
   class "CON-036 Retry is one action, one queue" as C36
 }
 
-package "Environment - 3" {
-  class "CON-006 Internal network only" as C6
-  class "CON-007 Single timezone Europe/Madrid" as C7
-  class "CON-031 Stand-ins, never the real AD or Keycloak" as C31
-}
-
-package "Operations - 6" {
+package "Operational - 8" {
+  class "CON-022 No AD modification" as C22
+  class "CON-023 Risk governance and acceptance" as C23
+  class "CON-024 Keycloak and AD are not project risks" as C24
   class "CON-029 Hosted CI, never deploys" as C29
   class "CON-030 No token budget" as C30
   class "CON-032 Infrastructure operates post-launch" as C32
+  class "CON-033 No data migration" as C33
   class "CON-035 Backups are Infrastructure practice" as C35
-  class "CON-023 Risk governance and acceptance" as C23
-  class "CON-024 Keycloak and AD are not project risks" as C24
-}
-
-package "UI - 1" {
-  class "CON-034 Design file mandatory and authoritative" as C34
 }
 
 note right of C31
   The load-bearing constraint: the stand-ins are
   the team's entire integration surface, and the
   empty-attribute entries are what retire R001.
+end note
+
+note bottom of C8
+  CON-008 is the one declared BusinessRule carried
+  as a mechanism: MECH-02 in the Functionality
+  section. It is a rule and it is enforced; the
+  register and this map both carry it.
 end note
 @enduml
 ```
@@ -547,24 +553,17 @@ end note
 
 | ID | Constraint | What it decides |
 |---|---|---|
-| CON-001 | The portal is a .NET application deployed on the internal Windows Server estate operated by Infrastructure | Hosting target; no cloud, no containers |
-| CON-002 | The portal is an OIDC client of the existing Keycloak, which federates Active Directory. Keycloak is not deployed by this project; the OIDC client is already registered and credentials are with the development team | No identity work; the client is a configuration surface |
-| CON-021 | The worker category is stored as a link — AD user id to category — never a duplicate of the employee. The local table holds two columns and nothing else | The portal's data model is two owned entities, not a copy of the directory |
-| CON-025 | Backend: .NET 10, REST API | Framework pin |
-| CON-026 | Frontend: Razor Pages, no SPA | No client-side framework, no client-side router; a page-level script is permitted and required |
-| CON-027 | Database: PostgreSQL 18, major pinned, patch floats | Version pin |
-| CON-028 | Keycloak runs **inside** the corporate network — the company's internal identity provider, on the internal estate Infrastructure operates alongside AD. External to this project is not the same as external to the network. The OIDC redirect is an intra-network call and login keeps working with no internet link | A deployment view that places Keycloak in a cloud node contradicts this and is wrong |
-| CON-034 | The custom design at `docs/inputs/employee-portal-design.html` is mandatory and authoritative for the UI visual layer, not only its structure | The UI is built to the reference; it is not pending and needs no confirmation |
+| CON-021 | The worker category is stored as a link — AD user id to category — never as a duplicate of the employee. The local table holds two columns and nothing else; there is no synchronisation, reconciliation or conflict to resolve | The portal's data model is two owned entities, not a copy of the directory |
+| CON-034 | The custom design at `docs/inputs/employee-portal-design.html` is mandatory and authoritative for the UI visual layer, not only its structure. It is committed to the repository with the project inputs | The UI is built to the reference; it is not pending and needs no confirmation |
 | CON-036 | The clocking retry is one action, one queue, one entity. It is not the sync work the scope excludes | No reconciliation, no conflict resolution |
 
 ### Environmental constraints
 
 | ID | Constraint | What it decides |
 |---|---|---|
-| CON-005 | Compatibility: current Chrome and Edge | Browser support surface |
 | CON-006 | Access is only from the internal corporate network | No external exposure, no public endpoint |
 | CON-007 | All three offices are in Europe/Madrid. Clockings are stored in UTC and displayed in Europe/Madrid; there is no multi-timezone case and no normalisation to design | One conversion at the boundary, nothing more |
-| CON-031 | The team works against stand-ins, never the real Keycloak or AD. Placeholder configuration values, never in code. Validation against the real systems is human work by Infrastructure with HR, with feedback before Elaboration closes | The team's entire integration surface; the definition of done |
+| CON-028 | Keycloak runs **inside** the corporate network — the company's internal identity provider, on the internal estate Infrastructure operates alongside AD. External to this project is not the same as external to the network. The OIDC redirect is an intra-network call and login keeps working with no internet link | A deployment view that places Keycloak in a cloud node contradicts this and is wrong |
 
 ### Operational constraints
 
@@ -576,7 +575,28 @@ end note
 | CON-029 | CI runs on the hosted SCM provider's CI. "No cloud" and "internal network only" govern the portal at runtime, not the development toolchain. CI never holds production data or credentials and never deploys | Toolchain boundary |
 | CON-030 | No budget or cap on token spend, and none is to be set by the team | Measurement, not constraint on scope |
 | CON-032 | Infrastructure operates the portal in production once live. The development team hands over at the end of Transition and does not run it afterwards | Handover obligation |
+| CON-033 | There is no data migration. The portal starts empty and records clockings from go-live onwards. Historical Excel sheets stay a read-only archive and are not imported | No migration work exists and none may be added |
 | CON-035 | Backups: Infrastructure's existing server-backup practice already covers this PostgreSQL instance in restorable form, confirmed in writing with a verified restore test. No backup design, tooling or restore procedure is part of this project | Explicitly out of scope |
+
+### Technical constraints
+
+| ID | Constraint | What it decides |
+|---|---|---|
+| CON-001 | The portal is a .NET application deployed on the internal Windows Server estate operated by Infrastructure | Hosting target; no cloud, no containers |
+| CON-002 | The portal is an OIDC client of the existing Keycloak, which federates Active Directory. Keycloak is not deployed by this project; the OIDC client is already registered and credentials are with the development team | No identity work; the client is a configuration surface |
+| CON-003 | Employee directory fields (name, job title, department, office, email, extension) are read from Active Directory over LDAP and are read-only in the portal; no local copy and no edit form | The directory is a projection, never a store |
+| CON-004 | EmployeeId is the AD sAMAccountName — the only identifier guaranteed populated and unique across all three offices. The portal reads it from the authenticated session and writes it as-is; no mapping table | The identity key; no surrogate, no mapping |
+| CON-005 | Compatibility: corporate browsers — current Chrome and Edge | Browser support surface |
+| CON-025 | Backend: .NET 10, REST API | Framework pin |
+| CON-026 | Frontend: Razor Pages, no SPA. "No SPA" means no client-side framework and no client-side router; it does not mean no JavaScript. A page-level script on an already-rendered page is Razor Pages as normal, and the clocking page needs one | No client-side framework, no client-side router; a page-level script is permitted and required |
+| CON-027 | Database: PostgreSQL 18, the latest stable major at project start. The patch level floats, the major is pinned. Infrastructure installs it on the same Windows Server estate they already operate | Version pin |
+| CON-031 | The team works against stand-ins, never the real Keycloak or AD. Placeholder configuration values, never in code. Validation against the real systems is human work by Infrastructure with HR, with feedback before Elaboration closes | The team's entire integration surface; the definition of done |
+
+### BusinessRule constraints
+
+The 13 declared `[BusinessRule]` constraints — CON-008 to CON-020 — are the business-rules register
+in the Functionality section. That register is their single home and states each rule with the place
+it must hold. They are not restated here.
 
 ## Interfaces
 | ID | Interface | Direction | Contract | Source |
