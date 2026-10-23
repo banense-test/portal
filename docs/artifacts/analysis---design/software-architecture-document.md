@@ -1222,18 +1222,24 @@ measured after launch. R003 is the timing of the human validation gate, carried 
 - **The stand-ins do not exist yet.** Until they do, no use case is testable and R001 stays open.
 
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
-| COMP-001 | UC-001, UC-013, UC-014, UC-015 | Realizes | COMP-002, COMP-003, COMP-004, COMP-005, COMP-006, COMP-008 |
+| COMP-001 | UC-001, UC-013, UC-014, UC-015 | Realizes | — |
 | COMP-001 | NFR-001, NFR-002, NFR-003 | Derives | — |
-| COMP-002 | UC-001, UC-002, UC-003, UC-005 | Realizes | COMP-010, COMP-007, COMP-008 |
+| COMP-001 | — | DependsOn | COMP-002, COMP-003, COMP-004, COMP-005, COMP-006, COMP-008 |
+| COMP-002 | UC-001, UC-002, UC-003, UC-005 | Realizes | — |
 | COMP-002 | NFR-004 | Derives | — |
-| COMP-003 | UC-004 | Realizes | COMP-010, COMP-006, COMP-009, COMP-008 |
-| COMP-004 | UC-006, UC-007, UC-008, UC-009, UC-010 | Realizes | COMP-010, COMP-007, COMP-008 |
-| COMP-005 | UC-011, UC-014 | Realizes | COMP-009, COMP-006, COMP-008 |
-| COMP-006 | UC-012 | Realizes | COMP-010, COMP-007, COMP-008 |
-| COMP-007 | NFR-005 | Derives | COMP-010 |
+| COMP-002 | — | DependsOn | COMP-007, COMP-008, COMP-010 |
+| COMP-003 | UC-004 | Realizes | — |
+| COMP-003 | — | DependsOn | COMP-006, COMP-008, COMP-009, COMP-010 |
+| COMP-004 | UC-006, UC-007, UC-008, UC-009, UC-010 | Realizes | — |
+| COMP-004 | — | DependsOn | COMP-007, COMP-008, COMP-010 |
+| COMP-005 | UC-011, UC-014 | Realizes | — |
+| COMP-005 | — | DependsOn | COMP-006, COMP-008, COMP-009 |
+| COMP-006 | UC-012 | Realizes | — |
+| COMP-006 | — | DependsOn | COMP-007, COMP-008, COMP-010 |
+| COMP-007 | NFR-005 | Derives | — |
+| COMP-007 | — | DependsOn | COMP-010 |
 | COMP-008 | NFR-001 | Derives | — |
-| COMP-009 | UC-011, UC-004 | Realizes | — |
+| COMP-009 | UC-004, UC-011 | Realizes | — |
 | COMP-010 | NFR-005 | Derives | — |
