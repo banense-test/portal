@@ -31,30 +31,30 @@
 
 ## Review Scope and Criteria
 ### Reviewer lens
-<!-- review: Inception I2 -->
+<!-- review: Inception I3 -->
 
-**Review type:** Technical review, LCO lifecycle milestone, Inception iteration 2. Checklist-driven against the artifact type of each item reviewed.
+**Review type:** Technical review, LCO lifecycle milestone, Inception iteration 3. Checklist-driven against the artifact type of each item reviewed.
 
-**Scope.** All ten persisted artifacts, plus the trace graph and the SCM state. Nine were evaluated against their checklists; the Iteration Assessment is not judged — it is authored after this review and its absence or lag is never a finding.
+**Scope.** All ten persisted artifacts, plus the trace graph and the SCM state. Eight were evaluated against their checklists; the Iteration Assessment is not judged — it is authored after this review and its absence or lag is never a finding.
 
 | Artifact | Checklist applied | Result |
 |---|---|---|
 | Vision | Requirements: traceable, testable, unambiguous, no unsourced quantitative claim | Pass |
-| Use-Case Model | Requirements: UC well-formed, one per declared process, no cross-cutting mechanism as a UC, rule binding correct, traceability | **Fail** — 1 Major |
-| Supplementary Specification | Requirements: every constraint carried and bound, mechanisms not UCs, two closed lists kept apart | **Fail** — 1 Minor |
-| Software Architecture Document | Architecture: every subsystem maps to a volatile requirement, constraint conformance, invariants enforceable, traceability one edge per row | **Fail** — 1 Major |
-| Risk List | Project Management: declared identifiers and magnitudes preserved, CON-024 respected, every risk treated and traced | Pass |
-| Iteration Plan | Project Management: plan derived from the artifact set, risk retirement named against its event, every AC has a gate | Pass |
-| Test Evaluation Summary | Test: coverage against use cases, measurement method per NFR, observable SCM state cited as observed | Pass |
-| Development Case | DC baseline conformance (§1.2) and optional trigger justification | Pass |
+| Use-Case Model | Requirements: UC well-formed, one per declared process, no cross-cutting mechanism as a UC, rule binding enforced by a flow, traceability | Pass |
+| Supplementary Specification | Requirements: every constraint carried and bound, mechanisms not UCs, two closed lists kept apart, one set one source | Pass |
+| Software Architecture Document | Architecture: every subsystem maps to a volatile requirement, constraint conformance, invariants enforceable, traceability one edge per row, iteration numbers current | Pass |
+| Risk List | Project Management: declared identifiers and magnitudes preserved, CON-024 respected, every risk treated and traced, no suspect trace open | Pass |
+| Iteration Plan | Project Management: plan derived from the artifact set, risk retirement named against its event, every AC has a gate, role profile agrees with the work items | **Fail** — 1 Minor |
+| Test Evaluation Summary | Test: coverage against use cases, measurement method per NFR, observable SCM state cited as observed | **Fail** — 1 Major |
+| Development Case | DC baseline conformance (§1.2), optional trigger justification, toolchain references current | **Fail** — 1 Minor |
 | Iteration Assessment | Not judged — authored after this review | N/A |
 | Review Record | This artifact | N/A |
 
-**SCM state.** No open pull request exists, so no PR required a disposition. The build on `main` is green; it carries no product evidence, because the repository holds inputs and artifacts only.
+**SCM state, read at the moment of writing.** No open pull request exists, so no PR required a disposition. The build on `main` is green — run `39958957391`, started 2026-10-23 13:09:58Z, completed 13:10:47Z. It carries no product evidence: the repository holds project inputs and artifacts, not the portal, so a green build proves the pipeline runs and nothing more. Three issues are open — `Issue #1`, `Issue #2` and `Issue #3`, all documentation staleness, all minor. Two of the three are against the Development Case and are the evidence for the finding recorded against it below.
 
-**Trace graph.** 42 business roots, 180 nodes. No `FR-NNN`, `NFR-NNN` or `UC-NNN` is a leaf — every declared requirement is realized and every use case is carried by a component. Four `SUSPECT → System Analyst` edges are reported: `COMP-002 → UC-001`, `UC-002`, `UC-003`, `UC-005`. They are the trace-graph evidence for the Use-Case Model finding below and are recorded there rather than as a separate defect.
+**Trace graph.** 42 business roots, 180 nodes. No `FR-NNN`, `NFR-NNN` or `UC-NNN` is a leaf — every declared requirement is realized by a use case and every use case is carried by at least one component. **No `SUSPECT` edge is reported anywhere in the graph.** The four `SUSPECT → System Analyst` edges on `COMP-002` that iteration 2 recorded are cleared, which is the trace-graph evidence that the Use-Case Model was reviewed against ADR-010.
 
-**Closure of prior findings.** Seven findings of this lens from iteration 1 were reconciled before any new defect was recorded. All seven are Resolved; none is Deferred or Rejected. The two `Iteration Plan` findings owned by the Management Reviewer lens are not this lens's to close and remain with that lens.
+**Closure of prior findings.** Three findings of this lens were open at the start of this iteration. Each was verified against the current artifact content and closed through `resolve_artifact_finding` before any new defect was recorded. None is Deferred, none is Rejected, none is left open. `Iteration Plan#F3` belongs to the Management Reviewer lens and is not this lens's to close.
 
 ```plantuml
 @startsalt
@@ -65,18 +65,21 @@
   { Cross-cutting mechanism not modelled as a UC | n/a | Pass | Pass | Pass | n/a | n/a | n/a | Pass }
   { Scope markers on derived elements | Pass | Pass | Pass | Pass | Pass | Pass | Pass | Pass }
   { UML present and formally valid | Pass | Pass | Pass | Pass | Pass | Pass | Pass | Pass }
-  { Observable SCM state cited as observed | n/a | n/a | n/a | n/a | n/a | n/a | Pass | Pass }
   { Criteria can fail | Pass | n/a | Pass | n/a | n/a | Pass | Pass | Pass }
   { Traceability table one edge per row | n/a | Pass | n/a | Pass | Pass | n/a | n/a | n/a }
-  { Internal consistency with upstream | Pass | FAIL | Pass | FAIL | Pass | Pass | Pass | Pass }
+  { No FR, NFR or UC left as a leaf | Pass | Pass | Pass | Pass | Pass | Pass | Pass | Pass }
+  { No SUSPECT trace left open | n/a | Pass | n/a | Pass | Pass | n/a | n/a | n/a }
+  { Internal consistency, within and with upstream | Pass | Pass | Pass | Pass | Pass | FAIL | Pass | Pass }
+  { Observable SCM state cited as observed | n/a | n/a | n/a | n/a | n/a | n/a | FAIL | FAIL }
   { DC baseline conformance | n/a | n/a | n/a | n/a | n/a | n/a | n/a | Pass }
   { Optional trigger justification | n/a | n/a | n/a | n/a | n/a | n/a | n/a | Pass }
-  { No FR, NFR or UC left as a leaf | Pass | Pass | Pass | Pass | Pass | Pass | Pass | Pass }
 }
 @endsalt
 ```
 
-**What the two Fail cells have in common.** Both are artifacts that were not re-based onto a decision another artifact changed. The Software Architecture Document chose a new clocking shape in ADR-010 and the Use-Case Model still describes the old one; the Iteration Plan re-based the roadmap onto eight iterations and the Software Architecture Document still names the old iteration numbers. Neither is a defect of the artifact's own reasoning — each is a defect of the artifact's currency, which is the class of defect a milestone review exists to catch before the next phase builds on it.
+**What the three Fail cells have in common.** All three are a claim asserted rather than read against the set it describes. The Test Evaluation Summary states a run identifier and an issue count that were not read at the moment of writing. The Development Case states a toolchain component does not exist when it is committed and green. The Iteration Plan states that every work item has an Active owner while two of one work item's four owners are recorded as not working. None of the three disputes what a requirement says, and none is a defect of the artifact's reasoning — each is a defect of the artifact's currency, which is the class the Development Case's C2 and C6 authoring checks exist to catch.
+
+**What this review confirms is now correct.** The three findings this lens carried into the iteration are genuinely corrected, and the corrections are substantive. The UC-001 postcondition now describes ADR-010's append-only event log and the four suspect traces are cleared. The Supplementary Specification groups all 36 constraints by their declared category in both the table and the diagram, and states the arithmetic that proves the set is complete. The Software Architecture Document's significance table names Elaboration iterations 4 and 5, matching the Iteration Plan's nine-iteration roadmap exactly.
 
 ### Business Reviewer lens
 <!-- review: Inception I2 -->
