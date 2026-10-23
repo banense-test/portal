@@ -1038,8 +1038,8 @@ deployment. A literal credential in a source file is a defect, not a shortcut.
 authoritative for the visual layer, not only the structure, and it is committed — not pending.
 
 ## Data View
-The portal owns exactly two things: clockings (with their corrections and audit entries) and the
-worker-category link. Everything else about a person is read from AD on every request and never
+The portal owns four things: clocking events (with their corrections), the worker-category link, news
+items, and the audit trail. Everything else about a person is read from AD on every request and never
 stored.
 
 ### The clocking record shape
