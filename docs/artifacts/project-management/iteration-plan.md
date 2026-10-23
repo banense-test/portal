@@ -6,12 +6,12 @@
 ## Iteration Objectives
 Inception iteration 2 is a correction iteration. It creates no artifact and adds no scope: the declared 15 requirements, 5 NFRs, 36 constraints, 3 business goals, 5 acceptance criteria and 2 declared risks are carried exactly as declared. Its work is to make the plan's own claims match its evidence chain and to re-present the LCO gate.
 
-| # | Objective | Evidence that closes it | Result |
+| # | Objective | Evidence that closes it | State |
 |---|---|---|---|
-| O1 | Make the fine plan account for every artifact the iteration produces, and the role profile follow the work items | Plan and Milestones — fine plan W1–W9; Resources — agent role profile | Met — nine work items, each with an owner and an exit condition; every role that produces is Active in its iteration |
-| O2 | State each risk's retirement against the event that retires it, never against the mechanism that makes it retirable | Plan and Milestones — Risk retirement sequencing | Met — R001 is retired in iteration 3 by executing the empty-attribute case of UC-011 and UC-004, not by building the fixture |
-| O3 | Give every declared acceptance criterion a point at which it can close | Evaluation Criteria — Layer A | Met — AC-004 is split into a learnability check at iteration 5 and a post-Project-Acceptance population measure owned by STK-001 |
-| O4 | Resolve the four suspect traces against the Risk List | Risk List — Traceability | Met — R001, R003, R004 and R005 re-verified against the changed UC-010 and UC-011 |
+| O1 | Make the fine plan account for every artifact the iteration produces, and the role profile follow the work items | Plan and Milestones — fine plan W1–W9; Resources — agent role profile | In place — nine work items, each with an owner and an exit condition; every role that produces is Active in its iteration. Assessed at close |
+| O2 | State each risk's retirement against the event that retires it, never against the mechanism that makes it retirable | Plan and Milestones — Risk retirement sequencing | In place — R001 is retired in iteration 3 by executing the empty-attribute case of UC-011 and UC-004, not by building the fixture. Assessed at close |
+| O3 | Give every declared acceptance criterion a point at which it can close | Evaluation Criteria — Layer A | In place — AC-004 is split into a learnability check at iteration 5 and a post-Project-Acceptance population measure owned by STK-001. Assessed at close |
+| O4 | Resolve the four suspect traces against the Risk List | Risk List — Traceability | In place — R001, R003, R004 and R005 re-verified against the changed UC-010 and UC-011. Assessed at close |
 | O5 | Re-present the LCO gate | Evaluation Criteria — LCO readiness assessment | Open — the verdict is the ReviewCoordinator's and is not issued in this document |
 
 **Iteration 1 outcome, which this iteration is built on.** Iteration 1 produced a complete and correctly shaped requirements baseline — 15 use cases, one per declared FR, no phantom use case, no exclusion crossed, no invented identifier — and did not pass the gate. The ReviewCoordinator's verdict was iteration required and the stakeholder refused the sanction with the instruction that every finding be corrected. Ten findings were raised: 0 Critical, 6 Major, 4 Minor. Three of the Major findings are against this document and are corrected here; the other seven belong to the SoftwareArchitect, the SystemAnalyst and the TestManager.
