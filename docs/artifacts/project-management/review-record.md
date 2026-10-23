@@ -714,8 +714,6 @@ end note
 ### Business Reviewer lens
 <!-- review: Inception I3 -->
 
-<!-- review: Inception I3 -->
-
 **Closures this iteration — three, all verified against current artifact content before any new defect was recorded.**
 
 | Finding | Severity | Disposition | What was verified |
