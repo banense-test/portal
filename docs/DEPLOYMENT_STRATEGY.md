@@ -3,7 +3,7 @@
 ## Document Control
 
 - **Phase:** Inception
-- **Status:** Draft — iteration 2, submitted for review
+- **Status:** Draft — iteration 3, submitted for review
 - **Milestone Target:** End of Inception (not yet achieved)
 
 ## Deployment mode
@@ -86,6 +86,56 @@ stop
 **The Release Notes are a Transition deliverable (DC §5.1) and are not drafted earlier.** What
 Inception fixes is the specification the Transition draft must meet — the content requirements are
 in the Support material section below.
+
+### Deployment milestones against the roadmap
+
+The Iteration Plan's roadmap is nine iterations: Inception 1 to 3, Elaboration 4 and 5, Construction
+6 to 8, Transition 9. Every deployment milestone below is placed on that roadmap, and this document
+names no iteration the roadmap does not contain.
+
+```plantuml
+@startuml
+title Portal - Deployment milestones against the nine-iteration roadmap
+
+start
+:Elaboration iteration 4;
+note right
+  R001 retired: the empty-attribute case of
+  UC-011 and UC-004 passes against the
+  stand-in directory. Not at Gate 2.
+end note
+
+:Elaboration iteration 5;
+note right: LCA. CON-031 human feedback received.
+
+:Construction iterations 6 to 8;
+note right
+  Clocking, news and directory capabilities
+  implemented and tested. AC-004a learnability
+  check in iteration 6, the iteration that
+  implements UC-001.
+end note
+
+:Construction iteration 8 closes - IOC;
+:Gate 1 - development site acceptance;
+:Package and tag the SCM release;
+
+:Transition iteration 9;
+:Gate 2 - install site acceptance;
+:Beta;
+:Go-live and handover to Infrastructure (CON-032);
+stop
+@enduml
+```
+
+| Milestone | Iteration | What deployment depends on it |
+|---|---|---|
+| R001 retired | Elaboration 4 | The empty-attribute case is proven against the stand-in before the real AD is met at Gate 2 |
+| LCA | Elaboration 5 | The topology and the six-value configuration surface are frozen |
+| AC-004a learnability check | Construction 6 | The untrained-user check runs in the iteration that implements UC-001 |
+| IOC | Construction 8 | All 15 use cases implemented and tested; the release candidate exists |
+| Gate 1 | Construction 8 close | Development-site acceptance against the stand-ins |
+| Gate 2, beta, go-live, handover | Transition 9 | Install-site acceptance, beta feedback, one go-live, handover to Infrastructure |
 
 ## Target environments
 
@@ -214,9 +264,9 @@ after Gate 2 and asks a different question: can these people do their job with t
 | Element | Decision |
 |---|---|
 | **Participants** | The HR department (STK-001 and the HR AD group) plus a group of employees nominated by STK-001 across the three offices. The employee group is chosen by the sponsor, not by the team — the team has no basis for choosing who represents 200 people |
-| **Duration** | Bounded by the Transition iteration. It ends when the exit criteria are met or when the sponsor calls go-live |
+| **Duration** | Bounded by Transition iteration 9. It ends when the exit criteria are met or when the sponsor calls go-live |
 | **Feedback mechanism** | A single channel owned by STK-001, with each report tagged to the use case it concerns (UC-001 to UC-015). A report that cannot be tagged to a use case is either a defect in an existing one or a request outside declared scope — and the second is a Change Request, not a beta finding |
-| **What beta measures** | AC-001 (clocking unaided), AC-003 (a colleague's phone or email found in under 10 seconds), and the first reading of BG-003 adoption. Beta closes neither half of AC-004: its learnability half is verified in iteration 5 by the untrained-user check in the iteration that implements UC-001, and its 80%-of-population half is a post-Project-Acceptance measure owned by STK-001 against BG-003's three-month window. Beta supplies the first observation that measure will use; it does not close it |
+| **What beta measures** | AC-001 (clocking unaided), AC-003 (a colleague's phone or email found in under 10 seconds), and the first reading of BG-003 adoption. Beta closes neither half of AC-004: its learnability half is verified in Construction iteration 6 by the untrained-user check in the iteration that implements UC-001, and its 80%-of-population half is a post-Project-Acceptance measure owned by STK-001 against BG-003's three-month window. Beta supplies the first observation that measure will use; it does not close it |
 | **Exit criteria** | No open beta finding against UC-001, UC-004, UC-011 or UC-013 — the four use cases carrying the declared acceptance criteria and the highest risk. Findings against other use cases are triaged: a defect blocks go-live, a request becomes a Change Request |
 | **What beta does not do** | It does not re-open declared scope. A beta finding that asks for an excluded capability (a self-service correction screen, an audit view, a permission screen, a news archive) is a Change Request to the CCM, never a beta fix (CON-023) |
 
@@ -243,7 +293,7 @@ day rule has no meaning across a split.
 title Portal - Rollout: two acceptance gates, beta, go-live
 
 start
-:Construction iteration 6 closes (IOC);
+:Construction iteration 8 closes (IOC);
 note right: All 15 UCs implemented and tested.
 
 :Gate 1 - development site acceptance;
@@ -286,9 +336,10 @@ note right: AC-002 verified before employees arrive.
 note right
   Feedback captured against the 15 UCs.
   AC-001 and AC-003 observed here.
-  AC-004 learnability was verified in
-  iteration 5; its population half is
-  post-acceptance, owned by STK-001.
+  AC-004 learnability is verified in the
+  iteration that implements UC-001; its
+  population half is post-acceptance,
+  owned by STK-001.
 end note
 
 if (Beta feedback blocks go-live?) then (yes)
@@ -418,9 +469,9 @@ their existing practice, not a document this project writes.
 
 | Risk | How it lands at deployment | Deployment response |
 |---|---|---|
-| R001 — LDAP attribute gaps | The real AD is met for the first time at Gate 2. Empty job titles and extensions will appear in the directory and in the CSV | R001 is retired in iteration 3, not at Gate 2: the empty-attribute case of UC-011 and UC-004 is executed against the stand-in directory, which carries entries with empty job title and extension. Gate 2 re-confirms the same case against the real AD. The empty case is the designed case — the field renders blank and the row survives — and HR is told which attributes are unfilled across the offices |
+| R001 — LDAP attribute gaps | The real AD is met for the first time at Gate 2. Empty job titles and extensions will appear in the directory and in the CSV | R001 is retired in Elaboration iteration 4, not at Gate 2: the empty-attribute case of UC-011 and UC-004 is executed against the stand-in directory, which carries entries with empty job title and extension. Gate 2 re-confirms the same case against the real AD. The empty case is the designed case — the field renders blank and the row survives — and HR is told which attributes are unfilled across the offices |
 | R002 — adoption | The rollout is the moment the habit either changes or does not | One go-live for all three offices (BG-002 leaves no Excel fallback), HR publishes the first news before employees arrive, and beta measures the first adoption reading |
-| R003 — the CON-031 human validation gate | Gate 2 depends on Infrastructure and HR being available | Gate 2 is scheduled inside the Transition iteration and its queue time is reported apart from agent time. If it exceeds its ceiling the process suspends and the ProjectManager escalates; the remedy is another iteration (CON-023) |
+| R003 — the CON-031 human validation gate | Gate 2 depends on Infrastructure and HR being available | Gate 2 is scheduled inside Transition iteration 9 and its queue time is reported apart from agent time. If it exceeds its ceiling the process suspends and the ProjectManager escalates; the remedy is another iteration (CON-023) |
 | R008 — wrong client clock | The recorded time is the press time, so a wrong workstation clock is recorded as fact | The confirmation shows the recorded time, so the error is visible at the moment it happens; HR corrects under UC-005, audited (CON-013) |
 
 **No deployment risk is registered for Keycloak, AD or PostgreSQL availability.** CON-024 excludes
