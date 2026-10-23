@@ -3,7 +3,6 @@
 - **Status:** Draft — iteration 2, submitted for review
 - **Milestone Target:** End of Inception (not yet achieved)
 ## Problem Statement
-
 Cuba Corp's HR administration runs on three disconnected manual artifacts: shared Excel sheets for
 clocking, mass emails for news, and an outdated PDF phone list. Each artifact is maintained by hand,
 each has a different owner, and none of them is authoritative.
@@ -22,19 +21,20 @@ missing application over data the organization already owns.
 | STK-004 Cuba Corp Employees | No reliable record of their own hours; no fast way to find a colleague's phone or email; news arrives as email they cannot filter or search |
 | STK-003 Infrastructure team | Operates the identity and directory estate that the portal will consume; carries the consequence of any solution that requires modifying AD (CON-022 forbids it) |
 
-**Success criteria — measurable.**
+**Success criteria.** Each criterion below is either measurable now or explicitly marked as awaiting
+a declared input. A criterion whose denominator does not exist is recorded as unmeasured — never as
+met.
 
-| Criterion | Measure | Source |
-|---|---|---|
-| HR time on clocking, news and directory upkeep halved | 50% reduction against the current manual baseline | BG-001 |
-| No shared Excel sheet records a new clocking | 100% of new clockings in the portal; historical sheets stay a read-only archive | BG-002, CON-033 |
-| Employees adopt the portal | 80% of 200 employees actively using it within 3 months of launch | BG-003 |
-| An employee clocks in and out unaided | Completed with no help from HR or the development team | AC-001 |
-| An HR Administrator publishes news unaided | Completed with no technical assistance | AC-002 |
-| A colleague's phone or email is found fast | Found in under 10 seconds | AC-003 |
-| Clocking is learnable without training | 80% of employees complete at least one clocking with no prior training | AC-004 |
-| A short network outage does not lose a clocking | A clocking made during an outage of up to 5 minutes is not lost | AC-005 |
-
+| Criterion | Measure | Source | Status |
+|---|---|---|---|
+| HR time on clocking, news and directory upkeep halved | 50% reduction against the current manual baseline | BG-001 | **Not yet measurable.** No baseline is declared in the scope and none has been measured. STK-001 (HR) supplies the current manual baseline for the three activities; the 50% reduction is then a post-launch comparison HR performs against that baseline. Until the baseline exists this criterion is unmeasured |
+| No shared Excel sheet records a new clocking | 100% of new clockings in the portal; historical sheets stay a read-only archive | BG-002, CON-033 | Measurable — the portal is the only recording path from go-live, and CON-033 fixes the historical sheets as a read-only archive |
+| Employees adopt the portal | 80% of 200 employees actively using it within 3 months of launch | BG-003 | Measurable — a post-launch population reading over a declared three-month window |
+| An employee clocks in and out unaided | Completed with no help from HR or the development team | AC-001 | Measurable |
+| An HR Administrator publishes news unaided | Completed with no technical assistance | AC-002 | Measurable |
+| A colleague's phone or email is found fast | Found in under 10 seconds | AC-003 | Measurable |
+| Clocking is learnable without training | 80% of employees complete at least one clocking with no prior training | AC-004 | Measurable — the learnability half is testable when UC-001 is implemented; the 80%-of-population half is a post-launch reading over the BG-003 window |
+| A short network outage does not lose a clocking | A clocking made during an outage of up to 5 minutes is not lost | AC-005 | Measurable |
 ## Product Position Statement
 
 **For** Cuba Corp's 200 employees across 3 offices and its HR department
