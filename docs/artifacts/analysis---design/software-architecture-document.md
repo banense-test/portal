@@ -946,26 +946,62 @@ deployment. A literal credential in a source file is a defect, not a shortcut.
 authoritative for the visual layer, not only the structure, and it is committed — not pending.
 
 ## Data View
-
 The portal owns exactly two things: clockings (with their corrections and audit entries) and the
 worker-category link. Everything else about a person is read from AD on every request and never
 stored.
 
+### Invariants and where they are enforced
+
+| Invariant | Enforced in the schema | Enforced in a component | Basis |
+|---|---|---|---|
+| At most one clocking pair per employee per calendar day | Unique index on (EmployeeId, WorkDate) | COMP-002 | CON-012 |
+| A pair never crosses midnight | `WorkDate` is a column, not derived from a timestamp range | COMP-002 | CON-011 |
+| A clocking original is never overwritten or deleted | No update or delete path on original rows; a correction is a new row | COMP-002 | CON-013 |
+| A repeated idempotency key produces one record | Unique index on IdempotencyKey | COMP-002 | FR-013, REL-04 |
+| At most one featured news item | Partial unique index on the featured flag where published | COMP-004 | CON-010 |
+| News is never deleted | No delete path; `IsPublished` flag | COMP-004 | CON-014 |
+| A worker has at most one category, possibly empty | Primary key on AdUserId; nullable Category | COMP-006 | CON-016, CON-021 |
+| The category value is one of four | Check constraint on the value set | COMP-006 | CON-009 |
+| The audit trail is legible without the application | Columns, not a serialised blob | COMP-007 | NFR-005, INT-07 |
+
+**Two of these are enforced twice on purpose.** CON-010 says the featured invariant must hold wherever
+the change comes from, and CON-013 says originals are never overwritten — both are statements about
+the data, not about the service, so both are enforced where the data lives.
+
+**No employee table, no category lookup table, no audit view.** CON-021 forbids duplicating the
+employee, CON-009 forbids a configurable category list, and NFR-005 forbids an in-portal audit screen.
+Each absence is a constraint satisfied, not a gap.
+
+### The clocking record shape
+
+A clocking pair is recorded as an **append-only event log**, not as one mutable row. Each press
+writes one row; each HR correction or insertion writes one more row that names the row it replaces.
+No row is ever updated and no row is ever deleted, so CON-013 holds by construction rather than by
+convention. CON-012 is enforced on the **originals only** — a partial unique index that ignores
+superseding rows — so the correction row that CON-013 requires is admitted rather than rejected.
+
+The effective state of a pair is a query, not a column: the row of each `EventKind` that no other row
+names in `SupersedesId`. `HoursWorked` and the FR-004 `Corrected` flag are derived from that query —
+`Corrected = Y` when any row for the employee-day carries `Source = Hr`.
+
 ```plantuml
 @startuml
-title Portal - Data view: the two entities the portal owns, plus the audit trail
+title Portal - Data view: append-only clocking log, category link, news, audit trail
 
 package "Portal-owned data (CON-021, CON-033)" {
-  class "Clocking" as CLK {
+  class "ClockingEvent" as CLK {
     + Id : Guid
     + EmployeeId : string
     + WorkDate : date
-    + ClockInUtc : timestamptz
-    + ClockOutUtc : timestamptz
+    + EventKind : ClockEventKind
+    + OccurredAtUtc : timestamptz
+    + Source : EventSource
     + IdempotencyKey : string
-    + IsCorrection : bool
-    + CorrectedBy : string
-    + CorrectionReason : string
+    + SupersedesId : Guid
+    + PreviousValueUtc : timestamptz
+    + RecordedBy : string
+    + RecordedAtUtc : timestamptz
+    + Reason : string
   }
 
   class "WorkerCategoryLink" as WCL {
@@ -992,6 +1028,16 @@ package "Portal-owned data (CON-021, CON-033)" {
     + PreviousValue : string
     + Reason : string
   }
+
+  enum "ClockEventKind" as KIND {
+    ClockIn
+    ClockOut
+  }
+
+  enum "EventSource" as SRC {
+    Employee
+    Hr
+  }
 }
 
 package "Not stored - read from AD on every request (CON-003)" {
@@ -1005,20 +1051,27 @@ package "Not stored - read from AD on every request (CON-003)" {
   }
 }
 
+CLK --> KIND
+CLK --> SRC
+CLK "0..1" --> "0..1" CLK : SupersedesId
 CLK "1" --> "*" AUD : correction audited
 NEWS "1" --> "*" AUD : publish, edit, unpublish audited
 WCL "1" --> "*" AUD : category change audited
 WCL ..> ADATTR : AdUserId only, no copy
 CLK ..> ADATTR : EmployeeId = sAMAccountName
 
+note right of CLK
+  Append-only. One row per press and
+  one row per HR correction. No UPDATE
+  and no DELETE path exists. CON-013.
+  A correction is a new row whose
+  SupersedesId names the row it replaces
+  and whose PreviousValueUtc carries the
+  value it replaced.
+end note
 note right of WCL
   CON-021: two columns and nothing else.
   No employee copy, no sync, no reconciliation.
-end note
-note bottom of CLK
-  CON-013: originals are never overwritten in place
-  and never deleted. A correction is a new row
-  carrying CorrectedBy and CorrectionReason.
 end note
 note bottom of NEWS
   CON-014: never deleted, only IsPublished = false.
@@ -1032,17 +1085,65 @@ end note
 @enduml
 ```
 
-### Invariants and where they are enforced
+### How a pair is recorded across two presses, and how HR corrects it
 
-| Invariant | Enforced in the schema | Enforced in a component | Basis |
+```plantuml
+@startuml
+title How a pair is recorded across two presses, and how HR corrects it (CON-012, CON-013)
+
+actor "Employee" as E
+participant "COMP-001\nPortal UI Shell" as UI
+participant "COMP-002\nClocking Ledger" as L
+database "COMP-010\nPortal Data Store" as DB
+actor "HR" as HR
+
+E -> UI : press Clock In
+UI -> L : POST clocking (client timestamp, idempotency key)
+L -> DB : INSERT ClockingEvent\n(EventKind=ClockIn, Source=Employee, SupersedesId=NULL)
+note right of DB
+  Partial unique index on
+  (EmployeeId, WorkDate, EventKind)
+  WHERE SupersedesId IS NULL admits
+  exactly one original ClockIn and one
+  original ClockOut per employee-day.
+  This is CON-012, enforced on the pair.
+end note
+DB --> L : row
+L --> UI : confirmation
+
+E -> UI : press Clock Out
+UI -> L : POST clocking (client timestamp, idempotency key)
+L -> DB : INSERT ClockingEvent\n(EventKind=ClockOut, Source=Employee, SupersedesId=NULL)
+DB --> L : row
+L --> UI : confirmation
+
+HR -> UI : correct the Clock Out
+UI -> L : correct (new value, free-text reason)
+L -> DB : INSERT ClockingEvent\n(EventKind=ClockOut, Source=Hr,\nSupersedesId=<original row>,\nPreviousValueUtc=<value replaced>)
+note right of DB
+  No UPDATE and no DELETE anywhere, so the
+  original row is untouched. CON-013.
+  The index ignores superseding rows, so the
+  correction is admitted rather than rejected.
+end note
+DB --> L : row
+L -> DB : INSERT AuditEntry\n(who, when, previous value, reason)
+L --> UI : confirmation
+@enduml
+```
+
+### Invariants and the index that enforces each
+
+| Invariant | Enforced in the schema, by | Enforced in a component | Basis |
 |---|---|---|---|
-| At most one clocking pair per employee per calendar day | Unique index on (EmployeeId, WorkDate) | COMP-002 | CON-012 |
-| A pair never crosses midnight | `WorkDate` is a column, not derived from a timestamp range | COMP-002 | CON-011 |
-| A clocking original is never overwritten or deleted | No update or delete path on original rows; a correction is a new row | COMP-002 | CON-013 |
-| A repeated idempotency key produces one record | Unique index on IdempotencyKey | COMP-002 | FR-013, REL-04 |
-| At most one featured news item | Partial unique index on the featured flag where published | COMP-004 | CON-010 |
+| At most one clocking pair per employee per calendar day | Partial unique index on `(EmployeeId, WorkDate, EventKind)` where `SupersedesId IS NULL` — admits one original ClockIn and one original ClockOut per employee-day, and ignores superseding rows | COMP-002 | CON-012 |
+| A clocking original is never overwritten or deleted | No UPDATE and no DELETE path on `ClockingEvent`; a correction is an INSERT whose `SupersedesId` names the row it replaces | COMP-002 | CON-013 |
+| A correction records the value it replaced | `PreviousValueUtc` column, populated on every `Source = Hr` row | COMP-002 | CON-013, NFR-005 |
+| A pair never crosses midnight | `WorkDate` is a column written at Clock In, not derived from a timestamp range; a Clock Out is only accepted for the open `WorkDate` | COMP-002 | CON-011 |
+| A repeated idempotency key produces one record | Partial unique index on `IdempotencyKey` where `IdempotencyKey IS NOT NULL` — HR correction rows carry no key and are not constrained by it | COMP-002 | FR-013, REL-04 |
+| At most one featured news item | Partial unique index on the featured flag where `IsPublished` | COMP-004 | CON-010 |
 | News is never deleted | No delete path; `IsPublished` flag | COMP-004 | CON-014 |
-| A worker has at most one category, possibly empty | Primary key on AdUserId; nullable Category | COMP-006 | CON-016, CON-021 |
+| A worker has at most one category, possibly empty | Primary key on `AdUserId`; nullable `Category` | COMP-006 | CON-016, CON-021 |
 | The category value is one of four | Check constraint on the value set | COMP-006 | CON-009 |
 | The audit trail is legible without the application | Columns, not a serialised blob | COMP-007 | NFR-005, INT-07 |
 
