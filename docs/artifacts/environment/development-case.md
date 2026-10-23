@@ -576,15 +576,29 @@ end note
 | `Vision#F1` (both lenses) — BG-001 presented as measurable with no declared baseline; FR-014 and FR-015 citing their own identifiers as success criteria | A criterion that restates its requirement cannot be distinguished from it, so it cannot be tested | Same guideline as above, applied at authoring time rather than at review time |
 | `Test Evaluation Summary#F1` — a CI run identifier and two timestamps cited from an earlier read than the moment of writing | Observable SCM state was cited from memory | Guidelines and Procedures, observable state: a run identifier, a timestamp, a build status or a commit SHA is cited only as read at the moment of writing, or not cited at all |
 
-**The pattern behind four of the five.** Each is a claim that *looks* verified and is not: a fixture
-that looks like a retired risk, a criterion that looks like a measure, a run identifier that looks
-like an observation, a plan that looks like it covers the work. The check that catches all four is the
-same — name the event that would make the claim false, and confirm that event is recorded somewhere.
-A claim with no falsifying event is not a claim the process can act on.
+**Iteration 2 evidence and the changes it forced.** Ten findings were closed and seven raised. The
+seven are the evidence, and the verdict table above is the analysis: four checks covered four defect
+classes, and the second generation arrived from three classes none of them touched.
+
+| Observed problem | Root cause | Change to this document |
+|---|---|---|
+| `Use-Case Model#F1` and `#F2` (Business Reviewer) — CON-012 bound to UC-001 with no flow enforcing it; CON-015 bound to two of its three declared uses while the artifact denied the third | A rule was cited in a "business rules enforced" list and treated as enforced. No check asked which step of which flow makes the rule true | C5, a binding is a claim about behaviour: name the step that enforces the rule and confirm the flow cannot produce the state the rule forbids |
+| `Supplementary Specification#F1` (Business Reviewer) — the register presented itself as complete and carried twelve of the thirteen declared `[BusinessRule]` constraints | A completeness claim was asserted rather than counted against the declared set | C6, a completeness claim is counted: every "the N below" and every "all are accounted for" is computed before it is written |
+| `Supplementary Specification#F1` (Reviewer) — the constraint table and the constraint map disagreed on CON-005 and CON-031, and neither matched the declared category | One set of 36 constraints was hand-authored twice, in a table and in a diagram, with no single source | C7, one set, one source list: the second representation is generated from the first, never authored independently |
+| `Use-Case Model#F2` (Reviewer) and `Software Architecture Document#F3` — ADR-010 changed the clocking shape and the Use-Case Model did not follow; the roadmap changed and the significance table did not follow | Corrections were made artifact by artifact against the finding that named them, with no pass asking which other artifacts the correction invalidated | C8 and the cross-artifact re-base sweep: name the decision, list its consumers, re-base them in the same iteration, record the sweep |
+| `Iteration Plan#F3` (Management Reviewer) — C3 was written in iteration 2 to catch a plan derived from the finding ledger, and the iteration-2 plan still failed it | A check added in the iteration it must govern has not been exercised, so the process could not distinguish a check that works from one that was never run | C9, a check is in force only once applied: a check governs from the iteration after the one that adds it, and its first application is recorded |
+
+**The pattern behind the second generation.** The iteration-1 pattern was a claim that *looks*
+verified and is not. The iteration-2 pattern is narrower: a claim that is *true of the artifact that
+makes it* and false of the artifacts that consume it. A rule is genuinely bound in the register and
+genuinely unenforced in the flow; a decision is genuinely made in the architecture and genuinely not
+carried to the use case. The check that catches it is C8, and C8 is a sweep across artifacts rather
+than a reading of one.
 
 **No change is made to the roster, the CORE catalog, the ownership allowlist or the intensity
-matrix.** The iteration-1 defects were authoring and planning defects, not process-shape defects. The
-process configuration held; what it lacked was three authoring checks, and those are now guidelines.
+matrix.** The iteration-2 defects were authoring and planning defects, not process-shape defects. The
+process configuration held; what it lacked was coverage of three defect classes and a rule making a
+check's application observable.
 
 ### Scope note for test tailoring
 
@@ -630,4 +644,174 @@ The rule: cite observable SCM state only as read at the moment of writing, or st
 the identifier. Never reconstruct an identifier from memory, and never carry one forward from a prior
 iteration's artifact. Where a figure is not measured, it carries `[ASSUMPTION — requires validation]`
 and is not presented as an observation.
+
+### Authoring checks — register and verdict
+
+Nine checks are in force. Each is applied to an artifact **before** it is persisted, not left to
+review. A check that is only described is not in force; C9 exists to make that distinction
+enforceable.
+
+```plantuml
+@startuml
+title Portal - Authoring check gate applied before an artifact is persisted
+
+start
+:Artifact drafted;
+repeat
+  :Run the next authoring check (C1 to C9);
+  if (the check fails?) then (yes)
+    :Correct the artifact;
+    note right
+      The correction is re-checked
+      before the next check runs.
+    end note
+  else (no)
+    :Check passes;
+  endif
+repeat while (checks remain?) is (yes)
+->no;
+:Persist the artifact;
+stop
+@enduml
+```
+
+| Check | What it asks | The defect it catches | Detail |
+|---|---|---|---|
+| C1 | Could any observation make this criterion false? | A criterion that restates the requirement it is meant to verify | Criteria that can fail |
+| C2 | Was this identifier read at the moment of writing? | A run id, SHA, build status or count cited from an earlier read as if observed | Observable state |
+| C3 | Is every artifact this iteration will produce a work item with an owner and an exit condition? | A plan derived from the finding ledger or the discipline sequence instead of the artifact set | Disciplines and Intensity |
+| C4 | Is the retiring event a passing test, not a fixture? | A risk reported retired because its mechanism was built | Working against stand-ins |
+| C5 | Which step of which flow enforces this rule? | A rule cited in a "business rules enforced" list whose flow does not enforce it | This section, below |
+| C6 | How many of the declared set are present? | A register asserting its own completeness while omitting a member | This section, below |
+| C7 | Do the table and the diagram derive from the same list? | Two representations of one set disagreeing with each other | This section, below |
+| C8 | Which other artifacts consume the decision that just changed? | An artifact not re-based onto a decision another artifact changed | Cross-artifact re-base sweep |
+| C9 | Has this check been applied to a persisted artifact? | A check written in the iteration it must govern, and therefore never exercised | This section, below |
+
+**C5 — a binding is a claim about behaviour.** A row in a "business rules enforced" table is a
+citation, not an enforcement. The check: for every rule bound to a use case, name the step of the
+main flow or the alternative flow that makes the rule true, and confirm the flow cannot produce the
+state the rule forbids. A rule bound without such a step is bound in name only.
+
+**C6 — a completeness claim is counted.** Any sentence of the form "the N rules below", "all
+constraints are accounted for", "every use case has a test level" is a count, and a count is computed
+against the declared set before it is written. An asserted count is a claim the author has not
+checked.
+
+**C7 — one set, one source list.** When one set of elements is represented twice — a table and a
+diagram, a register and a map — the second representation is generated from the first, never authored
+independently. Two hand-authored representations of the same set will disagree, and the reader cannot
+tell which is authoritative.
+
+**C9 — a check is in force only once applied.** A check added in the same iteration it must govern has
+not been exercised, so the process cannot claim it works. The check is in force from the iteration
+after the one that adds it, and the first application is recorded.
+
+#### Verdict: the nine checks against the seven open findings
+
+R009 asks whether the authoring checks work. The Iteration Plan's W7 requires the question answered
+finding by finding, not asserted. Each of the seven open findings is classified by the check that
+should have caught it and by whether that check was in force when the artifact was persisted.
+
+```plantuml
+@startuml
+title Portal - Authoring checks against the seven open findings: caught or not caught
+
+package "Checks in force during iteration 2" {
+  class "C1 Criterion can fail" as C1
+  class "C2 Observable state read now" as C2
+  class "C3 Plan derived from the artifact set" as C3
+  class "C4 Stand-in is mechanism, not retirement" as C4
+}
+
+package "Checks added this iteration" {
+  class "C5 A binding is a claim about behaviour" as C5
+  class "C6 A completeness claim is counted" as C6
+  class "C7 One set, one source list" as C7
+  class "C8 Every consumer of a decision is re-based" as C8
+  class "C9 A check is in force only once applied" as C9
+}
+
+package "Open findings at the LCO gate" {
+  class "Use-Case Model#F2 (Reviewer)\npostcondition vs ADR-010" as F1
+  class "Use-Case Model#F1 (Business)\nCON-012 bound, not enforced" as F2
+  class "Use-Case Model#F2 (Business)\nCON-015 attachment vs the SAD" as F3
+  class "Software Architecture Document#F3\nsignificance table not re-based" as F4
+  class "Iteration Plan#F3\nDevelopment Case has no work item" as F5
+  class "Supplementary Specification#F1 (Reviewer)\nconstraint grouping" as F6
+  class "Supplementary Specification#F1 (Business)\nCON-008 absent from the register" as F7
+}
+
+C8 --> F1 : catches
+C5 --> F2 : catches
+C5 --> F3 : catches
+C8 --> F4 : catches
+C3 --> F5 : existed, not applied
+C7 --> F6 : catches
+C6 --> F7 : catches
+C9 --> F5 : would have caught the non-application
+
+note bottom of C9
+  Six of the seven open findings were caught by
+  no check in force. The seventh was caught by a
+  check that existed and was not applied - which
+  is why C9 exists.
+end note
+@enduml
+```
+
+| Finding | Defect class | Check that should catch it | In force when the artifact was persisted | Verdict |
+|---|---|---|---|---|
+| `Use-Case Model#F2` (Reviewer) | A decision another artifact changed, not carried through | C8 | No — C8 did not exist | Not caught |
+| `Use-Case Model#F1` (Business) | A binding asserted without the behaviour that enforces it | C5 | No — C5 did not exist | Not caught |
+| `Use-Case Model#F2` (Business) | A binding asserted without the behaviour that enforces it | C5 | No — C5 did not exist | Not caught |
+| `Software Architecture Document#F3` | A decision another artifact changed, not carried through | C8 | No — C8 did not exist | Not caught |
+| `Iteration Plan#F3` | A plan derived from the finding ledger, not the artifact set | C3 | **Yes** — added in iteration 2 | **Existed and was not applied** |
+| `Supplementary Specification#F1` (Reviewer) | Two representations of one set disagreeing | C7 | No — C7 did not exist | Not caught |
+| `Supplementary Specification#F1` (Business) | A completeness claim not counted | C6 | No — C6 did not exist | Not caught |
+
+**The verdict is 0 of 7 caught, and the one that could have been caught was not.** This is the honest
+reading and it is more useful than a claim that the checks failed. Six of the seven findings are of
+classes no check addressed — the iteration-2 checks covered criteria, observable state, plan
+derivation and risk retirement, and the second generation of findings came from three classes those
+four do not touch: a binding without behaviour, a completeness claim without a count, and a decision
+not carried to its consumers. The seventh, `Iteration Plan#F3`, is the one that matters: C3 was
+written in iteration 2 to catch exactly that defect, and the plan that iteration produced still failed
+it. A check written in the iteration it must govern has not been exercised, so it cannot be credited
+with working — and the process cannot tell a check that works from a check that was never run.
+
+**What this means for R009.** The risk is that the correction process does not converge. The evidence
+does not support the reading that the checks are ineffective; it supports the narrower and more
+actionable reading that four checks covered four classes and the defects arrived from three others.
+C5, C6, C7 and C8 close those three classes, and C9 makes the "in force" claim checkable rather than
+assumed. If iteration 3's review raises a third generation of a class C5 to C8 now cover, the checks
+are ineffective and the process needs correction rather than a fourth pass — that is R009's escalation
+path and it is unchanged.
+
+**No change is made to the roster, the CORE catalog, the ownership allowlist or the intensity
+matrix.** Every finding in both iterations is an authoring or planning defect, not a process-shape
+defect. The configuration held; what it lacked was coverage of three defect classes and a rule making
+a check's application observable.
+
+### Cross-artifact re-base sweep
+
+C8 is the check that addresses the defect class behind two of the five open Major findings, and the
+class behind both generations of findings in this project. It is a procedure, not an intention.
+
+When an artifact changes a **decision** — a data shape, a roadmap, a contract, an invariant, a
+binding — the author of that change runs the sweep before persisting:
+
+1. **Name the decision in one sentence.** "Clocking is an append-only event log, not a single record."
+   "The roadmap is nine iterations, Elaboration at 4 and 5." A decision that cannot be stated in one
+   sentence is not yet a decision and the sweep cannot run.
+2. **List the artifacts that consume it.** Not the artifacts that mention it — the ones whose content
+   becomes false if the decision is true. ADR-010's decision makes the Use-Case Model's postcondition
+   false; the roadmap's change makes the significance table's "Design in" column false.
+3. **Re-base each consumer in the same iteration.** A consumer left for the next iteration is a
+   finding waiting to be raised, and the review will raise it.
+4. **Record the sweep in the artifact that made the decision**, naming the consumers and their state.
+   The record is what lets the next reviewer check the sweep rather than rediscover the class.
+
+The sweep is cheap and its omission is not. Two artifacts were corrected onto an eight-iteration
+numbering in the same iteration that invalidated it, and the cost of the sweep would have been one
+pass over the artifacts that name an iteration number.
 
