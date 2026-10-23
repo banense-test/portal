@@ -1073,87 +1073,54 @@ end note
 ```
 
 ### Management Reviewer lens
-<!-- review: Inception I1 -->
+<!-- review: Inception I2 -->
 
-**Prior findings of this lens reconciled:** none. This is the first review of this lens on this project; `read_artifact_findings` returned no finding with `reviewerRole == ManagementReviewer` on any of the four management artifacts, so no closure was due and no finding was re-recorded under an existing key. The findings present on the Vision and the Iteration Plan belong to the Reviewer and Business Reviewer lenses and were left untouched — only the lens that emitted a finding may close it.
+<!-- review: Inception I2 -->
 
-**Stakeholder sanction: REFUSED.**
+**Stakeholder sanction: REFUSED.** The stakeholder answered No to the LCO sanction question, knowing the verdict was No-Go and that 0 Critical, 5 Major and 2 Minor findings were open. Stakeholder acceptance, verbatim: "No". The instruction accompanying it, verbatim: "Ok let's fix & close all findings".
 
-**Stakeholder acceptance:** the sanction question was put with the verdict leaning and all six open Major defects inside it. The answer was "No", with the instruction "You need to correct all the findings." That answer is the record; no signature from a named person is required and none was sought.
+The refusal is the correct reading of the evidence and it is recorded as the gate outcome, not as a defect against any artifact. The remedy is another Inception iteration — never a scope cut (CON-023) and never more agent parallelism.
 
-**Actions arising from this review — all six Major findings must be corrected before the LCO gate is re-presented:**
+#### Findings of this lens closed this iteration
 
-| Action | Artifact | Owner | Blocks LCO |
+Both prior findings of this lens were against the Iteration Plan. Each was closed by `resolve_artifact_finding` after the correction was verified against the evidence chain rather than accepted from the plan's assertion of it.
+
+| Key | Severity | What was wrong | What was verified before closing |
 |---|---|---|---|
-| Resolve the CON-012 / CON-013 schema contradiction and add the previous-value column | Software Architecture Document | SoftwareArchitect | Yes |
-| Rebind the worker-category rule cluster away from UC-010 and bind the news-category list to it | Use-Case Model | SystemAnalyst | Yes |
-| Add the SAD and the Test Evaluation Summary to the fine plan and the critical chain; activate both roles in iteration 1 | Iteration Plan | ProjectManager | Yes |
-| Correct the cited CI run to the observed build | Test Evaluation Summary | TestManager | Yes |
-| Restate the R001 retirement claim to match the evidence chain, or move the retiring tests earlier | Iteration Plan | ProjectManager | Yes |
-| Split AC-004 into its learnability check and its post-launch population measure, and assign each to a point where it can close | Iteration Plan | ProjectManager | Yes |
-| Split the conflated Traceability rows by link type | Software Architecture Document | SoftwareArchitect | No |
-| Make NFR-001's execution iteration match where the behaviour exists | Test Evaluation Summary | TestManager | No |
-| Mark BG-001 as not yet measurable, or name the baseline source | Vision | SystemAnalyst | No |
-| Replace the self-referential success criteria on the FR-014 and FR-015 feature rows | Vision | SystemAnalyst | No |
+| `Iteration Plan#F1` (Management) | Major | The plan claimed R001 was retired in Elaboration iteration 2 by the stand-in directory carrying empty job-title and extension entries. Building a fixture is not retiring a risk | A "Risk retirement sequencing" section now separates mechanism from retiring event for all eight risks, and R001 is retired in iteration 3 by executing the empty-attribute case of UC-011 and UC-004. Verified against the Test Evaluation Summary: its coverage plan reads "UC-011 … Iteration 7 — with the empty-attribute case executed in iteration 3" and "UC-004 … Iteration 5 — with the empty-attribute case executed in iteration 3", its execution sequence places both cases in iteration 3, and the role profile activates Tester from iteration 3. The plan also states what the sequencing means for the LCA gate |
+| `Iteration Plan#F2` (Management) | Major | AC-004, a population measure over 200 employees, was assigned verification in the iteration in which its own three-month window begins to elapse, so it could never close at the gate it was assigned to | Layer A now splits AC-004 into AC-004a, the learnability half, verified in iteration 5 by an untrained-user check in the iteration that implements UC-001, and AC-004b, the population half, recorded as a post-Project-Acceptance measure owned by STK-001 against BG-003 and explicitly not a gate on any iteration. The Test Evaluation Summary carries the same split, so the plan and the test position agree |
 
-**No Critical finding was raised, so no Critical escalation is required.** The stakeholder was nevertheless consulted, because the LCO sanction is theirs to give and it was refused. No `[SCOPE_QUESTION]` is open against any artifact reviewed: the two deferred questions — accessibility target and throughput binding — are recorded as out of scope for this cycle in the Work Order and are correctly carried as deferred rather than as gaps in the Vision, the Supplementary Specification and the Development Case.
+#### Findings of this lens opened this iteration
 
-**Review and sanction sequence:**
+| Key | Severity | Owner | Action required |
+|---|---|---|---|
+| `Iteration Plan#F3` | Major | ProjectManager | Add the Development Case as a work item in the iteration 2 fine plan with owner ProcessEngineer and an exit condition naming what the revision must achieve, and place it in the critical chain before the Review Record — or state in the fine plan's preamble that the revision is deliberately outside the plan's scope and amend exit criterion E1 so the criterion and the plan agree |
 
-```plantuml
-@startuml
-title LCO review and sanction sequence - Inception iteration 1
+#### Actions this review places on the next iteration
 
-actor "STK-001\nLaura Gomez\nproject sponsor" as STK
-participant "Management Reviewer\n(this lens)" as MR
-participant "Reviewer\n(technical lens)" as REV
-participant "Business Reviewer\n(business lens)" as BR
-participant "ReviewCoordinator" as RC
-participant "Project Manager" as PM
+Every open finding is an action. The stakeholder's instruction is that all of them are fixed and closed, so none is deferred and none is rejected.
 
-REV -> MR : 4 Major, 3 Minor recorded\nagainst 5 artifacts
-BR -> MR : 1 Minor recorded\nagainst the Vision
-note right
-  Three lenses, one ledger.
-  No lens closes another lens's finding.
-end note
+| # | Action | Owner | Closes |
+|---|---|---|---|
+| 1 | Restate the UC-001 postcondition in ADR-010's terms — one ClockIn event row after the first press, one ClockOut event row after the second, the effective pair being the two rows no other row supersedes — and confirm UC-002, UC-003 and UC-005 read the same shape | SystemAnalyst | `Use-Case Model#F2` (Reviewer) |
+| 2 | Add an alternative flow to UC-001 for the complete-pair case and state the button logic in terms of the three states CON-012 creates — no pair, pair open, pair complete — routing the employee to HR under UC-005 per CON-017 | SystemAnalyst | `Use-Case Model#F1` (Business) |
+| 3 | Bind CON-015 to UC-011, stating its permissive half (rendered column, filterable result set) and its prohibitive half (no access decision) separately, add the filter to UC-011's flows, and remove the sentence denying the binding — so the Use-Case Model and the Software Architecture Document read the same way | SystemAnalyst | `Use-Case Model#F2` (Business) |
+| 4 | Re-base the architectural-significance table's "Design in" column onto the eight-iteration roadmap — ranks 1 to 4 to Elaboration iteration 3, ranks 5 to 10 to Elaboration iteration 4 — and check the rest of the document for the same stale numbering | SoftwareArchitect | `Software Architecture Document#F3` (Reviewer) |
+| 5 | Add the Development Case work item to the iteration 2 fine plan, or amend exit criterion E1 to match the plan | ProjectManager | `Iteration Plan#F3` (Management) |
+| 6 | Make the constraint grouping agree with the declared categories in both the table and the diagram, or retitle both so they state they group by what each constraint decides | RequirementsSpecifier | `Supplementary Specification#F1` (Reviewer) |
+| 7 | Add CON-008 to the business-rules register as the thirteenth row with its enforcement point and a cross-reference to MECH-02, and correct the preamble count — or state in the preamble that authorization is deliberately carried as a mechanism | RequirementsSpecifier | `Supplementary Specification#F1` (Business) |
 
-MR -> MR : reconcile prior MR findings\nnone existed - first review
-MR -> MR : assess LCO exit criteria\n5 met, 2 partial, 1 not met, 1 not assessable
-MR -> MR : record 2 Major findings\nagainst the Iteration Plan
-note right
-  Iteration Plan#F1: R001 claimed retired
-  in iteration 2; the retiring test runs
-  in iterations 4 and 6.
-  Iteration Plan#F2: AC-004 is a population
-  measure assigned to the gate where its
-  three-month window opens.
-end note
+**Actions 1 to 3 are one pass, not three.** All three are in the Use-Case Model and two of them touch UC-001's flows. Correcting the postcondition without correcting the button logic would leave the use case internally inconsistent, and correcting the button logic without binding CON-015 to UC-011 would leave the Use-Case Model contradicting the architecture. The SystemAnalyst should make all three corrections in one revision and re-read the whole use case against ADR-010 before persisting.
 
-MR -> STK : ask the sanction question\nverdict leaning: Conditional Go\n0 Critical, 6 Major open
-note right
-  The leaning and every open Major defect
-  go INSIDE the question. A sanction
-  requested without them is a blind
-  rubber stamp.
-end note
+**Action 3 is the one that decides the architecture criterion.** The LCO criterion on architecture credibility fails because two artifacts disagree about whether CON-015 governs the directory search. Either resolution is defensible on its own; what is not defensible is the disagreement surviving into Elaboration, where UC-011 is detailed and the filter is either built or silently dropped.
 
-STK --> MR : No
-STK --> MR : You need to correct all the findings
+#### What this review does not ask for
 
-MR -> MR : Stakeholder sanction: REFUSED
-MR -> MR : LCO milestone NOT achieved
-MR -> RC : verdict: No-Go\nsanction refused, 6 Major open
-RC -> PM : iteration 2 required\nCON-023: remedy is another iteration,\nnever a scope cut
-PM -> PM : record the Iteration Assessment\ngiven this verdict
-
-note over STK, MR
-  The sanction is the stakeholder's to give,
-  not the team's to manufacture. It was asked,
-  it was refused, and the refusal is the record.
-end note
-@enduml
-```
+- It does not ask for a Project Approval Review or a Project Planning Review held apart from this milestone review. Both are held inside it: the sanction question to the stakeholder is the approval, and the LCO readiness assessment in the Iteration Plan is the planning review.
+- It does not ask for signatures from named persons. The stakeholder's answer to the sanction question is the documented acceptance, and it is recorded above.
+- It does not ask for the Iteration Assessment to be updated before the milestone can close. The ProjectManager authors it after this review, given the verdict.
+- It does not ask for the merge to `main`. The iteration baseline is the delivered capability; the merge is the Integrator's post-sanction step.
+- It does not ask for a token budget. CON-030 forbids one, and the measured spend of iteration 1 is recorded in the Iteration Assessment and used to forecast.
 
 ### Review Coordinator lens
 <!-- review: Inception I1 -->
