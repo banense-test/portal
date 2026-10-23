@@ -839,7 +839,7 @@ a CSV export column. The decomposition keeps that boundary visible rather than i
 |---|---|---|---|
 | COMP-005 Directory Search | Yes | Renders the column and filters the result set by it | CON-015, FR-011 |
 | COMP-003 Clocking Export | Yes | Emits the `WorkerCategory` CSV column | CON-015, FR-004 |
-| COMP-006 Worker Category | Yes | Owns the value; assigns, clears, reads | CON-009, CON-012, CON-021 |
+| COMP-006 Worker Category | Yes | Owns the value; assigns, clears, reads | CON-009, CON-016, CON-021 |
 | COMP-008 Identity and Access | **No** | Authorization is the two AD-group levels only | CON-008, CON-015 |
 | COMP-009 Corporate Directory Gateway | **No** | Returns the six AD attributes; category is portal-owned and never crosses the LDAP seam | CON-003, CON-021 |
 | COMP-004 News Lifecycle | **No** | Filters news by the news-category list, a different closed list | FR-006, FR-010 |
