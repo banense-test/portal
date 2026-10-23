@@ -116,12 +116,19 @@ end note
 
 ### Business rules
 
-The twelve business rules below are invariants, not UI behaviour. Each must hold wherever the change
+The thirteen business rules below are every constraint the scope declares `[BusinessRule]` —
+CON-008 to CON-020. Each is an invariant, not UI behaviour, and each must hold wherever the change
 comes from — a service call, a scheduled path, a direct database write — not only in the form that
 happens to expose it.
 
+CON-008 is the one of the thirteen carried as a mechanism rather than as a use-case binding: it is
+MECH-02 in the Functionality section, included by the eight HR use cases. It is a rule and it is
+enforced; the register carries it here so the count is complete and the rule is not lost behind the
+mechanism that implements it.
+
 | ID | Rule | Where it must hold |
 |---|---|---|
+| CON-008 | Authorization has two levels derived from AD group membership: members of the HR AD group publish, edit and unpublish news and manage worker categories; everyone else is an employee with read access to the directory and news plus their own clockings. No role matrix, no permission screen, no per-category rule | Enforced as MECH-02, included by UC-003, UC-004, UC-005, UC-006, UC-007, UC-008, UC-009 and UC-012. It reads AD group membership only — never the worker category (CON-015) |
 | CON-009 | Worker categories are a closed list of exactly four values — Full-time, Part-time, Contractor, Intern. Not configurable; no screen to create or rename; no fifth value without a Change Request | The category value set is a configuration point, not a constant scattered through code |
 | CON-010 | At most one news item is featured at any moment; featuring one un-features the previous | Wherever the change comes from, not only the HR form |
 | CON-011 | A clocking pair never crosses midnight; a pair belongs to one calendar date and every export row is keyed by that date. A clocking still open at midnight is an incomplete day | The clocking write and the export grouping |
