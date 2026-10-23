@@ -367,7 +367,9 @@ title Portal - Inception iteration 2 fine plan: corrections and LCO re-presentat
 
 ### Fine plan — Inception iteration 3 (current)
 
-Bounded to iteration 3. Every work item closes a named finding or resolves a named suspect trace; no work item adds scope. The declared 15 requirements, 5 NFRs, 36 constraints, 3 business goals, 5 acceptance criteria and 2 declared risks are unchanged, and no declared work is cut or deferred to fit an estimate.
+Bounded to iteration 3. Twelve work items, each with an owner and an exit condition. Every work item closes a named finding, resolves a named suspect trace, or applies the E6 sweep to an artifact the roadmap move left stale; no work item adds scope. The declared 15 requirements, 5 NFRs, 36 constraints, 3 business goals, 5 acceptance criteria and 2 declared risks are unchanged, and no declared work is cut or deferred to fit an estimate.
+
+**W5 exists because the plan failed its own E1 criterion without it.** The roadmap moved from eight iterations to nine, which shifted Elaboration from iterations 3 and 4 to 4 and 5. The Test Evaluation Summary's coverage plan was re-based onto the eight-iteration numbering in iteration 2 and now names execution iterations that no longer exist. The role profile asserted TestManager Active in iteration 3 for that re-base while the fine plan carried no work item for it — the same defect `Iteration Plan#F3` records against the iteration 2 plan, recurring one iteration later. W5 closes it, and E1 is the criterion that catches it.
 
 No work item carries a size. Two phases have now closed, so two measured actuals exist — 6,756,727 tokens and 0:54:19.692 of agent time for iteration 1, and 12,267,658 tokens and 2:27:03.528 for iteration 2. They are the basis of the forecast, not a theoretical capacity.
 
@@ -377,14 +379,15 @@ No work item carries a size. Two phases have now closed, so two measured actuals
 | W2 | Use-Case Model — add an alternative flow to UC-001 for the complete-pair case, state the button logic in terms of the three states CON-012 creates (no pair, pair open, pair complete), and route the employee to HR under UC-005 per CON-017 | SystemAnalyst | `Use-Case Model#F1` (Business) | UC-001 no longer permits the state CON-012 declares impossible; the complete-pair case has a flow |
 | W3 | Use-Case Model — bind CON-015 to UC-011, stating its permissive half (rendered column, filterable result set) and its prohibitive half (no access decision) separately, add the filter to UC-011's flows, remove the sentence denying the binding, and align the outline table and the binding diagram with the Software Architecture Document | SystemAnalyst | `Use-Case Model#F2` (Business) | The Use-Case Model and the Software Architecture Document read the same way about CON-015 and the directory search |
 | W4 | Software Architecture Document — re-base the architectural-significance "Design in" column onto this plan's roadmap: ranks 1 to 4 to **Elaboration iteration 4**, ranks 5 to 10 to **Elaboration iteration 5**; sweep the rest of the document for the same numbering | SoftwareArchitect | `Software Architecture Document#F3` | No iteration number in the document contradicts the roadmap table above |
-| W5 | Supplementary Specification — make the constraint grouping agree with the declared categories in both the table and the diagram, or retitle both so they state they group by what each constraint decides | RequirementsSpecifier | `Supplementary Specification#F1` (Reviewer) | The table and the diagram group the same 36 constraints the same way, and the grouping's basis is stated |
-| W6 | Supplementary Specification — add CON-008 to the business-rules register as the thirteenth row with its enforcement point and a MECH-02 cross-reference, and correct the preamble count | RequirementsSpecifier | `Supplementary Specification#F1` (Business) | The register carries all thirteen declared `[BusinessRule]` constraints, or states which one is carried as a mechanism and why |
-| W7 | Development Case — verify the authoring checks against the seven open findings and state whether each would have caught its defect; add a check for the class the checks missed | ProcessEngineer | R009 | Each of the seven findings is classified as caught or not caught by an existing check, and the gap is closed |
-| W8 | Iteration Plan — this document: roadmap re-based to nine iterations, iteration 3 fine plan, role profile corrected | ProjectManager | `Iteration Plan#F3` | Every artifact the iteration produces has a work item, an owner and an exit condition; no iteration number in this document contradicts the roadmap |
-| W9 | Risk List — register R009 and re-verify every treatment against the re-based roadmap | ProjectManager | — | R009 carries a full treatment; no risk names a retirement iteration the roadmap has moved |
-| W10 | Review Record — re-review the corrected artifacts, close the seven findings, and sweep every artifact that names an iteration number against the roadmap | Reviewer, BusinessReviewer, ManagementReviewer, ReviewCoordinator | — | Seven findings verified and closed by their emitting lenses; no artifact names an iteration the roadmap has moved |
+| W5 | Test Evaluation Summary — re-base the coverage plan and the quality-attribute plan onto the nine-iteration roadmap: every execution iteration that read 3 or 4 now reads 4 or 5, and every use case and NFR keeps an iteration in which its behaviour exists | TestManager | — (E6 sweep; the roadmap move left this artifact stale) | No execution iteration in the coverage plan contradicts the roadmap table above; 15 of 15 use cases and 5 of 5 NFRs still assigned |
+| W6 | Supplementary Specification — make the constraint grouping agree with the declared categories in both the table and the diagram, or retitle both so they state they group by what each constraint decides | RequirementsSpecifier | `Supplementary Specification#F1` (Reviewer) | The table and the diagram group the same 36 constraints the same way, and the grouping's basis is stated |
+| W7 | Supplementary Specification — add CON-008 to the business-rules register as the thirteenth row with its enforcement point and a MECH-02 cross-reference, and correct the preamble count | RequirementsSpecifier | `Supplementary Specification#F1` (Business) | The register carries all thirteen declared `[BusinessRule]` constraints, or states which one is carried as a mechanism and why |
+| W8 | Development Case — verify the authoring checks against the seven open findings and state whether each would have caught its defect; add a check for the class the checks missed | ProcessEngineer | R009 | Each of the seven findings is classified as caught or not caught by an existing check, and the gap is closed |
+| W9 | Iteration Plan — this document: roadmap re-based to nine iterations, iteration 3 fine plan, role profile corrected | ProjectManager | `Iteration Plan#F3` | Every artifact the iteration produces has a work item, an owner and an exit condition; no iteration number in this document contradicts the roadmap |
+| W10 | Risk List — register R009, re-verify every treatment against the re-based roadmap, and resolve the five suspect traces the UC-001 and UC-011 changes raised | ProjectManager | — | R009 carries a full treatment; no risk names a retirement iteration the roadmap has moved; no suspect trace left open against the Risk List |
+| W11 | Review Record — re-review the corrected artifacts, close the seven findings, and sweep every artifact that names an iteration number against the roadmap | Reviewer, BusinessReviewer, ManagementReviewer, ReviewCoordinator | — | Seven findings verified and closed by their emitting lenses; no artifact names an iteration the roadmap has moved |
 | G0 | **LCO gate re-presented** | ReviewCoordinator | — | Verdict issued |
-| W11 | Iteration Assessment — record the iteration 3 outcome given the verdict | ProjectManager | — | Assessment persisted; it does not gate the phase |
+| W12 | Iteration Assessment — record the iteration 3 outcome given the verdict | ProjectManager | — | Assessment persisted; it does not gate the phase |
 
 ```plantuml
 @startgantt
@@ -405,45 +408,49 @@ title Portal - Inception iteration 3 fine plan: seven corrections and the LCO re
 [W4 SAD significance table re-based] starts at [W3 CON-015 bound to UC-011]'s end
 [W4 SAD significance table re-based] is colored in LightBlue
 
-[W5 Supplementary Specification constraint grouping] lasts 1 day
-[W5 Supplementary Specification constraint grouping] starts at [W4 SAD significance table re-based]'s end
-[W5 Supplementary Specification constraint grouping] is colored in LightGreen
+[W5 Test Evaluation Summary re-based] lasts 1 day
+[W5 Test Evaluation Summary re-based] starts at [W4 SAD significance table re-based]'s end
+[W5 Test Evaluation Summary re-based] is colored in LightBlue
 
-[W6 Supplementary Specification CON-008 row] lasts 1 day
-[W6 Supplementary Specification CON-008 row] starts at [W5 Supplementary Specification constraint grouping]'s end
-[W6 Supplementary Specification CON-008 row] is colored in LightGreen
+[W6 Supplementary Specification constraint grouping] lasts 1 day
+[W6 Supplementary Specification constraint grouping] starts at [W5 Test Evaluation Summary re-based]'s end
+[W6 Supplementary Specification constraint grouping] is colored in LightGreen
 
-[W7 Development Case authoring checks verified] lasts 1 day
-[W7 Development Case authoring checks verified] starts at [W6 Supplementary Specification CON-008 row]'s end
-[W7 Development Case authoring checks verified] is colored in LightBlue
+[W7 Supplementary Specification CON-008 row] lasts 1 day
+[W7 Supplementary Specification CON-008 row] starts at [W6 Supplementary Specification constraint grouping]'s end
+[W7 Supplementary Specification CON-008 row] is colored in LightGreen
 
-[W8 Iteration Plan] lasts 1 day
-[W8 Iteration Plan] starts at [W7 Development Case authoring checks verified]'s end
-[W8 Iteration Plan] is colored in Orange
+[W8 Development Case authoring checks verified] lasts 1 day
+[W8 Development Case authoring checks verified] starts at [W7 Supplementary Specification CON-008 row]'s end
+[W8 Development Case authoring checks verified] is colored in LightBlue
 
-[W9 Risk List] lasts 1 day
-[W9 Risk List] starts at [W8 Iteration Plan]'s end
-[W9 Risk List] is colored in Orange
+[W9 Iteration Plan] lasts 1 day
+[W9 Iteration Plan] starts at [W8 Development Case authoring checks verified]'s end
+[W9 Iteration Plan] is colored in Orange
 
-[W10 Review Record] lasts 1 day
-[W10 Review Record] starts at [W9 Risk List]'s end
-[W10 Review Record] is colored in Grey
+[W10 Risk List] lasts 1 day
+[W10 Risk List] starts at [W9 Iteration Plan]'s end
+[W10 Risk List] is colored in Orange
 
-[G0 LCO gate re-presented] happens at [W10 Review Record]'s end
+[W11 Review Record] lasts 1 day
+[W11 Review Record] starts at [W10 Risk List]'s end
+[W11 Review Record] is colored in Grey
 
-[W11 Iteration Assessment] lasts 1 day
-[W11 Iteration Assessment] starts at [W10 Review Record]'s end
-[W11 Iteration Assessment] is colored in Orange
+[G0 LCO gate re-presented] happens at [W11 Review Record]'s end
+
+[W12 Iteration Assessment] lasts 1 day
+[W12 Iteration Assessment] starts at [W11 Review Record]'s end
+[W12 Iteration Assessment] is colored in Orange
 @endgantt
 ```
 
 ### Critical chain — Inception iteration 3
 
-Seven sequential agent stretches to the gate. W1, W2 and W3 are one revision of one artifact: correcting the postcondition without the flow would leave UC-001 internally inconsistent, and correcting the flow without binding CON-015 to UC-011 would leave the Use-Case Model contradicting the architecture.
+Eight sequential agent stretches to the gate. W1, W2 and W3 are one revision of one artifact: correcting the postcondition without the flow would leave UC-001 internally inconsistent, and correcting the flow without binding CON-015 to UC-011 would leave the Use-Case Model contradicting the architecture. W5 sits in the Test lane because the roadmap move is what made the coverage plan stale, and the role that owns the coverage plan is the role that re-bases it.
 
 ```plantuml
 @startuml
-title Portal - Inception iteration 3 critical chain: seven corrections to the LCO gate
+title Portal - Inception iteration 3 critical chain: eight corrections to the LCO gate
 
 |Requirements|
 start
@@ -460,12 +467,21 @@ end note
 |Analysis and Design|
 :W4 Software Architecture Document - significance table re-based;
 
+|Test|
+:W5 Test Evaluation Summary - coverage plan re-based onto nine iterations;
+note right
+  The roadmap moved from eight to nine
+  iterations. The coverage plan names
+  execution iterations that no longer
+  exist. Same defect class as R009.
+end note
+
 |Requirements|
-:W5 Supplementary Specification - constraint grouping;
-:W6 Supplementary Specification - CON-008 register row;
+:W6 Supplementary Specification - constraint grouping;
+:W7 Supplementary Specification - CON-008 register row;
 
 |Environment|
-:W7 Development Case - authoring checks verified against the seven;
+:W8 Development Case - authoring checks verified against the seven;
 note right
   R009 mitigation. The checks were written
   to catch the "decision not carried through"
@@ -474,8 +490,8 @@ note right
 end note
 
 |Project Management|
-:W8 Iteration Plan - this document;
-:W9 Risk List - R009 registered, treatments re-verified;
+:W9 Iteration Plan - this document;
+:W10 Risk List - R009 registered, treatments re-verified;
 note right
   Forecast floor, from measured actuals:
   iteration 1  6,756,727 tokens  0:54:19.692
@@ -485,7 +501,7 @@ note right
 end note
 
 |Review|
-:W10 Review Record - seven findings verified and closed;
+:W11 Review Record - seven findings verified and closed;
 note right
   Includes the sweep: every artifact that
   names an iteration number reads the
@@ -496,7 +512,7 @@ end note
 :LCO gate re-presented;
 note right
   The verdict is the gate. The Iteration
-  Assessment (W11) is recorded after it,
+  Assessment (W12) is recorded after it,
   given it, and does not gate the phase.
 end note
 stop
