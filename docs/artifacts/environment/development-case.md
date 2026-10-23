@@ -575,11 +575,40 @@ in this document — both return to the stakeholder when this cycle closes.
 
 One factual consequence follows from CON-034 and is recorded here so the UI Designer and Test roles
 do not have to rediscover it: the authoritative design reference at
-`docs/inputs/employee-portal-design.html` (committed, SHA `715d4f73`) states in its own design-system
-header that it targets AA contrast, visible focus, targets of at least 40px, and keyboard-only
-operation. Because CON-034 makes that file mandatory and authoritative for the visual layer, those
-values are inherited as **design conformance** — the UI is built to the reference and tested against
-it. They are not a separately declared accessibility target, no WCAG level is claimed, and no
-accessibility test suite is scoped from them. The distinction matters: a defect is "the UI departs
-from the reference", not "the portal fails WCAG".
+`docs/inputs/employee-portal-design.html` — committed to the repository with the project inputs per
+CON-034 — states in its own design-system header that it targets AA contrast, visible focus, targets
+of at least 40px, and keyboard-only operation. Because CON-034 makes that file mandatory and
+authoritative for the visual layer, those values are inherited as **design conformance** — the UI is
+built to the reference and tested against it. They are not a separately declared accessibility
+target, no WCAG level is claimed, and no accessibility test suite is scoped from them. The
+distinction matters: a defect is "the UI departs from the reference", not "the portal fails WCAG".
+
+### Criteria that can fail
+
+Three of the ten iteration-1 findings are one defect in three artifacts: a criterion that restates
+the requirement it is meant to verify. BG-001 was presented as measurable with no declared baseline;
+FR-014 and FR-015 cited their own identifiers as their success criterion; AC-004 was gated on the
+iteration in which its own window opens.
+
+The check, applied at authoring time and not left to review:
+
+1. **Can this criterion fail?** If no observation could make it false, it is not a criterion.
+2. **Is it distinguishable from the requirement?** If the criterion and the requirement are the same
+   sentence, the criterion measures nothing.
+3. **Does its window fit its gate?** A measure that elapses after the iteration closes — an adoption
+   rate, a three-month trend — is a post-acceptance measure with a named owner, never an iteration
+   gate. A gate that can never close is worse than no gate, because it reports as permanently in
+   progress.
+
+### Observable state
+
+A run identifier, a build status, a timestamp, a commit SHA, a test count, a defect count — each is a
+fact with a moment. Citing one from an earlier read than the moment of writing turns a stale value
+into what reads downstream as a verified observation. `Test Evaluation Summary#F1` is exactly this
+defect.
+
+The rule: cite observable SCM state only as read at the moment of writing, or state the fact without
+the identifier. Never reconstruct an identifier from memory, and never carry one forward from a prior
+iteration's artifact. Where a figure is not measured, it carries `[ASSUMPTION — requires validation]`
+and is not presented as an observation.
 
