@@ -11,6 +11,8 @@ namespace Portal.Tests;
 /// </summary>
 public sealed class ConfigurationPlaceholderTests
 {
+    private const string PlaceholderMarker = "__";
+
     [Fact]
     public void IdentityAndDirectorySettings_ArePlaceholders()
     {
@@ -21,13 +23,22 @@ public sealed class ConfigurationPlaceholderTests
         var root = document.RootElement;
 
         var oidc = root.GetProperty("Authentication").GetProperty("Oidc");
-        Assert.StartsWith("__", oidc.GetProperty("Authority").GetString());
-        Assert.StartsWith("__", oidc.GetProperty("ClientId").GetString());
-        Assert.StartsWith("__", oidc.GetProperty("ClientSecret").GetString());
+        AssertPlaceholder(oidc, "Authority");
+        AssertPlaceholder(oidc, "ClientId");
+        AssertPlaceholder(oidc, "ClientSecret");
 
         var ldap = root.GetProperty("Directory").GetProperty("Ldap");
-        Assert.StartsWith("__", ldap.GetProperty("Host").GetString());
-        Assert.StartsWith("__", ldap.GetProperty("BindAccount").GetString());
-        Assert.StartsWith("__", ldap.GetProperty("BaseDn").GetString());
+        AssertPlaceholder(ldap, "Host");
+        AssertPlaceholder(ldap, "BindAccount");
+        AssertPlaceholder(ldap, "BindPassword");
+        AssertPlaceholder(ldap, "BaseDn");
+    }
+
+    private static void AssertPlaceholder(JsonElement section, string propertyName)
+    {
+        var value = section.GetProperty(propertyName).GetString();
+
+        Assert.False(string.IsNullOrWhiteSpace(value), $"{propertyName} is empty");
+        Assert.Contains(PlaceholderMarker, value);
     }
 }
