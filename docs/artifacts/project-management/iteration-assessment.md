@@ -124,6 +124,23 @@ stop
 
 This is the first phase of the project to close, so these are the first measured actuals that exist. Every forecast from here is built from them, and none is built from a theoretical capacity.
 
+```plantuml
+@startsalt
+{
+  {# Decision this measurement enables | Metric | Primitive measure | Reading }
+  { . | Artifact surface | Artifacts persisted | 9 }
+  { . | Review coverage | Artifacts reviewed by all three lenses | 8 of 8 }
+  { . | Defect load at the gate | Open findings by severity | 0 Critical, 6 Major, 4 Minor }
+  { . | Agent work this iteration | Tokens consumed | 6,756,727 }
+  { . | Iteration length | Agent elapsed time | 0:54:19.692 }
+  { . | Human gate pressure | Stakeholder queue time | 0:00:00 }
+  { . | Agent invocations | Role executions | 11 }
+  { . | Stakeholder exchanges | User interactions | 11 }
+  { . | Review quality | Average artifact quality score | 10.0 }
+}
+@endsalt
+```
+
 | Quantity | Measured | What the figure is for |
 |---|---|---|
 | Tokens consumed | 6,756,727 | The baseline for the iteration 2 forecast. Spend in this process scales with the live-artifact surface and the number of times it is re-read, not with the volume a phase emits — so the forecast for iteration 2 is this figure plus the cost of re-reading nine artifacts, and the lever if it rises is to replace a section rather than re-read it |
@@ -131,6 +148,10 @@ This is the first phase of the project to close, so these are the first measured
 | Human queue time | 0:00:00 | Waiting, not working. It excludes the end-of-iteration approval gate, which is not measured. It is reported beside agent time and never added to it |
 | Agent invocations | 11 | The role-execution count behind the artifact set |
 | Stakeholder exchanges | 11 | The human interactions this iteration required |
+| Artifacts persisted | 9 | The live-artifact surface the next iteration re-reads. It is the driver of the token figure above, not a productivity count |
+| Open findings by severity | 0 Critical, 6 Major, 4 Minor | Whether the gate can be re-presented. Six Major findings block it; the four Minor do not, but the stakeholder required all ten corrected |
+| Review coverage | 8 of 8 artifacts, 3 of 3 lenses | Whether any artifact reached the gate unreviewed. It did not |
+| Average artifact quality score | 10.0 | The reviewers' own scoring. It is recorded because it is measured, not because it changes a decision: the finding ledger, not the score, is what the gate acts on |
 
 **No token budget exists and none is set.** CON-030 declares no budget or cap and forbids the team to set one. No figure above is a ceiling, and no declared scope was cut or deferred to fit any of them.
 
