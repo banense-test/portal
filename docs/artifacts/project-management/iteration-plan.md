@@ -571,41 +571,43 @@ The 25-role roster is inherited unchanged from the Development Case. Three roles
 
 ### Agent role profile — by iteration
 
-The profile is derived from the work items, not the other way round. Analysis and Design is Medium and Test is Low in Inception, so neither SoftwareArchitect nor TestManager is idle in iteration 1 — both produced CORE artifacts there and both are Active.
+The profile is derived from the work items, not the other way round. Analysis and Design is Medium and Test is Low in Inception, so neither SoftwareArchitect nor TestManager is idle in Inception — both produce CORE artifacts there and both are Active.
 
-| Role | It. 1 | It. 2 | It. 3 | It. 4 | It. 5 | It. 6 | It. 7 | It. 8 |
-|---|---|---|---|---|---|---|---|---|
-| ProcessEngineer | Active | Active | Active | Active | Active | Active | Active | Active |
-| SystemAnalyst | Active | Active | Active | Active | — | — | — | — |
-| RequirementsSpecifier | Active | — | Active | Active | — | — | — | — |
-| SoftwareArchitect | Active | Active | Active | Active | Active | Active | Active | Active |
-| Designer | — | — | Active | Active | Active | Active | Active | — |
-| UserInterfaceDesigner | — | — | Active | Active | Active | Active | Active | — |
-| DatabaseDesigner | — | — | Active | Active | Active | Active | Active | — |
-| Implementer | — | — | — | — | Active | Active | Active | — |
-| Integrator | — | — | — | — | Active | Active | Active | Active |
-| TestManager | Active | Active | Active | Active | Active | Active | Active | Active |
-| TestAnalyst | — | — | Active | Active | Active | Active | Active | — |
-| TestDesigner | — | — | Active | Active | Active | Active | Active | — |
-| Tester | — | — | Active | Active | Active | Active | Active | — |
-| DeploymentManager | — | — | — | — | — | — | Active | Active |
-| ConfigurationManager | Active | Active | Active | Active | Active | Active | Active | Active |
-| ChangeControlManager | Active | Active | Active | Active | Active | Active | Active | Active |
-| ProjectManager | Active | Active | Active | Active | Active | Active | Active | Active |
-| Reviewer | Active | Active | Active | Active | Active | Active | Active | Active |
-| ReviewCoordinator | Active | Active | Active | Active | Active | Active | Active | Active |
-| ManagementReviewer | Active | Active | — | Active | — | — | Active | Active |
-| CodeReviewer | — | — | Active | Active | Active | Active | Active | — |
-| TechnicalWriter | — | — | — | — | Active | Active | Active | Active |
-| BusinessProcessAnalyst | Idle | Idle | Idle | Idle | Idle | Idle | Idle | Idle |
-| BusinessReviewer | Idle | Idle | Idle | Idle | Idle | Idle | Idle | Idle |
-| CapsuleDesigner | Idle | Idle | Idle | Idle | Idle | Idle | Idle | Idle |
+| Role | It. 1 | It. 2 | It. 3 | It. 4 | It. 5 | It. 6 | It. 7 | It. 8 | It. 9 |
+|---|---|---|---|---|---|---|---|---|---|
+| ProcessEngineer | Active | Active | Active | Active | Active | Active | Active | Active | Active |
+| SystemAnalyst | Active | Active | Active | Active | Active | — | — | — | — |
+| RequirementsSpecifier | Active | — | Active | Active | Active | — | — | — | — |
+| SoftwareArchitect | Active | Active | Active | Active | Active | Active | Active | Active | Active |
+| Designer | — | — | — | Active | Active | Active | Active | Active | — |
+| UserInterfaceDesigner | — | — | — | Active | Active | Active | Active | Active | — |
+| DatabaseDesigner | — | — | — | Active | Active | Active | Active | Active | — |
+| Implementer | — | — | — | — | — | Active | Active | Active | — |
+| Integrator | — | — | — | — | — | Active | Active | Active | Active |
+| TestManager | Active | Active | Active | Active | Active | Active | Active | Active | Active |
+| TestAnalyst | — | — | — | Active | Active | Active | Active | Active | — |
+| TestDesigner | — | — | — | Active | Active | Active | Active | Active | — |
+| Tester | — | — | — | Active | Active | Active | Active | Active | — |
+| DeploymentManager | — | — | — | — | — | — | — | Active | Active |
+| ConfigurationManager | Active | Active | Active | Active | Active | Active | Active | Active | Active |
+| ChangeControlManager | Active | Active | Active | Active | Active | Active | Active | Active | Active |
+| ProjectManager | Active | Active | Active | Active | Active | Active | Active | Active | Active |
+| Reviewer | Active | Active | Active | Active | Active | Active | Active | Active | Active |
+| ReviewCoordinator | Active | Active | Active | Active | Active | Active | Active | Active | Active |
+| ManagementReviewer | Active | Active | — | Active | — | — | — | Active | Active |
+| CodeReviewer | — | — | — | Active | Active | Active | Active | Active | — |
+| TechnicalWriter | — | — | — | — | — | Active | Active | Active | Active |
+| BusinessProcessAnalyst | Idle | Idle | Idle | Idle | Idle | Idle | Idle | Idle | Idle |
+| BusinessReviewer | Idle | Idle | Idle | Idle | Idle | Idle | Idle | Idle | Idle |
+| CapsuleDesigner | Idle | Idle | Idle | Idle | Idle | Idle | Idle | Idle | Idle |
 
 **Iteration 1 column.** SoftwareArchitect and TestManager are Active: the Software Architecture Document and the Test Evaluation Summary were both produced in iteration 1 and both are CORE artifacts the Development Case requires. The profile follows the work items.
 
-**Iteration 2 column.** SoftwareArchitect, SystemAnalyst, TestManager and ProjectManager are Active because each owns at least one work item in the fine plan. RequirementsSpecifier is not: no finding touches the Supplementary Specification, which carried zero findings across all three lenses.
+**Iteration 2 column.** SoftwareArchitect, SystemAnalyst, TestManager and ProjectManager are Active because each owns at least one work item in that iteration's fine plan. RequirementsSpecifier is not: no iteration-1 finding touched the Supplementary Specification, so it had no correction to make. The iteration 2 review then raised two Minor findings against it, which is why it is Active in iteration 3.
 
-**Tester is active from iteration 3, not iteration 5.** R001 is retired in iteration 3 by executing the empty-attribute case of UC-011 and UC-004 against the stand-in, and a risk cannot be retired by a role that is not working.
+**Iteration 3 column.** RequirementsSpecifier is Active on W5 and W6 — the two Minor findings against the Supplementary Specification. TestManager is Active on W7: the coverage plan and quality-attribute plan were re-based onto the eight-iteration roadmap in iteration 2 and the roadmap has since moved to nine, so the Test Evaluation Summary names execution iterations that no longer exist. That is the same defect class R009 registers, and it is corrected in the iteration that moves the roadmap rather than a later one.
+
+**Tester is active from iteration 4, not iteration 6.** R001 is retired in iteration 4 by executing the empty-attribute case of UC-011 and UC-004 against the stand-in, and a risk cannot be retired by a role that is not working.
 
 **Parallelism discipline.** The profile widens in Construction because the work genuinely divides by capability area, not because the project is behind. If an iteration slips, the remedy is another iteration — never more roles in parallel, which adds context conflict and artifact contention without proportional benefit, and never a cut to declared scope (CON-023).
 
@@ -620,7 +622,7 @@ The profile is derived from the work items, not the other way round. Analysis an
 
 The CON-031 validation gate is the only human gate inside the plan. It is bounded at 14 days of queue time. If exceeded, the process suspends — nothing is auto-filled, no date is projected, and the Project Manager escalates. The remedy is another iteration, not a scope reduction.
 
-**Measured human queue time, iteration 1: 0:00:00.** That figure excludes the end-of-iteration approval gate, which is not measured. It is reported beside the agent clock and never added to it.
+**Measured human queue time: 0:00:00 in iteration 1 and 0:00:00 in iteration 2.** Those figures exclude the end-of-iteration approval gate, which is not measured. They are reported beside the agent clock and never added to it.
 
 ## Use Cases and Scenarios Addressed
 All fifteen declared use cases are in the project's scope as a **baseline** activity: each is identified, traced to its declared requirement, and bound to the constraints that govern it. Four are detailed because they are architecturally significant; eleven are outlined and are detailed in Elaboration iteration 4.
