@@ -182,6 +182,79 @@ news, or a news category used as a directory field, is a defect.
 | News categories | General, HR, IT, Events | FR-006, FR-010 | UC-006 Publish News, UC-007 Edit Published News, UC-010 Read and Filter News | Any directory field, any export column, any access decision |
 | Worker categories | Full-time, Part-time, Contractor, Intern | CON-009 | UC-004 Export Monthly Clocking Report (the WorkerCategory column), UC-012 Assign or Clear Worker Category (the only write) | Any news filter, any access decision (CON-015) |
 
+```plantuml
+@startuml
+title Portal - Two closed lists, two sources, never interchangeable
+
+left to right direction
+
+package "News categories - FR-006, FR-010" {
+  class "General" as NC1
+  class "HR" as NC2
+  class "IT" as NC3
+  class "Events" as NC4
+}
+
+package "Worker categories - CON-009" {
+  class "Full-time" as WC1
+  class "Part-time" as WC2
+  class "Contractor" as WC3
+  class "Intern" as WC4
+  class "empty - CON-016" as WC5
+}
+
+package "Use cases" {
+  class "UC-006 Publish News" as UC006
+  class "UC-007 Edit Published News" as UC007
+  class "UC-010 Read and Filter News" as UC010
+  class "UC-004 Export Monthly CSV" as UC004
+  class "UC-012 Assign or Clear Worker Category" as UC012
+  class "UC-011 Search Employee Directory" as UC011
+}
+
+NC1 --> UC006
+NC2 --> UC006
+NC3 --> UC006
+NC4 --> UC006
+NC1 --> UC007
+NC2 --> UC007
+NC3 --> UC007
+NC4 --> UC007
+NC1 --> UC010
+NC2 --> UC010
+NC3 --> UC010
+NC4 --> UC010
+
+WC1 --> UC004
+WC2 --> UC004
+WC3 --> UC004
+WC4 --> UC004
+WC5 --> UC004
+WC1 --> UC012
+WC2 --> UC012
+WC3 --> UC012
+WC4 --> UC012
+WC5 --> UC012
+
+UC011 ..> UC012 : reads the value,\nnever manages it (CON-021)
+
+note bottom of NC4
+  Classifies a news item and nothing else.
+  It is not a property of a person, so it
+  carries no CON-015 restriction.
+end note
+
+note bottom of WC5
+  CON-015: descriptive, drives no access
+  control, used in exactly two places -
+  a directory column that also filters,
+  and a CSV export column. A worker category
+  read in an authorization decision, or used
+  to filter news, is a defect.
+end note
+@enduml
+```
+
 The worker-category list carries the additional restriction of CON-015: it is descriptive, it drives
 no access control, and it is used in exactly two places — a directory column that also filters, and a
 CSV export column. UC-011 renders the category as a read-only column from the portal-owned link under
