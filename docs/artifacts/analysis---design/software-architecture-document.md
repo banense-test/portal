@@ -702,7 +702,7 @@ external systems have exactly one seam each.
 
 ```plantuml
 @startuml
-title Portal - Logical view: candidate component decomposition (Inception iteration 2)
+title Portal - Logical view: candidate component decomposition (Inception iteration 3)
 
 skinparam componentStyle rectangle
 
