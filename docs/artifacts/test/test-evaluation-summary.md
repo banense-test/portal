@@ -414,14 +414,19 @@ or a document does not exist, and a defect count compiled by hand is not a metri
 
 | Measure | Value | Source |
 |---|---|---|
-| Defects raised this iteration | 0 | `scm_list_issues`, state `all` |
-| Defects closed this iteration | 0 | `scm_list_issues`, state `all` |
-| Defects carried from a prior iteration | 0 | This is the first iteration |
-| Incidents (build failures, environment outages) | 0 | CI build success on `main` |
+| Issues in the tracker | 1 | `scm_list_issues`, state `all` |
+| Product defects raised by test execution | 0 | No test has been executed |
+| Defects raised by review | 1 — `Issue #1`, documentation staleness in the branching strategy document | `scm_list_issues` |
+| Defects closed | 0 | `scm_list_issues`, state `all` |
+| Incidents (build failures, environment outages) | 0 | CI build success on `main`, run `39940062277` |
 
-**Zero defects is the correct reading of this iteration, not a quality achievement.** No test was
-executed, so no defect could be found. The number becomes meaningful from Elaboration onward, when
-the stand-ins exist and the first test cases run.
+**Zero product defects is the correct reading of this iteration, not a quality achievement.** No test
+was executed, so no product defect could be found. The number becomes meaningful from iteration 3
+onward, when the stand-ins exist and the first test cases run.
+
+**The one recorded issue is not a product defect and is not counted as one.** It was raised by review
+against a documentation artifact. It is reported because the tracker is the authoritative record and
+omitting it would make this table a hand-compiled count.
 
 ### Defect lifecycle
 
