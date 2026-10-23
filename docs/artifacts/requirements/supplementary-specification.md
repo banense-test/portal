@@ -145,15 +145,13 @@ mechanism that implements it.
 
 ### Data ownership
 
-A thematic grouping, not a declared category: these three constraints decide what the portal owns and
-what it does not. Their declared categories are Architectural (CON-021, CON-036) and Operational
-(CON-033), and the Design Constraints section carries them under those categories.
+A consequence of three constraints, not a grouping of them. The constraints themselves are stated once, in the Design Constraints section, under their declared categories — CON-021 and CON-036 as Architectural, CON-033 as Operational. This block adds only what follows from them for the data model, and it restates no constraint text.
 
-| ID | Rule | Consequence |
+| ID | Declared category | Consequence for the data model |
 |---|---|---|
-| CON-021 | The worker category is stored as a link — AD user id to category — never as a duplicate of the employee. The local table holds two columns and nothing else; there is no synchronisation, reconciliation or conflict to resolve | The portal owns exactly two things: clockings and this link |
-| CON-033 | There is no data migration. The portal starts empty and records clockings from go-live onwards. Historical Excel sheets stay a read-only archive and are not imported | No migration work exists and none may be added |
-| CON-036 | The clocking retry is one action, one queue, one entity: two clocking presses by the same employee cannot conflict with anything, so there is nothing to reconcile and no conflict resolution to write. It is not the sync work the scope excludes | The retry is a bounded client-side loop, not a synchronisation mechanism |
+| CON-021 | Architectural | The portal owns exactly two things: clockings and the AD-user-id-to-category link. There is no employee table, no copy of a directory field, and therefore no synchronisation, reconciliation or conflict to resolve |
+| CON-033 | Operational | The portal starts empty. No migration, no import, no backfill exists and none may be added; the historical Excel sheets stay a read-only archive on the shared drive |
+| CON-036 | Architectural | The clocking retry is a bounded client-side loop over one action and one entity. It is not a synchronisation mechanism and needs no conflict resolution |
 
 ### Scope exclusions that constrain the design
 
