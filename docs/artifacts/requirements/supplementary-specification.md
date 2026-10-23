@@ -171,6 +171,26 @@ not adopt a licence policy on the stakeholder's behalf, and no licence audit is 
 dependency is later proposed whose licence would bind Cuba Corp, that is a Change Request, not a
 team decision.
 
+### The two closed lists — never interchangeable
+
+Two closed value lists exist in this system. They are declared by different sources, they govern
+different use cases, and they are never substituted for one another. A worker category used to filter
+news, or a news category used as a directory field, is a defect.
+
+| List | Values | Declared by | Governs | Never used for |
+|---|---|---|---|---|
+| News categories | General, HR, IT, Events | FR-006, FR-010 | UC-006 Publish News, UC-007 Edit Published News, UC-010 Read and Filter News | Any directory field, any export column, any access decision |
+| Worker categories | Full-time, Part-time, Contractor, Intern | CON-009 | UC-004 Export Monthly Clocking Report (the WorkerCategory column), UC-012 Assign or Clear Worker Category (the only write) | Any news filter, any access decision (CON-015) |
+
+The worker-category list carries the additional restriction of CON-015: it is descriptive, it drives
+no access control, and it is used in exactly two places — a directory column that also filters, and a
+CSV export column. UC-011 renders the category as a read-only column from the portal-owned link under
+CON-021; it reads the value and never manages it, so the worker-category rule cluster is not bound
+there either.
+
+The news-category list carries no such restriction because it is not a property of a person: it
+classifies a news item and nothing else.
+
 ## Usability
 
 | ID | Requirement | Source | Note |
