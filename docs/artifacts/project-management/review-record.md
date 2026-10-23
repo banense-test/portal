@@ -1391,21 +1391,92 @@ end note
 ```
 
 ### Business Reviewer lens
-<!-- review: Inception I1 -->
+<!-- review: Inception I2 -->
 
-<!-- review: Inception I1 -->
+<!-- review: Inception I2 -->
 
-**Disposition: BR-OK-INACTIVE — Business Modeling NOT APPLICABLE per DC §4.**
+**Disposition: Approved with Changes — from the business modeling lens only.**
 
-The Business Modeling discipline is correctly inactive for this project, and I verified that independently rather than accepting the Development Case's assertion. Five activation criteria were tested against the artifact set and none is met: no ERP or BPM suite is in scope, no workflow is being re-engineered, no organizational restructuring is involved, no business actor or business worker is declared, and no business use case is declared. The stakeholder declared fifteen discrete administrative tasks directly as system use cases, and the Use-Case Model reflects exactly that — four system actors, fifteen use cases, one per declared requirement.
+The Business Modeling discipline is correctly inactive and the artifact set carries the business-level content the downstream disciplines need. No Critical finding. Two Major and one Minor, all in the business-rule attachment layer, all correctable within this iteration by the SystemAnalyst, who owns both affected artifacts.
 
-The consequence is that the business-lens criteria which presuppose a business model are N/A rather than Fail. There is no BUC to test for completeness, no realization to assess, no business worker to carry an automation disposition, and no business entity to map to an analysis class. The derivation bridge is not broken — it does not exist, because the requirements discipline did not need it: the system use cases were declared, not derived. Recording these as defects would be the wrong-scenario error, and it would send the System Analyst to build artifacts the Development Case correctly does not require.
+**What this disposition is not.** It is not a sanction to advance. The milestone verdict belongs to the ReviewCoordinator and the sanction to the stakeholder; this lens reports the business modeling state of the artifacts and nothing more. It is also not a claim that the two Major findings are tolerable — they are correctable now and they should be corrected before the gate is re-presented, because each would mislead the role that reads it next. `Use-Case Model#F1` would let a second clocking pair be recorded for one employee-day, which CON-012 declares impossible. `Use-Case Model#F2` would let the declared directory filter be dropped when UC-011 is detailed in Elaboration, because the use case denies the rule that declares it.
 
-What the business lens does govern, and what I found: the business rules are the strongest content in this set. CON-008 to CON-020 each carry an identifier, a source, an attachment to the use cases that enforce them, and a testable condition — the four properties that make a rule auditable rather than a guideline. The one attachment defect, CON-015 bound to UC-010's news filtering, is real and consequential, and it is already carried as `Use-Case Model#F1` by the Reviewer lens; I confirm it and do not duplicate it. Stakeholder representation is complete across all four declared stakeholders, with the negative-stakeholder analysis honestly handled. The volatility annotation did its job: the three High features are flagged in the Vision and each is encapsulated behind a dedicated component in the Software Architecture Document, so the volatile business policy reached the architecture instead of stopping at a table.
+**Business modeling position at this gate:**
 
-One Minor finding is raised from this lens: two Vision feature rows cite their own requirement identifier as their success criterion, which is not a verification measure. It does not block the milestone.
+| Criterion | Position | Basis |
+|---|---|---|
+| BM disposition | Correct and independently verified | `business-process-led = false`; five activation criteria tested, none met |
+| Business artifacts owed | None | No BUC, business actor, business worker or business entity is required by the Development Case |
+| Business artifacts missing | None | The Glossary is NOT TRIGGERED and correctly absent |
+| Business rules | 12 of 13 carried with ID, attachment and testable condition; 2 attachment defects | `Use-Case Model#F1`, `Use-Case Model#F2`, `Supplementary Specification#F1` |
+| Stakeholder representation | Complete | All four declared stakeholders represented; negative-stakeholder analysis honest |
+| Volatility annotation | Reached the architecture | Three High features each own a dedicated component |
+| Business goals | Measurable or explicitly unmeasured | BG-001 unmeasured with STK-001 named as baseline supplier; BG-002 and BG-003 measurable |
+| Scope adherence | Clean | 15 UCs to 15 declared FRs; no invented identifier; no exclusion crossed |
 
-The artifact set is fit to proceed to Elaboration from the business modeling perspective. No business artifact is owed, none is missing, and none is defective in a way this lens owns.
+**Derivation readiness — the business lens's functional test.** The business-to-system derivation bridge is N/A because the system use cases were declared, not derived: the stakeholder declared FR-001 to FR-015 directly and the Use-Case Model maps one to one onto them. The bridge is not broken — it does not exist, and the Development Case correctly does not require it. What the Requirements discipline needs from the business level is the rule binding, and that is what the three findings correct.
+
+**What must happen before the gate is re-presented.** The three findings corrected and re-verified by this lens. The remedy is another iteration — CON-023 forbids cutting or deferring declared scope to fit a schedule, and no scope is cut here. The cost axis is not assessable from this lens and no figure is invented to fill it: CON-030 declares no budget and forbids the team to set one.
+
+```plantuml
+@startuml
+title Portal - Business modeling position at the LCO gate, Inception iteration 2
+
+package "Discipline disposition" {
+  class "Business Modeling\nINACTIVE per DC section 4" as BM <<BR-OK-INACTIVE>>
+  class "BusinessProcessAnalyst\nidle by trigger" as BPA
+  class "BusinessReviewer\nreviewed 9 of 9 artifacts" as BR
+}
+
+package "Business-level content - present and sound" {
+  class "Business rules\n13 declared BusinessRule constraints" as C1
+  class "Stakeholder representation\n4 of 4 declared" as C2
+  class "Volatility annotation\n3 High features, 3 components" as C3
+  class "Business goals\n1 unmeasured, 2 measurable" as C4
+  class "Scope adherence\n15 UCs to 15 declared FRs" as C5
+}
+
+package "Business-level content - defective" {
+  class "CON-012 enforcement\nUC-001 permits a second pair" as D1 <<Major>>
+  class "CON-015 attachment\nUC-011 denies the rule the SAD applies" as D2 <<Major>>
+  class "CON-008 register entry\n12 of 13 in the register" as D3 <<Minor>>
+}
+
+package "Gate position" {
+  class "0 Critical" as G1
+  class "2 Major" as G2
+  class "1 Minor" as G3
+  class "No exclusion crossed\nNo identifier invented\nNo scope expanded" as G4
+}
+
+BM --> BPA
+BM --> BR
+C1 --> D1
+C1 --> D2
+C1 --> D3
+D1 --> G2
+D2 --> G2
+D3 --> G3
+C2 --> G1
+C3 --> G1
+C4 --> G1
+C5 --> G1
+G4 --> G1
+
+note bottom of BM
+  Verified independently, not inherited.
+  Five activation criteria tested against
+  the artifact set; none is met.
+end note
+
+note bottom of G2
+  Both Major findings are attachment defects.
+  The rule content is correct in each case;
+  the binding to the use cases that enforce
+  it is not.
+end note
+@enduml
+```
 
 ### Management Reviewer lens
 <!-- review: Inception I1 -->
