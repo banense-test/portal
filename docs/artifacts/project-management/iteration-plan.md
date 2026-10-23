@@ -633,15 +633,17 @@ Every AC-NNN in the declared scope is accounted for. None is absent. No AC is cl
 
 | # | Exit criterion | Met when | Result at iteration 3 close |
 |---|---|---|---|
-| E1 | Every artifact the iteration produces has a work item, an owner and an exit condition | Fine plan W1–W11 above | Open — assessed at close |
-| E2 | Every role that produces in an iteration is Active in that iteration's column | Agent role profile | Open — assessed at close |
+| E1 | Every artifact the iteration produces has a work item, an owner and an exit condition | Fine plan W1–W12 above | Open — assessed at close |
+| E2 | Every role that produces in an iteration is Active in that iteration's column, and every Active role owns a work item | Agent role profile | Open — assessed at close |
 | E3 | Every risk names the event that retires it, and that event is a passing test or an observed reading — never a fixture, never a design | Risk retirement sequencing above | Open — assessed at close |
 | E4 | Every declared AC-NNN has a point at which it can close | Layer A above | Open — assessed at close |
 | E5 | No suspect trace remains open against the Risk List | Risk List — Traceability | Open — assessed at close |
-| E6 | No artifact names an iteration the roadmap has moved | Every artifact that names an iteration number, swept in W10 | Open — assessed at close |
+| E6 | No artifact names an iteration the roadmap has moved | Every artifact that names an iteration number, swept in W11 | Open — assessed at close |
 | E7 | LCO readiness is assessed | Below | Open — assessed at close |
 
-**E6 is new this iteration and it is the criterion the last two iterations lacked.** Both iterations produced findings of one class: a decision one artifact changed, not carried through to the artifacts that had to follow it. Iteration 2's roadmap re-base moved Elaboration from iterations 3 and 4 to 4 and 5, and two artifacts corrected in that same iteration still name the old numbers. A criterion that requires the sweep is cheaper than a third generation of the same finding.
+**E6 is the criterion the last two iterations lacked.** Both iterations produced findings of one class: a decision one artifact changed, not carried through to the artifacts that had to follow it. Iteration 2's roadmap re-base moved Elaboration from iterations 3 and 4 to 4 and 5, and two artifacts corrected in that same iteration still name the old numbers. A criterion that requires the sweep is cheaper than a third generation of the same finding.
+
+**E1 and E2 are the pair that caught this iteration's own plan defect.** The iteration 2 plan failed E1 because the Development Case had no work item. The iteration 3 plan as first drafted failed it the same way: the role profile asserted TestManager Active for a Test Evaluation Summary re-base the fine plan did not contain. W5 closes it. A criterion the plan fails on its own content is worse than no criterion, which is why both are checked against the plan before the plan is issued rather than at close.
 
 ### LCO readiness assessment
 
