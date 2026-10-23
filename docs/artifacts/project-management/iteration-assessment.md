@@ -1,9 +1,7 @@
 ## Document Control
-
 - **Phase:** Inception
-- **Status:** Draft — iteration 1 assessment recorded
+- **Status:** Draft — iteration 1 closed; LCO not achieved, iteration 2 required
 - **Milestone Target:** End of Inception (not yet achieved)
-
 ## Iteration Objectives Reached
 
 The ReviewCoordinator's verdict for this iteration is **LCO: iteration required — scope incomplete**. This assessment records the iteration's outcome given that verdict. It does not re-issue the verdict and does not declare the milestone.
