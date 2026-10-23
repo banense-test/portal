@@ -1401,7 +1401,7 @@ end note
 
 The Business Modeling discipline is correctly inactive and the artifact set carries the business-level content the downstream disciplines need. No Critical finding. Two Major and one Minor, all in the business-rule attachment layer, all correctable within this iteration by the SystemAnalyst, who owns both affected artifacts.
 
-**What this disposition is not.** It is not a sanction to advance. The milestone verdict belongs to the ReviewCoordinator and the sanction to the stakeholder; this lens reports the business modeling state of the artifacts and nothing more. It is also not a claim that the two Major findings are tolerable — they are correctable now and they should be corrected before the gate is re-presented, because each would mislead the role that reads it next. `Use-Case Model#F1` would let a second clocking pair be recorded for one employee-day, which CON-012 declares impossible. `Use-Case Model#F2` would let the declared directory filter be dropped when UC-011 is detailed in Elaboration, because the use case denies the rule that declares it.
+**What this disposition is not.** It is not a sanction to advance. The milestone verdict belongs to the ReviewCoordinator and the sanction to the stakeholder; this lens reports the business modeling state of the artifacts and nothing more. It is also not a claim that the two Major findings are tolerable — they are correctable now and they should be corrected before the gate is re-presented, because each would mislead the role that reads it next. `Use-Case Model#F1` (business lens) would let a second clocking pair be recorded for one employee-day, which CON-012 declares impossible. `Use-Case Model#F2` (business lens) would let the declared directory filter be dropped when UC-011 is detailed in Elaboration, because the use case denies the rule that declares it.
 
 **Business modeling position at this gate:**
 
@@ -1410,7 +1410,7 @@ The Business Modeling discipline is correctly inactive and the artifact set carr
 | BM disposition | Correct and independently verified | `business-process-led = false`; five activation criteria tested, none met |
 | Business artifacts owed | None | No BUC, business actor, business worker or business entity is required by the Development Case |
 | Business artifacts missing | None | The Glossary is NOT TRIGGERED and correctly absent |
-| Business rules | 12 of 13 carried with ID, attachment and testable condition; 2 attachment defects | `Use-Case Model#F1`, `Use-Case Model#F2`, `Supplementary Specification#F1` |
+| Business rules | 12 of 13 carried with ID, attachment and testable condition; 2 attachment defects | `Use-Case Model#F1` (business lens), `Use-Case Model#F2` (business lens), `Supplementary Specification#F1` (business lens) |
 | Stakeholder representation | Complete | All four declared stakeholders represented; negative-stakeholder analysis honest |
 | Volatility annotation | Reached the architecture | Three High features each own a dedicated component |
 | Business goals | Measurable or explicitly unmeasured | BG-001 unmeasured with STK-001 named as baseline supplier; BG-002 and BG-003 measurable |
