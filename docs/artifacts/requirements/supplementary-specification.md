@@ -408,7 +408,6 @@ end note
 | CON-035 | Backups: Infrastructure's existing server-backup practice already covers this PostgreSQL instance in restorable form, confirmed in writing with a verified restore test. No backup design, tooling or restore procedure is part of this project | Explicitly out of scope |
 
 ## Interfaces
-
 | ID | Interface | Direction | Contract | Source |
 |---|---|---|---|---|
 | INT-01 | Keycloak OIDC | Portal to Keycloak | The portal is an OIDC client of the existing Keycloak. The authenticated session supplies sAMAccountName and AD group membership. Configured with placeholder issuer, client id and client secret; Infrastructure substitutes real values at deployment | CON-002, CON-004, CON-031, NFR-001 |
@@ -416,11 +415,83 @@ end note
 | INT-03 | Monthly clocking CSV | Portal to HR, outside the portal | Eight columns in the declared order: EmployeeId, FullName, WorkerCategory, Date, ClockIn, ClockOut, HoursWorked, Corrected. Timestamps in Europe/Madrid local time. Date ISO 8601; ClockIn/ClockOut 24-hour HH:mm with no seconds; HoursWorked decimal hours to two decimals computed from recorded times, not minute-rounded; Corrected = Y if HR corrected or inserted any clocking that day, else N. A missing clock-out exports ClockOut and HoursWorked empty and the row is still exported. One row per employee per day with at least one clocking; days with no clocking produce no row | FR-004 |
 | INT-04 | Corporate browser | Employee to portal | Current Chrome and Edge, internal network only, responsive web. No native app, no PWA, no service worker | CON-005, CON-006, CON-026 |
 | INT-05 | PostgreSQL 18 | Portal to database | Installed by Infrastructure on the same Windows Server estate. Major pinned, patch floats. Backups are Infrastructure's existing practice | CON-027, CON-035 |
+| INT-06 | Clocking POST | Browser to portal REST API | The browser sends the press time it stamped from the client clock and an idempotency key. The server records the client timestamp, not its own receipt time, and rejects a repeated key by returning the original result. The retry loop is bounded at 5 minutes and applies to clocking only | FR-013, REL-03, REL-04, REL-05, CON-036 |
+| INT-07 | Audit trail read path | Database to compliance readers outside the portal | The audit trail is written to the database and read directly from it by people outside the portal. No in-portal audit view screen exists. No external compliance regime applies and no retention period is mandated | NFR-005 |
 
 **INT-03 is the most volatile interface in the project.** It is consumed by HR outside the portal, its
 column set is fixed by FR-004 alone, and a change to it is invisible to the portal's own tests. The
 Software Architect should encapsulate the export contract behind a dedicated component rather than
 letting the column order leak into the query.
+
+**INT-06 is the only interface where the client, not the server, is authoritative for a value.** The
+recorded clocking time is the time the employee pressed the button. A design that stamps the time on
+arrival satisfies the letter of FR-001 and violates FR-013, and the audit trail then records something
+that did not happen.
+
+```plantuml
+@startuml
+title INT-06 - Clocking POST contract across the browser/server boundary (FR-013, CON-036)
+
+actor "Employee" as EMP
+participant "Clocking page script\n(Razor Pages, page-level JS)" as JS
+participant "Portal REST API\n(.NET 10)" as API
+database "PostgreSQL 18" as DB
+
+EMP -> JS : press Clock In / Clock Out
+activate JS
+JS -> JS : stamp press time from the client clock
+JS -> JS : generate idempotency key
+JS -> API : POST clocking\n{ pressTime, idempotencyKey }
+activate API
+
+alt idempotency key already recorded
+  API --> JS : 200 - original result
+  note right
+    Duplicate rejected (REL-04).
+    No second record is written.
+  end note
+else new key
+  API -> DB : insert clocking with pressTime
+  API --> JS : 201 - confirmation
+end
+
+deactivate API
+
+alt response received
+  JS --> EMP : confirmation showing the recorded time
+else network unreachable
+  JS -> JS : keep the press in localStorage
+  loop retry, up to 5 minutes
+    JS -> API : POST clocking\n{ pressTime, idempotencyKey }
+    API --> JS : result
+  end
+  alt succeeded within 5 minutes
+    JS --> EMP : confirmation showing the press time
+  else beyond 5 minutes
+    JS --> EMP : report the clocking to HR (UC-005)
+  end
+end
+deactivate JS
+
+note over JS, API
+  The server accepts the timestamp the client sends -
+  the time the employee pressed the button, not the time
+  the server received it (REL-03). Otherwise the audit
+  trail records something that did not happen.
+end note
+
+note over JS
+  One action, one queue, one entity (CON-036).
+  Nothing to reconcile, no conflict resolution.
+end note
+@enduml
+```
+
+**INT-07 constrains the schema, not the application.** Because the audit trail is read directly from
+the database by people outside the portal, the audit tables must be legible without the application:
+the audited action, the actor, the timestamp, the previous value and the free-text reason are columns,
+not an opaque serialised blob. A schema that only the application can interpret fails NFR-005 even
+though every write succeeds.
 
 ## Applicable Standards
 
