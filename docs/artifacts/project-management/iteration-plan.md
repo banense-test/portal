@@ -625,36 +625,35 @@ The CON-031 validation gate is the only human gate inside the plan. It is bounde
 **Measured human queue time: 0:00:00 in iteration 1 and 0:00:00 in iteration 2.** Those figures exclude the end-of-iteration approval gate, which is not measured. They are reported beside the agent clock and never added to it.
 
 ## Use Cases and Scenarios Addressed
-All fifteen declared use cases are in the project's scope as a **baseline** activity: each is identified, traced to its declared requirement, and bound to the constraints that govern it. Four are detailed because they are architecturally significant; eleven are outlined and are detailed in Elaboration iteration 4.
+All fifteen declared use cases are in the project's scope as a **baseline** activity: each is identified, traced to its declared requirement, and bound to the constraints that govern it. Four are detailed because they are architecturally significant; eleven are outlined and are detailed in Elaboration iteration 5.
 
-Iteration 2 adds no use case and details none. Its only use-case work is the correction of the rule binding on UC-010 and the confirmation that UC-011 reads the worker category as a rendered column and never as a decision input.
+Iteration 3 adds no use case and details none. Its only use-case work is the correction of three findings against UC-001 and UC-011: the postcondition restated in ADR-010's append-only terms, the complete-pair alternative flow CON-012 requires, and CON-015 bound to the directory search.
 
 | UC | Name | Source | State | Detailed in |
 |---|---|---|---|---|
-| UC-001 | Clock In and Clock Out | FR-001 | Baselined, **detailed** | Iteration 1 |
-| UC-002 | View Own Clocking History | FR-002 | Baselined, outline | Iteration 4 |
-| UC-003 | View All Employee Clockings | FR-003 | Baselined, outline | Iteration 4 |
+| UC-001 | Clock In and Clock Out | FR-001 | Baselined, **detailed** — postcondition and complete-pair flow under correction, `Use-Case Model#F2` (Reviewer), `Use-Case Model#F1` (Business) | Iteration 1 |
+| UC-002 | View Own Clocking History | FR-002 | Baselined, outline | Iteration 5 |
+| UC-003 | View All Employee Clockings | FR-003 | Baselined, outline | Iteration 5 |
 | UC-004 | Export Monthly Clocking Report as CSV | FR-004 | Baselined, **detailed** | Iteration 1 |
-| UC-005 | Correct or Insert Clocking | FR-005 | Baselined, outline | Iteration 4 |
-| UC-006 | Publish News | FR-006 | Baselined, outline | Iteration 4 |
-| UC-007 | Edit Published News | FR-007 | Baselined, outline | Iteration 4 |
-| UC-008 | Unpublish News | FR-008 | Baselined, outline | Iteration 4 |
+| UC-005 | Correct or Insert Clocking | FR-005 | Baselined, outline | Iteration 5 |
+| UC-006 | Publish News | FR-006 | Baselined, outline | Iteration 5 |
+| UC-007 | Edit Published News | FR-007 | Baselined, outline | Iteration 5 |
+| UC-008 | Unpublish News | FR-008 | Baselined, outline | Iteration 5 |
 | UC-009 | Feature or Un-feature News | FR-009 | Baselined, **detailed** | Iteration 1 |
-| UC-010 | Read and Filter News | FR-010 | Baselined, outline — bound to the news-category closed list | Iteration 4 |
-| UC-011 | Search Employee Directory | FR-011 | Baselined, **detailed** | Iteration 1 |
-| UC-012 | Assign or Clear Worker Category | FR-012 | Baselined, outline | Iteration 4 |
-| UC-013 | Retry Clocking Through a Network Drop | FR-013 | Baselined, outline | Iteration 4 |
-| UC-014 | Recognize Directory Unavailable | FR-014 | Baselined, outline | Iteration 4 |
-| UC-015 | Recognize News Unavailable | FR-015 | Baselined, outline | Iteration 4 |
+| UC-010 | Read and Filter News | FR-010 | Baselined, outline — bound to the news-category closed list | Iteration 5 |
+| UC-011 | Search Employee Directory | FR-011 | Baselined, **detailed** — CON-015 binding under correction, `Use-Case Model#F2` (Business) | Iteration 1 |
+| UC-012 | Assign or Clear Worker Category | FR-012 | Baselined, outline | Iteration 5 |
+| UC-013 | Retry Clocking Through a Network Drop | FR-013 | Baselined, outline | Iteration 5 |
+| UC-014 | Recognize Directory Unavailable | FR-014 | Baselined, outline | Iteration 5 |
+| UC-015 | Recognize News Unavailable | FR-015 | Baselined, outline | Iteration 5 |
 
-**Why these four are detailed.** UC-001 carries the client-timestamp and idempotency contract (FR-013) that forces a design decision. UC-004 is the project's most volatile interface — a fixed external column contract. UC-009 carries a system invariant (CON-010) that must hold wherever the change comes from. UC-011 carries the LDAP read and the R001 empty-attribute case. These are the four places where a wrong decision in Elaboration would be expensive to reverse.
+**Why these four were detailed.** UC-001 carries the client-timestamp and idempotency contract (FR-013) that forces a design decision. UC-004 is the project's most volatile interface — a fixed external column contract. UC-009 carries a system invariant (CON-010) that must hold wherever the change comes from. UC-011 carries the LDAP read and the R001 empty-attribute case. These are the four places where a wrong decision in Elaboration would be expensive to reverse.
 
-**Two closed four-value lists, kept apart.** Worker categories (Full-time, Part-time, Contractor, Intern — CON-009) and news categories (General, HR, IT, Events — FR-006, FR-010) are different lists governing different use cases. CON-015 confines the worker category to two places: the directory column that also filters, and the CSV export column. It drives no access decision and no news filter. UC-010 filters news by the news-category list; UC-004 and UC-012 are the only use cases that carry the worker-category cluster.
+**Two closed four-value lists, kept apart.** Worker categories (Full-time, Part-time, Contractor, Intern — CON-009) and news categories (General, HR, IT, Events — FR-006, FR-010) are different lists governing different use cases. CON-015 confines the worker category to two places: the directory column that also filters, and the CSV export column. It drives no access decision and no news filter. UC-010 filters news by the news-category list; UC-004, UC-011 and UC-012 are the use cases that carry the worker-category cluster.
 
-**Scenarios carried into Elaboration.** UC-001 A1–A4 (duplicate press, network recovered, network lost, second pair), UC-004 A1–A5 (missing clock-out, no clocking, no category, corrected day, empty directory attribute), UC-009 A1–A3 (un-feature, unpublish the featured item, nothing featured), UC-011 A1–A3 (empty attribute, network unreachable, no match).
+**Scenarios carried into Elaboration.** UC-001 A1–A5 (duplicate press, network recovered, network lost, second pair, complete pair), UC-004 A1–A5 (missing clock-out, no clocking, no category, corrected day, empty directory attribute), UC-009 A1–A3 (un-feature, unpublish the featured item, nothing featured), UC-011 A1–A3 (empty attribute, network unreachable, no match).
 
-**Two scenarios are executed in iteration 3, not deferred to Construction.** UC-011 A1 (empty attribute) and UC-004 A5 (empty directory attribute) are the cases that retire R001. They need no production code beyond the directory read path and the export derivation, so they run in the iteration that builds the stand-ins. The full use-case tests for UC-004 and UC-011 remain in Construction with the rest of their capability areas.
-
+**Two scenarios are executed in iteration 4, not deferred to Construction.** UC-011 A1 (empty attribute) and UC-004 A5 (empty directory attribute) are the cases that retire R001. They need no production code beyond the directory read path and the export derivation, so they run in the iteration that builds the stand-ins. The full use-case tests for UC-004 and UC-011 remain in Construction with the rest of their capability areas.
 ## Evaluation Criteria
 Two layers, kept apart: the declared acceptance criteria the project is accountable to, and this iteration's own exit criteria.
 
