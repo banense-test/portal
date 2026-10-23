@@ -452,11 +452,17 @@ integration surface.
   id, client secret, LDAP host, bind account, base DN — held in configuration and **never in code**.
   Infrastructure substitutes the real values at deployment.
 - The team builds and tests against stand-ins it controls: a test OIDC issuer, and a test directory
-  carrying the declared attributes **including entries whose job title or extension is empty**. Those
-  empty entries are what retire R001; a stand-in without them tests nothing.
+  carrying the declared attributes **including entries whose job title or extension is empty**.
 - Validation against the real Keycloak and the real AD is human work by Infrastructure with HR. It is
   not team work to plan, and the team does not schedule it.
 - The team's definition of done is: every use case works correctly against the stand-ins.
+
+**The stand-in is R001's mechanism, not its retirement.** R001 is that the directory shows gaps when
+attributes are unfilled. A fixture that carries the gaps makes the risk *testable*; only a passing
+directory search and a passing export against that fixture retires it. The two are different events
+and the plan records them as different events. A stand-in without the empty-attribute entries leaves
+R001 untested while appearing to have addressed it — which is the failure mode this paragraph exists
+to prevent.
 
 ### Iteration preparation checkpoint
 
