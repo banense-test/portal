@@ -217,10 +217,15 @@ R_DIR --> UC014
 note bottom of R_CAT
   CON-015 is the load-bearing rule: the worker
   category is read in exactly two places - the
-  directory column (UC-011, bound through R_DIR)
-  and the export column (UC-004). A worker
-  category read in an authorization decision, or
-  used to filter news, is a defect.
+  directory column and the export column. The
+  cluster binds UC-004 (export column) and
+  UC-012 (the only write). UC-011 renders the
+  category as the read-only directory column
+  CON-015 names: it reads the value, it does not
+  manage it, and CON-015's ban on the category
+  driving an access decision applies there too.
+  A worker category used to filter news, or read
+  in an authorization decision, is a defect.
 end note
 
 note bottom of R_NCAT
