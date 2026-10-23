@@ -1298,6 +1298,97 @@ end note
 @enduml
 ```
 
+### Review Coordinator lens
+<!-- review: Inception I1 -->
+
+<!-- review: Inception I1 -->
+
+**Prior findings reconciled:** none. This is the first review event of the project. `read_artifact_findings` returned an empty list for the Development Case, the Supplementary Specification and the Risk List, and returned only open findings — no resolution object — for the other five artifacts. No finding existed to close, so no closure was due from this lens.
+
+**Stakeholder input already obtained — not re-asked.** The Management Reviewer put the LCO sanction question to STK-001 with the verdict leaning and all six open Major defects inside it. The answer was "No", with the instruction that every finding must be corrected. That answer is the stakeholder's input for the next pass and it is folded in below as the stakeholder finding. It is not put back to the stakeholder as a fresh question: the question has been asked and answered, and re-asking it would re-open a decision already made.
+
+**Stakeholder finding:** every finding in this ledger is to be corrected. No finding is deferred, and no declared scope is cut or deferred to fit a schedule — CON-023 forbids it and the remedy for a milestone that does not pass is another iteration.
+
+**Consolidated action list — prioritized by gate impact, one list per owner:**
+
+| Priority | Action | Finding | Artifact | Owner | Closes at |
+|---|---|---|---|---|---|
+| 1 | Resolve the CON-012 / CON-013 schema contradiction: state how a pair is recorded across two presses under CON-013, make the unique index match the chosen shape, add a PreviousValue column to the correction record, and make each Invariants row name the index that enforces it | `Software Architecture Document#F1` | Software Architecture Document | SoftwareArchitect | LCO gate re-presentation |
+| 2 | Restate the R001 retirement claim to match the evidence chain — either move the UC-011 and UC-004 test executions earlier or state plainly that R001 stays open until Construction and record what that means for the LCA gate | `Iteration Plan#F1` (Management Reviewer) | Iteration Plan | ProjectManager | LCO gate re-presentation |
+| 3 | Split AC-004 into its learnability check (testable in the iteration that implements UC-001) and its post-launch population measure (BG-003 window, HR as owner), and assign each to a point where it can close | `Iteration Plan#F2` (Management Reviewer) | Iteration Plan | ProjectManager | LCO gate re-presentation |
+| 4 | Add the Software Architecture Document and the Test Evaluation Summary to the fine plan with exit conditions, place them in the critical chain, and mark SoftwareArchitect and TestManager active in iteration 1 | `Iteration Plan#F1` (Reviewer) | Iteration Plan | ProjectManager | LCO gate re-presentation |
+| 5 | Rebind the worker-category rule cluster away from UC-010 and bind the news-category closed list to UC-010 instead, sourced from FR-010 and FR-006 | `Use-Case Model#F1` | Use-Case Model | SystemAnalyst | LCO gate re-presentation |
+| 6 | Replace the cited CI run with the observed build, or state the build status without a run identifier | `Test Evaluation Summary#F1` | Test Evaluation Summary | TestManager | LCO gate re-presentation |
+| 7 | Split the conflated Traceability rows by link type — one row for Realizes with Traces To empty, one for DependsOn | `Software Architecture Document#F2` | Software Architecture Document | SoftwareArchitect | LCO gate re-presentation |
+| 8 | Make NFR-001's execution iteration match where the behaviour exists, or split the row into an Elaboration claim-mapping check and a Construction refusal assertion | `Test Evaluation Summary#F2` | Test Evaluation Summary | TestManager | LCO gate re-presentation |
+| 9 | Mark the BG-001 row as not yet measurable and record that HR must supply the current manual baseline, or state the measure as a post-launch comparison HR performs | `Vision#F1` (Reviewer) | Vision | SystemAnalyst | LCO gate re-presentation |
+| 10 | Replace the self-referential success criteria on the FR-014 and FR-015 feature rows with an independent measure | `Vision#F1` (Business Reviewer) | Vision | SystemAnalyst | LCO gate re-presentation |
+
+**Prioritization rationale.** Priority 1 is the only finding that would cost a re-baseline if carried forward: Elaboration would baseline a schema that cannot satisfy two declared invariants, and the defect surfaces as an unimplementable design rather than as a document error. Priorities 2 and 3 are the two findings that decide the milestone: they are the plan's own claims about risk retirement and acceptance-criterion gating, and a plan that answers "Yes" to a risk-retirement question on the strength of a fixture is the exact claim an LCO gate exists to refuse. Priority 4 is a completeness defect in the same artifact and is corrected in the same pass. Priorities 5 and 6 are Major but local — each is a single correction inside one artifact with no propagation beyond it. Priorities 7 to 10 are Minor: they do not block the gate, but the stakeholder required every finding corrected, so none is deferred.
+
+**Action ownership and load:**
+
+```plantuml
+@startuml
+title Consolidated action list - owner, load and gate impact, Inception iteration 1
+
+package "ProjectManager - 3 Major" {
+  class "P2 R001 retirement claim\nIteration Plan#F1 (Management)" as P2
+  class "P3 AC-004 two-part gate\nIteration Plan#F2 (Management)" as P3
+  class "P4 Fine plan completeness\nIteration Plan#F1 (Reviewer)" as P4
+}
+
+package "SoftwareArchitect - 1 Major, 1 Minor" {
+  class "P1 CON-012 / CON-013 schema\nSoftware Architecture Document#F1" as P1
+  class "P7 Traceability row split\nSoftware Architecture Document#F2" as P7
+}
+
+package "SystemAnalyst - 1 Major, 2 Minor" {
+  class "P5 Worker-category rebinding\nUse-Case Model#F1" as P5
+  class "P9 BG-001 baseline\nVision#F1 (Reviewer)" as P9
+  class "P10 FR-014 / FR-015 criteria\nVision#F1 (Business)" as P10
+}
+
+package "TestManager - 1 Major, 1 Minor" {
+  class "P6 CI run citation\nTest Evaluation Summary#F1" as P6
+  class "P8 NFR-001 iteration\nTest Evaluation Summary#F2" as P8
+}
+
+class "Gate: LCO re-presentation\nall 10 closed and re-verified" as G
+
+P1 --> G
+P2 --> G
+P3 --> G
+P4 --> G
+P5 --> G
+P6 --> G
+P7 --> G
+P8 --> G
+P9 --> G
+P10 --> G
+
+note bottom of G
+  Closure is by the emitting lens only, via
+  resolve_artifact_finding. A Review Record
+  sentence saying "resolved" is not a
+  resolution and does not clear the gate.
+end note
+
+note bottom of P2
+  The ProjectManager carries the heaviest
+  load: three Major findings on one artifact.
+  They are distinct defects and are corrected
+  in one pass over the Iteration Plan.
+end note
+@enduml
+```
+
+**Closure protocol for this action list.** Each action closes only when the emitting lens calls `resolve_artifact_finding` after verifying the corrective action is adequate. The coordinator does not close findings and does not accept a narrative claim of resolution in place of the tool call. The six Major findings must all be closed before the LCO gate is re-presented; the four Minor findings must be closed or explicitly deferred with a reason, and the stakeholder's instruction is that they be corrected.
+
+**Escalation status.** No finding has missed a deadline, because no deadline has yet elapsed — the action list was issued at this review event. No escalation notice is due. No Critical finding exists, so no Critical escalation to the stakeholder is required. The stakeholder was nevertheless consulted, because the LCO sanction is theirs to give and it was refused.
+
+**Review debt position at this gate:** 10 open findings, 0 overdue, 0 escalated. The 0% overdue rate is not a sign of health — it is the reading of a ledger issued moments ago. It becomes meaningful at the next review event, when the first deadlines have had a chance to elapse.
+
 ## Disposition
 ### Reviewer lens
 <!-- review: Inception I1 -->
