@@ -954,8 +954,6 @@ end note
 ### Business Reviewer lens
 <!-- review: Inception I3 -->
 
-<!-- review: Inception I3 -->
-
 **Disposition: Approved with Changes — from the business modeling lens only.**
 
 The Business Modeling discipline is correctly inactive and the artifact set carries the business-level content the downstream disciplines need. No Critical finding. One Minor finding, correctable within this iteration by the SystemAnalyst, who owns the affected artifact.
