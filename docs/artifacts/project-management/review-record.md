@@ -23,12 +23,10 @@
 - **Milestone Target:** End of Inception (not yet achieved)
 
 ### Review Coordinator lens
-<!-- review: Inception I1 -->
-
-<!-- review: Inception I1 -->
+<!-- review: Inception I2 -->
 
 - **Phase:** Inception
-- **Status:** Draft — iteration 1, consolidation complete; LCO milestone not achieved
+- **Status:** Draft — iteration 2, LCO milestone review consolidated; milestone not achieved
 - **Milestone Target:** End of Inception (not yet achieved)
 
 ## Review Scope and Criteria
