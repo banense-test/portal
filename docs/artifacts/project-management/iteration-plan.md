@@ -665,35 +665,38 @@ Every AC-NNN in the declared scope is accounted for. None is absent. No AC is cl
 
 | AC | Criterion | Carried by | Addressed this iteration by | Verified in |
 |---|---|---|---|---|
-| AC-001 | An employee can clock in and out without help from HR or the development team | FR-001 → UC-001 | UC-001 detailed; the one-press interaction and its confirmation are specified | Iteration 5 |
-| AC-002 | An HR Administrator can publish a news item without technical assistance | FR-006 → UC-006 | UC-006 baselined and bound to CON-010, CON-018, MECH-02, MECH-03 | Iteration 6 |
-| AC-003 | Any employee finds a colleague's phone/email in under 10 seconds | FR-011 → UC-011 | UC-011 detailed; the seven displayed fields and the LDAP read are specified | Iteration 7 |
-| AC-004a | **Learnability half** — an employee completes at least one clocking with no prior training | FR-001 → UC-001 | UC-001 detailed; learnability is specified as a product requirement, not a communication task | **Iteration 5** — a small untrained-user check in the iteration that implements UC-001 |
+| AC-001 | An employee can clock in and out without help from HR or the development team | FR-001 → UC-001 | UC-001 detailed; the one-press interaction and its confirmation are specified | Iteration 6 |
+| AC-002 | An HR Administrator can publish a news item without technical assistance | FR-006 → UC-006 | UC-006 baselined and bound to CON-010, CON-018, MECH-02, MECH-03 | Iteration 7 |
+| AC-003 | Any employee finds a colleague's phone/email in under 10 seconds | FR-011 → UC-011 | UC-011 detailed; the seven displayed fields and the LDAP read are specified | Iteration 8 |
+| AC-004a | **Learnability half** — an employee completes at least one clocking with no prior training | FR-001 → UC-001 | UC-001 detailed; learnability is specified as a product requirement, not a communication task | **Iteration 6** — a small untrained-user check in the iteration that implements UC-001 |
 | AC-004b | **Population half** — 80% of employees complete at least one clocking within three months of launch | BG-003 | Not addressable inside an iteration. The three-month window opens at go-live and closes after Project Acceptance | **Post-Project-Acceptance**, owner STK-001, measured against BG-003. Not a gate on any iteration |
-| AC-005 | A clocking made while the corporate network is down for up to 5 minutes is not lost | FR-013 → UC-013 | UC-013 baselined as the exception path of UC-001; the retry and idempotency contract are specified | Iteration 5 |
+| AC-005 | A clocking made while the corporate network is down for up to 5 minutes is not lost | FR-013 → UC-013 | UC-013 baselined as the exception path of UC-001; the retry and idempotency contract are specified | Iteration 6 |
 
 **Why AC-004b is not an iteration gate.** A population measure whose window opens at go-live cannot be verified by the iteration in which the window opens. Assigning it to one would produce a criterion that is permanently in progress and a gate that can never close on it. It is a post-acceptance measure with a named owner, and the project's accountability to it is recorded rather than gated.
 
 ### Layer B — this iteration's exit criteria
 
-| # | Exit criterion | Met when | Result at iteration 2 close |
+| # | Exit criterion | Met when | Result at iteration 3 close |
 |---|---|---|---|
-| E1 | Every artifact the iteration produces has a work item, an owner and an exit condition | Fine plan W1–W9 above | Open — assessed at close |
+| E1 | Every artifact the iteration produces has a work item, an owner and an exit condition | Fine plan W1–W11 above | Open — assessed at close |
 | E2 | Every role that produces in an iteration is Active in that iteration's column | Agent role profile | Open — assessed at close |
 | E3 | Every risk names the event that retires it, and that event is a passing test or an observed reading — never a fixture, never a design | Risk retirement sequencing above | Open — assessed at close |
 | E4 | Every declared AC-NNN has a point at which it can close | Layer A above | Open — assessed at close |
 | E5 | No suspect trace remains open against the Risk List | Risk List — Traceability | Open — assessed at close |
-| E6 | LCO readiness is assessed | Below | Open — assessed at close |
+| E6 | No artifact names an iteration the roadmap has moved | Every artifact that names an iteration number, swept in W10 | Open — assessed at close |
+| E7 | LCO readiness is assessed | Below | Open — assessed at close |
+
+**E6 is new this iteration and it is the criterion the last two iterations lacked.** Both iterations produced findings of one class: a decision one artifact changed, not carried through to the artifacts that had to follow it. Iteration 2's roadmap re-base moved Elaboration from iterations 3 and 4 to 4 and 5, and two artifacts corrected in that same iteration still name the old numbers. A criterion that requires the sweep is cheaper than a third generation of the same finding.
 
 ### LCO readiness assessment
 
 | LCO question | Assessment | Basis |
 |---|---|---|
-| Do the stakeholders agree on the scope? | Yes, as declared | 15 FR, 5 NFR, 36 CON, 13 exclusions published verbatim in the Vision as a checkable boundary. No finding in any lens touched the requirements baseline |
+| Do the stakeholders agree on the scope? | Yes, as declared | 15 FR, 5 NFR, 36 CON, 13 exclusions published verbatim in the Vision as a checkable boundary. No finding in any lens, in either iteration, touched the requirements baseline |
 | Is the project viable to proceed to Elaboration? | Yes | The platform is fixed (CON-001, CON-025, CON-026, CON-027), identity and directory are external and read-only (CON-002, CON-003, CON-022), and the team's integration surface is the stand-ins it controls (CON-031) |
-| Are the initial risks identified and classified? | Yes | R001 to R008, each with a strategy and a treatment; R001 and R002 carried with their declared identifiers and magnitudes |
-| Is the architecture's risk position understood? | Yes, at the level Inception owes | The three High-volatility elements are named (FR-004, FR-009, FR-012) and the four architecturally significant use cases are detailed |
-| Is there a plan to retire the highest-magnitude risk first? | Yes — and the claim names the test that retires it | R001's mechanism is the stand-in directory with empty-attribute entries, built in iteration 3. R001 is **retired in iteration 3** by executing the empty-attribute case of UC-011 and UC-004 against that fixture — a passing directory search and export, not the fixture itself. Tester is active from iteration 3 for exactly this reason. R004 guards against retiring it untested |
+| Are the initial risks identified and classified? | Yes | R001 to R009, each with a strategy and a treatment; R001 and R002 carried with their declared identifiers and magnitudes |
+| Is the architecture's risk position understood? | Yes, at the level Inception owes | The three High-volatility elements are named (FR-004, FR-009, FR-012) and the four architecturally significant use cases are detailed. The one open Major finding against the architecture is a numbering defect in its significance table, not a defect in the architecture |
+| Is there a plan to retire the highest-magnitude risk first? | Yes — and the claim names the test that retires it | R001's mechanism is the stand-in directory with empty-attribute entries, built in iteration 4. R001 is **retired in iteration 4** by executing the empty-attribute case of UC-011 and UC-004 against that fixture — a passing directory search and export, not the fixture itself. Tester is active from iteration 4 for exactly this reason. R004 guards against retiring it untested |
 
-**This assessment is an input to the LCO verdict, not the verdict.** The ReviewCoordinator issues the milestone verdict; the Project Manager records the Iteration Assessment given that verdict. The gate is re-presented at the close of iteration 2.
+**This assessment is an input to the LCO verdict, not the verdict.** The ReviewCoordinator issues the milestone verdict; the Project Manager records the Iteration Assessment given that verdict. The gate is re-presented at the close of iteration 3.
 
