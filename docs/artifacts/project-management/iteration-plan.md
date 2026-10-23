@@ -4,18 +4,19 @@
 - **Milestone Target:** End of Inception (not yet achieved)
 
 ## Iteration Objectives
-Inception iteration 1 establishes the requirements baseline and the risk position the rest of the project is planned against. It is a planning iteration, not a build iteration: no code is produced and no acceptance criterion is closed here.
+Inception iteration 2 is a correction iteration. It creates no artifact and adds no scope: the declared 15 requirements, 5 NFRs, 36 constraints, 3 business goals, 5 acceptance criteria and 2 declared risks are carried exactly as declared. Its work is to make the plan's own claims match its evidence chain and to re-present the LCO gate.
 
 | # | Objective | Evidence that closes it | Result |
 |---|---|---|---|
-| O1 | Baseline the declared scope as a requirements set the team can build against | Vision, Use-Case Model (15 UCs, one per declared FR), Supplementary Specification (5 NFR, 36 CON) | Met |
-| O2 | Classify every project risk with probability, impact, magnitude, strategy, mitigation and contingency | Risk List — R001 to R008, each with a strategy and a treatment | Met |
-| O3 | Establish the coarse cross-iteration roadmap and the fine plan for this iteration | This document — Plan and Milestones, Resources | Partially met — the roadmap holds; the fine plan omitted two artifacts the iteration produced. Corrected in this revision |
-| O4 | Assess LCO readiness: is the project viable to proceed to Elaboration? | Evaluation Criteria below | Met — the assessment exists; the verdict on it is the ReviewCoordinator's and was **iteration required** |
+| O1 | Make the fine plan account for every artifact the iteration produces, and the role profile follow the work items | Plan and Milestones — fine plan W1–W9; Resources — agent role profile | Met — nine work items, each with an owner and an exit condition; every role that produces is Active in its iteration |
+| O2 | State each risk's retirement against the event that retires it, never against the mechanism that makes it retirable | Plan and Milestones — Risk retirement sequencing | Met — R001 is retired in iteration 3 by executing the empty-attribute case of UC-011 and UC-004, not by building the fixture |
+| O3 | Give every declared acceptance criterion a point at which it can close | Evaluation Criteria — Layer A | Met — AC-004 is split into a learnability check at iteration 5 and a post-Project-Acceptance population measure owned by STK-001 |
+| O4 | Resolve the four suspect traces against the Risk List | Risk List — Traceability | Met — R001, R003, R004 and R005 re-verified against the changed UC-010 and UC-011 |
+| O5 | Re-present the LCO gate | Evaluation Criteria — LCO readiness assessment | Open — the verdict is the ReviewCoordinator's and is not issued in this document |
 
-**What this iteration does not do.** It does not detail the eleven outline use cases (Elaboration), does not produce the architecture (Elaboration), and does not build the stand-ins (Elaboration). It does not close any acceptance criterion — every AC-NNN is verified by working software, which does not exist yet.
+**Iteration 1 outcome, which this iteration is built on.** Iteration 1 produced a complete and correctly shaped requirements baseline — 15 use cases, one per declared FR, no phantom use case, no exclusion crossed, no invented identifier — and did not pass the gate. The ReviewCoordinator's verdict was iteration required and the stakeholder refused the sanction with the instruction that every finding be corrected. Ten findings were raised: 0 Critical, 6 Major, 4 Minor. Three of the Major findings are against this document and are corrected here; the other seven belong to the SoftwareArchitect, the SystemAnalyst and the TestManager.
 
-**Iteration 2 objectives.** Correct the ten findings raised at the LCO review and re-present the gate. No scope is added, none is cut. The work items are in Plan and Milestones.
+**What this iteration does not do.** It does not detail the eleven outline use cases, does not produce the architecture baseline, and does not build the stand-ins — all Elaboration work. It closes no acceptance criterion: every AC-NNN is verified by working software, which does not exist yet.
 
 ## Plan and Milestones
 ### Coarse roadmap — cross-iteration
