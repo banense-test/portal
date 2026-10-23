@@ -266,38 +266,47 @@ The include graph is drawn once, in the Supplementary Specification, and is not 
 | Source | FR-001, with FR-013 as its exception path |
 | Trigger | The employee presses the Clock In or Clock Out button on the main screen |
 | Precondition | The employee is authenticated (MECH-01); the session supplies sAMAccountName and AD group membership |
-| Postcondition | Exactly one clocking record exists for the employee for today, carrying the time the employee pressed the button; the employee sees a confirmation |
+| Postcondition | After a Clock In press one ClockIn event row exists for the employee-day; after a Clock Out press a ClockOut event row exists for the same `WorkDate`; the effective pair is the two rows no other row supersedes. The employee sees a confirmation carrying the press time |
 | Priority / Volatility | Must / Low |
 
 **Main flow**
 
 1. The portal resolves the employee's identity from the session.
-2. The portal reads today's clocking pair for that employee (CON-012).
-3. The portal renders one button — Clock Out if a pair is open, Clock In otherwise.
+2. The portal reads today's clocking events for that employee and resolves the effective pair — the rows no other row supersedes (CON-012).
+3. The portal renders the button for the state the pair is in: **no pair** → Clock In; **pair open** → Clock Out; **pair complete** → no clocking button, with a message that today's pair is complete and that a correction is HR's action under UC-005 (CON-017).
 4. The employee presses the button.
 5. The browser stamps the press time from the client clock and queues the POST with an idempotency key.
-6. The server rejects a duplicate idempotency key by returning the original result, or records the clocking with the client timestamp.
+6. The server rejects a duplicate idempotency key by returning the original result, or appends a ClockIn or ClockOut event row carrying the client timestamp.
 7. The employee sees a confirmation showing the recorded time.
 
 **Alternative flows**
 
-- **A1 — Duplicate press.** The idempotency key is already recorded. The server returns the original result; no second record is written. The employee sees the same confirmation.
+- **A1 — Duplicate press.** The idempotency key is already recorded. The server returns the original result; no second event row is appended. The employee sees the same confirmation.
 - **A2 — Network down, recovered within 5 minutes.** The POST fails. The browser keeps the press in localStorage and retries for up to 5 minutes. On success the employee sees a confirmation carrying the press time, not the retry time. See UC-013.
 - **A3 — Network down beyond 5 minutes.** The retry stops. The employee is told to report the clocking to HR, who corrects or inserts it under UC-005.
-- **A4 — A pair is already open and the employee presses Clock In.** CON-012 permits at most one pair per employee per day; the portal does not open a second pair.
+- **A4 — Pair already complete.** The employee has already clocked in and out today. CON-012 permits at most one pair per employee per calendar day, so the portal renders no clocking button and appends no event row. The employee is told the pair is complete and that only HR can correct or insert a clocking (CON-017), under UC-005. A second pair is not opened.
+- **A5 — Pair open and a Clock In press arrives.** The portal offers Clock Out only in this state. A Clock In POST that arrives anyway is rejected under CON-012 and appends no row; the employee sees the open pair and the Clock Out button.
 
 **Business rules enforced**
 
-CON-011 (a pair never crosses midnight), CON-012 (at most one pair per employee per day), CON-013
-(originals never overwritten), CON-036 (one action, one queue, one entity — no reconciliation).
+CON-011 (a pair never crosses midnight), CON-012 (at most one pair per employee per calendar day),
+CON-013 (originals never overwritten), CON-017 (no self-service correction — only HR corrects or
+inserts), CON-036 (one action, one queue, one entity — no reconciliation).
+
+**Clocking record shape — the same in UC-002, UC-003 and UC-005.** A press appends an event row; it
+never updates one. A complete pair is two rows — one ClockIn, one ClockOut — and an HR correction
+appends a further row that names the row it supersedes and carries the previous value. The effective
+pair is therefore a query over supersession, not a stored record, and it is the same query in UC-002
+(own history), UC-003 (all clockings) and UC-004 (the export). UC-005 appends the correction row and
+never overwrites or deletes the original, which is CON-013 holding by construction.
 
 **Not audited.** The employee's own clocking is the fact itself, not a change to a fact. NFR-005
 audits only the clockings HR corrects or inserts (UC-005). Writing an audit entry here would record
-that the employee did what the clocking record already says.
+that the employee did what the clocking event row already says.
 
 ```plantuml
 @startuml
-title UC-001 Clock In and Clock Out - main flow and the FR-013 retry path
+title UC-001 Clock In and Clock Out - main flow, the three CON-012 states and the FR-013 retry path
 
 |Employee|
 start
@@ -305,11 +314,23 @@ start
 
 |Portal|
 :Resolve identity from the session (MECH-01);
-:Read today's clocking pair (CON-012);
-if (pair open?) then (yes)
-  :Render Clock Out button;
-else (no)
+:Read today's clocking events and resolve the effective pair (CON-012);
+note right
+  ADR-010: each press appends an event row.
+  The effective pair is the two rows no other
+  row supersedes - a query, not a record.
+end note
+if (pair state?) then (no pair)
   :Render Clock In button;
+elseif (pair open) then
+  :Render Clock Out button;
+else (pair complete)
+  :Render no clocking button;
+  :State that today's pair is complete and that a
+   correction is HR's action under UC-005 (CON-017);
+  |Employee|
+  :See the complete-pair message;
+  stop
 endif
 
 |Employee|
@@ -325,11 +346,12 @@ if (idempotency key already recorded?) then (yes)
   :Return the original result;
   note right
     Duplicate rejected.
-    No second record is written.
+    No second event row is appended.
   end note
 else (no)
   :Enforce the pair rules (CON-011, CON-012);
-  :Record the clocking with the client timestamp;
+  :Append a ClockIn or ClockOut event row
+   carrying the client timestamp;
   :Return confirmation;
 endif
 
@@ -540,42 +562,52 @@ stop
 |---|---|
 | Primary actor | Employee |
 | Source | FR-011, with FR-014 as its exception path |
-| Trigger | The employee enters a search term — a name, a department or an office |
+| Trigger | The employee enters a search term — a name, a department or an office — and may narrow it by worker category |
 | Precondition | The employee is authenticated (MECH-01); the corporate network is reachable |
-| Postcondition | The employee sees matching colleagues with seven fields; no private personal information is shown |
+| Postcondition | The employee sees matching colleagues with seven fields, optionally narrowed by worker category; no private personal information is shown |
 | Priority / Volatility | Must / Medium |
 
 **Main flow**
 
-1. The employee enters a search term.
-2. The portal queries Active Directory over LDAP for the six declared attributes.
-3. The portal joins the portal-owned worker category (CON-021).
-4. The portal renders each entry with name, job title, department, office, email, extension and worker category.
-5. The employee sees the results.
+1. The employee enters a search term — a name, a department or an office.
+2. The employee may narrow the result set by worker category, one of the four closed values (CON-009).
+3. The portal queries Active Directory over LDAP for the six declared attributes.
+4. The portal joins the portal-owned worker category (CON-021).
+5. If a category filter is set, the portal narrows the result set to that category (CON-015).
+6. The portal renders each entry with name, job title, department, office, email, extension and worker category.
+7. The employee sees the results.
 
 **Alternative flows**
 
 - **A1 — Job title or extension empty.** The field renders blank; the row still renders and the employee is still found. This is the R001 case and the stand-in directory must carry it (CON-031).
 - **A2 — Network unreachable.** The portal shows a no-connection message instead of stale or partial results. Nothing is cached, so there is nothing to fall back to. See UC-014.
 - **A3 — No match.** The employee sees an empty result set, not an error.
+- **A4 — Worker has no category.** The entry still appears and the category field renders blank (CON-016); no default value is invented. When a category filter is applied the entry does not match it, because the filter selects one of the four values and blank is not one of them. With no filter applied the entry appears.
 
 **Business rules enforced**
 
-CON-003 (read-only from AD, no local copy), CON-020 (corporate data only, no private personal
-information), CON-021 (category stored as a link, never a duplicate of the employee).
+CON-003 (read-only from AD, no local copy), CON-009 (the closed four-value list the filter offers),
+CON-015 (the category is a directory column that also filters, and drives no access decision),
+CON-016 (a worker with no category still appears, with the field blank), CON-020 (corporate data
+only, no private personal information), CON-021 (category stored as a link, never a duplicate of the
+employee).
 
-The worker-category cluster (CON-009, CON-015, CON-016) is **not** bound here. CON-015 confines the
-worker category to the directory column and the export column and forbids it from driving any access
-decision; this use case renders the column from the portal-owned link under CON-021 and never reads
-the category to decide anything. The cluster binds UC-004 and UC-012 only.
+**CON-015's two halves, stated separately.** The *permissive* half: the worker category is rendered as
+a directory column and the result set is filterable by it. The *prohibitive* half: it drives no access
+decision — no authorization, no visibility rule, no withholding of an entry. The filter narrows a
+result set the employee may already see in full; it never removes an entry the employee would
+otherwise be entitled to see. This is the position the Software Architecture Document takes for
+COMP-005, and the two artifacts now read the same way.
 
 ```plantuml
 @startuml
-title UC-011 Search Employee Directory - LDAP read and the R001 empty-attribute case
+title UC-011 Search Employee Directory - LDAP read, the category filter and the R001 empty-attribute case
 
 |Employee|
 start
 :Enter a search term - name, department or office;
+:Optionally narrow by worker category
+ (Full-time, Part-time, Contractor, Intern) (CON-009);
 
 |Portal|
 :Query Active Directory over LDAP (CON-003);
@@ -595,6 +627,17 @@ end note
 |Portal|
 if (network reachable?) then (yes)
   :Join the portal-owned worker category (CON-021);
+  if (category filter set?) then (yes)
+    :Narrow the result set to that category;
+    note right
+      CON-015 permissive half: the category is a
+      directory column that also filters. A display
+      filter over a result set the employee may
+      already see in full - not an access decision.
+    end note
+  else (no)
+    :Render the full result set;
+  endif
   :Render each entry with seven fields;
   if (job title or extension empty?) then (yes)
     :Render the field blank;
@@ -633,9 +676,9 @@ pass needs.
 
 | UC | Actor goal | Trigger | Observable outcome | Rules bound |
 |---|---|---|---|---|
-| UC-002 View Own Clocking History | See my own hours for the current month | Employee opens their history | The employee's own clockings for the current month, and no one else's | CON-011, CON-012 |
-| UC-003 View All Employee Clockings | See everyone's clockings | HR opens the clocking view | Every employee's clockings, filterable by employee and date | CON-011, CON-012, MECH-02 |
-| UC-005 Correct or Insert Clocking | Fix a clocking an employee forgot | HR corrects or inserts a clocking | A new audited record; the original is never overwritten or deleted | CON-013, CON-017, MECH-02, MECH-03 |
+| UC-002 View Own Clocking History | See my own hours for the current month | Employee opens their history | The employee's own effective pairs for the current month, resolved over supersession, and no one else's | CON-011, CON-012 |
+| UC-003 View All Employee Clockings | See everyone's clockings | HR opens the clocking view | Every employee's effective pairs, resolved over supersession, filterable by employee and date | CON-011, CON-012, MECH-02 |
+| UC-005 Correct or Insert Clocking | Fix a clocking an employee forgot | HR corrects or inserts a clocking | A new audited event row naming the row it supersedes and carrying the previous value; the original is never overwritten or deleted | CON-013, CON-017, MECH-02, MECH-03 |
 | UC-006 Publish News | Announce something to the company | HR submits a news item | The item is visible to employees, with author and timestamp audited | CON-010, CON-014, CON-018; news-category list (FR-006), MECH-02, MECH-03 |
 | UC-007 Edit Published News | Correct a published item | HR edits a published item | The item shows the new content; the edit is audited with who and when | CON-010, CON-014, CON-018, MECH-02, MECH-03 |
 | UC-008 Unpublish News | Withdraw an item without destroying it | HR unpublishes an item | The item is hidden from employees and still present in the database | CON-014, CON-019, MECH-02, MECH-03 |
@@ -647,15 +690,15 @@ pass needs.
 
 **The two closed lists are not interchangeable.** UC-010 filters news by the four **news categories**
 (General, HR, IT, Events) declared by FR-010 and FR-006. The four **worker categories** (Full-time,
-Part-time, Contractor, Intern) declared by CON-009 belong to UC-004 and UC-012 only, and CON-015
-confines them to the directory column and the export column. A worker category appearing in UC-010's
-rules, or in any access decision, is a defect.
+Part-time, Contractor, Intern) declared by CON-009 belong to UC-004, UC-011 and UC-012, and CON-015
+confines them to the directory column — which also filters — and the export column. A worker category
+appearing in UC-010's rules, or in any access decision, is a defect.
 
 **Two detailing notes for the RequirementsSpecifier.**
 
 - **UC-005 and UC-003 are one workflow seen from two sides.** A correction made in UC-005 is what
   UC-003 displays and what UC-004 exports as `Corrected = Y`. They are separate use cases because they
-  are separate actor goals, but the correction record is the shared element — detail it once.
+  are separate actor goals, but the correction event row is the shared element — detail it once.
 - **UC-013, UC-014 and UC-015 are exception paths, not goals.** Detail them as alternative flows of
   UC-001, UC-011 and UC-010 respectively, and keep the extension use case as the traceable anchor for
   FR-013, FR-014 and FR-015. Do not give them a main flow of their own.
