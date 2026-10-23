@@ -704,7 +704,9 @@ binding — the author of that change runs the sweep before persisting:
 4. **Record the sweep in the artifact that made the decision**, naming the consumers and their state.
    The record is what lets the next reviewer check the sweep rather than rediscover the class.
 
-The sweep is cheap and its omission is not. Two artifacts were corrected onto an eight-iteration
-numbering in the same iteration that invalidated it, and the cost of the sweep would have been one
-pass over the artifacts that name an iteration number.
+**The current roadmap is nine iterations: Elaboration 4 and 5, Construction 6 to 8, Transition 9.**
+Any artifact naming an iteration number is read against that sequence and no other. The sweep is
+cheap and its omission is not: two artifacts were re-based onto a superseded numbering in the same
+iteration that superseded it, and the cost of the sweep would have been one pass over the artifacts
+that name an iteration number.
 
