@@ -81,112 +81,121 @@
 **What the two Fail cells have in common.** Both are artifacts that were not re-based onto a decision another artifact changed. The Software Architecture Document chose a new clocking shape in ADR-010 and the Use-Case Model still describes the old one; the Iteration Plan re-based the roadmap onto eight iterations and the Software Architecture Document still names the old iteration numbers. Neither is a defect of the artifact's own reasoning — each is a defect of the artifact's currency, which is the class of defect a milestone review exists to catch before the next phase builds on it.
 
 ### Business Reviewer lens
-<!-- review: Inception I1 -->
+<!-- review: Inception I2 -->
 
-<!-- review: Inception I1 -->
+<!-- review: Inception I2 -->
 
-**Review point:** LCO, business modeling lens. The question applied is exit criteria — is the Business Modeling discipline correctly dispositioned for this project, and does the artifact set carry the business-level content the downstream disciplines need.
+**Review point:** LCO, business modeling lens. The question applied is exit criteria — is the Business Modeling discipline correctly dispositioned, and does the artifact set carry the business-level content the downstream disciplines need.
 
-**Scenario assessment — the governing decision of this review.** The six business modeling scenarios are Organization Chart, Domain Modeling, One Business Many Systems, Generic Business Model, New Business and Revamp. None applies: the project is not a business-process-led engagement at all. The Development Case records `business-process-led = false`, and I verified that classification independently against the Vision prose and the Use-Case Model rather than inheriting it. The declared scope contains no business process to model — the stakeholder declared fifteen discrete administrative tasks directly as system use cases FR-001 to FR-015, replacing three manual artifacts (shared Excel sheets, mass email, a PDF phone list). There is no process re-engineering, no ERP or BPM suite, no workflow redesign, no organizational restructuring, and no business actor or business worker anywhere in the declared scope.
+**Scenario assessment — the governing decision.** The Development Case records `business-process-led = false` and I verified that classification independently rather than inheriting it. None of the six business modeling scenarios applies: no ERP or BPM suite is in scope, no workflow is re-engineered, no organizational restructuring is involved, no business actor or business worker is declared, and no business use case is declared. The stakeholder declared fifteen discrete administrative tasks directly as system use cases FR-001 to FR-015, replacing three manual artifacts. The disposition is correct and unchanged from iteration 1.
 
-**Consequence for the review standard applied.** Because no business model is owed, the business-lens criteria that presuppose one — BUC completeness, BUC realization adequacy, the business-to-system derivation bridge, resource planning compliance — are recorded N/A, not Fail. Applying them would be the wrong-scenario error: penalizing the absence of artifacts the Development Case correctly does not require. What I do review is the business-level content that exists regardless of scenario: the business rules, the stakeholder representation, the volatility annotations, and the correctness of the INACTIVE disposition itself.
+**Consequence for the standard applied.** Because no business model is owed, the criteria that presuppose one — BUC completeness, BUC realization adequacy, the business-to-system derivation bridge, resource planning compliance — are recorded N/A, not Fail. Applying them would be the wrong-scenario error. What I review is the business-level content that exists regardless of scenario: the business rules, stakeholder representation, volatility annotation, business-goal measurability, and scope adherence.
+
+**Artifacts reviewed (9 of 9 persisted):** Development Case, Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Risk List, Iteration Plan, Test Evaluation Summary, Iteration Assessment. The Glossary is NOT TRIGGERED and is correctly absent. The Iteration Assessment is not judged — it is authored after this review.
+
+```plantuml
+@startsalt
+{
+  {# Business-lens criterion | Applied to | Result }
+  { Scenario alignment - BM disposition correct and independently evidenced | DevCase, Vision, UCM | Pass }
+  { Business rules - ID, source, attachment, testable condition | SuppSpec, UCM | FAIL }
+  { Stakeholder representation coverage | Vision | Pass }
+  { Volatility annotation - volatile policy reaches the architecture | Vision, SAD | Pass }
+  { Business goals measurable, or marked unmeasured | Vision | Pass }
+  { Scope adherence - no undeclared element, no invented identifier | All artifacts | Pass }
+  { Diagram coverage - present, absent, structurally defective | UCM, SuppSpec, SAD | Pass }
+  { BUC completeness test | UCM | N/A }
+  { BUC realization adequacy | UCM | N/A }
+  { Business-to-system derivation bridge | UCM | N/A }
+  { Resource planning compliance | UCM | N/A }
+}
+@endsalt
+```
+
+**Closure of prior findings.** One finding of this lens from iteration 1 was reconciled before any new defect was recorded: `Vision#F1` (Minor), the two self-referential success-criterion cells. It is Resolved — the FR-014 and FR-015 rows now carry observable checks derived from the requirement text, and the section preamble states the rule that a cell never restates its own requirement identifier. No finding of this lens is Deferred or Rejected.
+
+**What the business lens found this iteration.** The business-rule register is the strongest content in the set and it is where both new defects sit. Twelve of the thirteen declared `[BusinessRule]` constraints carry an identifier, a source, an attachment to the use cases that enforce them, and a testable condition — the four properties that make a rule auditable rather than a guideline. The two defects are attachment defects, not content defects: CON-012 is bound to UC-001 but the use case specifies no behaviour for the state the rule forbids, and CON-015's attachment is incomplete and contradicts the Software Architecture Document about whether the rule governs the directory search. A third, Minor, is that the register presents itself as complete and carries twelve of thirteen.
+
+**Stakeholder representation is complete.** All four declared stakeholders appear with their needs and influence, and the negative-stakeholder analysis is honest: the one group whose workload changes without their consent is Infrastructure, and their constraint (CON-022) is declared and honoured rather than traded away. No organizational area relevant to the declared scope is unrepresented — the scope is three capability areas over one identity, and each is owned by a declared stakeholder.
+
+**Volatility annotation did its job.** The three High-volatility features are flagged in the Vision and each owns a dedicated component in the Software Architecture Document — COMP-003 for the FR-004 export contract, COMP-004 for the FR-009 single-featured invariant, COMP-006 for the FR-012 category value set. The volatile business policy reached the architecture instead of stopping at a table, which is the test this criterion exists to apply.
+
+**Business-goal measurability.** BG-001 is recorded as not yet measurable with STK-001 named as the supplier of the baseline; BG-002 and BG-003 are measurable against declared facts. A criterion whose denominator does not exist is recorded as unmeasured, never as met — that is the correct handling and it is the correction of the iteration-1 finding.
+
+**Scope adherence.** No element in the set addresses a functional area the stakeholder did not declare. The fifteen use cases map one to one onto FR-001 to FR-015. No identifier is invented — every `FR-`, `NFR-`, `CON-`, `AC-`, `BG-`, `STK-` and `R` identifier cited is one the work order assigned. No declared exclusion is crossed. No cross-cutting mechanism is promoted to a use case: authentication, authorization, audit and directory read are mechanisms in the Supplementary Specification, included by the use cases that depend on them.
+
+**Diagram coverage.** No business-level diagram is owed, so none is missing. The diagrams that exist at the business level — the use-case diagram with the organizational boundary, the business-rule binding diagram, the two-closed-lists diagram, the volatility map — are present and formally valid. The defect this lens records is not a missing diagram but a diagram whose edges disagree with a use case's own prose: the binding diagram denies the R_CAT cluster reaches UC-011, and CON-015 declares the directory column as one of its two permitted uses.
 
 ```plantuml
 @startuml
-title Business Modeling activation - DC section 4 trigger evaluation, independently verified at LCO
+title Portal - Business lens coverage map at LCO, Inception iteration 2
 
-package "Trigger criteria (DC section 4)" {
-  class "ERP / BPM suite in scope" as T1
-  class "Workflow re-engineering" as T2
-  class "M&A or organisational restructuring" as T3
-  class "Business actors and workers declared" as T4
-  class "Business use cases declared" as T5
+package "BM disposition - DC section 4, independently verified" {
+  class "business-process-led = false\nno business actor, worker, entity or BUC\nin the declared scope" as BM <<BR-OK-INACTIVE>>
 }
 
-package "Evidence observed in the artifact set" {
-  class "Vision: 15 discrete administrative tasks\nreplacing Excel, mass email, PDF list" as E1
-  class "Vision: no process redesign, no ERP,\nno organisational change" as E2
-  class "Use-Case Model: 4 system actors\n(Employee, HR, AD, Keycloak)" as E3
-  class "Use-Case Model: UC-001 to UC-015,\none per FR-001 to FR-015" as E4
-  class "Glossary: NOT TRIGGERED per DC\n(no specialist vocabulary)" as E5
+package "Business-lens criteria - applied" {
+  class "Scenario alignment" as K1 <<Pass>>
+  class "Business rules as formal constraints" as K2 <<FAIL>>
+  class "Stakeholder representation coverage" as K3 <<Pass>>
+  class "Volatility annotation reaches architecture" as K4 <<Pass>>
+  class "Business goals measurable or marked unmeasured" as K5 <<Pass>>
+  class "Scope adherence - no undeclared element" as K6 <<Pass>>
+  class "Diagram coverage - present, absent, defective" as K7 <<Pass>>
 }
 
-class "Verdict: BR-OK-INACTIVE\nBusiness Modeling NOT APPLICABLE" as V
+package "Business-lens criteria - not applicable" {
+  class "BUC completeness test" as K8 <<N/A>>
+  class "BUC realization adequacy" as K9 <<N/A>>
+  class "Business-to-system derivation bridge" as K10 <<N/A>>
+  class "Resource planning compliance" as K11 <<N/A>>
+}
 
-T1 ..> E2 : not met
-T2 ..> E2 : not met
-T3 ..> E2 : not met
-T4 ..> E3 : not met
-T5 ..> E4 : not met
-E1 --> V
-E5 --> V
+package "Business rules - 13 declared BusinessRule constraints" {
+  class "CON-009 to CON-020\n12 rules in the register\nID, attachment, testable condition" as R9 <<carried>>
+  class "CON-008 two-level authorization\ncarried as MECH-02 only\nabsent from the register" as R8 <<misplaced>>
+}
 
-note bottom of V
-  Five criteria, five not met.
-  The declared scope contains no business
-  process to model: the stakeholder declared
-  system use cases directly.
+package "Findings this iteration" {
+  class "Use-Case Model#F1\nMajor - CON-012 complete-pair case\nunaddressed in UC-001" as F1
+  class "Use-Case Model#F2\nMajor - CON-015 attachment incomplete,\ncontradicts the SAD on the directory filter" as F2
+  class "Supplementary Specification#F1\nMinor - CON-008 absent from\nthe business-rules register" as F3
+}
+
+BM --> K8
+BM --> K9
+BM --> K10
+BM --> K11
+R9 --> K2
+R8 --> K2
+K2 --> F1
+K2 --> F2
+K2 --> F3
+
+note bottom of K8
+  N/A is not Fail. No BUC is declared or owed,
+  so the criteria that presuppose a business
+  model are recorded N/A. Applying them would
+  be the wrong-scenario error.
+end note
+
+note bottom of F1
+  CON-012 is bound to UC-001, but the use case
+  specifies no behaviour for the case the rule
+  forbids: a complete pair already exists and
+  the employee presses Clock In.
+end note
+
+note bottom of R8
+  CON-008 is declared [BusinessRule] in the
+  scope. It is enforced and attached, but the
+  register that presents itself as the business
+  rule register lists twelve of thirteen.
 end note
 @enduml
 ```
 
-**Artifacts reviewed (8 of 8 persisted):** Development Case, Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Risk List, Iteration Plan, Test Evaluation Summary. The Glossary is NOT TRIGGERED and is correctly absent.
-
-**Business-lens checklists applied:**
-
-| Criterion | Applied to | Result |
-|---|---|---|
-| Scenario alignment — is the BM disposition correct and independently evidenced | Development Case, Vision, Use-Case Model | Pass |
-| Business rules as formal constraints — ID, source, worker/entity attachment, testable condition | Supplementary Specification, Use-Case Model | Fail — one attachment defect, carried by another lens |
-| Stakeholder representation coverage — all significant organizational parts represented | Vision | Pass |
-| Volatility annotation — volatile business processes explicitly flagged for encapsulation | Vision, Software Architecture Document | Pass |
-| Diagram coverage — which business-level diagrams are present, absent, defective | Use-Case Model, Supplementary Specification | Pass — none owed, none missing |
-| BUC completeness test | Use-Case Model | N/A — no BUC declared or owed |
-| BUC realization adequacy | Use-Case Model | N/A — no BUC; Elaboration concern in any case |
-| Business-to-system derivation bridge | Use-Case Model | N/A — system UCs declared directly |
-| Resource planning compliance | Use-Case Model | N/A — no business worker or entity |
-
-```plantuml
-@startuml
-title Business Modeling artifact surface - expected vs present at LCO
-
-package "BM sections the BPA would produce" {
-  class "Business Use Cases (BUC-NNN)" as B1
-  class "Business Actors" as B2
-  class "Business Workers" as B3
-  class "Business Entities" as B4
-  class "Business Use-Case Realizations" as B5
-}
-
-package "Present in the artifact set" {
-  class "Use-Case Model: 0 BUC sections" as P1
-  class "Use-Case Model: 0 business actor sections" as P2
-  class "Use-Case Model: 0 business worker sections" as P3
-  class "Use-Case Model: 0 business entity sections" as P4
-  class "Use-Case Model: 0 realization sections" as P5
-}
-
-B1 --> P1 : absent
-B2 --> P2 : absent
-B3 --> P3 : absent
-B4 --> P4 : absent
-B5 --> P5 : absent
-
-note bottom of P1
-  Absence is CORRECT here, not a defect.
-  DC section 4 classifies the project
-  business-process-led = false, so no BM
-  section is owed. A review demanding BUCs
-  would apply the wrong scenario.
-end note
-
-note bottom of P5
-  Realizations belong to Elaboration in any
-  case; requiring them in Inception would be
-  a phase error even on a BPL project.
-end note
-@enduml
-```
+**Disposition: Approved with Changes.** No Critical finding. Two Major and one Minor, all correctable within this iteration, all in the business-rule attachment layer rather than in the requirements baseline. The Business Modeling discipline remains correctly inactive and no business artifact is owed, missing, or defective in a way this lens owns beyond the three findings above.
 
 ### Management Reviewer lens
 <!-- review: Inception I1 -->
