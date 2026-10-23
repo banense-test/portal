@@ -109,17 +109,17 @@ UC-009, UC-011); the RequirementsSpecifier details the remaining eleven in Elabo
 
 | UC | Name | Primary actor | Source | Priority | Volatility | Rules bound | Detail in this iteration |
 |---|---|---|---|---|---|---|---|
-| UC-001 | Clock In and Clock Out | Employee | FR-001 | Must | Low | CON-011, CON-012, CON-013, CON-036 | **Detailed** — architecturally significant: the client-timestamp and idempotency contract (FR-013) forces a design decision |
+| UC-001 | Clock In and Clock Out | Employee | FR-001 | Must | Low | CON-011, CON-012, CON-013, CON-017, CON-036 | **Detailed** — architecturally significant: the client-timestamp and idempotency contract (FR-013) forces a design decision |
 | UC-002 | View Own Clocking History | Employee | FR-002 | Must | Low | CON-011, CON-012 | Outline |
 | UC-003 | View All Employee Clockings | HR Administrator | FR-003 | Must | Medium | CON-011, CON-012 | Outline |
-| UC-004 | Export Monthly Clocking Report as CSV | HR Administrator | FR-004 | Must | **High** | CON-004, CON-007, CON-009, CON-016, CON-021 | **Detailed** — architecturally significant: a fixed external contract with a derived Corrected flag |
-| UC-005 | Correct or Insert Clocking | HR Administrator | FR-005 | Must | Medium | CON-011, CON-012, CON-013 | Outline |
+| UC-004 | Export Monthly Clocking Report as CSV | HR Administrator | FR-004 | Must | **High** | CON-004, CON-007, CON-009, CON-015, CON-016, CON-021 | **Detailed** — architecturally significant: a fixed external contract with a derived Corrected flag |
+| UC-005 | Correct or Insert Clocking | HR Administrator | FR-005 | Must | Medium | CON-011, CON-012, CON-013, CON-017 | Outline |
 | UC-006 | Publish News | HR Administrator | FR-006 | Must | Low | CON-010, CON-014, CON-018; news-category list (FR-006) | Outline |
 | UC-007 | Edit Published News | HR Administrator | FR-007 | Must | Low | CON-010, CON-014, CON-018 | Outline |
 | UC-008 | Unpublish News | HR Administrator | FR-008 | Must | Low | CON-010, CON-014, CON-019 | Outline |
 | UC-009 | Feature or Un-feature News | HR Administrator | FR-009 | Must | **High** | CON-010, CON-018, CON-019 | **Detailed** — architecturally significant: a system invariant (CON-010) that must hold wherever the change comes from |
 | UC-010 | Read and Filter News | Employee | FR-010 | Must | Medium | CON-014; news-category list (FR-010) | Outline |
-| UC-011 | Search Employee Directory | Employee | FR-011 | Must | Medium | CON-003, CON-020, CON-021 | **Detailed** — architecturally significant: the LDAP read and the R001 empty-attribute case |
+| UC-011 | Search Employee Directory | Employee | FR-011 | Must | Medium | CON-003, CON-009, CON-015, CON-016, CON-020, CON-021 | **Detailed** — architecturally significant: the LDAP read, the category filter and the R001 empty-attribute case |
 | UC-012 | Assign or Clear Worker Category | HR Administrator | FR-012 | Must | **High** | CON-009, CON-015, CON-016, CON-021 | Outline — the only write the portal makes about a person |
 | UC-013 | Retry Clocking Through a Network Drop | Employee | FR-013 | Must | Medium | CON-036, CON-011, CON-012 | Outline — extends UC-001 |
 | UC-014 | Recognize Directory Unavailable | Employee | FR-014 | Must | Low | CON-003 | Outline — extends UC-011 |
@@ -141,8 +141,8 @@ rules is under-specified, and a rule bound to no use case is unenforced.
 Two closed lists exist in this system and they are never interchangeable. **News categories**
 (General, HR, IT, Events) are declared by FR-006 and FR-010 and govern UC-006 and UC-010.
 **Worker categories** (Full-time, Part-time, Contractor, Intern) are declared by CON-009 and govern
-UC-004 and UC-012 only — CON-015 confines the worker category to the directory column and the export
-column, and forbids it from driving any access decision or any other filter.
+UC-004, UC-011 and UC-012 — CON-015 names exactly two permitted uses, a directory column that also
+filters and a CSV export column, and forbids the category from driving any access decision.
 
 ```plantuml
 @startuml
@@ -151,7 +151,7 @@ title Portal - Business-rule clusters and the use cases each one binds
 left to right direction
 
 package "Clocking integrity" {
-  class "CON-011 pair never crosses midnight\nCON-012 one pair per employee per day\nCON-013 originals never overwritten\nCON-036 retry is one action, one queue" as R_CLK
+  class "CON-011 pair never crosses midnight\nCON-012 one pair per employee per day\nCON-013 originals never overwritten\nCON-017 only HR corrects or inserts\nCON-036 retry is one action, one queue" as R_CLK
 }
 
 package "Export contract" {
@@ -167,7 +167,7 @@ package "News category list" {
 }
 
 package "Worker category ownership" {
-  class "CON-009 closed four-value list\nCON-015 descriptive, drives no access\nCON-016 at most one, may be empty\nCON-021 stored as a link, two columns" as R_CAT
+  class "CON-009 closed four-value list\nCON-015 column that also filters,\n drives no access decision\nCON-016 at most one, may be empty\nCON-021 stored as a link, two columns" as R_CAT
 }
 
 package "Directory read" {
@@ -194,6 +194,7 @@ package "Use cases" {
 
 R_CLK --> UC001
 R_CLK --> UC002
+R_CLK --> UC003
 R_CLK --> UC005
 R_CLK --> UC013
 
@@ -209,20 +210,20 @@ R_NCAT --> UC006
 R_NCAT --> UC010
 
 R_CAT --> UC004
+R_CAT --> UC011
 R_CAT --> UC012
 
 R_DIR --> UC011
 R_DIR --> UC014
 
 note bottom of R_CAT
-  CON-015 is the load-bearing rule: the worker
-  category is descriptive and drives no access
-  decision. The cluster binds UC-004 (the export
-  column) and UC-012 (the only write) - nowhere
-  else. UC-011 renders the category as a
-  read-only column from the portal-owned link,
-  which is CON-021, bound through R_DIR; it
-  reads the value, it does not manage it.
+  CON-015 names exactly two permitted uses of the
+  worker category: a directory column that also
+  filters, and a CSV export column. The cluster
+  therefore binds UC-011 (column plus filter),
+  UC-004 (export column) and UC-012 (the only
+  write). Its prohibitive half is absolute: the
+  category drives no access decision anywhere.
   A worker category used to filter news, or read
   in an authorization decision, is a defect.
 end note
@@ -233,7 +234,7 @@ note bottom of R_NCAT
   from FR-006 and FR-010 and govern UC-006 and
   UC-010. Worker categories (Full-time, Part-time,
   Contractor, Intern) come from CON-009 and govern
-  UC-004 and UC-012 only.
+  UC-004, UC-011 and UC-012.
 end note
 
 note bottom of R_DIR
@@ -247,9 +248,9 @@ end note
 
 **UC-010 is bound to the news-category list, not the worker-category cluster.** FR-010 filters news
 by General, HR, IT and Events — the closed list FR-006 declares. The worker-category cluster
-(CON-009, CON-015, CON-016, CON-021) binds UC-004 and UC-012 only. UC-011 renders the worker category
-as a read-only column from the portal-owned link under CON-021; it reads the value and never manages
-it, so the cluster is not bound there either.
+(CON-009, CON-015, CON-016, CON-021) binds UC-004, UC-011 and UC-012. UC-011 renders the worker
+category as a column and filters the result set by it, which is CON-015's permissive half; it never
+reads the category to decide what the employee may see, which is its prohibitive half.
 
 **Mechanisms every use case includes.** MECH-01 (authenticated corporate identity, NFR-001) is
 included by all fifteen. MECH-02 (HR group authorization, CON-008) is included by the eight HR use
