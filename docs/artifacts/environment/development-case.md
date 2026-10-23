@@ -5,7 +5,6 @@
 - **Milestone Target:** End of Inception (not yet achieved)
 
 ## Tailoring Overview
-
 This document is a **delta over the IARI Development Case baseline**. The baseline supplies the
 25-role roster, the 9 disciplines, the 16 CORE and 6 OPTIONAL artifacts, the ownership allowlist and
 the canonical intensity matrix. None of that is restated or redefined here. What follows is only what
@@ -68,9 +67,9 @@ facts shape the tailoring:
   on *conformance* — proving the system does exactly what CON-001 to CON-036 say — rather than on
   exploration. This is why Requirements intensity is Critical in Inception and why the Supplementary
   Specification carries the constraint load.
-- **Two roles are idle by trigger, not by choice.** Business Modeling is inactive (see Disciplines and
-  Intensity), so BusinessProcessAnalyst and BusinessReviewer have no work. CapsuleDesigner has no work
-  because no real-time capsule exists. Idle roles are not removed from the roster — they simply
+- **Three roles are idle by trigger, not by choice.** Business Modeling is inactive (see Disciplines
+  and Intensity), so BusinessProcessAnalyst and BusinessReviewer have no work. CapsuleDesigner has no
+  work because no real-time capsule exists. Idle roles are not removed from the roster — they simply
   receive no assignment this cycle.
 
 **Toolchain.** Assessed against what the constraints declare:
