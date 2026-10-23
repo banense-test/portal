@@ -459,16 +459,6 @@ the most damaging defect is not a crash — it is a feature the stakeholder excl
 product. That is why the exclusion list is the first thing the severity scale names.
 
 ## Conclusions
-### Mission verdict — Inception iteration 1
-
-**The Evaluation Mission for this iteration is MET.** The test effort is now decidable: every use case
-has a test level and an iteration, every non-functional requirement has a measurement method, the
-fixture obligation that retires R001 is recorded as a test obligation rather than a convention, and
-the defect record and quality signals are named and live.
-
-This verdict is about the *test position*, not about the product. No product evidence exists, and the
-verdict does not claim any.
-
 ### What the verdict rests on
 
 | Basis | Strength |
