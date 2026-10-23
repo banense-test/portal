@@ -33,109 +33,52 @@
 
 ## Review Scope and Criteria
 ### Reviewer lens
-<!-- review: Inception I1 -->
+<!-- review: Inception I2 -->
 
-**Review point:** LCO, technical lens. The question applied is exit criteria — do the artifacts collectively satisfy the conditions for phase transition — not completion of an iteration.
+**Review type:** Technical review, LCO lifecycle milestone, Inception iteration 2. Checklist-driven against the artifact type of each item reviewed.
 
-**Artifacts reviewed (8 of 8 persisted):** Development Case, Vision, Use-Case Model, Supplementary Specification, Software Architecture Document, Risk List, Iteration Plan, Test Evaluation Summary.
+**Scope.** All ten persisted artifacts, plus the trace graph and the SCM state. Nine were evaluated against their checklists; the Iteration Assessment is not judged — it is authored after this review and its absence or lag is never a finding.
 
-**Checklists applied, by artifact type:**
+| Artifact | Checklist applied | Result |
+|---|---|---|
+| Vision | Requirements: traceable, testable, unambiguous, no unsourced quantitative claim | Pass |
+| Use-Case Model | Requirements: UC well-formed, one per declared process, no cross-cutting mechanism as a UC, rule binding correct, traceability | **Fail** — 1 Major |
+| Supplementary Specification | Requirements: every constraint carried and bound, mechanisms not UCs, two closed lists kept apart | **Fail** — 1 Minor |
+| Software Architecture Document | Architecture: every subsystem maps to a volatile requirement, constraint conformance, invariants enforceable, traceability one edge per row | **Fail** — 1 Major |
+| Risk List | Project Management: declared identifiers and magnitudes preserved, CON-024 respected, every risk treated and traced | Pass |
+| Iteration Plan | Project Management: plan derived from the artifact set, risk retirement named against its event, every AC has a gate | Pass |
+| Test Evaluation Summary | Test: coverage against use cases, measurement method per NFR, observable SCM state cited as observed | Pass |
+| Development Case | DC baseline conformance (§1.2) and optional trigger justification | Pass |
+| Iteration Assessment | Not judged — authored after this review | N/A |
+| Review Record | This artifact | N/A |
 
-| Artifact | Checklist |
-|---|---|
-| Development Case | DC baseline conformance (a)–(e) against the IARI baseline; optional trigger justification against each §5.2 condition; discipline intensity against the canonical matrix; CORE artifact coverage |
-| Vision | Feature-to-FR traceability; exclusion boundary completeness; stakeholder, AC and risk coverage; measurability of success criteria; data-source verification of quantitative claims |
-| Use-Case Model | UC-to-FR source citation; no cross-cutting mechanism modelled as a UC; no per-actor split of one declared process; business-rule binding accuracy; Traceability table against the trace tree |
-| Supplementary Specification | NFR coverage; constraint coverage; mechanism include graph; interface contracts against FR-004; scope-exclusion consistency |
-| Software Architecture Document | High-volatility encapsulation; constraint conformance accounting; schema satisfiability of the declared invariants; component naming and cohesion; Traceability table structure; CON-028 placement |
-| Risk List | R001/R002 identifier and magnitude preservation; team-risk numbering from R003; CON-024 exclusion respected; acceptance authority cited |
-| Iteration Plan | No invented dates, sizes or velocity; AC coverage; fine plan completeness against the iteration's actual scope; role profile against discipline intensity |
-| Test Evaluation Summary | UC coverage plan; NFR measurement methods; SCM quality signals verified against the repository; executability of the coverage plan |
+**SCM state.** No open pull request exists, so no PR required a disposition. The build on `main` is green; it carries no product evidence, because the repository holds inputs and artifacts only.
 
-**Trace tree consulted:** 42 Business roots, 180 nodes. Every FR-001 to FR-015 refines to exactly one UC-001 to UC-015; every UC realizes at least one component. No «LEAF» on any FR, NFR or UC. No «SUSPECT» edge. No «UNKNOWN LABEL».
+**Trace graph.** 42 business roots, 180 nodes. No `FR-NNN`, `NFR-NNN` or `UC-NNN` is a leaf — every declared requirement is realized and every use case is carried by a component. Four `SUSPECT → System Analyst` edges are reported: `COMP-002 → UC-001`, `UC-002`, `UC-003`, `UC-005`. They are the trace-graph evidence for the Use-Case Model finding below and are recorded there rather than as a separate defect.
 
-**SCM evidence observed:**
-
-| Signal | Observed |
-|---|---|
-| Open pull requests | None |
-| Branches labelled `ready-for-review` | None |
-| Build on `main` | Success — run `39933356092`, 2026-10-23 09:38:42Z to 09:39:34Z |
-| Issues, all states | None |
-
-**Pull request disposition.** No open pull request exists, so there is nothing to approve, request changes on, or defer. No branch carries `ready-for-review`. Inception produces no implementation code per RUP Ch.4, and the repository holds project inputs and artifacts only — consistent with the phase.
-
-**Compliance matrix — 32 checklist items, 22 Pass, 10 Fail, 0 not evaluated:**
+**Closure of prior findings.** Seven findings of this lens from iteration 1 were reconciled before any new defect was recorded. All seven are Resolved; none is Deferred or Rejected. The two `Iteration Plan` findings owned by the Management Reviewer lens are not this lens's to close and remain with that lens.
 
 ```plantuml
-@startuml
-title Compliance matrix - LCO technical review, Inception iteration 1
-
-package "Development Case" {
-  class "DC baseline conformance (a)-(e)" as DC1 <<Pass>>
-  class "Optional trigger justification, 6 rows audited" as DC2 <<Pass>>
-  class "Discipline intensity vs canonical matrix" as DC3 <<Pass>>
-  class "CORE artifact coverage 16 of 16" as DC4 <<Pass>>
+@startsalt
+{
+  {# Compliance criterion | Vision | UCM | SuppSpec | SAD | RiskList | IterPlan | TES | DevCase }
+  { Every element traces to declared input | Pass | Pass | Pass | Pass | Pass | Pass | Pass | Pass }
+  { No phantom or invented identifier | Pass | Pass | Pass | Pass | Pass | Pass | Pass | Pass }
+  { Cross-cutting mechanism not modelled as a UC | n/a | Pass | Pass | Pass | n/a | n/a | n/a | Pass }
+  { Scope markers on derived elements | Pass | Pass | Pass | Pass | Pass | Pass | Pass | Pass }
+  { UML present and formally valid | Pass | Pass | Pass | Pass | Pass | Pass | Pass | Pass }
+  { Observable SCM state cited as observed | n/a | n/a | n/a | n/a | n/a | n/a | Pass | Pass }
+  { Criteria can fail | Pass | n/a | Pass | n/a | n/a | Pass | Pass | Pass }
+  { Traceability table one edge per row | n/a | Pass | n/a | Pass | Pass | n/a | n/a | n/a }
+  { Internal consistency with upstream | Pass | FAIL | Pass | FAIL | Pass | Pass | Pass | Pass }
+  { DC baseline conformance | n/a | n/a | n/a | n/a | n/a | n/a | n/a | Pass }
+  { Optional trigger justification | n/a | n/a | n/a | n/a | n/a | n/a | n/a | Pass }
+  { No FR, NFR or UC left as a leaf | Pass | Pass | Pass | Pass | Pass | Pass | Pass | Pass }
 }
-
-package "Vision" {
-  class "Feature to FR traceability 15 of 15" as V1 <<Pass>>
-  class "Exclusion boundary, 13 verbatim" as V2 <<Pass>>
-  class "Stakeholder, AC and risk coverage" as V3 <<Pass>>
-  class "Measurable success criteria" as V4 <<Fail>>
-}
-
-package "Use-Case Model" {
-  class "UC to FR source citation 15 of 15" as U1 <<Pass>>
-  class "No cross-cutting mechanism as UC" as U2 <<Pass>>
-  class "No per-actor UC split" as U3 <<Pass>>
-  class "Business-rule binding accuracy" as U4 <<Fail>>
-  class "Traceability table vs trace tree" as U5 <<Pass>>
-}
-
-package "Supplementary Specification" {
-  class "NFR coverage 5 of 5" as S1 <<Pass>>
-  class "Constraint coverage 36 of 36" as S2 <<Pass>>
-  class "Mechanism include graph" as S3 <<Pass>>
-  class "Interface contracts vs FR-004" as S4 <<Pass>>
-}
-
-package "Software Architecture Document" {
-  class "High-volatility encapsulation 3 of 3" as A1 <<Pass>>
-  class "Constraint conformance accounting" as A2 <<Fail>>
-  class "Schema satisfies CON-012 and CON-013" as A3 <<Fail>>
-  class "Component naming and cohesion" as A4 <<Fail>>
-  class "Traceability table structure" as A5 <<Fail>>
-  class "CON-028 Keycloak placement" as A6 <<Pass>>
-}
-
-package "Risk List" {
-  class "R001 and R002 identifiers and magnitudes" as R1 <<Pass>>
-  class "Team risk numbering R003 onward" as R2 <<Pass>>
-  class "CON-024 exclusion respected" as R3 <<Pass>>
-  class "Acceptance authority cited" as R4 <<Pass>>
-}
-
-package "Iteration Plan" {
-  class "No invented dates or sizes" as P1 <<Pass>>
-  class "AC coverage 5 of 5" as P2 <<Pass>>
-  class "Fine plan accounts for iteration scope" as P3 <<Fail>>
-  class "Role profile vs discipline intensity" as P4 <<Fail>>
-}
-
-package "Test Evaluation Summary" {
-  class "UC coverage plan 15 of 15" as T1 <<Pass>>
-  class "NFR measurement methods 5 of 5" as T2 <<Pass>>
-  class "SCM quality signals verified" as T3 <<Fail>>
-  class "Coverage plan executability" as T4 <<Fail>>
-}
-
-note bottom of DC1
-  32 checklist items evaluated.
-  22 Pass, 10 Fail, 0 not evaluated.
-end note
-@enduml
+@endsalt
 ```
+
+**What the two Fail cells have in common.** Both are artifacts that were not re-based onto a decision another artifact changed. The Software Architecture Document chose a new clocking shape in ADR-010 and the Use-Case Model still describes the old one; the Iteration Plan re-based the roadmap onto eight iterations and the Software Architecture Document still names the old iteration numbers. Neither is a defect of the artifact's own reasoning — each is a defect of the artifact's currency, which is the class of defect a milestone review exists to catch before the next phase builds on it.
 
 ### Business Reviewer lens
 <!-- review: Inception I1 -->
