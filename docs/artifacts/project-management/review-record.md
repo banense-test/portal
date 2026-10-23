@@ -1351,15 +1351,77 @@ end note
 
 ## Disposition
 ### Reviewer lens
-<!-- review: Inception I1 -->
+<!-- review: Inception I2 -->
 
 **Disposition: Approved with Changes.**
 
-The Inception artifact set is technically sound in its structure and its scope discipline. The requirements baseline is complete and correctly shaped: 15 use cases, one per declared requirement, with no phantom use case, no cross-cutting mechanism promoted to a use case, and no per-actor split of a single declared process. The 36 constraints are carried and bound. The architecture is a genuine candidate — decomposed by area of change, with each of the three High-volatility requirements encapsulated in its own component, CON-028 satisfied, and no over-engineering against a non-binding scale. The risk register preserves the declared identifiers and magnitudes and respects the CON-024 exclusion. The Development Case is a correct delta over the baseline with every optional trigger honestly audited.
+The technical position of the artifact set is materially stronger than at iteration 1. Seven findings of this lens were corrected and verified, and the corrections are substantive rather than cosmetic. ADR-010 resolves the schema contradiction that would have made CON-012 and CON-013 unsatisfiable together, and it does so by making CON-013 hold by construction — an append-only event log with a partial unique index that constrains the originals and admits every superseding row. The Iteration Plan now names the event that retires R001 rather than the fixture that makes it retirable, which is the claim an LCO gate exists to test. The Vision records BG-001 as unmeasured instead of presenting it as measurable. The Test Evaluation Summary's coverage plan is re-based onto the roadmap it is measured against, and NFR-001 is split so neither half is assigned to an iteration that cannot execute it.
 
-The four Major findings are all correctable within this iteration and none of them invalidates the phase's central conclusions. The most consequential is the SAD's schema contradiction: CON-012 and CON-013 are both declared and the Data View as drawn cannot satisfy both, which would surface as an unimplementable design the moment Elaboration tries to baseline it. The Use-Case Model's misbinding of the worker-category rules to news filtering is the kind of defect that propagates — a designer reading UC-010's rule list would implement a category filter on news. The Iteration Plan's omission of two artifacts it actually produced understates the critical path. The Test Evaluation Summary's stale CI citation is a data-integrity defect rather than a quality defect: the conclusion holds, the evidence does not.
+Two Major findings remain, and both are defects of currency rather than of reasoning. The Use-Case Model's UC-001 postcondition still describes the single-row clocking model ADR-010 replaced, and the trace graph reports the same defect independently through four `SUSPECT → System Analyst` edges on COMP-002. The Software Architecture Document's architectural-significance table still names "Elaboration iteration 2", an iteration that under the current roadmap designs nothing. Neither invalidates the phase's conclusions; both would mislead the role that reads them next, which is why they are Major and not Minor.
 
-No Critical finding: no declared exclusion is crossed anywhere in the set, no identifier is invented, no scope is expanded beyond the declared 15 requirements, and no artifact claims a milestone or an acceptance criterion is closed. The set is fit to proceed to Elaboration once the four Major findings are addressed.
+One Minor finding: the Supplementary Specification's constraint grouping disagrees between its table and its diagram and matches neither the declared category.
+
+**No Critical finding.** No declared exclusion is crossed anywhere in the set. No identifier is invented — every `FR-`, `NFR-`, `CON-`, `AC-`, `BG-`, `STK-` and `R` identifier cited is one the work order assigned. No scope is expanded beyond the fifteen declared requirements: the fifteen use cases map one to one onto them, and the three extension use cases are declared requirements modelled as exception paths rather than invented goals. No cross-cutting mechanism is promoted to a use case — authentication, authorization, audit and directory read are mechanisms in the Supplementary Specification, included by the use cases that depend on them. No artifact claims a milestone is achieved or an acceptance criterion is closed.
+
+**What this disposition is not.** It is not a sanction to advance. The milestone verdict belongs to the ReviewCoordinator and the sanction to the stakeholder; this lens reports the technical state of the artifacts and nothing more. It is also not a claim that the two Major findings are tolerable — they are correctable within this iteration and they should be corrected before the gate is re-presented, because the role that reads each of them next is the role that would act on the stale version.
+
+**Traceability position.** The trace graph carries 42 business roots and 180 nodes. No `FR-NNN`, `NFR-NNN` or `UC-NNN` is a leaf: every declared requirement is realized by a use case and every use case is carried by at least one component. The four `SUSPECT → System Analyst` edges are the only trace defect and are recorded as evidence inside `Use-Case Model#F2` rather than as a separate finding, because they and the postcondition are one defect seen from two directions.
+
+**SCM position.** No open pull request, so no PR required a disposition. The build on `main` is green and carries no product evidence — the repository holds inputs and artifacts only, and a green build on such a repository proves the pipeline runs, not that anything works.
+
+```plantuml
+@startuml
+title Portal - Inception iteration 2 technical position at the LCO gate
+
+package "Closed this iteration - 7 findings of this lens" {
+  class "Vision#F1\nBG-001 recorded as unmeasured" as C1
+  class "Use-Case Model#F1\nworker-category cluster rebound" as C2
+  class "Iteration Plan#F1\nfine plan complete, roles Active" as C3
+  class "SAD#F1\nADR-010 append-only clocking log" as C4
+  class "SAD#F2\ntraceability rows split by link type" as C5
+  class "TES#F1\nCI run cited as observed" as C6
+  class "TES#F2\nNFR-001 split by executable half" as C7
+}
+
+package "Open this iteration - 2 Major, 1 Minor" {
+  class "Use-Case Model#F2\nUC-001 postcondition vs ADR-010\n+ 4 suspect traces" as O1
+  class "SAD#F3\nsignificance table not re-based" as O2
+  class "SuppSpec#F1\nconstraint grouping inconsistent" as O3
+}
+
+package "Gate position" {
+  class "0 Critical" as G1
+  class "2 Major" as G2
+  class "1 Minor" as G3
+  class "No exclusion crossed\nNo identifier invented\nNo scope expanded" as G4
+}
+
+C1 --> G1
+C2 --> G1
+C3 --> G1
+C4 --> G1
+C5 --> G1
+C6 --> G1
+C7 --> G1
+O1 --> G2
+O2 --> G2
+O3 --> G3
+
+note bottom of G2
+  Both Major findings are artifacts not
+  re-based onto a decision another artifact
+  changed. Neither invalidates the phase's
+  conclusions; both would mislead the role
+  that reads them next.
+end note
+
+note bottom of G4
+  The three conditions that would make a
+  finding Critical are all absent from
+  the set.
+end note
+@enduml
+```
 
 ### Business Reviewer lens
 <!-- review: Inception I1 -->
