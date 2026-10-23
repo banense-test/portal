@@ -236,7 +236,6 @@ Disciplines are pipelined within an iteration, not run as a waterfall: Requireme
 Design, Implementation and Test overlap, while Project Management and CM run alongside all of them.
 The diagram shows ordering, not workload — see the two rules above.
 ## Artifacts and Templates
-
 **All 16 CORE artifacts are produced. None is omitted, deferred or downgraded.** The table records
 only the project-specific format note for each; ownership is in Roles and Ownership.
 
@@ -248,7 +247,7 @@ only the project-specific format note for each; ownership is in Roles and Owners
 | Software Architecture Document | Carries COMP identifiers and the deployment section (see Optional Artifact Triggers). Must place Keycloak inside the corporate network per CON-028 |
 | Design Model | Carries ACL, CLS, INT, SEQ and the data tables inline (see Optional Artifact Triggers). Co-owned: Designer, UserInterfaceDesigner, DatabaseDesigner each write their own sections |
 | Implementation Model | Reverse-engineered from the repository; records the stand-in configuration surface (CON-031) |
-| Test Case | TC identifiers. Must cover the empty-attribute directory entries that retire R001, and the FR-013 retry path |
+| Test Case | TC identifiers. Must cover the empty-attribute directory entries whose passing test retires R001, and the FR-013 retry path |
 | Test Evaluation Summary | Per iteration |
 | User Documentation | Employee-facing and HR-facing. Must not describe a self-service correction screen (CON-017) or an audit view screen (NFR-005) |
 | Release Notes | Per release; handover-oriented for Infrastructure (CON-032) |
@@ -273,7 +272,6 @@ following. Each is owned by the discipline role named:
 | Lint and format configuration | Implementer | Not yet created — Elaboration |
 | `.github/workflows` (build and test CI) | ConfigurationManager with Implementer | Not yet created — Elaboration |
 | `docs/inputs/employee-portal-design.html` | Stakeholder-declared, authoritative (CON-034) | Committed with the project inputs |
-
 ## Optional Artifact Triggers
 
 **No OPTIONAL artifact trigger fires for this project.** All six are recorded NOT TRIGGERED, each
