@@ -1268,15 +1268,14 @@ actively violate FR-014 and FR-015, which require a no-connection message rather
 declared targets; nothing has been built, so nothing has been measured.
 
 ## Quality
-
 ### Quality attributes and the tactics that address them
 
 | Attribute | Requirement | Tactic | Component |
 |---|---|---|---|
 | Security | NFR-001, CON-008 | One authentication point, one authorization decision, no anonymous path, no local credential store | COMP-008 |
 | Security | CON-003, CON-022 | Read-only LDAP; no write path to AD exists in the code | COMP-009 |
-| Auditability | NFR-005, CON-013 | Append-only audit tables with legible columns; no read API, so no screen can be built by accident | COMP-007, COMP-010 |
-| Integrity | CON-010, CON-012, CON-013, CON-014 | Invariants enforced in the schema as well as in the transition | COMP-010, COMP-002, COMP-004 |
+| Auditability | NFR-005, CON-013 | Append-only records with legible columns; no read API, so no screen can be built by accident | COMP-007, COMP-010 |
+| Integrity | CON-010, CON-012, CON-013, CON-014 | Invariants enforced in the schema as well as in the transition; the clocking log is append-only so CON-013 holds by construction and CON-012 is enforced on the originals only (ADR-010) | COMP-010, COMP-002, COMP-004 |
 | Reliability | FR-013, AC-005 | Bounded client retry with an idempotency key; the client timestamp is authoritative | COMP-001, COMP-002 |
 | Reliability | FR-014, FR-015 | Degradation signal instead of a cache; nothing to fall back to | COMP-005, COMP-004 |
 | Usability | AC-001, AC-004, USA-01 | One press, a button that reflects current status, a confirmation showing the recorded time | COMP-001 |
@@ -1310,10 +1309,34 @@ measured after launch. R003 is the timing of the human validation gate, carried 
   by signature. Elaboration refines them into `INT-NNN` specifications and sequence diagrams per use
   case.
 - **The schema is a sketch.** Column types and index definitions are indicative; the DatabaseDesigner
-  owns the physical shape in Elaboration.
+  owns the physical shape in Elaboration. ADR-010 fixes the *shape* — append-only with supersession —
+  and the DatabaseDesigner implements it.
 - **Nothing has been built or measured.** Every performance statement is a declared target, and every
   risk-retirement criterion is a plan, not a result.
 - **The stand-ins do not exist yet.** Until they do, no use case is testable and R001 stays open.
+
+### Proof-of-concept plan
+
+No proof of concept is planned, and the reason is a property of the risks rather than a budget
+decision. The Development Case records the Architectural Proof-of-Concept trigger as not fired: it
+requires the Elaboration phase plus a technical risk needing empirical validation of a mechanism.
+
+| Risk | Needs a prototype? | Why not, and what retires it instead |
+|---|---|---|
+| R001 LDAP attribute gaps | No | The mechanism is a read-only LDAP projection, which is not in doubt. What is in doubt is the *data* — whether the attributes are filled across three offices. A prototype cannot answer that; a fixture carrying the empty entries plus a passing search and export can. Retired by test, in the iteration that builds COMP-009 and COMP-005. |
+| R002 Clocking adoption | No | A behavioural risk with no architectural mechanism. Retired by the post-launch adoption reading under BG-003. |
+| R003 Human validation gate timing | No | A scheduling risk owned by the Iteration Plan. Retired by the CON-031 feedback arriving. |
+| R004 Stand-in omits the empty entries | No | Retired by inspecting the fixture, which is a test entry criterion rather than a prototype. |
+| R005 An artifact crosses an exclusion | No | Retired by review against the Vision's exclusion list, every iteration. |
+| R006 Export contract misread | No | The contract is fully specified in FR-004 and INT-03. Retired by a column-by-column test, not by a prototype. |
+| R007 Toolchain gaps | No | An environment concern owned by the Development Case. |
+| R008 Wrong client clock | No | Accepted under CON-023 and mitigated in the UI. No mechanism choice is open. |
+
+**The one thing that would justify a prototype is not a risk on this project.** The append-only
+clocking shape (ADR-010) is the only decision here whose mechanics are non-obvious, and it is
+validated by a schema test — two presses, one correction, then assert that the original row is
+unchanged and that a second original is refused. That is a test in the iteration that builds
+COMP-002, not a prototype, because the mechanism is a unique index and an INSERT.
 
 ## Traceability
 | Element | Traces From | Link Type | Traces To |
