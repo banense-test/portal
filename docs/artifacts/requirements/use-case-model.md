@@ -252,7 +252,6 @@ the five actions NFR-005 names. MECH-04 (directory read over LDAP) is included b
 The include graph is drawn once, in the Supplementary Specification, and is not duplicated here.
 
 ## Use-Case Specifications
-
 ### UC-001 Clock In and Clock Out
 
 | Field | Value |
@@ -627,14 +626,20 @@ pass needs.
 | UC-002 View Own Clocking History | See my own hours for the current month | Employee opens their history | The employee's own clockings for the current month, and no one else's | CON-011, CON-012 |
 | UC-003 View All Employee Clockings | See everyone's clockings | HR opens the clocking view | Every employee's clockings, filterable by employee and date | CON-011, CON-012, MECH-02 |
 | UC-005 Correct or Insert Clocking | Fix a clocking an employee forgot | HR corrects or inserts a clocking | A new audited record; the original is never overwritten or deleted | CON-013, CON-017, MECH-02, MECH-03 |
-| UC-006 Publish News | Announce something to the company | HR submits a news item | The item is visible to employees, with author and timestamp audited | CON-010, CON-018, MECH-02, MECH-03 |
-| UC-007 Edit Published News | Correct a published item | HR edits a published item | The item shows the new content; the edit is audited with who and when | CON-010, CON-014, MECH-02, MECH-03 |
+| UC-006 Publish News | Announce something to the company | HR submits a news item | The item is visible to employees, with author and timestamp audited | CON-010, CON-014, CON-018; news-category list (FR-006), MECH-02, MECH-03 |
+| UC-007 Edit Published News | Correct a published item | HR edits a published item | The item shows the new content; the edit is audited with who and when | CON-010, CON-014, CON-018, MECH-02, MECH-03 |
 | UC-008 Unpublish News | Withdraw an item without destroying it | HR unpublishes an item | The item is hidden from employees and still present in the database | CON-014, CON-019, MECH-02, MECH-03 |
-| UC-010 Read and Filter News | Read the news that matters to me | Employee opens the main page | News sorted by date, filterable by category, with the featured item in a banner; read-only | CON-010, CON-015, CON-018 |
+| UC-010 Read and Filter News | Read the news that matters to me | Employee opens the main page | News sorted by date, filterable by category, with the featured item in a banner; read-only | CON-014; news-category list (FR-010) |
 | UC-012 Assign or Clear Worker Category | Record what kind of worker someone is | HR sets or clears a category from the directory screen | The category is stored as a link and the change is audited; the only write the portal makes about a person | CON-009, CON-015, CON-016, CON-021, MECH-02, MECH-03 |
 | UC-013 Retry Clocking Through a Network Drop | Not lose my clocking to a short outage | The POST fails while the network is down | The press is retried for up to 5 minutes and the press time is preserved; duplicates rejected by idempotency key | CON-036, CON-011 |
 | UC-014 Recognize Directory Unavailable | Know the directory is unreachable rather than see wrong data | The network is unreachable during a directory search | A no-connection message; no stale or partial results | CON-003, CON-020 |
 | UC-015 Recognize News Unavailable | Know the news is unreachable rather than see wrong data | The network is unreachable while reading news | A no-connection message; no stale or partial results | — (nothing is cached, so no rule is at stake) |
+
+**The two closed lists are not interchangeable.** UC-010 filters news by the four **news categories**
+(General, HR, IT, Events) declared by FR-010 and FR-006. The four **worker categories** (Full-time,
+Part-time, Contractor, Intern) declared by CON-009 belong to UC-004 and UC-012 only, and CON-015
+confines them to the directory column and the export column. A worker category appearing in UC-010's
+rules, or in any access decision, is a defect.
 
 **Two detailing notes for the RequirementsSpecifier.**
 
