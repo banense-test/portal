@@ -562,8 +562,12 @@ stop
 **Business rules enforced**
 
 CON-003 (read-only from AD, no local copy), CON-020 (corporate data only, no private personal
-information), CON-021 (category stored as a link, never a duplicate of the employee), CON-015
-(category is a directory column that also filters, and nothing else).
+information), CON-021 (category stored as a link, never a duplicate of the employee).
+
+The worker-category cluster (CON-009, CON-015, CON-016) is **not** bound here. CON-015 confines the
+worker category to the directory column and the export column and forbids it from driving any access
+decision; this use case renders the column from the portal-owned link under CON-021 and never reads
+the category to decide anything. The cluster binds UC-004 and UC-012 only.
 
 ```plantuml
 @startuml
