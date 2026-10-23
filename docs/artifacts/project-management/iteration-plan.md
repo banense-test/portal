@@ -215,54 +215,6 @@ stop
 @enduml
 ```
 
-### Fine plan — Inception iteration 2 (next)
-
-Bounded to iteration 2. Every work item closes a named finding; no work item adds scope. The declared 15 requirements, 5 NFRs and 36 constraints are unchanged, and no declared work is cut or deferred to fit an estimate.
-
-No work item carries a size. One phase has now closed, so a measured actual exists — 6,756,727 tokens and 0:54:19.692 of agent time for iteration 1 — and it is the basis of the forecast below, not a theoretical capacity.
-
-| # | Work item | Owner | Closes | Exit condition |
-|---|---|---|---|---|
-| W1 | Software Architecture Document — choose the pair-recording shape under CON-013, make the unique index match it, add the PreviousValue column, make each Invariants row name the index that enforces it | SoftwareArchitect | `Software Architecture Document#F1` | CON-012 and CON-013 satisfiable together by the drawn schema; the correction record carries the previous value |
-| W2 | Software Architecture Document — split the conflated Traceability rows by link type | SoftwareArchitect | `Software Architecture Document#F2` | One row per link type; `Traces To` empty on Realizes rows |
-| W3 | Use-Case Model — rebind the worker-category cluster to UC-004 and UC-012 only; bind the news-category closed list to UC-010 from FR-010 and FR-006 | SystemAnalyst | `Use-Case Model#F1` | No worker-category rule on UC-010; CON-015 appears only where it applies |
-| W4 | Vision — mark BG-001 not yet measurable with HR as the baseline source; replace the self-referential FR-014 and FR-015 success criteria with observable checks | SystemAnalyst | `Vision#F1` (Reviewer), `Vision#F1` (Business Reviewer) | Every success criterion can fail |
-| W5 | Test Evaluation Summary — cite the observed CI run or state the build status without a run identifier; re-base the coverage plan to the eight-iteration roadmap; move NFR-001's execution to where the behaviour exists; record the iteration 3 empty-attribute execution | TestManager | `Test Evaluation Summary#F1`, `Test Evaluation Summary#F2` | No stale observable SCM state; every execution iteration matches the roadmap |
-| W6 | Iteration Plan — this document: fine plan completeness, R001 retirement restated, AC-004 split, roadmap re-based | ProjectManager | `Iteration Plan#F1` (Reviewer), `Iteration Plan#F1` (Management Reviewer), `Iteration Plan#F2` (Management Reviewer) | Every artifact the iteration produces has a work item; R001's retirement names the test that retires it; AC-004 has a gate at which each half can close |
-| W7 | Review Record — re-review the corrected artifacts and close the ten findings | Reviewer, BusinessReviewer, ManagementReviewer, ReviewCoordinator | — | Ten findings verified and closed by their emitting lenses |
-| G0 | **LCO gate re-presented** | ReviewCoordinator | — | Verdict issued |
-
-```plantuml
-@startgantt
-title Portal - Inception iteration 2 fine plan: corrections and LCO re-presentation
-
-[W1 Correct the schema shape - CON-012 and CON-013] lasts 1 day
-[W1 Correct the schema shape - CON-012 and CON-013] is colored in LightGreen
-
-[W2 Rebind the worker-category rule cluster] lasts 1 day
-[W2 Rebind the worker-category rule cluster] starts at [W1 Correct the schema shape - CON-012 and CON-013]'s end
-[W2 Rebind the worker-category rule cluster] is colored in LightGreen
-
-[W3 Correct the Vision criteria] lasts 1 day
-[W3 Correct the Vision criteria] starts at [W2 Rebind the worker-category rule cluster]'s end
-[W3 Correct the Vision criteria] is colored in LightGreen
-
-[W4 Correct the test position] lasts 1 day
-[W4 Correct the test position] starts at [W3 Correct the Vision criteria]'s end
-[W4 Correct the test position] is colored in LightBlue
-
-[W5 Revise the Iteration Plan] lasts 1 day
-[W5 Revise the Iteration Plan] starts at [W4 Correct the test position]'s end
-[W5 Revise the Iteration Plan] is colored in Orange
-
-[W6 Re-review and close the ten findings] lasts 1 day
-[W6 Re-review and close the ten findings] starts at [W5 Revise the Iteration Plan]'s end
-[W6 Re-review and close the ten findings] is colored in Grey
-
-[G0 LCO gate re-presented] happens at [W6 Re-review and close the ten findings]'s end
-@endgantt
-```
-
 ### Critical chain — Inception iteration 2
 
 Five sequential agent stretches to the gate. The chain is shorter than iteration 1's because the work is correction, not production: no artifact is created, and each stretch edits an artifact that already exists.
