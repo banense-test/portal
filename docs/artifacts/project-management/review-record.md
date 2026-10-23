@@ -784,7 +784,7 @@ These are not mine to close and I do not re-record them. They are stated here be
 | `Supplementary Specification#F1` (Reviewer) | Supplementary Specification | Minor | The constraint grouping disagrees with the declared categories and the table and diagram disagree with each other |
 | `Supplementary Specification#F1` (Business) | Supplementary Specification | Minor | CON-008 is absent from the business-rules register, which presents itself as complete |
 
-**Three of the four open Major findings sit in one artifact.** The Use-Case Model carries the concentration, and two of its three are the same defect class: a rule or a decision another artifact changed, not carried through to the use case that must enforce it. That is the pattern the Development Case's new authoring checks are written to catch, which is why the Development Case revision is not a cosmetic change and why its absence from the fine plan is a Major finding rather than a Minor one.
+**Three of the five open Major findings sit in one artifact.** The Use-Case Model carries the concentration, and two of its three are the same defect class: a rule or a decision another artifact changed, not carried through to the use case that must enforce it. That is the pattern the Development Case's new authoring checks are written to catch, which is why the Development Case revision is not a cosmetic change and why its absence from the fine plan is a Major finding rather than a Minor one.
 
 ```plantuml
 @startuml
