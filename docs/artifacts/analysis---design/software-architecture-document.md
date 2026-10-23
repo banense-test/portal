@@ -3,7 +3,6 @@
 - **Status:** Draft — iteration 2, submitted for review
 - **Milestone Target:** End of Inception (not yet achieved)
 ## Architectural Representation
-
 This document is the 4+1 view model of the Portal, expressed as UML. Each view is a slice cut through
 the same model, illuminating only the elements with system-wide impact. Inception owes a **candidate**
 architecture: the decomposition, the mechanisms and the decisions that would be expensive to reverse.
@@ -15,7 +14,7 @@ Elaboration baselines it against an executable prototype.
 | Process | What runs concurrently, and what happens when something is unreachable? | Activity diagram, Process View | Implementer, TestDesigner |
 | Deployment | Where do the executables run, and what crosses a network boundary? | Deployment diagram, Deployment View | DeploymentManager, STK-003 |
 | Implementation | How is the source organized, and where is the configuration seam? | Project structure table, Implementation View | Implementer, ConfigurationManager |
-| Data | What does the portal own, and what does it only read? | Class diagram, Data View | DatabaseDesigner |
+| Data | What does the portal own, and what does it only read? | Class diagram plus a sequence diagram showing how a pair is recorded and corrected, Data View | DatabaseDesigner |
 | Use-Case | Does the architecture actually carry the significant scenarios? | Four sequence diagrams, Use-Case View | All stakeholders |
 
 **Notation.** UML 2.5. Components are `COMP-NNN`; the only label family this document mints. Use cases
@@ -26,7 +25,6 @@ redefined here. Tables are named, not numbered: `TBL-NNN` belongs to the Databas
 **What is deliberately absent.** No class-level design (Designer, Elaboration), no physical schema
 (DatabaseDesigner), no screen inventory (UserInterfaceDesigner). Inception's architecture is a sketch
 of structure and mechanism, and a sketch that pretends to be a baseline is worse than an honest one.
-
 ## Architectural Goals and Constraints
 ### Architecturally significant requirements
 
