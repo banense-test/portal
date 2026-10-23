@@ -1336,6 +1336,7 @@ requires the Elaboration phase plus a technical risk needing empirical validatio
 | R006 Export contract misread | No | The contract is fully specified in FR-004 and INT-03. Retired by a column-by-column test, not by a prototype. |
 | R007 Toolchain gaps | No | An environment concern owned by the Development Case. |
 | R008 Wrong client clock | No | Accepted under CON-023 and mitigated in the UI. No mechanism choice is open. |
+| R009 Correction process does not converge | No | A process risk with no architectural mechanism. Its mechanism is the Development Case's authoring checks; its retiring event is a review that raises no finding of the "a decision another artifact changed, not carried through" class. A prototype cannot answer it. |
 
 **The one thing that would justify a prototype is not a risk on this project.** The append-only
 clocking shape (ADR-010) is the only decision here whose mechanics are non-obvious, and it is
