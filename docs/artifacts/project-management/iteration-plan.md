@@ -5,21 +5,18 @@
 - **Milestone Target:** End of Inception (not yet achieved)
 
 ## Iteration Objectives
+Inception iteration 1 establishes the requirements baseline and the risk position the rest of the project is planned against. It is a planning iteration, not a build iteration: no code is produced and no acceptance criterion is closed here.
 
-Inception iteration 1 establishes the requirements baseline and the risk position the rest of the
-project is planned against. It is a planning iteration, not a build iteration: no code is produced and
-no acceptance criterion is closed here.
+| # | Objective | Evidence that closes it | Result |
+|---|---|---|---|
+| O1 | Baseline the declared scope as a requirements set the team can build against | Vision, Use-Case Model (15 UCs, one per declared FR), Supplementary Specification (5 NFR, 36 CON) | Met |
+| O2 | Classify every project risk with probability, impact, magnitude, strategy, mitigation and contingency | Risk List — R001 to R008, each with a strategy and a treatment | Met |
+| O3 | Establish the coarse cross-iteration roadmap and the fine plan for this iteration | This document — Plan and Milestones, Resources | Partially met — the roadmap holds; the fine plan omitted two artifacts the iteration produced. Corrected in this revision |
+| O4 | Assess LCO readiness: is the project viable to proceed to Elaboration? | Evaluation Criteria below | Met — the assessment exists; the verdict on it is the ReviewCoordinator's and was **iteration required** |
 
-| # | Objective | Evidence that closes it |
-|---|---|---|
-| O1 | Baseline the declared scope as a requirements set the team can build against | Vision, Use-Case Model (15 UCs, one per declared FR), Supplementary Specification (5 NFR, 36 CON) |
-| O2 | Classify every project risk with probability, impact, magnitude, strategy, mitigation and contingency | Risk List — R001 to R008, each with a strategy and a treatment |
-| O3 | Establish the coarse cross-iteration roadmap and the fine plan for this iteration | This document — Plan and Milestones, Resources |
-| O4 | Assess LCO readiness: is the project viable to proceed to Elaboration? | Evaluation Criteria below |
+**What this iteration does not do.** It does not detail the eleven outline use cases (Elaboration), does not produce the architecture (Elaboration), and does not build the stand-ins (Elaboration). It does not close any acceptance criterion — every AC-NNN is verified by working software, which does not exist yet.
 
-**What this iteration does not do.** It does not detail the eleven outline use cases (Elaboration), does
-not produce the architecture (Elaboration), and does not build the stand-ins (Elaboration). It does not
-close any acceptance criterion — every AC-NNN is verified by working software, which does not exist yet.
+**Iteration 2 objectives.** Correct the ten findings raised at the LCO review and re-present the gate. No scope is added, none is cut. The work items are in Plan and Milestones.
 
 ## Plan and Milestones
 ### Coarse roadmap — cross-iteration
