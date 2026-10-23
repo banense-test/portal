@@ -7,12 +7,12 @@
 - **Milestone Target:** End of Inception (not yet achieved)
 
 ### Business Reviewer lens
-<!-- review: Inception I2 -->
+<!-- review: Inception I3 -->
 
-<!-- review: Inception I2 -->
+<!-- review: Inception I3 -->
 
 - **Phase:** Inception
-- **Status:** Draft — iteration 2, business modeling lens review complete
+- **Status:** Draft — iteration 3, business modeling lens review complete
 - **Milestone Target:** End of Inception (not yet achieved)
 
 ### Management Reviewer lens
