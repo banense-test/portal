@@ -49,30 +49,35 @@ requirement that a single component satisfies locally is design detail.
 For the ProjectManager to plan from. Significance is risk × coverage × criticality, not business
 priority — all fifteen are Must (CON-023 forbids using priority as a scope lever).
 
-The "Design in" column is read off the Iteration Plan's eight-iteration roadmap, in which Elaboration
-is iterations 3 and 4. Ranks 1 to 4 are the four scenarios the Use-Case View draws, and they are
-designed in Elaboration iteration 3; ranks 5 to 10 are designed in Elaboration iteration 4. This is
-the same assignment the Iteration Plan's use-case table carries, so the two artifacts name the same
+The "Design in" column is read off the Iteration Plan's nine-iteration roadmap, in which Elaboration
+is iterations 4 and 5. Ranks 1 to 4 are the four scenarios the Use-Case View draws, and they are
+designed in Elaboration iteration 4; ranks 5 to 10 are designed in Elaboration iteration 5. This is
+the same assignment the Iteration Plan's roadmap table carries, so the two artifacts name the same
 iteration for the same use case.
 
 | Rank | UC | Significance driver | Risk carried | Design in |
 |---|---|---|---|---|
-| 1 | UC-001 Clock In and Clock Out | The client-timestamp and idempotency contract inverts the request model | R008 | Elaboration iteration 3 |
-| 2 | UC-011 Search Employee Directory | The LDAP read and the empty-attribute case | R001, R004 | Elaboration iteration 3 |
-| 3 | UC-004 Export Monthly Clocking Report as CSV | A fixed external contract, High volatility | R006 | Elaboration iteration 3 |
-| 4 | UC-009 Feature or Un-feature News | A system invariant that must hold at the data boundary | — | Elaboration iteration 3 |
-| 5 | UC-012 Assign or Clear Worker Category | The only write about a person; closed value list | R005 | Elaboration iteration 4 |
-| 6 | UC-013 Retry Clocking Through a Network Drop | The bounded retry loop and duplicate rejection | R008 | Elaboration iteration 4 |
-| 7 | UC-005 Correct or Insert Clocking | Immutability plus the audit trail | — | Elaboration iteration 4 |
-| 8 | UC-003, UC-002 | Read paths over the clocking ledger | — | Elaboration iteration 4 |
-| 9 | UC-006, UC-007, UC-008 | The news lifecycle and its audit entries | — | Elaboration iteration 4 |
-| 10 | UC-010, UC-014, UC-015 | Read paths and the two degradation messages | — | Elaboration iteration 4 |
+| 1 | UC-001 Clock In and Clock Out | The client-timestamp and idempotency contract inverts the request model | R008 | Elaboration iteration 4 |
+| 2 | UC-011 Search Employee Directory | The LDAP read and the empty-attribute case | R001, R004 | Elaboration iteration 4 |
+| 3 | UC-004 Export Monthly Clocking Report as CSV | A fixed external contract, High volatility | R006 | Elaboration iteration 4 |
+| 4 | UC-009 Feature or Un-feature News | A system invariant that must hold at the data boundary | — | Elaboration iteration 4 |
+| 5 | UC-012 Assign or Clear Worker Category | The only write about a person; closed value list | R005 | Elaboration iteration 5 |
+| 6 | UC-013 Retry Clocking Through a Network Drop | The bounded retry loop and duplicate rejection | R008 | Elaboration iteration 5 |
+| 7 | UC-005 Correct or Insert Clocking | Immutability plus the audit trail | — | Elaboration iteration 5 |
+| 8 | UC-003, UC-002 | Read paths over the clocking ledger | — | Elaboration iteration 5 |
+| 9 | UC-006, UC-007, UC-008 | The news lifecycle and its audit entries | — | Elaboration iteration 5 |
+| 10 | UC-010, UC-014, UC-015 | Read paths and the two degradation messages | — | Elaboration iteration 5 |
 
 **Why ranks 1 to 4 lead.** They are the four places where a wrong structural decision would be
 expensive to reverse, and each is drawn as a sequence diagram in the Use-Case View. Designing them
 first means the component boundaries, the append-only clocking shape (ADR-010) and the two adapter
 seams are settled before the read paths and the news lifecycle are detailed against them. Ranks 5 to
 10 are then designed against a structure that already exists rather than in parallel with it.
+
+**Ranks 1 to 4 also carry the risk retirement.** Elaboration iteration 4 builds the stand-ins and
+executes the empty-attribute case of UC-011 and UC-004, which is the event that retires R001 — the
+project's highest-magnitude risk. Designing those two use cases in the same iteration is what makes
+that retirement possible before LCA.
 
 ### Constraint conformance
 
