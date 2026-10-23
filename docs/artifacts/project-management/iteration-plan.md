@@ -1,8 +1,7 @@
 ## Document Control
 - **Phase:** Inception
-- **Status:** Draft — iteration 2, submitted for review
+- **Status:** Draft — iteration 3 plan, submitted for review
 - **Milestone Target:** End of Inception (not yet achieved)
-
 ## Iteration Objectives
 Inception iteration 3 is a correction iteration. It creates no artifact and adds no scope: the declared 15 requirements, 5 NFRs, 36 constraints, 3 business goals, 5 acceptance criteria and 2 declared risks are carried exactly as declared. Its work is to close the seven findings the iteration 2 review raised and to re-present the LCO gate.
 
