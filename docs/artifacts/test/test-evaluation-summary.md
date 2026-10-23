@@ -471,3 +471,40 @@ obligation with the iteration in which it is executed.
 This verdict is about the *test position*, not about the product. No product evidence exists, and the
 verdict does not claim any.
 
+### What the verdict rests on
+
+| Basis | Strength |
+|---|---|
+| 15 of 15 use cases assigned a test level and an execution iteration matching the roadmap | Strong — the coverage plan is complete against the declared scope and consistent with the Iteration Plan |
+| 5 of 5 NFRs assigned the measurement method the requirement itself names, in an iteration where the behaviour exists | Strong — no substitute metric was accepted, and NFR-001 is split so neither half is assigned to an iteration that cannot execute it |
+| 5 of 5 acceptance criteria given a point at which they can close, with AC-004 split | Strong — no criterion is assigned to a gate that could never close on it |
+| R001's fixture obligation recorded as an entry criterion with its execution iteration | Strong — R004 is the risk that R001 is retired untested, and the criterion plus the iteration 3 execution is what prevents it |
+| Defect record and CI signal named and read from the SCM at the moment of writing | Adequate — the pipeline is live; it carries no product evidence yet |
+| Test framework selected | **Absent** — carried as an obligation with an owner and an iteration |
+
+### Recommendation
+
+**Proceed to Elaboration.** The test effort has no blocking gap for this phase. The one open item —
+the test framework — is an Elaboration obligation with a named owner and a named iteration, and the
+Development Case already records it as a toolchain gap to close before Implementation intensity rises.
+
+### Obligations this document places on iteration 3
+
+| Obligation | Owner | Why it cannot slip |
+|---|---|---|
+| Select the test framework and confirm the CI glob discovers the test projects | Test Manager | Without it no test case can run, and R007 records the consequence of the gap surviving into Construction |
+| Verify the directory stand-in carries entries with empty job title and empty extension | Test Designer, checked by CodeReviewer | This is the only mechanism that retires R001. A stand-in without them makes every directory test pass while the risk stays live (R004) |
+| Execute UC-011 A1 and UC-004 A5 against the stand-in | Tester | This is the event that retires R001 — a passing directory search and export, not the fixture existing. It is the project's first executed test |
+| Verify the stand-in OIDC claim mapping supplies sAMAccountName and AD group membership | Test Designer | NFR-001a is the half of the authentication requirement that can be verified before any use case is implemented |
+| Design test cases for all 15 use cases | Test Analyst, Test Designer | Iteration 4 is the last point at which design precedes implementation; a contract discovered wrong after implementation is expensive to reverse |
+| Assert the FR-004 export contract column by column, including the empty clock-out row and decimal hours computed from recorded times | Test Designer | R006 records the misread derivation as the failure mode; the contract is consumed outside the portal and a change to it is invisible to the portal's own tests |
+| Assert NFR-005 at the database, not through the application | Test Designer | No audit view screen exists, so a test that reads through the application proves less than the requirement demands |
+
+### What this document does not claim
+
+- It does not claim the Inception milestone is achieved. That verdict belongs to the ReviewCoordinator.
+- It does not claim any acceptance criterion is closed. AC-001 to AC-005 are verified by working
+  software, which does not exist yet.
+- It does not claim the product is tested. It claims the test effort is defined, resourced, decidable
+  and sequenced against the plan it is measured against.
+
