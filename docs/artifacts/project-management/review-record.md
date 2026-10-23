@@ -1379,3 +1379,242 @@ end note
 <!-- review: Inception I2 -->
 
 <!-- review: Inception I2 -->
+
+**Verdict: No-Go.**
+
+The Lifecycle Objectives milestone is **not achieved**. Five of the seven LCO exit criteria are met; two are not, and they are the two the gate exists to test — that the primary use cases are understood well enough to build from, and that the architecture is credible. Five Major findings and two Minor findings are open. No Critical finding is open.
+
+**Stakeholder sanction: REFUSED.** The stakeholder answered No to the sanction question, knowing the verdict and the open defect count. Stakeholder acceptance, verbatim: "No". The instruction accompanying it, verbatim: "Ok let's fix & close all findings".
+
+The refusal is the correct reading of the evidence. The project is not stopped: the remedy is another Inception iteration, which is the designed response to a gate that did not pass (CON-023). No declared scope is cut or deferred, and no role is added to compensate.
+
+#### Four-axis health scorecard
+
+| Axis | Rating | Basis |
+|---|---|---|
+| Scope | Green | 15 FR, 5 NFR, 36 CON, 3 BG and 5 AC carried exactly as declared; 13 exclusions published verbatim as a checkable boundary; zero scope findings in either iteration and zero exclusions crossed |
+| Schedule | Amber | Inception is two iterations rather than one and the gate has not passed. The eight-iteration roadmap is re-based and internally consistent, and the CON-031 human gate is bounded at 14 days of queue time and has not yet elapsed. A second iteration is the designed remedy, not a schedule failure |
+| Cost | Green | No token budget exists and none is set by the team, as CON-030 requires. Iteration 1 measured 6,756,727 tokens and 0:54:19.692 of agent time with 0:00:00 human queue time; the two clocks are reported apart and never added |
+| Quality | **Red** | Five Major findings open, three of them in one artifact. Two LCO exit criteria fail. The defects are correctable and none disputes what a requirement says |
+
+**One red axis is not a green project.** The quality axis is red for a specific and correctable reason: rules and decisions that another artifact changed were not carried through to the use cases that must enforce them. That is the defect class the Development Case's new authoring checks are written to catch, and it is why the Development Case revision is load-bearing rather than cosmetic.
+
+```plantuml
+@startuml
+title Portal - Four-axis project health scorecard at the LCO gate
+
+package "Scope - GREEN" {
+  class "15 FR, 5 NFR, 36 CON, 3 BG, 5 AC\ncarried exactly as declared" as S1
+  class "13 exclusions published verbatim\nas a checkable boundary" as S2
+  class "0 scope findings in either iteration\n0 exclusions crossed" as S3
+}
+
+package "Schedule - AMBER" {
+  class "Inception is 2 iterations, not 1\nThe LCO gate has not passed" as T1
+  class "8-iteration roadmap, re-based\nand internally consistent" as T2
+  class "CON-031 human gate bounded at\n14 days queue time, not yet elapsed" as T3
+}
+
+package "Cost - GREEN" {
+  class "No token budget exists (CON-030)\nand none is set by the team" as C1
+  class "Iteration 1 measured: 6,756,727 tokens,\n0:54:19.692 agent time, 0:00:00 human queue" as C2
+  class "Two clocks reported apart,\nnever added" as C3
+}
+
+package "Quality - RED" {
+  class "5 Major findings open\n0 Critical" as Q1
+  class "3 of the 5 sit in one artifact:\nthe Use-Case Model" as Q2
+  class "2 LCO exit criteria fail:\nuse-case fidelity, architecture credibility" as Q3
+}
+
+package "Verdict" {
+  class "No-Go\nOne red axis is not a green project" as V1
+}
+
+S1 --> V1
+S2 --> V1
+S3 --> V1
+T1 --> V1
+T2 --> V1
+T3 --> V1
+C1 --> V1
+C2 --> V1
+C3 --> V1
+Q1 --> V1
+Q2 --> V1
+Q3 --> V1
+
+note bottom of Q3
+  The red axis is quality, and it is red for a
+  specific and correctable reason: rules and
+  decisions that another artifact changed were
+  not carried through to the use cases that
+  must enforce them. No finding disputes what
+  a requirement says.
+end note
+
+note bottom of T1
+  Amber, not red. A second Inception iteration
+  is the designed remedy for a gate that did
+  not pass (CON-023), not a schedule failure.
+end note
+@enduml
+```
+
+#### Project health state
+
+The project sits in the **No-Go** state: an LCO criterion fails, the sanction is not granted, and the remedy is another iteration. It is not in the Stopped state — the stakeholder refused the sanction, not the project, and instructed that the findings be fixed and closed.
+
+```plantuml
+@startuml
+title Portal - Project health state machine at the LCO gate
+
+[*] --> AtRisk
+
+state Healthy {
+  Healthy : All LCO criteria met
+  Healthy : 0 open Major findings
+  Healthy : Sanction available
+}
+
+state AtRisk {
+  AtRisk : Criteria met but defects open
+  AtRisk : Conditional sanction possible
+}
+
+state NoGo {
+  NoGo : An LCO criterion fails
+  NoGo : Sanction not granted
+  NoGo : Remedy is another iteration
+}
+
+state Stopped {
+  Stopped : No further iteration
+}
+
+Healthy --> AtRisk : a Major finding opens\nagainst a baseline artifact
+AtRisk --> Healthy : every Major finding closed\nand re-verified by its lens
+AtRisk --> NoGo : a Major finding survives\nthe iteration that was to close it
+NoGo --> AtRisk : the defect is corrected\nand re-verified
+NoGo --> Stopped : the stakeholder\nwithdraws the project
+
+note right of NoGo
+  Current state, Inception iteration 2.
+  Two LCO criteria fail on five open
+  Major findings. The project is not
+  stopped: the remedy is another
+  iteration, never a scope cut (CON-023).
+end note
+@enduml
+```
+
+#### Risk retirement trend
+
+Zero of eight risks is retired by evidence at this gate, and that is the correct reading rather than a failure: Inception builds nothing, so no risk can be retired by a passing test. What the gate checks is that every risk names the event that retires it and that the plan does not claim retirement it has not earned. Both now hold — the second was `Iteration Plan#F1` (Management) and it is closed.
+
+R001, the highest-magnitude risk at exposure 9, has a flat trend with no evidence yet. Its retiring event is named and sequenced: the empty-attribute case of UC-011 and UC-004 passing against the stand-in in Elaboration iteration 3. R002 and R008 are open by their nature — one a post-launch adoption measure, the other accepted under CON-023 and mitigated rather than retired.
+
+```plantuml
+@startuml
+title Portal - Risk retirement trend at the LCO gate, iteration 2
+
+package "High - exposure 9" {
+  class "R001 AD attribute gaps\nP=3 I=3\nTrend: FLAT - mechanism planned,\nno evidence yet\nRetiring event: UC-011 A1 and UC-004 A5\npassing in Elaboration iteration 3" as R001
+}
+
+package "Significant - exposure 6" {
+  class "R002 Clocking adoption\nP=3 I=2\nTrend: FLAT - post-launch measure\nRetiring event: BG-003 reading, STK-001" as R002
+  class "R003 Human gate exceeds 14 days\nP=2 I=3\nTrend: NEW - gate not yet elapsed\nRetiring event: CON-031 feedback received" as R003
+  class "R004 Stand-in omits empty entries\nP=2 I=3\nTrend: NEW - fixture not built\nRetiring event: CodeReviewer fixture inspection" as R004
+  class "R005 Artifact crosses an exclusion\nP=2 I=3\nTrend: STABLE - 0 crossings found\nRetiring event: every review, every artifact" as R005
+}
+
+package "Moderate - exposure 4" {
+  class "R006 Export contract misread\nP=2 I=2\nTrend: NEW - contract not built\nRetiring event: column-by-column test" as R006
+  class "R007 Toolchain gaps\nP=2 I=2\nTrend: NEW - 4 gaps open\nRetiring event: gaps closed before Construction" as R007
+  class "R008 Wrong client clock\nP=2 I=2\nTrend: ACCEPTED under CON-023\nRetiring event: none - mitigated, not retired" as R008
+}
+
+package "Retirement evidence at this gate" {
+  class "Risks retired by evidence: 0 of 8" as E0
+  class "Risks with a named retiring event: 8 of 8" as E1
+  class "Retiring event is a passing test or an\nobserved reading: 6 of 8" as E2
+}
+
+R001 --> E0
+R002 --> E0
+R003 --> E0
+R004 --> E0
+R005 --> E0
+R006 --> E0
+R007 --> E0
+R008 --> E0
+
+note bottom of E0
+  Zero retired is the correct reading at LCO:
+  Inception builds nothing. What the gate
+  checks is that every risk names the event
+  that retires it, and that the plan does not
+  claim retirement it has not earned. Both now
+  hold - the iteration-1 defect was the second,
+  and it is closed.
+end note
+@enduml
+```
+
+#### Conditions for the next LCO presentation
+
+The gate re-opens when all seven actions in Resolutions and Actions are closed and re-verified by their emitting lenses. The conditions are stated as outcomes, not as activities, so the next review can check them:
+
+1. UC-001's postcondition and its button logic describe the same clocking shape, and that shape is ADR-010's append-only event log. `Use-Case Model#F2` (Reviewer) and `Use-Case Model#F1` (Business) both close on this one revision.
+2. CON-015 reads the same way in the Use-Case Model and the Software Architecture Document, and UC-011's flows contain the filter the rule declares. `Use-Case Model#F2` (Business) closes on this.
+3. The Software Architecture Document's design iterations match the Iteration Plan's roadmap. `Software Architecture Document#F3` closes on this.
+4. The Iteration Plan's fine plan and its exit criterion E1 agree about the Development Case. `Iteration Plan#F3` closes on this.
+5. The Supplementary Specification's constraint grouping is internally consistent and its business-rules register is complete or states its own scope. Both Minor findings close on this.
+
+**No condition requires new scope, a new artifact, or a new role.** Every one is a correction to an artifact that already exists, which is why the next iteration is a correction iteration and not a re-plan.
+
+#### Review and sanction sequence
+
+```plantuml
+@startuml
+title Portal - LCO review and sanction sequence, Inception iteration 2
+
+|Management Reviewer|
+start
+:Load the planning and vision artifacts;
+:Reconcile the two prior findings of this lens;
+note right
+  Iteration Plan#F1 and #F2.
+  Both verified against the evidence
+  chain, then closed.
+end note
+:Assess the seven LCO exit criteria;
+:Consult the stakeholder;
+
+|Stakeholder - STK-001|
+:The sanction question carries the verdict
+and every open Major defect;
+:Answers No;
+
+|Management Reviewer|
+:Record "Stakeholder sanction: REFUSED";
+:Record the instruction verbatim;
+:Record the new finding of this lens;
+:Issue the verdict - No-Go;
+
+|ReviewCoordinator|
+:LCO gate not passed;
+:Iteration required;
+
+|ProjectManager|
+:Author the Iteration Assessment
+given the verdict;
+:Plan the next Inception iteration;
+note right
+  The remedy is another iteration.
+  Never a scope cut (CON-023).
+end note
+stop
+@enduml
+```
