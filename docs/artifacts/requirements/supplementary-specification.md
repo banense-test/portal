@@ -5,7 +5,6 @@
 - **Milestone Target:** End of Inception (not yet achieved)
 
 ## Functionality
-
 ### Authenticated access — the portal-wide mechanism
 
 NFR-001 is not a feature of any single use case. Every portal function requires an authenticated
@@ -17,7 +16,7 @@ as a mechanism and included by every use case, never modelled as a use case of i
 |---|---|---|
 | MECH-01 | Every portal function requires an authenticated corporate identity. The user signs in with their AD credentials through the existing Keycloak OIDC client. The session supplies sAMAccountName and AD group membership | NFR-001, CON-002, CON-004 |
 | MECH-02 | Authorization has exactly two levels from AD group membership: members of the HR AD group publish, edit and unpublish news and manage worker categories; everyone else is an employee with read access to the directory and news plus their own clockings | CON-008 |
-| MECH-03 | The audit trail is written to the database for every audited action (see Reliability) | NFR-005, CON-013 |
+| MECH-03 | The audit trail is written to the database for the five actions NFR-005 names (see Reliability) | NFR-005, CON-013 |
 | MECH-04 | Directory attributes are read from Active Directory over LDAP, read-only, with no local copy | CON-003, CON-021 |
 
 ```plantuml
@@ -84,12 +83,10 @@ UC008 ..> M02 : <<include>>
 UC009 ..> M02 : <<include>>
 UC012 ..> M02 : <<include>>
 
-UC001 ..> M03 : <<include>>
 UC005 ..> M03 : <<include>>
 UC006 ..> M03 : <<include>>
 UC007 ..> M03 : <<include>>
 UC008 ..> M03 : <<include>>
-UC009 ..> M03 : <<include>>
 UC012 ..> M03 : <<include>>
 
 UC004 ..> M04 : <<include>>
@@ -100,6 +97,21 @@ note bottom of M01
   They deliver no observable value to an actor
   on their own, so they are never modelled as
   actor goals (scope guard, rule 7).
+end note
+
+note bottom of M03
+  NFR-005 names five audited actions: news
+  publish, edit and unpublish; worker category
+  change; clocking correction or insertion.
+  UC-001 is deliberately absent - the employee's
+  own clocking is the fact itself, not a change
+  to a fact.
+end note
+
+note right of UC010
+  UC-013, UC-014 and UC-015 are extensions of
+  UC-001, UC-011 and UC-010 and inherit their
+  includes. They are not drawn here.
 end note
 @enduml
 ```
