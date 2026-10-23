@@ -7,16 +7,18 @@ Inception iteration 3 is a correction iteration. It creates no artifact and adds
 
 | # | Objective | Evidence that closes it | State |
 |---|---|---|---|
-| O1 | Close every finding the iteration 2 review raised, in every section each finding names | Plan and Milestones — fine plan W1–W6; the Review Record's consolidated ledger | Open — seven findings, four owners. Assessed at close |
-| O2 | Re-base every artifact that names an iteration number onto the nine-iteration roadmap | Plan and Milestones — coarse roadmap; fine plan W4 and W10 | Open — the Software Architecture Document and the Test Evaluation Summary both name Elaboration iterations 3 and 4, which this roadmap moves to 4 and 5. Assessed at close |
-| O3 | Make the fine plan account for every artifact the iteration produces, and the role profile follow the work items | Plan and Milestones — fine plan W1–W11; Resources — agent role profile | In place — eleven work items, each with an owner and an exit condition; every role that produces is Active in its iteration. Assessed at close |
+| O1 | Close every finding the iteration 2 review raised, in every section each finding names | Plan and Milestones — fine plan W1–W8; the Review Record's consolidated ledger | Open — seven findings, four owners. Assessed at close |
+| O2 | Re-base every artifact that names an iteration number onto the nine-iteration roadmap | Plan and Milestones — coarse roadmap; fine plan W4, W5 and W11 | Open — the Software Architecture Document and the Test Evaluation Summary both name Elaboration iterations 3 and 4, which this roadmap moves to 4 and 5. Assessed at close |
+| O3 | Make the fine plan account for every artifact the iteration produces, and the role profile follow the work items | Plan and Milestones — fine plan W1–W12; Resources — agent role profile | In place — twelve work items, each with an owner and an exit condition; every role that produces is Active in its iteration and every Active role owns a work item. Assessed at close |
 | O4 | State each risk's retirement against the event that retires it, never against the mechanism that makes it retirable | Plan and Milestones — Risk retirement sequencing | In place — R001 is retired in iteration 4 by executing the empty-attribute case of UC-011 and UC-004, not by building the fixture. Assessed at close |
 | O5 | Give every declared acceptance criterion a point at which it can close | Evaluation Criteria — Layer A | In place — AC-004 is split into a learnability check at iteration 6 and a post-Project-Acceptance population measure owned by STK-001. Assessed at close |
-| O6 | Re-present the LCO gate | Evaluation Criteria — LCO readiness assessment | Open — the verdict is the ReviewCoordinator's and is not issued in this document |
+| O6 | Resolve every suspect trace the UC-001 and UC-011 changes raised against the Risk List | Risk List — Traceability; fine plan W10 | In place — five suspect traces reviewed against the changed use cases and cleared, each with the reason the dependency still holds. Assessed at close |
+| O7 | Re-present the LCO gate | Evaluation Criteria — LCO readiness assessment | Open — the verdict is the ReviewCoordinator's and is not issued in this document |
 
 **Iteration 2 outcome, which this iteration is built on.** Iteration 2 corrected all ten iteration-1 findings and the emitting lenses closed all ten. It did not pass the gate: the corrections themselves produced seven new findings — 0 Critical, 5 Major, 2 Minor — and the stakeholder refused the sanction a second time with the instruction that every finding be corrected and closed. Three of the five Major findings sit in one artifact, the Use-Case Model, and two of those three are the same defect class: a rule or a decision another artifact changed, not carried through to the use case that must enforce it.
 
 **What this iteration does not do.** It does not detail the eleven outline use cases, does not produce the architecture baseline, and does not build the stand-ins — all Elaboration work. It closes no acceptance criterion: every AC-NNN is verified by working software, which does not exist yet.
+
 ## Plan and Milestones
 ### Coarse roadmap — cross-iteration
 
