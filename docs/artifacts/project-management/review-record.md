@@ -16,10 +16,10 @@
 - **Milestone Target:** End of Inception (not yet achieved)
 
 ### Management Reviewer lens
-<!-- review: Inception I1 -->
+<!-- review: Inception I2 -->
 
 - **Phase:** Inception
-- **Status:** Draft — iteration 1, management lens review complete; LCO sanction refused
+- **Status:** Draft — iteration 2, LCO review held, sanction refused
 - **Milestone Target:** End of Inception (not yet achieved)
 
 ### Review Coordinator lens
