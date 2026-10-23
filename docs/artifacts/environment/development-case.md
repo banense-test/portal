@@ -192,25 +192,8 @@ optional-generator roles read one source of truth.
 | User-Interface Prototype | NOT TRIGGERED | The stakeholder has already supplied the authoritative UI design at `docs/inputs/employee-portal-design.html`, mandatory for the visual layer per CON-034. A prototype exists to obtain validation the project already holds; building a second one would create a competing source of truth |
 | Test Plan | NOT TRIGGERED | No formal delivery, regulatory audit or contractual test reporting. NFR-005 states no external compliance regime applies and no retention period is mandated. Per-iteration testing scope is defined in the Iteration Plan |
 ## Roles and Ownership
-
-**The 25-role roster is inherited unchanged. Primary ownership is per the service-side allowlist and
-is not reassigned.** This section records only which roles are active this cycle and what each
-contributes.
-
-**Active roles (22).** All roles in Requirements, Analysis and Design, Implementation, Test,
-Deployment, Configuration and Change Management, Project Management, Environment, and Review and
-Documentation receive assignment.
-
-**Idle roles (3) — trigger not fired, not removed from the roster:**
-
-| Role | Why idle |
-|---|---|
-| BusinessProcessAnalyst | Business Modeling is inactive — no business process, business actor or business use case in the declared scope |
-| BusinessReviewer | Same — there is no business model to review |
-| CapsuleDesigner | No real-time capsule: no hard deadline, no concurrent state machine, no timing invariant |
-
-**Project contribution notes.** Three contribution patterns are specific to this project and are
-worth stating because they are where the process most often goes wrong:
+**Project contribution notes.** Four contribution patterns are specific to this project and are worth
+stating because they are where the process most often goes wrong:
 
 - **The Software Architect owns the constraint-conformance argument.** With 36 constraints, the SAD
   is where each architectural constraint (CON-001, CON-002, CON-021, CON-025, CON-026, CON-027,
@@ -222,101 +205,13 @@ worth stating because they are where the process most often goes wrong:
 - **The TechnicalWriter must not document what the scope excludes.** No self-service correction
   screen (CON-017), no audit view screen (NFR-005), no news archive screen, no permission
   administration screen (CON-008). User Documentation that describes an excluded screen is a defect.
-
-```plantuml
-@startuml
-title Portal - Roles and the CORE artifacts they contribute to
-
-package "Requirements" {
-  class "SystemAnalyst" as SA
-  class "RequirementsSpecifier" as RS
-  class "Vision" as VIS <<artifact>>
-  class "Use-Case Model" as UCM <<artifact>>
-  class "Supplementary Specification" as SS <<artifact>>
-}
-package "Analysis and Design" {
-  class "SoftwareArchitect" as SWA
-  class "Designer" as DES
-  class "UserInterfaceDesigner" as UID
-  class "DatabaseDesigner" as DBD
-  class "Software Architecture Document" as SAD <<artifact>>
-  class "Design Model" as DM <<artifact>>
-}
-package "Implementation" {
-  class "Implementer" as IMP
-  class "Integrator" as INT
-  class "Implementation Model" as IM <<artifact>>
-}
-package "Test" {
-  class "TestManager" as TM
-  class "TestAnalyst" as TA
-  class "TestDesigner" as TD
-  class "Tester" as TE
-  class "Test Case" as TC <<artifact>>
-  class "Test Evaluation Summary" as TES <<artifact>>
-}
-package "Deployment" {
-  class "DeploymentManager" as DEP
-  class "Release Notes" as RN <<artifact>>
-}
-package "Project Management" {
-  class "ProjectManager" as PM
-  class "Iteration Plan" as IP <<artifact>>
-  class "Iteration Assessment" as IA <<artifact>>
-  class "Risk List" as RL <<artifact>>
-}
-package "CM and Change Management" {
-  class "ConfigurationManager" as CMG
-  class "ChangeControlManager" as CCM
-  class "Change Request" as CR <<artifact>>
-}
-package "Review and Documentation" {
-  class "Reviewer" as REV
-  class "ReviewCoordinator" as RC
-  class "ManagementReviewer" as MR
-  class "CodeReviewer" as CRV
-  class "TechnicalWriter" as TW
-  class "Review Record" as RR <<artifact>>
-  class "User Documentation" as UD <<artifact>>
-}
-package "Environment" {
-  class "ProcessEngineer" as PE
-  class "Development Case" as DC <<artifact>>
-}
-package "Idle - trigger not fired" {
-  class "BusinessProcessAnalyst" as BPA
-  class "BusinessReviewer" as BRV
-  class "CapsuleDesigner" as CAP
-}
-
-SA --> VIS
-SA --> UCM
-RS --> SS
-SWA --> SAD
-DES --> DM
-UID --> DM
-DBD --> DM
-IMP --> IM
-INT --> IM
-TM --> TES
-TA --> TC
-TD --> TC
-TE --> TC
-DEP --> RN
-PM --> IP
-PM --> IA
-PM --> RL
-CMG --> IM
-CCM --> CR
-REV --> RR
-RC --> RR
-MR --> RR
-CRV --> RR
-TW --> UD
-PE --> DC
-@enduml
-```
-
+- **The Process Engineer owns R009 and the authoring-check gate.** R009 is the risk that the
+  correction process does not converge. Its mechanism is inside the team's control — the authoring
+  checks and the cross-artifact sweep — so its strategy is Avoid and no CON-023 grant is cited. The
+  Process Engineer verifies the checks against each iteration's findings and classifies each as caught
+  or not caught; the verdict is in Guidelines and Procedures. If a third generation of a class C5 to
+  C8 now cover appears, the checks are ineffective and the reading to escalate is that the process
+  needs correction, not that a fourth pass is required.
 ## Guidelines and Procedures
 ### Measurement policy
 
