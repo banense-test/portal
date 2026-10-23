@@ -164,6 +164,15 @@ document.
 - No permission model beyond the two AD-group levels; no role matrix, no permission administration screen, no rule that reads worker category to decide what somebody may do.
 - No rule that features a news item by itself — no "most recent", no "most read", no expiry date on the banner.
 
+### Licensing
+
+No licensing constraint is declared. The stakeholder named no commercial component, no licence
+entitlement and no procurement step, and the declared stack is .NET 10 (CON-025), Razor Pages
+(CON-026) and PostgreSQL 18 (CON-027) on the estate Infrastructure already operates. The team does
+not adopt a licence policy on the stakeholder's behalf, and no licence audit is scoped. If a
+dependency is later proposed whose licence would bind Cuba Corp, that is a Change Request, not a
+team decision.
+
 ## Usability
 
 | ID | Requirement | Source | Note |
