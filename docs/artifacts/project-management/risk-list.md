@@ -267,7 +267,6 @@ end note
 
 **Every `Accept` cites the CON-023 grant and its condition.** R001, R002, R003 and R008 are accepted under it. R004, R005, R006, R007 and R009 are inside the team's control, so their strategy is Avoid and no acceptance is claimed for them. No risk in this register is accepted on the Project Manager's own authority.
 ## Traceability
-
 | Element | Traces From | Link Type | Traces To |
 |---|---|---|---|
 | R001 | — | DependsOn | UC-011, UC-004 |
@@ -278,3 +277,6 @@ end note
 | R006 | — | DependsOn | UC-004 |
 | R007 | — | DependsOn | — |
 | R008 | — | DependsOn | UC-001 |
+| R009 | — | DependsOn | — |
+
+**R007 and R009 carry no trace edge, and that is correct.** Both are process risks against the iteration sequence itself — the toolchain gaps and the correction process's convergence — and neither threatens a labelled element. A risk traced to an element it does not threaten would be a false edge; the register carries them with their treatments and no link.
