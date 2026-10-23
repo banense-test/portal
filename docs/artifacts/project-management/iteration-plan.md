@@ -40,7 +40,7 @@ Iteration 1 did not close the LCO milestone: the ReviewCoordinator's verdict was
 
 **Why eight, and why this distribution.**
 
-- **Inception is two iterations, not one.** The first iteration produced a complete and correctly shaped requirements baseline — no phantom use case, no exclusion crossed, no invented identifier — and still did not pass the gate, because the plan that must carry the project through Elaboration did not survive its own evidence chain. The second iteration corrects ten findings and re-presents the gate. It adds no scope: the declared 15 requirements, 5 NFRs and 36 constraints are unchanged.
+- **Inception is two iterations, not one.** The first iteration produced a complete and correctly shaped requirements baseline — no phantom use case, no exclusion crossed, no invented identifier — and still did not pass the gate, because the plan that must carry the project through Elaboration did not survive its own evidence chain. The second iteration corrects ten findings and re-presents the gate. It adds no scope.
 - **Elaboration is two iterations.** This is where the project's real risk sits: R001 (LDAP attribute gaps), the FR-004 export contract and the CON-009 category list are the three High-volatility elements, and CON-031 makes the stand-ins the team's entire integration surface. Iteration 3 builds the architecture and the stand-ins and retires R001; iteration 4 absorbs the CON-031 human feedback before LCA.
 - **Construction is three iterations, not the profile's ~4.5.** The 15 use cases divide cleanly into three capability areas — clocking, news, directory — each a mini-project with its own analysis, design, implementation and test. Construction carries no discovery: every requirement is fully specified by a constraint. A fourth iteration would add coordination overhead without retiring risk.
 - **Transition is one iteration.** Internal deployment on an estate Infrastructure already operates (CON-032), no data migration (CON-033), and AC-004 requires the portal be learnable with no training — so there is no training rollout to schedule.
@@ -104,7 +104,7 @@ title Portal - Iteration sequence and human gates (unanchored)
 
 ### Fine plan — Inception iteration 1 (closed)
 
-Bounded to iteration 1, corrected to account for the work the iteration actually did. Nine artifacts were produced, not seven: the Software Architecture Document and the Test Evaluation Summary were produced without a work item covering them, and their roles were marked idle in the role profile. Both are corrected here.
+Bounded to iteration 1, and it accounts for the work the iteration actually did. Nine artifacts were produced and each has a work item. Analysis and Design is Medium and Test is Low in Inception, so the Software Architecture Document and the Test Evaluation Summary are on the plan and on the critical chain, and their roles are Active.
 
 No work item carries a size. No phase had closed when this plan was written, so no measured actual existed and no forecast was invented.
 
@@ -187,26 +187,20 @@ note right: W2, W3, W4 - delivered
 
 |Analysis and Design|
 :Software Architecture Document;
-note right
-  Delivered, but no work item
-  covered it. Iteration Plan#F1.
-end note
+note right: W5 - delivered
 
 |Test|
 :Test Evaluation Summary;
-note right
-  Delivered, but no work item
-  covered it. Iteration Plan#F1.
-end note
+note right: W6 - delivered
 
 |Project Management|
 :Risk List - R001 to R008;
 :Iteration Plan - roadmap and fine plan;
-note right: W5, W6 - delivered
+note right: W7, W8 - delivered
 
 |Review|
 :Review Record - 10 findings;
-note right: W7 - delivered
+note right: W9 - delivered
 
 |ReviewCoordinator|
 :LCO verdict - iteration required;
@@ -271,32 +265,34 @@ title Portal - Inception iteration 2 fine plan: corrections and LCO re-presentat
 
 ### Critical chain — Inception iteration 2
 
-Four sequential agent stretches to the gate. The chain is shorter than iteration 1's because the work is correction, not production: no artifact is created, and each stretch edits an artifact that already exists.
+Five sequential agent stretches to the gate. The chain is shorter than iteration 1's because the work is correction, not production: no artifact is created, and each stretch edits an artifact that already exists.
 
 ```plantuml
 @startuml
-title Portal - Inception iteration 2 critical chain: sequential agent stretches to the LCO gate
+title Portal - Inception iteration 2 critical chain: five sequential agent stretches to the LCO gate
 
 |Analysis and Design|
 start
-:Software Architecture Document - schema shape corrected;
+:W1 Software Architecture Document - pair-recording shape under CON-013;
 note right
   CON-012 and CON-013 made satisfiable
   together; PreviousValue column added;
   each invariant names its index.
 end note
+:W2 Software Architecture Document - traceability rows split by link type;
 
 |Requirements|
-:Use-Case Model - rule cluster rebound;
-:Vision - criteria made measurable;
+:W3 Use-Case Model - worker-category cluster rebound;
+:W4 Vision - BG-001 and the FR-014 / FR-015 criteria made measurable;
 
 |Test|
-:Test Evaluation Summary - CI citation and NFR-001;
+:W5 Test Evaluation Summary - CI citation, coverage re-base, NFR-001;
 
 |Project Management|
-:Iteration Plan - fine plan, R001 retirement, AC-004 split;
+:W6 Iteration Plan - fine plan, R001 retirement, AC-004 split;
+:W7 Risk List - four suspect traces resolved;
 note right
-  No spend figure is annotated on any stretch.
+  No stretch carries a spend annotation.
   One phase has closed, so a measured actual
   exists: 6,756,727 tokens and 0:54:19.692
   agent time for iteration 1. The iteration 2
@@ -304,14 +300,14 @@ note right
 end note
 
 |Review|
-:Review Record - ten findings verified and closed;
+:W8 Review Record - ten findings verified and closed;
 
 |ReviewCoordinator|
 :LCO gate re-presented;
 note right
-  The verdict is the gate.
-  The Project Manager records the
-  Iteration Assessment given that verdict.
+  The verdict is the gate. The Iteration
+  Assessment (W9) is recorded after it,
+  given it, and does not gate the phase.
 end note
 stop
 @enduml
@@ -335,6 +331,68 @@ R001 is the project's highest-magnitude risk (P=3, I=3, exposure=9). Its mechani
 **R001 is retired in Elaboration iteration 3, before LCA.** The empty-attribute case of UC-011 and UC-004 needs no production code beyond the directory read path and the export derivation, so it is the project's first executed test and it runs in the iteration that builds the stand-ins. The full use-case tests for UC-004 and UC-011 remain in Construction with the rest of their capability areas. This is the sequencing the Test Evaluation Summary's coverage plan follows.
 
 **What this means for the LCA gate.** LCA is granted with R001 already retired and R003, R004, R006 and R007 retired or closed. R002 and R008 remain open by their nature — one is a post-launch adoption measure, the other is accepted under CON-023 — and the LCA gate records both as open with their treatments, not as retired.
+
+### Fine plan — Inception iteration 2 (current)
+
+Bounded to iteration 2. Every work item closes a named finding or resolves a named suspect trace; no work item adds scope. The declared 15 requirements, 5 NFRs, 36 constraints, 3 business goals, 5 acceptance criteria and 2 declared risks are unchanged, and no declared work is cut or deferred to fit an estimate.
+
+No work item carries a size. One phase has now closed, so a measured actual exists — 6,756,727 tokens and 0:54:19.692 of agent time for iteration 1 — and it is the basis of the forecast below, not a theoretical capacity.
+
+| # | Work item | Owner | Closes | Exit condition |
+|---|---|---|---|---|
+| W1 | Software Architecture Document — choose the pair-recording shape under CON-013, make the unique index match it, add the PreviousValue column, make each Invariants row name the index that enforces it | SoftwareArchitect | `Software Architecture Document#F1` | CON-012 and CON-013 satisfiable together by the drawn schema; the correction record carries the previous value |
+| W2 | Software Architecture Document — split the conflated Traceability rows by link type | SoftwareArchitect | `Software Architecture Document#F2` | One row per link type; `Traces To` empty on Realizes rows |
+| W3 | Use-Case Model — rebind the worker-category cluster to UC-004 and UC-012 only; bind the news-category closed list to UC-010 from FR-010 and FR-006 | SystemAnalyst | `Use-Case Model#F1` | No worker-category rule on UC-010; CON-015 appears only where it applies |
+| W4 | Vision — mark BG-001 not yet measurable with HR as the baseline source; replace the self-referential FR-014 and FR-015 success criteria with observable checks | SystemAnalyst | `Vision#F1` (Reviewer), `Vision#F1` (Business Reviewer) | Every success criterion can fail |
+| W5 | Test Evaluation Summary — cite the observed CI run or state the build status without a run identifier; re-base the coverage plan to the eight-iteration roadmap; move NFR-001's execution to where the behaviour exists; record the iteration 3 empty-attribute execution | TestManager | `Test Evaluation Summary#F1`, `Test Evaluation Summary#F2` | No stale observable SCM state; every execution iteration matches the roadmap |
+| W6 | Iteration Plan — this document: fine plan completeness, R001 retirement restated, AC-004 split, roadmap re-based | ProjectManager | `Iteration Plan#F1` (Reviewer), `Iteration Plan#F1` (Management Reviewer), `Iteration Plan#F2` (Management Reviewer) | Every artifact the iteration produces has a work item; R001's retirement names the test that retires it; AC-004 has a gate at which each half can close |
+| W7 | Risk List — re-verify the four suspect traces against the changed UC-010 and UC-011 and clear or evolve each | ProjectManager | — | No suspect trace left open against the Risk List |
+| W8 | Review Record — re-review the corrected artifacts and close the ten findings | Reviewer, BusinessReviewer, ManagementReviewer, ReviewCoordinator | — | Ten findings verified and closed by their emitting lenses |
+| G0 | **LCO gate re-presented** | ReviewCoordinator | — | Verdict issued |
+| W9 | Iteration Assessment — record the iteration 2 outcome given the verdict | ProjectManager | — | Assessment persisted; it does not gate the phase |
+
+```plantuml
+@startgantt
+title Portal - Inception iteration 2 fine plan: corrections and LCO re-presentation
+
+[W1 SAD - pair-recording shape under CON-013] lasts 1 day
+[W1 SAD - pair-recording shape under CON-013] is colored in LightBlue
+
+[W2 SAD - traceability rows split by link type] lasts 1 day
+[W2 SAD - traceability rows split by link type] starts at [W1 SAD - pair-recording shape under CON-013]'s end
+[W2 SAD - traceability rows split by link type] is colored in LightBlue
+
+[W3 Use-Case Model - rule cluster rebound] lasts 1 day
+[W3 Use-Case Model - rule cluster rebound] starts at [W2 SAD - traceability rows split by link type]'s end
+[W3 Use-Case Model - rule cluster rebound] is colored in LightGreen
+
+[W4 Vision - criteria made measurable] lasts 1 day
+[W4 Vision - criteria made measurable] starts at [W3 Use-Case Model - rule cluster rebound]'s end
+[W4 Vision - criteria made measurable] is colored in LightGreen
+
+[W5 Test Evaluation Summary - CI citation and NFR-001] lasts 1 day
+[W5 Test Evaluation Summary - CI citation and NFR-001] starts at [W4 Vision - criteria made measurable]'s end
+[W5 Test Evaluation Summary - CI citation and NFR-001] is colored in LightBlue
+
+[W6 Iteration Plan - fine plan, R001, AC-004] lasts 1 day
+[W6 Iteration Plan - fine plan, R001, AC-004] starts at [W5 Test Evaluation Summary - CI citation and NFR-001]'s end
+[W6 Iteration Plan - fine plan, R001, AC-004] is colored in Orange
+
+[W7 Risk List - suspect traces resolved] lasts 1 day
+[W7 Risk List - suspect traces resolved] starts at [W6 Iteration Plan - fine plan, R001, AC-004]'s end
+[W7 Risk List - suspect traces resolved] is colored in Orange
+
+[W8 Review Record - ten findings verified] lasts 1 day
+[W8 Review Record - ten findings verified] starts at [W7 Risk List - suspect traces resolved]'s end
+[W8 Review Record - ten findings verified] is colored in Grey
+
+[G0 LCO gate re-presented] happens at [W8 Review Record - ten findings verified]'s end
+
+[W9 Iteration Assessment - iteration 2 outcome] lasts 1 day
+[W9 Iteration Assessment - iteration 2 outcome] starts at [W8 Review Record - ten findings verified]'s end
+[W9 Iteration Assessment - iteration 2 outcome] is colored in Orange
+@endgantt
+```
 
 ## Resources
 The 25-role roster is inherited unchanged from the Development Case. Three roles are idle by trigger, not by choice: BusinessProcessAnalyst and BusinessReviewer (Business Modeling inactive) and CapsuleDesigner (no real-time capsule). No role is added, merged or removed.
