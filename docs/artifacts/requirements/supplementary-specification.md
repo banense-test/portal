@@ -145,6 +145,10 @@ mechanism that implements it.
 
 ### Data ownership
 
+A thematic grouping, not a declared category: these three constraints decide what the portal owns and
+what it does not. Their declared categories are Architectural (CON-021, CON-036) and Operational
+(CON-033), and the Design Constraints section carries them under those categories.
+
 | ID | Rule | Consequence |
 |---|---|---|
 | CON-021 | The worker category is stored as a link — AD user id to category — never as a duplicate of the employee. The local table holds two columns and nothing else; there is no synchronisation, reconciliation or conflict to resolve | The portal owns exactly two things: clockings and this link |
