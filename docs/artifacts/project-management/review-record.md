@@ -327,6 +327,318 @@ end note
 | Cost | Not assessable | CON-030 declares no budget and forbids the team to set one; no phase has closed, so no measured spend exists. No figure is invented to fill the gap |
 | Quality | Healthy at the level Inception owes | Requirements baseline complete and traceable; architecture is a genuine candidate with the three High-volatility requirements encapsulated; no test executed and none claimed |
 
+### Review Coordinator lens
+<!-- review: Inception I1 -->
+
+<!-- review: Inception I1 -->
+
+**Review point:** LCO, consolidation. This block holds the coordination of the milestone review — the review process framework, the review calendar, the consolidated finding ledger, the effectiveness metrics and the verdict. It does not re-evaluate the artifacts: the three lenses evaluated them and their findings are the evidence.
+
+**Lens participation in this review:**
+
+| Lens | Participant | Status |
+|---|---|---|
+| Technical | Reviewer | EXECUTED — 8 of 8 artifacts, 7 findings |
+| Business | BusinessReviewer | EXECUTED — 8 of 8 artifacts, 1 finding |
+| Management | ManagementReviewer | EXECUTED — 8 of 8 artifacts, 2 findings |
+
+All three lenses executed. No lens is recorded as inactive, and the milestone decision rests on all three.
+
+**Review process framework — seven review types, each bound to the workflow activity that triggers it:**
+
+```plantuml
+@startuml
+title Review process framework - seven review types and the workflow activity that triggers each
+
+start
+:Workflow activity completes;
+if (Which activity?) then (Project Approval)
+  :Project Approval Review\nscope feasibility against Vision and Risk List\nheld INSIDE the LCO milestone review;
+elseif (Project Planning)
+  :Project Planning Review\nDevelopment Case tailoring and Iteration Plan roadmap\nheld INSIDE the LCO milestone review;
+elseif (Plan for Next Iteration)
+  :Iteration Plan Review\nbefore the iteration begins;
+elseif (Manage Iteration - mid)
+  :PRA Review\nprogress, risk and assessment;
+elseif (Manage Iteration - exit criteria)
+  :Iteration Evaluation Criteria Review\nverifies exit criteria before closing;
+elseif (Manage Iteration - close)
+  :Iteration Acceptance Review\nformal acceptance of the iteration deliverables;
+elseif (Close-Out Phase)
+  :Lifecycle Milestone Review\nLCO, LCA, IOC or PR - sanction to proceed;
+else (Project close-out)
+  :Project Acceptance Review\nfinal project-level acceptance;
+endif
+:Entry criteria enforced\nartifacts in target state, reviewers assigned,\nagenda and criteria distributed 48h ahead;
+:Review event executed\nfindings recorded with severity, owner, deadline;
+:Exit criteria enforced\nall Critical and Major findings owned and dated,\nReview Record signed and archived;
+:Finding Tracker updated;
+stop
+
+note right
+  A PRA Review never substitutes for a
+  milestone review. They answer different
+  questions: project health versus
+  sanction to proceed.
+end note
+@enduml
+```
+
+**Review calendar — Inception iteration 1, review events against the iteration timeline:**
+
+```plantuml
+@startuml
+title Review calendar - Inception iteration 1, review events against the iteration timeline
+
+|#AntiqueWhite|Iteration 1 - Inception|
+start
+:Iteration opens;
+:Artifacts produced\nDevelopment Case, Vision, Use-Case Model,\nSupplementary Specification, Software Architecture Document,\nRisk List, Iteration Plan, Test Evaluation Summary;
+
+|#LightBlue|Review events|
+:Technical lens review\nReviewer - 8 of 8 artifacts;
+:Business lens review\nBusinessReviewer - 8 of 8 artifacts;
+:Management lens review\nManagementReviewer - 8 of 8 artifacts;
+:Consolidation\nReviewCoordinator - one ledger, one verdict;
+
+|#AntiqueWhite|LCO milestone review|
+:Project Approval Review\nheld inside LCO - scope feasibility;
+:Project Planning Review\nheld inside LCO - DC tailoring and roadmap;
+:LCO Lifecycle Milestone Review\nsanction question put to STK-001;
+if (Sanction granted?) then (Yes)
+  |#PaleGreen|Elaboration|
+  :Phase transition sanctioned;
+  :Iteration 2 opens\nIteration Plan Review scheduled;
+  stop
+else (No)
+  |#MistyRose|Iteration 2 - Inception|
+  :LCO not achieved;
+  :Findings corrected by their owners;
+  :Re-review of corrected artifacts;
+  :LCO gate re-presented;
+  stop
+endif
+
+note right
+  Review events are triggered by artifact
+  completion, not by calendar dates. If the
+  iteration slips, the review slips with it.
+end note
+@enduml
+```
+
+The Project Approval Review and the Project Planning Review were held inside the LCO milestone review, not as separate events — the Management Reviewer's block records both. The LCO Lifecycle Milestone Review is the Inception exit gate and it was held: the sanction question was put to STK-001 and refused.
+
+**Finding lifecycle — the state machine every finding in this ledger is subject to:**
+
+```plantuml
+@startuml
+title Finding lifecycle - from record to verified closure
+
+[*] --> Open : record_artifact_finding\nseverity, owner, deadline assigned
+Open --> Assigned : owner accepts the finding
+Assigned --> InProgress : corrective action started
+InProgress --> Resolved : owner confirms the correction
+Resolved --> Verified : emitting lens verifies\nthe corrective action is adequate
+Verified --> Closed : resolve_artifact_finding\nby the emitting lens only
+Resolved --> InProgress : correction inadequate
+Open --> Escalated : deadline missed
+Assigned --> Escalated : deadline missed
+InProgress --> Escalated : deadline missed
+Escalated --> InProgress : Project Manager intervenes
+Closed --> [*]
+
+note right of Escalated
+  Escalation within 1 business day of the
+  deadline miss. More than 10% of findings
+  overdue means the review process has
+  become ceremonial.
+end note
+
+note right of Verified
+  Only the lens that emitted a finding may
+  close it. A Review Record sentence saying
+  "resolved" is not a resolution.
+end note
+
+note bottom of Open
+  A Critical finding always escalates to the
+  stakeholder. No auto-iteration while any
+  Critical finding is unresolved.
+end note
+@enduml
+```
+
+**Reviewer pool and expertise mapping — who reviews what, by artifact domain:**
+
+| Artifact | Primary lens | Contributing lens | Expertise required |
+|---|---|---|---|
+| Development Case | Reviewer | ManagementReviewer | Process tailoring, baseline conformance |
+| Vision | Reviewer | BusinessReviewer, ManagementReviewer | Requirements traceability, business representation |
+| Use-Case Model | Reviewer | BusinessReviewer | Use-case modelling, business-rule binding |
+| Supplementary Specification | Reviewer | BusinessReviewer | NFR and constraint coverage, interface contracts |
+| Software Architecture Document | Reviewer | BusinessReviewer, ManagementReviewer | Architecture, schema satisfiability, constraint conformance |
+| Risk List | Reviewer | ManagementReviewer | Risk governance, identifier preservation |
+| Iteration Plan | Reviewer | ManagementReviewer | Planning, risk retirement, acceptance-criterion gating |
+| Test Evaluation Summary | Reviewer | ManagementReviewer | Test strategy, coverage executability, SCM evidence |
+
+**Entry and exit criteria applied to this review event:**
+
+| Criterion | Applied |
+|---|---|
+| Entry — artifacts in target state, not draft | 8 of 8 persisted before any lens reviewed |
+| Entry — reviewers assigned with matched expertise | Per the pool table above |
+| Entry — evaluation criteria distributed in advance | Each lens states the checklists it applied |
+| Exit — every Critical and Major finding has an owner and a deadline | 6 Major, all owned; see Resolutions and Actions |
+| Exit — Review Record signed and archived | This block, committed |
+
+**Consolidated finding ledger — three lenses, one ledger:**
+
+```plantuml
+@startuml
+title Consolidated finding ledger - three lenses, one ledger, Inception iteration 1
+
+package "Lenses that executed" {
+  class "Reviewer\nTechnical lens\n7 findings: 4 Major, 3 Minor" as L1
+  class "BusinessReviewer\nBusiness lens\n1 finding: 1 Minor" as L2
+  class "ManagementReviewer\nManagement lens\n2 findings: 2 Major" as L3
+}
+
+package "Consolidated ledger - 10 findings" {
+  class "Use-Case Model#F1\nMajor - SystemAnalyst" as F1
+  class "Software Architecture Document#F1\nMajor - SoftwareArchitect" as F2
+  class "Software Architecture Document#F2\nMinor - SoftwareArchitect" as F3
+  class "Iteration Plan#F1 (Reviewer)\nMajor - ProjectManager" as F4
+  class "Iteration Plan#F1 (Management)\nMajor - ProjectManager" as F5
+  class "Iteration Plan#F2 (Management)\nMajor - ProjectManager" as F6
+  class "Test Evaluation Summary#F1\nMajor - TestManager" as F7
+  class "Test Evaluation Summary#F2\nMinor - TestManager" as F8
+  class "Vision#F1 (Reviewer)\nMinor - SystemAnalyst" as F9
+  class "Vision#F1 (Business)\nMinor - SystemAnalyst" as F10
+}
+
+package "Artifacts with no finding" {
+  class "Development Case" as OK1
+  class "Supplementary Specification" as OK2
+  class "Risk List" as OK3
+}
+
+L1 --> F1
+L1 --> F2
+L1 --> F3
+L1 --> F4
+L1 --> F7
+L1 --> F8
+L1 --> F9
+L2 --> F10
+L3 --> F5
+L3 --> F6
+
+note bottom of F1
+  CONFLICT RESOLVED: the Business Reviewer
+  confirmed this defect but did not re-record
+  it. One logical defect, one ledger entry.
+  No duplicate to triage.
+end note
+
+note bottom of F4
+  CONFLICT RESOLVED: three findings sit on
+  the Iteration Plan from two lenses. They are
+  distinct defects - fine-plan completeness,
+  risk-retirement claim, AC-004 gate - and are
+  consolidated into one owner's action list,
+  not merged into one finding.
+end note
+
+note bottom of F9
+  CONFLICT RESOLVED: the Management Reviewer's
+  distribution diagram states 3 Minor but
+  enumerates 4. The finding ledger holds 4.
+  The ledger is authoritative; the diagram
+  undercounted.
+end note
+
+note bottom of OK1
+  Development Case, Supplementary Specification
+  and Risk List carry zero findings across all
+  three lenses.
+end note
+@enduml
+```
+
+**Cross-lens conflicts and their resolution:**
+
+| Conflict | Resolution |
+|---|---|
+| The Business Reviewer confirmed `Use-Case Model#F1` but did not re-record it | Correct handling. One logical defect, one ledger entry. The Business Reviewer's confirmation is recorded in its block; the finding stays owned by the Reviewer lens, which is the only lens that may close it. |
+| Three findings sit on the Iteration Plan from two lenses (`#F1` Reviewer, `#F1` and `#F2` Management) | Not merged. They are three distinct defects — fine-plan completeness, the R001 retirement claim, and the AC-004 gate. They are consolidated into one owner's action list so the ProjectManager triages one list, not three. |
+| The Management Reviewer's defect-distribution diagram states "6 Major, 3 Minor" but enumerates four Minor entries | The finding ledger holds 4 Minor. The ledger is authoritative; the diagram undercounted by one. The consolidated total is 6 Major, 4 Minor, 0 Critical. |
+| The Reviewer lens reports 4 Major / 3 Minor; the Business lens 0 Major / 1 Minor; the Management lens 2 Major / 0 Minor | Sums to 6 Major / 4 Minor / 0 Critical, matching the ledger exactly. No lens overstates or understates its own count. |
+
+**Review effectiveness — current metrics only.** This is the first review event of the project. No prior iteration or cycle exists, so no trend is computed and none is implied; trend analysis begins at the second review event.
+
+```plantuml
+@startuml
+title Review effectiveness - current metrics only, Inception iteration 1 (first review event, no prior data)
+
+package "Coverage" {
+  class "Planned artifacts: 8" as C1
+  class "Formally reviewed: 8" as C2
+  class "Review coverage: 100%" as C3 <<Measured>>
+  class "Lenses executed: 3 of 3" as C4 <<Measured>>
+}
+
+package "Defect density" {
+  class "Findings recorded: 10" as D1
+  class "Artifacts carrying a finding: 5 of 8" as D2
+  class "Density: 1.25 findings per artifact" as D3 <<Measured>>
+  class "Major: 6, Minor: 4, Critical: 0" as D4 <<Measured>>
+}
+
+package "Defect removal efficiency" {
+  class "Defects found in review: 10" as E1
+  class "Defects found in test: 0" as E2
+  class "DRE: not computable" as E3 <<NotMeasurable>>
+}
+
+package "Rework effort" {
+  class "Findings requiring rework: 10" as R1
+  class "Effort in hours: not measured" as R2 <<NotMeasurable>>
+}
+
+C1 --> C3
+C2 --> C3
+D1 --> D3
+D2 --> D3
+E1 --> E3
+E2 --> E3
+R1 --> R2
+
+note bottom of E3
+  No test has been executed in Inception, so
+  there is no test-found defect count to divide
+  by. DRE is not zero and not 100% - it is
+  undefined at this gate. It becomes computable
+  in the first iteration that executes tests.
+end note
+
+note bottom of R2
+  Effort is measured in tokens and elapsed time,
+  neither of which is recorded per finding. No
+  hour figure is invented to fill the cell.
+end note
+
+note bottom of D3
+  First review event of the project. No prior
+  iteration or cycle exists, so no trend is
+  computed and none is implied. Trend analysis
+  begins at the second review event.
+end note
+@enduml
+```
+
+**Interpretation of the metrics.** Coverage is complete — every planned artifact was reviewed by all three lenses, so no artifact reached the milestone gate unreviewed. Defect density of 1.25 findings per artifact is concentrated: five artifacts carry all ten findings, and three carry none. The concentration is informative rather than alarming — the three clean artifacts (Development Case, Supplementary Specification, Risk List) are the ones whose content is largely inherited from declared inputs, while the five carrying findings are the ones where the team made design and planning decisions. The two artifacts with the highest-value defects are the Software Architecture Document and the Iteration Plan, which is where an LCO gate should be looking. Defect removal efficiency and rework effort are not measurable at this gate and no figure is invented for either.
+
 ## Findings
 ### Reviewer lens
 <!-- review: Inception I1 -->
