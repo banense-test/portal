@@ -324,7 +324,11 @@ Infrastructure's (CON-032).
 
 ## Inception status
 
-No baseline tag is written in Inception. The architecture is not stable, no CI workflow exists yet,
-and there is no iteration-close pull request to gate on. The first tag this project writes is
-`baseline-elaboration-E1-v1`, at the Elaboration iteration close, once both gates can actually be
-evaluated.
+No baseline tag is written in Inception. The architecture is not stable, no iteration-close pull
+request exists to gate on, and the tag family itself has no Inception member — the first tag this
+project writes is `baseline-elaboration-E1-v1`, at the Elaboration iteration close.
+
+The provider reports a successful run on `main` at 2026-10-23 09:37:59Z
+(`actions/runs/39933172671`). That run does not evidence a build: no build-and-test workflow is
+committed yet, so the CI gate is not yet meaningful. It becomes meaningful when `.github/workflows`
+lands in Elaboration, and no tag is written before then.
