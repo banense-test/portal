@@ -399,7 +399,7 @@ The 25-role roster is inherited unchanged from the Development Case. Three roles
 
 ### Agent role profile — by iteration
 
-The profile is derived from the work items, not the other way round. Iteration 1's column is corrected: Analysis and Design is Medium and Test is Low in Inception, so neither SoftwareArchitect nor TestManager is idle — both produced CORE artifacts in iteration 1.
+The profile is derived from the work items, not the other way round. Analysis and Design is Medium and Test is Low in Inception, so neither SoftwareArchitect nor TestManager is idle in iteration 1 — both produced CORE artifacts there and both are Active.
 
 | Role | It. 1 | It. 2 | It. 3 | It. 4 | It. 5 | It. 6 | It. 7 | It. 8 |
 |---|---|---|---|---|---|---|---|---|
@@ -429,9 +429,11 @@ The profile is derived from the work items, not the other way round. Iteration 1
 | BusinessReviewer | Idle | Idle | Idle | Idle | Idle | Idle | Idle | Idle |
 | CapsuleDesigner | Idle | Idle | Idle | Idle | Idle | Idle | Idle | Idle |
 
-**Two corrections to iteration 1's column.** SoftwareArchitect and TestManager are Active, not idle: the Software Architecture Document and the Test Evaluation Summary were both produced in iteration 1 and both are CORE artifacts the Development Case requires. The profile now follows the work items.
+**Iteration 1 column.** SoftwareArchitect and TestManager are Active: the Software Architecture Document and the Test Evaluation Summary were both produced in iteration 1 and both are CORE artifacts the Development Case requires. The profile follows the work items.
 
-**Tester is active from iteration 3, not iteration 5.** R001 is retired in iteration 3 by executing the empty-attribute case of UC-011 and UC-004 against the stand-in, and a risk cannot be retired by a role that is not working. This is the sequencing correction that closes `Iteration Plan#F1` (Management Reviewer).
+**Iteration 2 column.** SoftwareArchitect, SystemAnalyst, TestManager and ProjectManager are Active because each owns at least one work item in the fine plan. RequirementsSpecifier is not: no finding touches the Supplementary Specification, which carried zero findings across all three lenses.
+
+**Tester is active from iteration 3, not iteration 5.** R001 is retired in iteration 3 by executing the empty-attribute case of UC-011 and UC-004 against the stand-in, and a risk cannot be retired by a role that is not working.
 
 **Parallelism discipline.** The profile widens in Construction because the work genuinely divides by capability area, not because the project is behind. If an iteration slips, the remedy is another iteration — never more roles in parallel, which adds context conflict and artifact contention without proportional benefit, and never a cut to declared scope (CON-023).
 
@@ -439,7 +441,7 @@ The profile is derived from the work items, not the other way round. Iteration 1
 
 | Resource | Role in the project | Clock | Bound |
 |---|---|---|---|
-| STK-001 Laura Gómez | Project sponsor; grants risk acceptance (CON-023); owns HR processes, news and worker categories; owns the BG-001 baseline and the AC-004 population measure | Human queue time | — |
+| STK-001 Laura Gómez | Project sponsor; grants risk acceptance (CON-023); owns HR processes, news and worker categories; owns the BG-001 baseline and the AC-004b population measure | Human queue time | — |
 | STK-002 Miguel Torres | Clarifies engineering doubts for the technical roles; does not build | Human queue time | — |
 | STK-003 Infrastructure team | Operates AD and Keycloak; performs the CON-031 validation against the real systems; operates the portal post-launch (CON-032) | Human queue time | **14 days** ceiling on the CON-031 gate |
 | STK-004 Cuba Corp Employees | End users; source of the BG-003 adoption measure | Human queue time | — |
