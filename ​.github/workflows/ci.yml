@@ -1,0 +1,210 @@
+# Portal - CI baseline pipeline
+#
+# CON-029: the repository lives on the hosted SCM provider, so build and test run
+# on that provider's hosted CI. CI never holds production data or credentials and
+# never deploys - Infrastructure does. 'No cloud' and 'internal network only'
+# govern the portal at runtime, not the development toolchain.
+#
+# Stack: .NET 10 (CON-025), Razor Pages (CON-026), PostgreSQL 18 (CON-027).
+#
+# Build dependency hierarchy and integration order (bottom-up):
+#
+#   @startuml
+#   title Portal - CI build dependency hierarchy and integration order
+#
+#   package "Presentation - Razor Pages (CON-026)" {
+#     [src/Portal.Web/Pages] as WEB
+#   }
+#   package "Application and REST API - .NET 10 (CON-025)" {
+#     [src/** application projects] as APP
+#   }
+#   package "Domain" {
+#     [src/** domain projects] as DOM
+#   }
+#   package "Infrastructure - PostgreSQL 18 (CON-027), LDAP and OIDC stand-ins (CON-031)" {
+#     [src/** infrastructure projects] as INF
+#   }
+#   package "Tests" {
+#     [tests/**] as TST
+#   }
+#
+#   WEB --> APP
+#   APP --> DOM
+#   INF --> DOM
+#   TST --> WEB
+#   TST --> APP
+#   TST --> DOM
+#   TST --> INF
+#
+#   note right of DOM
+#     Integration order is bottom-up:
+#     infrastructure and domain merge first,
+#     then application, then presentation.
+#     CI builds the whole solution on every push,
+#     so a wrong-order merge surfaces as a red build
+#     on the integration branch instead of a silent break.
+#   end note
+#   @enduml
+#
+# Target build frequency: at least one CI-verified build per day toward the end of
+# an iteration, one per week minimum. Every merge into iteration/Cn is followed by
+# a build-status check before the next merge proceeds.
+#
+# Scope of this pipeline: build and test only. There is no deploy job and no
+# environment secret - deployment is Infrastructure's (CON-032).
+
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'iteration/**'
+      - 'chore/**'
+      - 'feature/**'
+      - 'hotfix/**'
+  pull_request:
+    branches:
+      - main
+      - 'iteration/**'
+      - 'chore/**'
+      - 'feature/**'
+      - 'hotfix/**'
+  workflow_dispatch:
+
+# Least privilege: the pipeline reads the repository and nothing else. No job
+# writes, no package is published, no secret is referenced (CON-029).
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_NOLOGO: 'true'
+  DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
+  CONFIGURATION: Release
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Report SDK version
+        run: dotnet --version
+
+      # Layout invariant: every buildable project lives under src/ or tests/.
+      # A project anywhere else is outside the solution's reach and would be
+      # silently excluded from every build.
+      - name: Verify every project lives under src/ or tests/
+        shell: bash
+        run: |
+          set -euo pipefail
+          stray=$(find . -name '*.csproj' -type f \
+            -not -path './src/*' -not -path './tests/*' -not -path './.git/*' | sort)
+          if [ -n "$stray" ]; then
+            while IFS= read -r proj; do
+              echo "::error file=$proj::Project $proj is outside src/ and tests/ - CI would not build it"
+            done <<< "$stray"
+            exit 1
+          fi
+          echo "Every project lives under src/ or tests/."
+
+      # The solution manifest must never drift out of sync with the merged code,
+      # in either direction. A stale manifest silently disconnects real code from
+      # CI: it compiles nothing of the Implementer's work and a green check becomes
+      # a lie. A dangling reference breaks restore for everyone.
+      - name: Verify solution manifest matches the source tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          missing=0
+
+          # Direction 1: every project on disk is referenced by the manifest.
+          # Matched on the full relative path, not the file name - two projects
+          # sharing a name in different folders must not satisfy each other.
+          while IFS= read -r proj; do
+            rel=${proj#./}
+            if ! grep -qF "$rel" Portal.slnx; then
+              echo "::error file=$rel::Project $rel is not referenced by Portal.slnx - CI would not build it"
+              missing=1
+            fi
+          done < <(find src tests -name '*.csproj' -type f | sort)
+
+          # Direction 2: every project the manifest references exists on disk.
+          while IFS= read -r rel; do
+            if [ ! -f "$rel" ]; then
+              echo "::error file=Portal.slnx::Portal.slnx references $rel, which does not exist"
+              missing=1
+            fi
+          done < <(grep -oE 'Path="[^"]+\.csproj"' Portal.slnx | sed -E 's/^Path="//; s/"$//' | sort -u)
+
+          if [ "$missing" -ne 0 ]; then
+            echo "Solution manifest is out of sync with the source tree."
+            exit 1
+          fi
+          echo "Solution manifest and source tree agree in both directions."
+
+      - name: Restore
+        run: dotnet restore Portal.slnx
+
+      - name: Build
+        run: dotnet build Portal.slnx --configuration ${{ env.CONFIGURATION }} --no-restore
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore Portal.slnx
+
+      # Every test project under tests/ is discovered and run, so a new
+      # subsystem's tests are picked up without editing this workflow.
+      - name: Test
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t projects < <(find tests -name '*.csproj' -type f | sort)
+          if [ "${#projects[@]}" -eq 0 ]; then
+            echo "::error::No test project found under tests/"
+            exit 1
+          fi
+          for proj in "${projects[@]}"; do
+            echo "::group::dotnet test $proj"
+            dotnet test "$proj" \
+              --configuration "$CONFIGURATION" \
+              --no-restore \
+              --logger "trx;LogFileName=$(basename "$proj" .csproj).trx" \
+              --results-directory TestResults
+            echo "::endgroup::"
+          done
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults
+          if-no-files-found: warn
+          retention-days: 7
