@@ -7,12 +7,12 @@
 ## Use-Case Diagram
 
 Fifteen use cases, one per declared requirement FR-001 to FR-015. Two human actors and two external
-systems sit on the boundary. Authentication (NFR-001) is deliberately **not** a use case: it is a
-portal-wide mechanism recorded in the Supplementary Specification and included by every use case.
+systems sit on the boundary. Authentication (NFR-001) is deliberately **not** a use case: it is
+mechanism MECH-01 in the Supplementary Specification, included by every use case.
 
 ```plantuml
 @startuml
-title Portal - System boundary, actors and candidate use cases (Inception, iteration 1)
+title Portal - System boundary, actors and use cases (Inception, iteration 1)
 
 left to right direction
 
@@ -59,20 +59,20 @@ UC014 .> UC011 : <<extend>>
 UC015 .> UC010 : <<extend>>
 
 AD --> UC011
-AD --> UC001
-KC --> UC001
+AD --> UC004
 
 note right of KC
-  NFR-001: authentication is a portal-wide
-  mechanism, not a use case. Every UC
-  includes it via the Supplementary
-  Specification. Keycloak participates in
-  every UC, drawn once here for legibility.
+  Keycloak realizes MECH-01 (NFR-001).
+  Authentication is a portal-wide mechanism
+  included by every use case and recorded in
+  the Supplementary Specification. It initiates
+  no use case, so it carries no association here.
 end note
 
 note bottom of UC013
-  FR-013 is the conditional exception path of
-  UC-001, not a separate employee goal.
+  FR-013, FR-014 and FR-015 are the conditional
+  exception paths of UC-001, UC-011 and UC-010 -
+  not independent employee goals.
 end note
 @enduml
 ```
@@ -80,8 +80,13 @@ end note
 **Why three use cases are drawn as `<<extend>>`.** FR-013, FR-014 and FR-015 are declared
 requirements, so each carries its own use case per the Development Case. But none of them is an
 independent actor goal: FR-013 is what UC-001 does when the network drops, and FR-014/FR-015 are what
-UC-011 and UC-010 do when the network is unreachable. Modelling them as extensions keeps the
-declared requirement traceable without inventing three goals the employee does not have.
+UC-011 and UC-010 do when the network is unreachable. Modelling them as extensions keeps the declared
+requirement traceable without inventing three goals the employee does not have.
+
+**Active Directory participates in two use cases, not one.** It supplies the six read-only directory
+attributes to UC-011, and it supplies FullName to UC-004 — the export's second column is a directory
+value, not a portal-owned one. Keycloak initiates nothing: it is the mechanism behind MECH-01, and a
+mechanism is not an actor goal.
 
 ## Actors
 
@@ -89,8 +94,8 @@ declared requirement traceable without inventing three goals the employee does n
 |---|---|---|---|---|
 | Employee | Primary human | STK-004 — 200 people across 3 offices | Clock in and out; see own month; read and filter news; find a colleague | STK-004 |
 | HR Administrator | Primary human, generalizes Employee | STK-001 — HR Director and the HR AD group | Everything an Employee can do, plus: see all clockings; export the monthly CSV; correct or insert a clocking; publish, edit, unpublish and feature news; assign or clear a worker category | STK-001, CON-008 |
-| Active Directory | External system | STK-003 — operated by Infrastructure | Supplies the six read-only directory attributes over LDAP; supplies sAMAccountName and AD group membership through the session | STK-003, CON-003, CON-004 |
-| Keycloak | External system | STK-003 — operated by Infrastructure | Authenticates the corporate identity via OIDC and federates AD | STK-003, CON-002, NFR-001 |
+| Active Directory | External system | STK-003 — operated by Infrastructure | Supplies the six read-only directory attributes over LDAP to UC-011; supplies FullName to UC-004; supplies sAMAccountName and AD group membership through the session | STK-003, CON-003, CON-004 |
+| Keycloak | External system | STK-003 — operated by Infrastructure | Authenticates the corporate identity via OIDC and federates AD. Realizes MECH-01; initiates no use case | STK-003, CON-002, NFR-001 |
 
 **HR Administrator generalizes Employee.** CON-008 gives exactly two levels from AD group membership.
 An HR Administrator is an Employee who additionally holds the HR group. This is a UML generalization,
@@ -133,6 +138,97 @@ no-connection message or a preserved clocking.
 **Priority.** All fifteen are Must. CON-023 forbids cutting or deferring declared scope, so MoSCoW
 cannot be used as a scope lever on this project; the lever is iteration count.
 
+### Business-rule binding — the handoff to the RequirementsSpecifier
+
+Every use case is bound to the constraints that govern it. A use case detailed without its bound
+rules is under-specified, and a rule bound to no use case is unenforced.
+
+```plantuml
+@startuml
+title Portal - Business-rule clusters and the use cases each one binds
+
+left to right direction
+
+package "Clocking integrity" {
+  class "CON-011 pair never crosses midnight\nCON-012 one pair per employee per day\nCON-013 originals never overwritten\nCON-036 retry is one action, one queue" as R_CLK
+}
+
+package "Export contract" {
+  class "CON-004 EmployeeId is sAMAccountName\nCON-007 Europe/Madrid, UTC storage\nCON-009 closed category list\nCON-016 category may be empty" as R_EXP
+}
+
+package "News lifecycle" {
+  class "CON-010 at most one featured\nCON-014 never deleted, only unpublished\nCON-018 featuring is manual only\nCON-019 unpublish promotes nothing" as R_NEWS
+}
+
+package "Category ownership" {
+  class "CON-009 closed four-value list\nCON-015 descriptive, drives no access\nCON-016 at most one, may be empty\nCON-021 stored as a link, two columns" as R_CAT
+}
+
+package "Directory read" {
+  class "CON-003 read-only over LDAP, no copy\nCON-020 corporate data only\nCON-021 no duplicate of the employee" as R_DIR
+}
+
+package "Use cases" {
+  class "UC-001 Clock In and Clock Out" as UC001
+  class "UC-002 View Own Clocking History" as UC002
+  class "UC-003 View All Employee Clockings" as UC003
+  class "UC-004 Export Monthly CSV" as UC004
+  class "UC-005 Correct or Insert Clocking" as UC005
+  class "UC-006 Publish News" as UC006
+  class "UC-007 Edit Published News" as UC007
+  class "UC-008 Unpublish News" as UC008
+  class "UC-009 Feature or Un-feature News" as UC009
+  class "UC-010 Read and Filter News" as UC010
+  class "UC-011 Search Employee Directory" as UC011
+  class "UC-012 Assign or Clear Worker Category" as UC012
+  class "UC-013 Retry Clocking Through a Network Drop" as UC013
+  class "UC-014 Recognize Directory Unavailable" as UC014
+  class "UC-015 Recognize News Unavailable" as UC015
+}
+
+R_CLK --> UC001
+R_CLK --> UC002
+R_CLK --> UC005
+R_CLK --> UC013
+
+R_EXP --> UC004
+
+R_NEWS --> UC006
+R_NEWS --> UC007
+R_NEWS --> UC008
+R_NEWS --> UC009
+R_NEWS --> UC010
+
+R_CAT --> UC004
+R_CAT --> UC010
+R_CAT --> UC012
+
+R_DIR --> UC011
+R_DIR --> UC014
+
+note bottom of R_CAT
+  CON-015 is the load-bearing rule: the category
+  is read in exactly two places - the directory
+  column and the export column. A category read
+  in an authorization decision is a defect.
+end note
+
+note bottom of R_DIR
+  UC-014 binds CON-003 by absence: nothing is
+  cached, so a no-connection message is the only
+  correct behaviour. UC-015 binds no rule - the
+  news area caches nothing either.
+end note
+@enduml
+```
+
+**Mechanisms every use case includes.** MECH-01 (authenticated corporate identity, NFR-001) is
+included by all fifteen. MECH-02 (HR group authorization, CON-008) is included by the eight HR use
+cases. MECH-03 (audit trail write, NFR-005) is included by UC-005, UC-006, UC-007, UC-008 and UC-012 —
+the five actions NFR-005 names. MECH-04 (directory read over LDAP) is included by UC-004 and UC-011.
+The include graph is drawn once, in the Supplementary Specification, and is not duplicated here.
+
 ## Use-Case Specifications
 
 ### UC-001 Clock In and Clock Out
@@ -142,8 +238,8 @@ cannot be used as a scope lever on this project; the lever is iteration count.
 | Primary actor | Employee |
 | Source | FR-001, with FR-013 as its exception path |
 | Trigger | The employee presses the Clock In or Clock Out button on the main screen |
-| Precondition | The employee is authenticated (NFR-001); the session supplies sAMAccountName and AD group membership |
-| Postcondition | Exactly one clocking record exists for the employee for today, carrying the time the employee pressed the button; an audit entry is written; the employee sees a confirmation |
+| Precondition | The employee is authenticated (MECH-01); the session supplies sAMAccountName and AD group membership |
+| Postcondition | Exactly one clocking record exists for the employee for today, carrying the time the employee pressed the button; the employee sees a confirmation |
 | Priority / Volatility | Must / Low |
 
 **Main flow**
@@ -153,7 +249,7 @@ cannot be used as a scope lever on this project; the lever is iteration count.
 3. The portal renders one button — Clock Out if a pair is open, Clock In otherwise.
 4. The employee presses the button.
 5. The browser stamps the press time from the client clock and queues the POST with an idempotency key.
-6. The server rejects a duplicate idempotency key by returning the original result, or records the clocking with the client timestamp and writes the audit entry.
+6. The server rejects a duplicate idempotency key by returning the original result, or records the clocking with the client timestamp.
 7. The employee sees a confirmation showing the recorded time.
 
 **Alternative flows**
@@ -168,6 +264,10 @@ cannot be used as a scope lever on this project; the lever is iteration count.
 CON-011 (a pair never crosses midnight), CON-012 (at most one pair per employee per day), CON-013
 (originals never overwritten), CON-036 (one action, one queue, one entity — no reconciliation).
 
+**Not audited.** The employee's own clocking is the fact itself, not a change to a fact. NFR-005
+audits only the clockings HR corrects or inserts (UC-005). Writing an audit entry here would record
+that the employee did what the clocking record already says.
+
 ```plantuml
 @startuml
 title UC-001 Clock In and Clock Out - main flow and the FR-013 retry path
@@ -177,7 +277,7 @@ start
 :Open the main screen;
 
 |Portal|
-:Resolve identity from the session (NFR-001);
+:Resolve identity from the session (MECH-01);
 :Read today's clocking pair (CON-012);
 if (pair open?) then (yes)
   :Render Clock Out button;
@@ -203,7 +303,6 @@ if (idempotency key already recorded?) then (yes)
 else (no)
   :Enforce the pair rules (CON-011, CON-012);
   :Record the clocking with the client timestamp;
-  :Write the audit entry;
   :Return confirmation;
 endif
 
@@ -236,7 +335,7 @@ endif
 | Primary actor | HR Administrator |
 | Source | FR-004 |
 | Trigger | HR chooses a calendar month and requests the export |
-| Precondition | The HR Administrator is authenticated and holds the HR AD group (CON-008) |
+| Precondition | The HR Administrator is authenticated and holds the HR AD group (MECH-02) |
 | Postcondition | A CSV is produced with the eight columns in the declared order, one row per employee per day that has at least one clocking |
 | Priority / Volatility | Must / **High** — the column contract is consumed outside the portal and is fixed by FR-004 alone |
 
@@ -256,13 +355,14 @@ endif
 - **A2 — No clocking on a day.** No row is produced for that employee-day.
 - **A3 — Worker has no category.** WorkerCategory is blank (CON-016). No default value is invented.
 - **A4 — HR corrected or inserted a clocking that day.** Corrected = Y for that employee-day; otherwise N.
+- **A5 — Directory attribute empty.** FullName is the one directory value in the contract; if AD returns it empty the column is exported empty and the row is still produced. This is the R001 case reaching the export, not only the directory screen.
 
 **Column contract**
 
 | Column | Derivation |
 |---|---|
 | EmployeeId | AD sAMAccountName, read from the session (CON-004) |
-| FullName | From the directory |
+| FullName | From the directory over LDAP (MECH-04) |
 | WorkerCategory | From the portal-owned category link; blank when unset (CON-016) |
 | Date | ISO 8601, e.g. 2026-06-22 |
 | ClockIn | 24-hour HH:mm, no seconds, Europe/Madrid |
@@ -289,11 +389,19 @@ end note
 :Group pairs by employee and calendar date (CON-011);
 :Emit one row per employee-day group;
 :EmployeeId = sAMAccountName from the session record (CON-004);
-:FullName and WorkerCategory from the directory and the category link;
+
+|Active Directory|
+:Return FullName for the employee (MECH-04);
+note right
+  R001: an empty attribute exports empty.
+  The row is still produced.
+end note
+
+|Portal|
+:WorkerCategory from the category link, blank when unset (CON-016);
 :Date as ISO 8601;
 :ClockIn and ClockOut as HH:mm, 24-hour, no seconds;
 
-|Portal|
 if (clock-out present?) then (yes)
   :HoursWorked = decimal hours, two decimals;
 else (no)
@@ -301,14 +409,12 @@ else (no)
   note right: The row is still exported.
 endif
 
-|Portal|
 if (any correction or insertion that day?) then (yes)
   :Corrected = Y;
 else (no)
   :Corrected = N;
 endif
 
-|Portal|
 :Stream the CSV with the fixed column order;
 |HR Administrator|
 :Receive the file;
@@ -323,8 +429,8 @@ stop
 | Primary actor | HR Administrator |
 | Source | FR-009 |
 | Trigger | HR sets or clears the featured flag while publishing or editing a news item, or unpublishes the featured item |
-| Precondition | The HR Administrator is authenticated and holds the HR AD group (CON-008) |
-| Postcondition | At most one news item is featured; the change is audited |
+| Precondition | The HR Administrator is authenticated and holds the HR AD group (MECH-02) |
+| Postcondition | At most one news item is featured; the banner shows that item or no item |
 | Priority / Volatility | Must / **High** — the single-featured rule is a policy, and CON-010 requires it to hold wherever the change comes from |
 
 **Main flow**
@@ -333,9 +439,8 @@ stop
 2. The portal begins a transaction.
 3. The portal clears the featured flag on the currently featured item, if any.
 4. The portal sets the featured flag on the chosen item.
-5. The portal writes the audit entry.
-6. The portal commits.
-7. The employee sees the new item in the banner.
+5. The portal commits.
+6. The employee sees the new item in the banner.
 
 **Alternative flows**
 
@@ -347,6 +452,10 @@ stop
 
 CON-010 (at most one featured, wherever the change comes from), CON-018 (featuring is manual only — no
 criteria, dates or rules promote an item), CON-019 (unpublishing the featured item promotes nothing).
+
+**Audit.** Featuring is set while publishing or editing, so the audit entry NFR-005 requires is the one
+UC-006 or UC-007 writes for that publication or edit — author and timestamp. NFR-005 does not name
+featuring as a separately audited action, and no second entry is invented for it.
 
 ```plantuml
 @startuml
@@ -366,8 +475,11 @@ note right
   comes from, not only in the HR form.
 end note
 :Set the featured flag on the chosen item;
-:Write the audit entry;
 :Commit;
+note right
+  The audit entry for this publication or edit
+  is written by UC-006 or UC-007 (NFR-005).
+end note
 
 |Employee|
 :See the new item in the banner;
@@ -384,7 +496,7 @@ note right: CON-019: no automatic promotion.
 :Alternatively, unpublish the featured item;
 
 |Portal|
-:Unpublish the item (FR-008);
+:Unpublish the item (UC-008);
 :Clear its featured flag;
 :Promote nothing in its place;
 note right
@@ -402,7 +514,7 @@ stop
 | Primary actor | Employee |
 | Source | FR-011, with FR-014 as its exception path |
 | Trigger | The employee enters a search term — a name, a department or an office |
-| Precondition | The employee is authenticated (NFR-001); the corporate network is reachable |
+| Precondition | The employee is authenticated (MECH-01); the corporate network is reachable |
 | Postcondition | The employee sees matching colleagues with seven fields; no private personal information is shown |
 | Priority / Volatility | Must / Medium |
 
@@ -484,22 +596,32 @@ endif
 
 ### Remaining use cases — outline
 
-The RequirementsSpecifier details these in Elaboration. Each entry states the actor goal, the trigger
-and the outcome, which is what Inception owes.
+The RequirementsSpecifier details these in Elaboration. Each entry states the actor goal, the trigger,
+the observable outcome and the rules it binds — which is what Inception owes and what the detailing
+pass needs.
 
-| UC | Actor goal | Trigger | Observable outcome |
-|---|---|---|---|
-| UC-002 View Own Clocking History | See my own hours for the current month | Employee opens their history | The employee's own clockings for the current month, and no one else's |
-| UC-003 View All Employee Clockings | See everyone's clockings | HR opens the clocking view | Every employee's clockings, filterable by employee and date |
-| UC-005 Correct or Insert Clocking | Fix a clocking an employee forgot | HR corrects or inserts a clocking | A new audited record; the original is never overwritten or deleted (CON-013) |
-| UC-006 Publish News | Announce something to the company | HR submits a news item | The item is visible to employees, with author and timestamp audited |
-| UC-007 Edit Published News | Correct a published item | HR edits a published item | The item shows the new content; the edit is audited with who and when |
-| UC-008 Unpublish News | Withdraw an item without destroying it | HR unpublishes an item | The item is hidden from employees and still present in the database (CON-014) |
-| UC-010 Read and Filter News | Read the news that matters to me | Employee opens the main page | News sorted by date, filterable by category, with the featured item in a banner; read-only |
-| UC-012 Assign or Clear Worker Category | Record what kind of worker someone is | HR sets or clears a category from the directory screen | The category is stored as a link (CON-021) and the change is audited; the only write the portal makes about a person |
-| UC-013 Retry Clocking Through a Network Drop | Not lose my clocking to a short outage | The POST fails while the network is down | The press is retried for up to 5 minutes and the press time is preserved; duplicates rejected by idempotency key |
-| UC-014 Recognize Directory Unavailable | Know the directory is unreachable rather than see wrong data | The network is unreachable during a directory search | A no-connection message; no stale or partial results |
-| UC-015 Recognize News Unavailable | Know the news is unreachable rather than see wrong data | The network is unreachable while reading news | A no-connection message; no stale or partial results |
+| UC | Actor goal | Trigger | Observable outcome | Rules bound |
+|---|---|---|---|---|
+| UC-002 View Own Clocking History | See my own hours for the current month | Employee opens their history | The employee's own clockings for the current month, and no one else's | CON-011, CON-012 |
+| UC-003 View All Employee Clockings | See everyone's clockings | HR opens the clocking view | Every employee's clockings, filterable by employee and date | CON-011, CON-012, MECH-02 |
+| UC-005 Correct or Insert Clocking | Fix a clocking an employee forgot | HR corrects or inserts a clocking | A new audited record; the original is never overwritten or deleted | CON-013, CON-017, MECH-02, MECH-03 |
+| UC-006 Publish News | Announce something to the company | HR submits a news item | The item is visible to employees, with author and timestamp audited | CON-010, CON-018, MECH-02, MECH-03 |
+| UC-007 Edit Published News | Correct a published item | HR edits a published item | The item shows the new content; the edit is audited with who and when | CON-010, CON-014, MECH-02, MECH-03 |
+| UC-008 Unpublish News | Withdraw an item without destroying it | HR unpublishes an item | The item is hidden from employees and still present in the database | CON-014, CON-019, MECH-02, MECH-03 |
+| UC-010 Read and Filter News | Read the news that matters to me | Employee opens the main page | News sorted by date, filterable by category, with the featured item in a banner; read-only | CON-010, CON-015, CON-018 |
+| UC-012 Assign or Clear Worker Category | Record what kind of worker someone is | HR sets or clears a category from the directory screen | The category is stored as a link and the change is audited; the only write the portal makes about a person | CON-009, CON-015, CON-016, CON-021, MECH-02, MECH-03 |
+| UC-013 Retry Clocking Through a Network Drop | Not lose my clocking to a short outage | The POST fails while the network is down | The press is retried for up to 5 minutes and the press time is preserved; duplicates rejected by idempotency key | CON-036, CON-011 |
+| UC-014 Recognize Directory Unavailable | Know the directory is unreachable rather than see wrong data | The network is unreachable during a directory search | A no-connection message; no stale or partial results | CON-003, CON-020 |
+| UC-015 Recognize News Unavailable | Know the news is unreachable rather than see wrong data | The network is unreachable while reading news | A no-connection message; no stale or partial results | — (nothing is cached, so no rule is at stake) |
+
+**Two detailing notes for the RequirementsSpecifier.**
+
+- **UC-005 and UC-003 are one workflow seen from two sides.** A correction made in UC-005 is what
+  UC-003 displays and what UC-004 exports as `Corrected = Y`. They are separate use cases because they
+  are separate actor goals, but the correction record is the shared element — detail it once.
+- **UC-013, UC-014 and UC-015 are exception paths, not goals.** Detail them as alternative flows of
+  UC-001, UC-011 and UC-010 respectively, and keep the extension use case as the traceable anchor for
+  FR-013, FR-014 and FR-015. Do not give them a main flow of their own.
 
 ## Traceability
 
