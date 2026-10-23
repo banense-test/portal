@@ -233,19 +233,20 @@ All fifteen declared use cases are baselined: each is identified, traced to its 
 **Why these four were detailed now.** UC-001 carries the client-timestamp and idempotency contract (FR-013) that forces a design decision. UC-004 is the project's most volatile interface — a fixed external column contract. UC-009 carries a system invariant (CON-010) that must hold wherever the change comes from. UC-011 carries the LDAP read and the R001 empty-attribute case. These are the four places where a wrong decision in Elaboration would be expensive to reverse.
 
 ## Results Relative to Evaluation Criteria
-
 One line per criterion the Iteration Plan carried. Layer B is this iteration's own exit criteria; Layer A is the declared acceptance criteria the project is accountable to.
 
 ### Layer B — this iteration's exit criteria
 
-| # | Criterion | Result | Evidence |
+| # | Criterion | Result at close | Evidence |
 |---|---|---|---|
 | E1 | The requirements baseline exists and every declared FR, NFR and CON is accounted for | **Met** | Vision, Use-Case Model and Supplementary Specification persisted; 15 UCs, 5 NFR, 36 CON. All three lenses confirmed the counts and the trace tree shows no leaf on any FR, NFR or UC |
 | E2 | Every project risk is classified with probability, impact, magnitude, strategy, mitigation and contingency | **Met** | Risk List R001 to R008, each with all six attributes plus owner and warning sign. Zero findings across all three lenses |
 | E3 | Every risk that is accepted cites the authority that granted the acceptance | **Met** | Every `Accept` cites the CON-023 grant and its condition. No risk is accepted on the Project Manager's own authority |
-| E4 | The coarse roadmap and this iteration's fine plan both exist in this document | **Partially met** | Both sections exist and the roadmap is justified against the risk profile. The fine plan does not account for the iteration's work — two CORE artifacts it produced have no work item, no place in the critical chain, and their roles are marked idle. `Iteration Plan#F1` (Reviewer) |
-| E5 | Every declared AC-NNN is accounted for, addressed or deferred to a named iteration | **Not met** | Four of five are accounted for and deferred to a named iteration. AC-004 is assigned to iteration 7, the iteration in which its own three-month window opens, so it has no gate at which it can close. `Iteration Plan#F2` (Management Reviewer) |
+| E4 | The coarse roadmap and this iteration's fine plan both exist in this document | **Not met at close — corrected in this iteration** | Both sections existed and the roadmap was justified against the risk profile, but the fine plan did not account for the iteration's work: two CORE artifacts it produced had no work item, no place in the critical chain, and their roles were marked idle. `Iteration Plan#F1` (Reviewer). The fine plan now carries W5 and W6 with exit conditions, both in the critical chain, both roles Active in the Iteration 1 column |
+| E5 | Every declared AC-NNN is accounted for, addressed or deferred to a named iteration | **Not met at close — corrected in this iteration** | Four of five were accounted for and deferred to a named iteration. AC-004 was assigned to iteration 7, the iteration in which its own three-month window opens, so it had no gate at which it could close. `Iteration Plan#F2` (Management Reviewer). Layer A now carries AC-004a (learnability, iteration 5) and AC-004b (population measure, post-Project-Acceptance with STK-001) as separate rows with separate gates |
 | E6 | LCO readiness is assessed | **Met** | The Iteration Plan's LCO readiness assessment exists and answers all five LCO questions. The verdict on it is the ReviewCoordinator's and is recorded above, not here |
+
+**E4 and E5 are recorded as not met at close, and that is the honest reading.** The corrections are in place in this iteration, but a correction is not a pass: the emitting lenses verify it and close the finding, and the criterion is re-assessed at the iteration 2 close. Recording them as met because they have since been corrected would erase the variance this assessment exists to record.
 
 ### Layer A — declared acceptance criteria
 
@@ -253,11 +254,14 @@ No acceptance criterion is closed. Each is verified by working software, which I
 
 | AC | Criterion | Carried by | Addressed this iteration by | Verified in |
 |---|---|---|---|---|
-| AC-001 | An employee can clock in and out without help from HR or the development team | FR-001 → UC-001 | UC-001 detailed; the one-press interaction and its confirmation are specified | Iteration 4 |
-| AC-002 | An HR Administrator can publish a news item without technical assistance | FR-006 → UC-006 | UC-006 baselined and bound to CON-010, CON-018, MECH-02, MECH-03 | Iteration 5 |
-| AC-003 | Any employee finds a colleague's phone/email in under 10 seconds | FR-011 → UC-011 | UC-011 detailed; the seven displayed fields and the LDAP read are specified | Iteration 6 |
-| AC-004 | 80% of employees complete at least one clocking with no prior training | FR-001 → UC-001 | UC-001 detailed. **The gate assignment is defective** — the criterion fuses a learnability check with a population measure and is assigned to the iteration where the measure begins to elapse | Iteration 4 (learnability) and post-Project-Acceptance with STK-001 (population measure) — per the correction of `Iteration Plan#F2` |
-| AC-005 | A clocking made while the corporate network is down for up to 5 minutes is not lost | FR-013 → UC-013 | UC-013 baselined as the exception path of UC-001; the retry and idempotency contract are specified | Iteration 4 |
+| AC-001 | An employee can clock in and out without help from HR or the development team | FR-001 → UC-001 | UC-001 detailed; the one-press interaction and its confirmation are specified | Iteration 5 |
+| AC-002 | An HR Administrator can publish a news item without technical assistance | FR-006 → UC-006 | UC-006 baselined and bound to CON-010, CON-018, MECH-02, MECH-03 | Iteration 6 |
+| AC-003 | Any employee finds a colleague's phone/email in under 10 seconds | FR-011 → UC-011 | UC-011 detailed; the seven displayed fields and the LDAP read are specified | Iteration 7 |
+| AC-004a | Learnability half — an employee completes at least one clocking with no prior training | FR-001 → UC-001 | UC-001 detailed; learnability is specified as a product requirement, not a communication task | Iteration 5 — a small untrained-user check in the iteration that implements UC-001 |
+| AC-004b | Population half — 80% of employees complete at least one clocking within three months of launch | BG-003 | Not addressable inside an iteration: the window opens at go-live and closes after Project Acceptance | Post-Project-Acceptance, owner STK-001, measured against BG-003. Not a gate on any iteration |
+| AC-005 | A clocking made while the corporate network is down for up to 5 minutes is not lost | FR-013 → UC-013 | UC-013 baselined as the exception path of UC-001; the retry and idempotency contract are specified | Iteration 5 |
+
+**AC-004 is recorded in two parts because it fuses two different measures.** The learnability half is testable in the iteration that implements UC-001. The population half is governed by BG-003's three-month window and cannot close inside any iteration; assigning it to one would produce a criterion permanently in progress and a gate that can never close on it. It is a post-acceptance measure with a named owner, and the project's accountability to it is recorded rather than gated.
 
 ## Test Results
 
