@@ -1,7 +1,8 @@
 ## Document Control
 - **Phase:** Inception
-- **Status:** Draft — iteration 2, submitted for review
+- **Status:** Draft — iteration 3, submitted for review
 - **Milestone Target:** End of Inception (not yet achieved)
+
 ## Use-Case Diagram
 Fifteen use cases, one per declared requirement FR-001 to FR-015. Two human actors and two external
 systems sit on the boundary. Authentication (NFR-001) is deliberately **not** a use case: it is
