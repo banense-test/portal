@@ -1293,8 +1293,20 @@ Infrastructure with HR (CON-031), not a team prototype.
 | R008 Wrong client clock | The confirmation shows the recorded time, so the error is visible at the moment it happens; HR corrects under UC-005 | COMP-001, COMP-002 | The confirmation displays the recorded time, not a generic success message |
 | R005 An artifact crosses an exclusion | The component catalogue names what each component does **not** do: no correction screen for employees, no audit read API, no permission table, no cache | Logical View | No component offers a capability the Vision's exclusion list forbids |
 
-**R002 and R003 are not architectural.** R002 is adoption, addressed by the one-press interaction and
-measured after launch. R003 is the timing of the human validation gate, carried by the Iteration Plan.
+**R002, R003 and R009 are not architectural.** R002 is adoption, addressed by the one-press
+interaction and measured after launch. R003 is the timing of the human validation gate, carried by the
+Iteration Plan. R009 is the risk that the correction process does not converge, and its mechanism is
+the authoring checks in the Development Case, not a component — the architecture's contribution to it
+is that every decision this document takes is stated once and referenced by ID from the artifacts that
+must follow it, so a decision that changes has one place to change and a named set of places to check.
+
+**This document is itself the artifact R009 is about.** The defect class R009 names — a decision one
+artifact changed, not carried through to the artifacts that had to follow it — has twice been found in
+this document: ADR-010 changed the clocking shape and the Use-Case Model did not follow, and the
+roadmap moved and the significance table did not follow. Both are corrected. The architectural
+consequence is that the decisions most likely to move are the ones stated as ADRs with their
+consequences spelled out, so the artifacts that depend on them can be found by reading the ADR rather
+than by discovering the contradiction later.
 
 ### Known limitations of this candidate architecture
 
