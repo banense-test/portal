@@ -30,7 +30,6 @@ redefined here. Tables are named, not numbered: `TBL-NNN` belongs to the Databas
 of structure and mechanism, and a sketch that pretends to be a baseline is worse than an honest one.
 
 ## Architectural Goals and Constraints
-
 ### Architecturally significant requirements
 
 The FURPS+ lens, applied to the declared scope. Only requirements that shape structure appear here; a
@@ -45,6 +44,7 @@ requirement that a single component satisfies locally is design detail.
 | FR-011, R001 | The directory reads attributes that may be empty across three offices | One LDAP gateway, tolerant of empty values, with a single stand-in seam (ADR-004) |
 | NFR-001, CON-002, CON-008 | Every function requires an authenticated corporate identity, and authorization has exactly two levels | One identity component resolving a two-valued level per request (ADR-003) |
 | NFR-005, CON-013, CON-014 | The audit trail is read directly from the database by people outside the portal, and originals are never overwritten | Append-only audit tables, legible without the application (ADR-002) |
+| CON-012, CON-013 | Two rules that constrain the same record from opposite directions: one pair per employee-day, and no original ever overwritten | An append-only clocking event log with CON-012 enforced on the originals only (ADR-010) |
 | NFR-002, NFR-004 | A 3-second page load and a 1-second clocking, on a server-rendered stack | Server-rendered pages, no client framework, indexed clocking lookups (Size and Performance) |
 | CON-031 | The team's entire integration surface is stand-ins it controls | Two stand-in projects behind the two adapter seams (ADR-009) |
 
@@ -82,12 +82,12 @@ in no section is an unproven constraint.
 | CON-007 Europe/Madrid, UTC storage | Data View — `timestamptz` columns; conversion at the export and display boundary only |
 | CON-008 Two AD-group levels | Logical View COMP-008; ADR-003 |
 | CON-009 Closed four-value category list | Logical View COMP-006; ADR-007 |
-| CON-010 At most one featured item | Logical View COMP-004; Data View partial unique index; ADR-006 |
-| CON-011 Pair never crosses midnight | Logical View COMP-002; Data View `WorkDate` |
-| CON-012 One pair per employee per day | Logical View COMP-002; Data View unique index |
-| CON-013 Originals never overwritten or deleted | Data View — corrections are new rows; ADR-002 |
+| CON-010 At most one featured item | Logical View COMP-004; Data View partial unique index on the featured flag where published; ADR-006 |
+| CON-011 Pair never crosses midnight | Logical View COMP-002; Data View — `WorkDate` is a column written at Clock In, and a Clock Out is only accepted for the open `WorkDate` |
+| CON-012 One pair per employee per day | Logical View COMP-002; Data View — partial unique index on `(EmployeeId, WorkDate, EventKind)` where `SupersedesId IS NULL`; ADR-010 |
+| CON-013 Originals never overwritten or deleted | Data View — no UPDATE and no DELETE path on `ClockingEvent`; a correction is an INSERT naming the row it supersedes and carrying `PreviousValueUtc`; ADR-002, ADR-010 |
 | CON-014 News never deleted | Data View — `IsPublished` flag, no delete path; ADR-002 |
-| CON-015 Category drives no access decision | Logical View — COMP-006 is depended on by COMP-003 and COMP-005 only, never by COMP-008 |
+| CON-015 Category drives no access decision | Logical View — the worker-category boundary table: read by COMP-003 and COMP-005 only, never by COMP-008 |
 | CON-016 At most one category, may be empty | Data View — one row per `AdUserId`, nullable `Category` |
 | CON-017 No self-service correction screen | Logical View — no component offers a correction operation to the employee level |
 | CON-018 Featuring is manual only | Process View — no scheduler, no background job |
@@ -148,15 +148,17 @@ of change. Components are in-process modules behind interfaces, not network serv
 project structure and interfaces, not by the network — so they are only as real as the discipline that
 keeps them. A change to FR-004 is local to COMP-003.
 
-#### ADR-002 — Persistence: one relational store, append-only audit, invariants in the schema
+#### ADR-002 — Persistence: one relational store, append-only records, invariants in the schema
 
 **Context.** CON-027 pins PostgreSQL 18. CON-013 forbids overwriting or deleting a clocking original.
 CON-014 forbids deleting news. NFR-005 and INT-07 require the audit trail to be read **directly from
 the database** by people outside the portal.
 
-**Decision.** One relational database. COMP-010 is the only component that speaks SQL. The audit trail
-is append-only and its columns are legible without the application: action, actor, timestamp, subject,
-previous value, reason. Immutability is enforced by the schema, not only by the service layer.
+**Decision.** One relational database. COMP-010 is the only component that speaks SQL. Every record
+the portal owns is append-only: a change is a new row that names the row it supersedes, never an
+UPDATE and never a DELETE. The audit trail is append-only and its columns are legible without the
+application: action, actor, timestamp, subject, previous value, reason. Immutability is enforced by
+the absence of an update or delete path in the schema, not only by the service layer.
 
 **Alternatives considered.**
 - *Event sourcing* — rejected. It is a state-reconstruction mechanism, and the audit trail here is a
@@ -164,9 +166,14 @@ previous value, reason. Immutability is enforced by the schema, not only by the 
 - *Audit written to application log files* — rejected. INT-07 requires it read from the database.
 - *A repository abstraction per entity* — rejected as premature; it adds indirection without a second
   implementation to justify it.
+- *Mutable rows with a history table* — rejected. It makes the current value and its history two
+  things that can disagree, and CON-013's "never overwritten in place" is then a rule the code must
+  remember rather than a property of the schema.
 
 **Consequences.** The DatabaseDesigner owns the physical shape of the invariants, and a schema change
-is an architectural change. A direct database write cannot violate CON-010, CON-012 or CON-013.
+is an architectural change. A direct database write cannot violate CON-010, CON-012 or CON-013. The
+cost is that reading current state is a query over the log rather than a column read — accepted,
+because the log is small and indexed on the columns the queries use.
 
 #### ADR-003 — Identity and authorization: OIDC, two levels, one decision point
 
@@ -303,6 +310,43 @@ stand-ins are separate projects in the solution, never in the production path.
 
 **Consequences.** The team's definition of done is testable without the real systems. R001 stays open
 until the fixture carries the empty entries.
+
+#### ADR-010 — A clocking pair is an append-only event log, with CON-012 enforced on the originals
+
+**Context.** CON-012 permits at most one clocking pair per employee per calendar day. CON-013 forbids
+overwriting or deleting an original and requires a correction to record who, when, the previous value
+and a reason. A pair is produced by two separate presses, and HR may later correct or insert either
+half. A single mutable row holding both `ClockIn` and `ClockOut` cannot satisfy both rules: recording
+the Clock Out is an in-place UPDATE that CON-013 forbids, and a correction written as a new row is
+rejected by a unique index on `(EmployeeId, WorkDate)`.
+
+**Decision.** `ClockingEvent` is append-only. Each press inserts one row carrying `EventKind`
+(ClockIn or ClockOut), the client `OccurredAtUtc`, and `Source` (Employee or Hr). An HR correction or
+insertion inserts one further row with `Source = Hr`, `SupersedesId` naming the row it replaces,
+`PreviousValueUtc` carrying the value replaced, `RecordedBy`, `RecordedAtUtc` and `Reason`. No UPDATE
+and no DELETE path exists. CON-012 is enforced by a **partial** unique index on
+`(EmployeeId, WorkDate, EventKind)` restricted to `SupersedesId IS NULL`, so it constrains the
+originals — one ClockIn and one ClockOut per employee-day — and admits every superseding row. The
+effective pair is the row of each `EventKind` that no other row names in `SupersedesId`; `HoursWorked`
+and the FR-004 `Corrected` flag are derived from that query.
+
+**Alternatives considered.**
+- *One row per pair, with the Clock Out written as an UPDATE* — rejected. It is the shape CON-013
+  forbids, and it loses the previous value unless a second history table is added.
+- *One row per pair plus a separate correction table* — rejected. Two tables describing one fact, and
+  the pair's current value becomes a join whose correctness depends on the code remembering to apply
+  the correction.
+- *One row per pair, with a correction as a new row and CON-012 relaxed to a non-unique index* — 
+  rejected. It moves CON-012 from the schema into the service layer, and CON-012 is a statement about
+  the data.
+- *A `PreviousValue` column on the pair row* — rejected. It is an in-place UPDATE by another name.
+
+**Consequences.** CON-012 and CON-013 hold simultaneously and both are enforced by the schema. The
+cost is that current state is a query rather than a column read, and that the export and the history
+views must resolve supersession — which is why COMP-002 owns that query and COMP-003 consumes it
+rather than re-deriving it. A correction is never lost and never overwrites: the full sequence of
+presses and corrections for an employee-day is readable directly from the table, which is what
+NFR-005's "read directly from the database" requires.
 
 ## Use-Case View
 
