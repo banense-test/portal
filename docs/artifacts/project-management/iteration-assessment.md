@@ -277,7 +277,6 @@ No acceptance criterion is closed. Each is verified by working software, which I
 **AC-004 is recorded in two parts because it fuses two different measures.** The learnability half is testable in the iteration that implements UC-001. The population half is governed by BG-003's three-month window and cannot close inside any iteration; assigning it to one would produce a criterion permanently in progress and a gate that can never close on it. It is a post-acceptance measure with a named owner, and the project's accountability to it is recorded rather than gated.
 
 ## Test Results
-
 **No test was executed in this iteration and none could be.** The iteration produced no code, no stand-ins and no test cases. Reporting a pass rate would be reporting a result that does not exist.
 
 | Measure | Value | Basis |
@@ -288,10 +287,10 @@ No acceptance criterion is closed. Each is verified by working software, which I
 | Use cases with a named test level and an execution iteration matching the roadmap | 15 of 15 | Test Evaluation Summary coverage plan |
 | NFRs with a named measurement method and an iteration where the behaviour exists | 5 of 5 | Test Evaluation Summary quality-attribute plan |
 | Acceptance criteria with a point at which they can close | 5 of 5, with AC-004 split into two parts | Test Evaluation Summary acceptance criteria verification |
-| Stand-in fixture obligations recorded | 1 | The empty job-title and empty extension entries that retire R001 (R004) |
+| Stand-in fixture obligations recorded | 2 | The empty job-title and empty extension entries that retire R001 (R004), and the worker with no category that exercises CON-016 in UC-011 A4 |
 | Test framework selected | No | Recorded gap; closes in iteration 4 |
 
-**Test Evaluation Summary mission verdict: MET.** The test effort is decidable and it now follows the plan it is measured against: every use case has a test level and an execution iteration, every NFR is measured by the method the requirement itself names in an iteration where the behaviour exists, every acceptance criterion has a point at which it can close, and the fixture obligation that retires R001 is recorded as a test obligation with the iteration in which it is executed. That verdict is about the test position, not the product, and the document says so.
+**Test Evaluation Summary mission verdict: MET.** The test effort is decidable and it now follows the plan it is measured against: every use case has a test level and an execution iteration, every NFR is measured by the method the requirement itself names in an iteration where the behaviour exists, every acceptance criterion has a point at which it can close, and the fixture obligations that retire R001 and exercise CON-016 are recorded as test obligations with the iteration in which they are executed. That verdict is about the test position, not the product, and the document says so.
 
 **Quality signals.** The build on `main` was observed successful at the moment of writing this assessment — run `39940933643`, started 2026-10-23 10:41:58Z, completed 10:42:50Z. The green build proves the CI path CON-029 requires is live; it carries no product evidence, because the repository holds project inputs and artifacts only. One issue is recorded in the tracker, `Issue #1`, a documentation-staleness defect raised by review rather than by a test.
 
