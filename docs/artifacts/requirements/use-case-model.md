@@ -713,6 +713,52 @@ appearing in UC-010's rules, or in any access decision, is a defect.
   UC-001, UC-011 and UC-010 respectively, and keep the extension use case as the traceable anchor for
   FR-013, FR-014 and FR-015. Do not give them a main flow of their own.
 
+### Enforcement point per bound rule — the handoff to the RequirementsSpecifier
+
+A rule named in a use case's "Rules bound" cell is not enforced by being named. For each of the eleven
+outline use cases this table names the point in the flow that must carry the enforcement, so the
+detailing pass cannot cite a rule without specifying the behaviour that holds it. Naming the
+enforcement point is what stops a rule from being bound and unenforced — the defect this model
+carried twice.
+
+| UC | Rule | Enforcement point the flow must carry |
+|---|---|---|
+| UC-002 | CON-011 | The month window is resolved in Europe/Madrid and each pair is keyed to one calendar date; a pair still open at midnight is shown as an incomplete day, never carried into the next |
+| UC-002 | CON-012 | The history is a read of effective pairs — at most one per employee-day — so a second pair cannot appear in it |
+| UC-003 | CON-011, CON-012 | The same two points as UC-002, over every employee rather than the session's own |
+| UC-003 | MECH-02 | The view is reachable only with the HR AD group; the check precedes the query, not the rendering |
+| UC-005 | CON-013 | The correction appends a row naming the row it supersedes and carrying the previous value; no update path and no delete path exists |
+| UC-005 | CON-017 | The correction is reachable only from the HR surface; no employee-facing route to it exists |
+| UC-005 | MECH-02, MECH-03 | HR group check before the write; the audit row is written in the same transaction as the correction |
+| UC-006 | CON-010 | The featured flag is set inside the transaction that clears the previous holder (UC-009), never by a separate call |
+| UC-006 | CON-014 | Publication creates a row; no delete path is offered |
+| UC-006 | CON-018 | The featured flag is a value HR supplies; no criterion, date or counter sets it |
+| UC-006 | news-category list | The category is chosen from the four declared values; no free text |
+| UC-006 | MECH-02, MECH-03 | HR group check before the write; author and timestamp written with the item |
+| UC-007 | CON-010, CON-014, CON-018 | The edit re-enters the same featured-flag transaction, never deletes, and never derives the flag |
+| UC-007 | MECH-02, MECH-03 | HR group check; the edit's author and timestamp written as a new audit row, the previous content retained |
+| UC-008 | CON-014 | Unpublish sets the hidden state; the row remains |
+| UC-008 | CON-019 | Unpublishing the featured item clears its flag in the same transaction and promotes nothing |
+| UC-008 | MECH-02, MECH-03 | HR group check; who and when written |
+| UC-010 | CON-014 | The read selects published items only; an unpublished item is absent from the result, not hidden in the browser |
+| UC-010 | news-category list | The filter offers the four declared values and no other |
+| UC-012 | CON-009 | The value is chosen from the four declared values or cleared; no fifth value and no free text |
+| UC-012 | CON-015 | The write touches the category link only; it reads no category to decide anything |
+| UC-012 | CON-016 | Clearing is a permitted outcome; no default is written in place of empty |
+| UC-012 | CON-021 | The write is to the two-column link keyed by AD user id; no employee row is created or updated |
+| UC-012 | MECH-02, MECH-03 | HR group check; who, when and the previous value written |
+| UC-013 | CON-036 | The retry is one queued press with one idempotency key; no second queue and no reconciliation step |
+| UC-013 | CON-011 | The retried press carries the original press time, so the recorded time is the press time and the calendar day it belongs to follows from it |
+| UC-014 | CON-003 | The failure path returns a no-connection message; it has no cached or partial result to fall back to |
+| UC-014 | CON-020 | The message carries no directory data of any kind |
+| UC-015 | — | No rule is at stake: nothing is cached, so the no-connection message is the whole behaviour |
+
+**The four detailed use cases carry the same obligation in their own flows.** UC-001 enforces CON-012
+at step 3 (the three pair states) and at A4/A5, CON-011 and CON-013 at step 6, CON-017 at step 3 and
+A4, and CON-036 at A1/A2. UC-004 enforces CON-011 at step 4, CON-013 at A4, CON-016 at A3 and CON-004
+at step 5. UC-009 enforces CON-010 at steps 2 to 5 and CON-019 at A2. UC-011 enforces CON-015 at
+steps 2 and 5, CON-016 at A4, CON-003 and CON-021 at steps 3 and 4, and CON-020 at step 6.
+
 ## Traceability
 
 | Element | Traces From | Link Type | Traces To |
