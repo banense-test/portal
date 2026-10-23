@@ -361,70 +361,45 @@ end note
 | Risk List | R001 and R002 carried with their declared identifiers and magnitudes, not renumbered or reclassified. R003 to R009 numbered in the order raised, each with a full treatment. CON-024 respected — Keycloak and AD availability are not registered, and R003 is correctly distinguished as the timing of the CON-031 human feedback loop. Every `Accept` cites the CON-023 grant and its condition. The five suspect traces raised by the UC-001 and UC-011 changes are re-verified and cleared with the reason each dependency still holds, and the trace graph confirms no suspect edge remains |
 
 ### Business Reviewer lens
-<!-- review: Inception I2 -->
+<!-- review: Inception I3 -->
 
-<!-- review: Inception I2 -->
-
-Three findings this iteration: two Major, one Minor, no Critical. All three are business-rule attachment defects — the rule content is correct and the attachment to the use cases that enforce it is not.
-
-**Reading the keys.** Findings are scoped per artifact and per lens, so `Use-Case Model#F1` and `#F2` in this block are this lens's findings and are distinct from the Reviewer lens's `Use-Case Model#F1` and `#F2` on the same artifact. The Reviewer lens's `#F2` is the UC-001 postcondition against ADR-010; this lens's `#F1` is CON-012's enforcement in the same use case. They are adjacent but not the same defect, and both must be corrected.
+<!-- review: Inception I3 -->
 
 #### Use-Case Model
 
-**`Use-Case Model#F1` (business lens) — Major — CON-012 is bound to UC-001 but not enforced by it.** The button logic in main-flow step 3 distinguishes only "a pair is open" from "a pair is not open", so once an employee has completed a pair for the day the portal renders Clock In again and step 6 records the press. Alternative flow A4 covers only the open-pair case. The complete-pair case is the one that produces a second pair, and it is unaddressed — as specified, UC-001 permits the exact state CON-012 declares impossible. Remediation: add an alternative flow for the complete-pair case, state step 3 in terms of the three states the rule creates (no pair, pair open, pair complete), and route the employee to HR under UC-005 per CON-017.
+**Result: Pass with one Minor finding.** Fifteen use cases, one per declared requirement FR-001 to FR-015, each with a primary actor who initiates it, a trigger and an observable outcome. No cross-cutting mechanism is promoted to a use case: authentication, authorization, audit and directory read are MECH-01 to MECH-04 in the Supplementary Specification, included by the use cases that depend on them. The three extension use cases are declared requirements modelled as exception paths, not invented goals.
 
-**`Use-Case Model#F2` (business lens) — Major — CON-015's attachment is incomplete and contradicts the Software Architecture Document.** CON-015 declares two permitted uses of the worker category: "a directory column that also filters" and "a CSV export column". The Use-Case Model binds the rule to UC-004 and UC-012 and explicitly denies it is bound to UC-011, which is the directory — in a paragraph that first states the rule "confines the worker category to the directory column and the export column". UC-011's main flow specifies no filter by worker category at all. The Software Architecture Document takes the opposite position, citing CON-015 as the basis for COMP-005 rendering the column and filtering the result set by it. Remediation: bind CON-015 to UC-011, state its permissive half (column plus filter) and its prohibitive half (no access decision) separately, add the filter to UC-011's flows, and align the outline table and the binding diagram.
+**The two Major findings of iteration 2 are corrected, and the corrections are substantive rather than restated.** `Use-Case Model#F1` (business lens) required UC-001 to specify the complete-pair case CON-012 forbids. Main-flow step 3 now renders the button for three states — no pair, pair open, pair complete — and A4 covers the complete-pair case explicitly while A5 covers the open-pair Clock In press. The rule is enforced by specified behaviour, not only cited in a list. `Use-Case Model#F2` (business lens) required CON-015 to be bound to UC-011 with its two halves stated separately. UC-011's main flow now carries the filter CON-015 declares at steps 2 and 5, the outline row lists CON-015, the binding diagram carries `R_CAT --> UC011`, and the prohibitive half — the category drives no access decision — is stated in the use case and matches the Software Architecture Document's position for COMP-005.
+
+**The new finding is a defect of the index, not of the behaviour.** `Use-Case Model#F3` (business lens, Minor): the survey table's "Rules bound" cells, the binding diagram's cluster edges and the enforcement-point table are three representations of one binding set, and they disagree in two places. UC-004 enforces CON-011 at step 4 and CON-013 at A4 — the artifact's own enforcement paragraph says so and the flow carries both — yet neither rule appears in UC-004's "Rules bound" cell and the `R_CLK` cluster has no edge to UC-004. In the other direction, UC-013's cell lists CON-012, which the retry does not enforce: a duplicate press is rejected by the idempotency key (CON-036), not by the one-pair-per-day rule, and the enforcement-point table correctly names only CON-036 and CON-011 for UC-013.
+
+**Traceability.** The Traceability table carries fifteen rows, one per use case, each `Refines` its declared FR-001 to FR-015, with no `Traces To` edge — correct, since no use case declares a `DependsOn`. No row copies an edge into another role's table and no declared input appears as an `Element`. The trace graph reports no `SUSPECT` edge, which is the independent evidence that the Use-Case Model was reviewed against ADR-010.
 
 #### Supplementary Specification
 
-**`Supplementary Specification#F1` (business lens) — Minor — the business-rules register carries twelve of thirteen declared `[BusinessRule]` constraints.** The scope declares CON-008 through CON-020 as `[BusinessRule]`. The register presents itself as the business-rule register ("The twelve business rules below are invariants") and omits CON-008, the authorization rule. CON-008 is enforced and attached elsewhere as MECH-02, so the rule is not lost — but the register under-reports by one and asserts its own completeness. Remediation: add CON-008 as the thirteenth row with its enforcement point and a cross-reference to MECH-02, and correct the count; or state in the preamble that authorization is deliberately carried as a mechanism and name CON-008 as the one declared `[BusinessRule]` constraint treated that way.
+**Result: Pass.** `Supplementary Specification#F1` (business lens, Minor) required the business-rules register to be complete against the declared category. The register now carries thirteen rows, CON-008 through CON-020, and the preamble states thirteen. CON-008 is carried as the thirteenth row with its "Where it must hold" cell naming the enforcement point — MECH-02, included by the eight HR use cases, reading AD group membership only and never the worker category (CON-015) — and the preamble states explicitly that CON-008 is the one of the thirteen carried as a mechanism rather than a use-case binding. The register is complete and the rule is not lost behind the mechanism that implements it.
 
-```plantuml
-@startuml
-title Portal - Business lens defect distribution, Inception iteration 2
+**The two closed lists are kept apart, which is the defect class this lens watches.** The news categories (General, HR, IT, Events) are declared by FR-006 and FR-010 and govern UC-006, UC-007 and UC-010. The worker categories (Full-time, Part-time, Contractor, Intern) are declared by CON-009 and govern UC-004, UC-011 and UC-012. The artifact states the separation in a table, in a diagram and in prose, and states that a worker category used to filter news or read in an authorization decision is a defect. That is the correct handling of the confusion CON-015 exists to prevent.
 
-package "Use-Case Model - 2 Major" {
-  class "F1 CON-012 complete-pair case\nbound but not enforced" as U1 <<Major>>
-  class "F2 CON-015 attachment incomplete\ncontradicts the SAD" as U2 <<Major>>
-}
+**Mechanisms are not use cases.** MECH-01 to MECH-04 deliver no observable value to an actor on their own and are recorded as mechanisms with an include graph, never as actor goals. The include graph is drawn once, here, and not duplicated in the Use-Case Model.
 
-package "Supplementary Specification - 1 Minor" {
-  class "F1 CON-008 absent from the register\n12 of 13 declared BusinessRule" as S1 <<Minor>>
-}
+#### Vision
 
-package "Defect class" {
-  class "Attachment defect - 3 of 3\nThe rule content is correct.\nThe binding to the use cases\nthat enforce it is not." as D1
-}
+**Result: Pass.** Stakeholder representation is complete: all four declared stakeholders appear with their needs and influence, and the negative-stakeholder analysis is honest — the one group whose workload changes without their consent is Infrastructure, and their constraint (CON-022) is declared and honoured rather than traded away. No organizational area relevant to the declared scope is unrepresented: the scope is three capability areas over one identity, and each is owned by a declared stakeholder.
 
-package "Severity position" {
-  class "Critical: 0" as G1
-  class "Major: 2" as G2
-  class "Minor: 1" as G3
-}
+**Business goals are measurable or explicitly unmeasured.** BG-001 is recorded as not yet measurable with STK-001 named as the supplier of the manual baseline; BG-002 and BG-003 are measurable against declared facts. A criterion whose denominator does not exist is recorded as unmeasured, never as met. That is the correct handling and it is the standing correction of the iteration-1 finding.
 
-U1 --> D1
-U2 --> D1
-S1 --> D1
-U1 --> G2
-U2 --> G2
-S1 --> G3
+**Volatility annotation reached the architecture.** The three High-volatility features are flagged in the Vision and each owns a dedicated component in the Software Architecture Document — COMP-003 for the FR-004 export contract, COMP-004 for the FR-009 single-featured invariant, COMP-006 for the FR-012 category value set. The volatile business policy reached the architecture instead of stopping at a table, which is the test this criterion exists to apply.
 
-note bottom of D1
-  No finding this iteration disputes what a rule
-  says. Each disputes where it is bound, or
-  whether the use case bound to it specifies the
-  behaviour that enforces it.
-end note
+**Scope adherence.** No element addresses a functional area the stakeholder did not declare. No identifier is invented — every `FR-`, `NFR-`, `CON-`, `AC-`, `BG-`, `STK-` and `R` identifier cited is one the work order assigned. No declared exclusion is crossed. The two deferred open questions (accessibility target, throughput binding) are recorded as deferred and not designed for, which is the correct reading of the stakeholder's decision.
 
-note bottom of G1
-  No declared exclusion crossed, no identifier
-  invented, no scope expanded beyond the fifteen
-  declared requirements.
-end note
-@enduml
-```
+#### Development Case
 
-**What this lens did not find.** No business artifact is owed and missing. No BUC, business actor, business worker or business entity is absent that the Development Case requires — the discipline is correctly inactive and the absence is the correct state. No stakeholder is unrepresented. No business goal is presented as met when its denominator does not exist. No volatile business policy failed to reach the architecture. No element addresses an undeclared functional area.
+**Result: Pass from this lens.** Business Modeling is declared INACTIVE on the correct trigger, and the classification was verified independently rather than inherited. The Glossary is NOT TRIGGERED and correctly absent. No business artifact is owed by this phase, so none is missing. The DC does not require a business-to-system derivation bridge, which is correct: the system use cases were declared, not derived.
+
+#### Business Modeling discipline disposition
+
+**Verdict: BR-OK-INACTIVE.** DC §4 trigger evaluation: the project does not exhibit business-process-led characteristics. No ERP, BPM, workflow-redesign or M&A signal appears in the Vision. No Business Use Cases, Workers or Entities section exists in any artifact. No business-domain specialist term requires a Glossary entry. The BusinessProcessAnalyst and BusinessReviewer are correctly idle for this engagement, and no role is removed from the roster.
 
 ### Management Reviewer lens
 <!-- review: Inception I2 -->
