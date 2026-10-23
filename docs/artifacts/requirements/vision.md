@@ -1,7 +1,8 @@
 ## Document Control
 - **Phase:** Inception
-- **Status:** Draft — iteration 2, submitted for review
+- **Status:** Draft — iteration 3, submitted for review
 - **Milestone Target:** End of Inception (not yet achieved)
+
 ## Problem Statement
 Cuba Corp's HR administration runs on three disconnected manual artifacts: shared Excel sheets for
 clocking, mass emails for news, and an outdated PDF phone list. Each artifact is maintained by hand,
